@@ -12,6 +12,9 @@ PETRA.DefenseManager = function(Config)
 	this.attackingArmies = {};
 	this.attackingUnits = {};
 	this.attackedAllies = {};
+	this.counterForCheckingEmergency = 0;
+	this.population = 0;
+	this.numberOfStructures = 0;
 };
 
 PETRA.DefenseManager.prototype.update = function(gameState, events)
@@ -524,6 +527,12 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 	for (let army of this.armies)
 		army.checkEvents(gameState, events);
 
+	if (this.checkForEmergency(gameState))
+	{
+		API3.warn("EMERGENCY!!!!");
+		gameState.emergencyState = true;
+		return;
+	}
 	// Capture events.
 	for (let evt of events.OwnershipChanged)
 	{
@@ -733,6 +742,63 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 	}
 };
 
+/**
+ * Check whether an emergency is there. An emergency is, if a lot of
+ * people are killed and/or a lot of buildings are destroyed.
+ */
+PETRA.DefenseManager.prototype.checkForEmergency = function(gameState)
+{
+	if (gameState.emergencyState)
+		return true;
+	// TODO: Check, whether this is an appropriate value, currently around 3 minutes
+	if (this.counterForCheckingEmergency < 60)
+	{
+		this.counterForCheckingEmergency++;
+		return false;
+	}
+	this.counterForCheckingEmergency = 0;
+	let oldPopulation = this.population;
+	this.population = gameState.getPopulation();
+	if (oldPopulation == 0)
+		return false;
+	API3.warn("Pop: " + (this.population / oldPopulation));
+	let oldNumberOfStructures = this.numberOfStructures;
+	this.numberOfStructures = gameState.getOwnStructures().length;
+	if (oldNumberOfStructures == 0)
+		return false;
+	API3.warn("Structures: " + (this.numberOfStructures / oldNumberOfStructures));
+	let populationFactor = this.population / oldPopulation;
+	let structureFactor = this.numberOfStructures / oldNumberOfStructures;
+	API3.warn(JSON.stringify(this.Config.personality));
+	// Growth means no emergency, no matter the difficulty
+	if (populationFactor >=1 && structureFactor >= 1)
+		return false;
+	// This means more an attack of the AI, no defense operation,
+	// no matter the difficulty
+	if (structureFactor >= 1 || populationFactor >= 0.6)
+		return false;
+	let resignFactors = [
+		// [<popFactor>,<structureFactor>]
+		// Sandbox, never emergency
+		[0.0,0.0],
+		// Very easy
+		[0.8,0.8],
+		// Easy
+		[0.6,0.6],
+		// Medium
+		[0.6,0.6],
+		// Hard
+		[0.2,0.2],
+		// Very hard, never emergency
+		[0.0,0.0]
+	];
+	let resignFactor = resignFactors[this.Config.difficulty];
+	if (populationFactor < resignFactor[0])
+		return true;
+	if (structureFactor < resignFactor[1])
+		return true;
+	return false;
+};
 PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target, data)
 {
 	if (target.hitpoints() < target.garrisonEjectHealth() * target.maxHitpoints())

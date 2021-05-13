@@ -94,7 +94,7 @@ PETRA.HQ.prototype.assignStartingEntities = function(gameState)
 
 /**
  * determine the main land Index (or water index if none)
- * as well as the list of allowed (land andf water) regions
+ * as well as the list of allowed (land and water) regions
  */
 PETRA.HQ.prototype.regionAnalysis = function(gameState)
 {
