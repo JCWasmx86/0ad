@@ -2671,6 +2671,13 @@ PETRA.HQ.prototype.getAccountedWorkers = function(gameState)
 PETRA.HQ.prototype.update = function(gameState, queues, events)
 {
 	Engine.ProfileStart("Headquarters update");
+	if (gameState.emergencyState)
+	{
+		Engine.ProfileStop();
+		API3.warn("//EMERGENCY//CALLS FOR AID!");
+		// TODO: Gather all troops at one building!
+		return;
+	}
 	this.turnCache = {};
 	this.territoryMap = PETRA.createTerritoryMap(gameState);
 	this.canBarter = gameState.getOwnEntitiesByClass("Market", true).filter(API3.Filters.isBuilt()).hasEntities();
