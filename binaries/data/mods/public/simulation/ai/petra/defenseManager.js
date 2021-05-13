@@ -774,7 +774,7 @@ PETRA.DefenseManager.prototype.checkForEmergency = function(gameState)
 	if (populationFactor >=1 && structureFactor >= 1)
 		return false;
 	// This means more an attack of the AI, no defense operation,
-	// no matter the difficulty
+	// no matter the difficulty.
 	if (structureFactor >= 1 || populationFactor >= 0.6)
 		return false;
 	let resignFactors = [
@@ -784,7 +784,7 @@ PETRA.DefenseManager.prototype.checkForEmergency = function(gameState)
 		// Very easy
 		[0.8,0.8],
 		// Easy
-		[0.6,0.6],
+		[0.7,0.7],
 		// Medium
 		[0.6,0.6],
 		// Hard

@@ -44,6 +44,7 @@ PETRA.HQ = function(Config)
 	this.diplomacyManager = new PETRA.DiplomacyManager(this.Config);
 	this.garrisonManager = new PETRA.GarrisonManager(this.Config);
 	this.victoryManager = new PETRA.VictoryManager(this.Config);
+	this.emergencyManager = new PETRA.EmergencyManager(this.Config);
 
 	this.capturableTargets = new Map();
 	this.capturableTargetsTime = 0;
@@ -2192,9 +2193,9 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 	Engine.ProfileStart("Headquarters update");
 	if (gameState.emergencyState)
 	{
-		Engine.ProfileStop();
 		API3.warn("//EMERGENCY//CALLS FOR AID!");
-		// TODO: Gather all troops at one building!
+		this.emergencyManager.handle(gameState);
+		Engine.ProfileStop();
 		return;
 	}
 	this.turnCache = {};
