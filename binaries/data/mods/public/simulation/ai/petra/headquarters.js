@@ -2191,10 +2191,12 @@ PETRA.HQ.prototype.baseAtIndex = function(territoryIndex)
 PETRA.HQ.prototype.update = function(gameState, queues, events)
 {
 	Engine.ProfileStart("Headquarters update");
-	if (gameState.emergencyState)
+	gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre"));
+	if (this.emergencyManager.checkForEmergency(gameState))
 	{
 		API3.warn("//EMERGENCY//CALLS FOR AID!");
-		this.emergencyManager.handle(gameState);
+		gameState.emergencyState = true;
+		this.emergencyManager.handleEmergency(gameState);
 		Engine.ProfileStop();
 		return;
 	}
