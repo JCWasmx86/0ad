@@ -11,13 +11,34 @@ PETRA.EmergencyManager = function(config)
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 {
-	if(!this.collectedTroops)
+	if (!this.collectedTroops)
 	{
 		this.collectTroops(gameState);
 		this.collectedTroops = true;
 	}
+	// Force these people to go to the position, where all others
+	// will be to avoid having minor skirmishes that will lead to heavy
+	// losses.
+	if (this.troopsMarching(gameState))
+	{
+		for (let ent of gameState.getOwnEntities().toEntityArray())
+			ent.move(this.collectPosition[0], this.collectPosition[1]);
+	}
 };
-
+PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
+{
+	if(this.finishedMarching)
+		return false;
+	for (let ent of gameState.getOwnEntities().toEntityArray())
+	{
+		if(API3.VectorDistance(ent.position(), this.collectPosition) > 20)
+		{
+			return true;
+		}
+	}
+	this.finishedMarching = true;
+	return false;
+};
  PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
  {
 	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
@@ -131,9 +152,10 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 	}
 	let position = building.position();
 	API3.warn(JSON.stringify(position));
+	this.collectPosition = position;
 	for(let ent of entities)
 	{
-		ent.moveToRange(position[0],position[1]);
+		ent.move(position[0],position[1]);
 	}
 };
 
@@ -170,7 +192,6 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 			nearestStructure = structure;
 		}
 	}
-	API3.warn(""+nearestStructure);
 	return nearestStructure;
 };
 
@@ -191,6 +212,7 @@ PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, g
 		return;
 	let avgX = sumX / nEntities;
 	let avgZ = sumZ / nEntities;
+	this.collectPosition = Array.of(avgX, avgZ);
 	for(let ent of entities)
 	{
 		if (ent && ent.position())
