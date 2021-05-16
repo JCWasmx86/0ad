@@ -17,14 +17,22 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 		this.collectedTroops = true;
 	}
 	// Force these people to go to the position, where all others
-	// will be to avoid having minor skirmishes that will lead to heavy
+	// will be to avoid having minor skirmishes that may lead to heavy
 	// losses.
 	if (this.troopsMarching(gameState))
 	{
 		for (let ent of gameState.getOwnEntities().toEntityArray())
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
 	}
+	else
+	{
+		// TODO: Actions depending on aggressive, cooperative, defensive
+		// If aggressive: DEATH!!!, one final battle
+		// If cooperative + defensive: Send resources to every? enemy to make peace
+		// If defensive: Make last battle.
+	}
 };
+
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 {
 	if(this.finishedMarching)
@@ -39,8 +47,9 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	this.finishedMarching = true;
 	return false;
 };
- PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
- {
+
+PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
+{
 	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
 		return true;
 	// TODO: Check, whether this is an appropriate value, currently around 3 minutes
