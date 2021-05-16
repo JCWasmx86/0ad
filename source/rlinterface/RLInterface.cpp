@@ -26,7 +26,9 @@
 #include "ps/Game.h"
 #include "ps/GameSetup/GameSetup.h"
 #include "ps/Loader.h"
+#include "scriptinterface/Object.h"
 #include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "simulation2/components/ICmpAIInterface.h"
 #include "simulation2/components/ICmpTemplateManager.h"
@@ -341,7 +343,7 @@ void Interface::ApplyMessage(const GameMessage& msg)
 			ScriptInterface& scriptInterface = g_Game->GetSimulation2()->GetScriptInterface();
 			ScriptRequest rq(scriptInterface);
 			JS::RootedValue attrs(rq.cx);
-			scriptInterface.ParseJSON(m_ScenarioConfig.content, &attrs);
+			Script::ParseJSON(rq, m_ScenarioConfig.content, &attrs);
 
 			g_Game->SetPlayerID(m_ScenarioConfig.playerID);
 			g_Game->StartGame(&attrs, "");
@@ -357,12 +359,12 @@ void Interface::ApplyMessage(const GameMessage& msg)
 			else
 			{
 				JS::RootedValue initData(rq.cx);
-				scriptInterface.CreateObject(rq, &initData);
-				scriptInterface.SetProperty(initData, "attribs", attrs);
+				Script::CreateObject(rq, &initData);
+				Script::SetProperty(rq, initData, "attribs", attrs);
 
 				JS::RootedValue playerAssignments(rq.cx);
-				scriptInterface.CreateObject(rq, &playerAssignments);
-				scriptInterface.SetProperty(initData, "playerAssignments", playerAssignments);
+				Script::CreateObject(rq, &playerAssignments);
+				Script::SetProperty(rq, initData, "playerAssignments", playerAssignments);
 
 				g_GUI->SwitchPage(L"page_loading.xml", &scriptInterface, initData);
 				m_NeedsGameState = true;
@@ -386,7 +388,7 @@ void Interface::ApplyMessage(const GameMessage& msg)
 			{
 				ScriptRequest rq(scriptInterface);
 				JS::RootedValue commandJSON(rq.cx);
-				scriptInterface.ParseJSON(command.json_cmd, &commandJSON);
+				Script::ParseJSON(rq, command.json_cmd, &commandJSON);
 				turnMgr->PostCommand(command.playerID, commandJSON);
 			}
 
@@ -405,24 +407,24 @@ void Interface::ApplyMessage(const GameMessage& msg)
 			m_MsgLock.unlock();
 			break;
 		}
-        case GameMessageType::Evaluate:
-        {
-            if (!g_Game)
-            {
-                m_ReturnValue = EMPTY_STATE;
-                m_MsgApplied.notify_one();
-                m_MsgLock.unlock();
-                return;
-            }
-            const ScriptInterface& scriptInterface = g_Game->GetSimulation2()->GetScriptInterface();
-            ScriptRequest rq(scriptInterface);
-            JS::RootedValue ret(rq.cx);
-            scriptInterface.Eval(m_Code.c_str(), &ret);
-            m_ReturnValue = scriptInterface.StringifyJSON(&ret, false);
-            m_MsgApplied.notify_one();
-            m_MsgLock.unlock();
-            break;
-        }
+		case GameMessageType::Evaluate:
+		{
+			if (!g_Game)
+			{
+				m_ReturnValue = EMPTY_STATE;
+				m_MsgApplied.notify_one();
+				m_MsgLock.unlock();
+				return;
+			}
+			const ScriptInterface& scriptInterface = g_Game->GetSimulation2()->GetScriptInterface();
+			ScriptRequest rq(scriptInterface);
+			JS::RootedValue ret(rq.cx);
+			scriptInterface.Eval(m_Code.c_str(), &ret);
+			m_ReturnValue = Script::StringifyJSON(rq, &ret, false);
+			m_MsgApplied.notify_one();
+			m_MsgLock.unlock();
+			break;
+		}
 		default:
 		break;
 	}
@@ -436,7 +438,7 @@ std::string Interface::GetGameState() const
 	ScriptRequest rq(scriptInterface);
 	JS::RootedValue state(rq.cx);
 	cmpAIInterface->GetFullRepresentation(&state, true);
-	return scriptInterface.StringifyJSON(&state, false);
+	return Script::StringifyJSON(rq, &state, false);
 }
 
 bool Interface::IsGameRunning() const

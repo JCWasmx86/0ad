@@ -26,8 +26,7 @@
 #include "ps/CLogger.h"
 #include "ps/Replay.h"
 #include "ps/Util.h"
-#include "scriptinterface/ScriptExtraHeaders.h" // StructuredClone
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/Object.h"
 #include "simulation2/Simulation2.h"
 
 #if 0
@@ -41,9 +40,10 @@ const CStr CTurnManager::EventNameSavegameLoaded = "SavegameLoaded";
 CTurnManager::CTurnManager(CSimulation2& simulation, u32 defaultTurnLength, u32 commandDelay, int clientId, IReplayLogger& replay)
 	: m_Simulation2(simulation), m_CurrentTurn(0), m_CommandDelay(commandDelay), m_ReadyTurn(commandDelay - 1), m_TurnLength(defaultTurnLength),
 	m_PlayerId(-1), m_ClientId(clientId), m_DeltaSimTime(0), m_Replay(replay),
-	m_FinalTurn(std::numeric_limits<u32>::max()), m_TimeWarpNumTurns(0),
-	m_QuickSaveMetadata(m_Simulation2.GetScriptInterface().GetGeneralJSContext())
+	m_FinalTurn(std::numeric_limits<u32>::max()), m_TimeWarpNumTurns(0)
 {
+	ScriptRequest rq(m_Simulation2.GetScriptInterface());
+	m_QuickSaveMetadata.init(rq.cx);
 	m_QueuedCommands.resize(1);
 }
 
@@ -221,9 +221,10 @@ void CTurnManager::AddCommand(int client, int player, JS::HandleValue data, u32 
 		return;
 	}
 
-	m_Simulation2.GetScriptInterface().FreezeObject(data, true);
-
 	ScriptRequest rq(m_Simulation2.GetScriptInterface());
+
+	Script::FreezeObject(rq, data, true);
+
 	size_t command_in_turns = turn - (m_CurrentTurn+1);
 	if (m_QueuedCommands.size() <= command_in_turns)
 		m_QueuedCommands.resize(command_in_turns+1);
@@ -294,7 +295,7 @@ void CTurnManager::QuickSave(JS::HandleValue GUIMetadata)
 
 	m_QuickSaveMetadata.set(Script::DeepCopy(rq, GUIMetadata));
 	// Freeze state to ensure that consectuvie loads don't modify the state
-	m_Simulation2.GetScriptInterface().FreezeObject(m_QuickSaveMetadata, true);
+	Script::FreezeObject(rq, m_QuickSaveMetadata, true);
 
 	LOGMESSAGERENDER("Quicksaved game");
 }

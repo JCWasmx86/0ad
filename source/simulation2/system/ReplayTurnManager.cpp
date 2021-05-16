@@ -22,7 +22,9 @@
 #include "gui/GUIManager.h"
 #include "ps/CLogger.h"
 #include "ps/Util.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/ScriptConversions.h"
+#include "scriptinterface/ScriptRequest.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 
 const CStr CReplayTurnManager::EventNameReplayFinished = "ReplayFinished";
@@ -95,11 +97,11 @@ void CReplayTurnManager::NotifyFinishedUpdate(u32 turn)
 	ignore_result(paramData.append(JS::NumberValue(turn)));
 
 	JS::RootedValue hashVal(rq.cx);
-	ScriptInterface::ToJSVal(rq, &hashVal, hash);
+	Script::ToJSVal(rq, &hashVal, hash);
 	ignore_result(paramData.append(hashVal));
 
 	JS::RootedValue expectedHashVal(rq.cx);
-	ScriptInterface::ToJSVal(rq, &expectedHashVal, expectedHash);
+	Script::ToJSVal(rq, &expectedHashVal, expectedHash);
 	ignore_result(paramData.append(expectedHashVal));
 
 	g_GUI->SendEventToAll(EventNameReplayOutOfSync, paramData);
@@ -117,7 +119,7 @@ void CReplayTurnManager::DoTurn(u32 turn)
 	for (const std::pair<player_id_t, std::string>& p : m_ReplayCommands[turn])
 	{
 		JS::RootedValue command(rq.cx);
-		m_Simulation2.GetScriptInterface().ParseJSON(p.second, &command);
+		Script::ParseJSON(rq, p.second, &command);
 		AddCommand(m_ClientId, p.first, command, m_CurrentTurn + 1);
 	}
 

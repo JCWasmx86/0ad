@@ -1,4 +1,4 @@
-/* Copyright (C) 2020 Wildfire Games.
+/* Copyright (C) 2021 Wildfire Games.
  * This file is part of 0 A.D.
  *
  * 0 A.D. is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 #include "lib/file/vfs/vfs_util.h"
 #include "ps/Filesystem.h"
 #include "ps/XML/Xeromyces.h"
+#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/JSON.h"
 
 #ifdef OS_WIN
 #include <fstream>
@@ -69,13 +71,13 @@ CModInstaller::ModInstallationResult CModInstaller::Install(
 		ScriptRequest rq(scriptInterface);
 
 		JS::RootedValue json_val(rq.cx);
-		if (!scriptInterface.ParseJSON(modinfo.GetAsString(), &json_val))
+		if (!Script::ParseJSON(rq, modinfo.GetAsString(), &json_val))
 			return FAIL_ON_PARSE_JSON;
 		JS::RootedObject json_obj(rq.cx, json_val.toObjectOrNull());
 		JS::RootedValue name_val(rq.cx);
 		if (!JS_GetProperty(rq.cx, json_obj, "name", &name_val))
 			return FAIL_ON_EXTRACT_NAME;
-		ScriptInterface::FromJSVal(rq, name_val, modName);
+		Script::FromJSVal(rq, name_val, modName);
 		if (modName.empty())
 			return FAIL_ON_EXTRACT_NAME;
 	}

@@ -1,4 +1,4 @@
-/* Copyright (C) 2020 Wildfire Games.
+/* Copyright (C) 2021 Wildfire Games.
  * This file is part of 0 A.D.
  *
  * 0 A.D. is free software: you can redistribute it and/or modify
@@ -34,9 +34,11 @@
 #include "ps/Mod.h"
 #include "ps/Util.h"
 #include "ps/VisualReplay.h"
+#include "scriptinterface/Object.h"
 #include "scriptinterface/ScriptContext.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/ScriptRequest.h"
 #include "scriptinterface/ScriptStats.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/components/ICmpGuiInterface.h"
 #include "simulation2/helpers/Player.h"
 #include "simulation2/helpers/SimulationCommand.h"
@@ -67,18 +69,18 @@ void CReplayLogger::StartGame(JS::MutableHandleValue attribs)
 	ScriptRequest rq(m_ScriptInterface);
 
 	// Add timestamp, since the file-modification-date can change
-	m_ScriptInterface.SetProperty(attribs, "timestamp", (double)std::time(nullptr));
+	Script::SetProperty(rq, attribs, "timestamp", (double)std::time(nullptr));
 
 	// Add engine version and currently loaded mods for sanity checks when replaying
-	m_ScriptInterface.SetProperty(attribs, "engine_version", engine_version);
+	Script::SetProperty(rq, attribs, "engine_version", engine_version);
 	JS::RootedValue mods(rq.cx, Mod::GetLoadedModsWithVersions(m_ScriptInterface));
-	m_ScriptInterface.SetProperty(attribs, "mods", mods);
+	Script::SetProperty(rq, attribs, "mods", mods);
 
 	m_Directory = createDateIndexSubdirectory(VisualReplay::GetDirectoryPath());
 	debug_printf("Writing replay to %s\n", m_Directory.string8().c_str());
 
 	m_Stream = new std::ofstream(OsString(m_Directory / L"commands.txt").c_str(), std::ofstream::out | std::ofstream::trunc);
-	*m_Stream << "start " << m_ScriptInterface.StringifyJSON(attribs, false) << "\n";
+	*m_Stream << "start " << Script::StringifyJSON(rq, attribs, false) << "\n";
 }
 
 void CReplayLogger::Turn(u32 n, u32 turnLength, std::vector<SimulationCommand>& commands)
@@ -88,7 +90,7 @@ void CReplayLogger::Turn(u32 n, u32 turnLength, std::vector<SimulationCommand>& 
 	*m_Stream << "turn " << n << " " << turnLength << "\n";
 
 	for (SimulationCommand& command : commands)
-		*m_Stream << "cmd " << command.player << " " << m_ScriptInterface.StringifyJSON(&command.data, false) << "\n";
+		*m_Stream << "cmd " << command.player << " " << Script::StringifyJSON(rq, &command.data, false) << "\n";
 
 	*m_Stream << "end\n";
 	m_Stream->flush();
@@ -122,7 +124,7 @@ void CReplayLogger::SaveMetadata(const CSimulation2& simulation)
 	CreateDirectories(fileName.Parent(), 0700);
 
 	std::ofstream stream (OsString(fileName).c_str(), std::ofstream::out | std::ofstream::trunc);
-	stream << scriptInterface.StringifyJSON(&metadata, false);
+	stream << Script::StringifyJSON(rq, &metadata, false);
 	stream.close();
 	debug_printf("Saved replay metadata to %s\n", fileName.string8().c_str());
 }
@@ -165,11 +167,11 @@ void CReplayPlayer::CheckReplayMods(const ScriptInterface& scriptInterface, JS::
 	ScriptRequest rq(scriptInterface);
 
 	std::vector<std::vector<CStr>> replayMods;
-	scriptInterface.GetProperty(attribs, "mods", replayMods);
+	Script::GetProperty(rq, attribs, "mods", replayMods);
 
 	std::vector<std::vector<CStr>> enabledMods;
 	JS::RootedValue enabledModsJS(rq.cx, Mod::GetLoadedModsWithVersions(scriptInterface));
-	scriptInterface.FromJSVal(rq, enabledModsJS, enabledMods);
+	Script::FromJSVal(rq, enabledModsJS, enabledMods);
 
 	CStr warn;
 	if (replayMods.size() != enabledMods.size())
@@ -239,7 +241,7 @@ void CReplayPlayer::Replay(const bool serializationtest, const int rejointesttur
 			std::string line;
 			std::getline(*m_Stream, line);
 			JS::RootedValue attribs(rq.cx);
-			ENSURE(g_Game->GetSimulation2()->GetScriptInterface().ParseJSON(line, &attribs));
+			ENSURE(Script::ParseJSON(rq, line, &attribs));
 
 			CheckReplayMods(g_Game->GetSimulation2()->GetScriptInterface(), attribs);
 
@@ -264,8 +266,8 @@ void CReplayPlayer::Replay(const bool serializationtest, const int rejointesttur
 			std::string line;
 			std::getline(*m_Stream, line);
 			JS::RootedValue data(rq.cx);
-			g_Game->GetSimulation2()->GetScriptInterface().ParseJSON(line, &data);
-			g_Game->GetSimulation2()->GetScriptInterface().FreezeObject(data, true);
+			Script::ParseJSON(rq, line, &data);
+			Script::FreezeObject(rq, data, true);
 			commands.emplace_back(SimulationCommand(player, rq.cx, data));
 		}
 		else if (type == "hash" || type == "hash-quick")

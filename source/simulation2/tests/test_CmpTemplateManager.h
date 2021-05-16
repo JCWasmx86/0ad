@@ -30,6 +30,8 @@
 #include "ps/Filesystem.h"
 #include "ps/CLogger.h"
 #include "ps/XML/Xeromyces.h"
+#include "scriptinterface/JSON.h"
+#include "scriptinterface/ScriptRequest.h"
 
 class TestCmpTemplateManager : public CxxTest::TestSuite
 {
@@ -105,20 +107,20 @@ public:
 
 		const CParamNode* inherit1 = tempMan->LoadTemplate(ent2, "inherit1");
 		JS::RootedValue val(rq.cx);
-		ScriptInterface::ToJSVal(rq, &val, inherit1);
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({Test1A:{'@a':\"a1\", '@b':\"b1\", '@c':\"c1\", d:\"d1\", e:\"e1\", f:\"f1\"}})");
+		Script::ToJSVal(rq, &val, inherit1);
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({Test1A:{'@a':\"a1\", '@b':\"b1\", '@c':\"c1\", d:\"d1\", e:\"e1\", f:\"f1\"}})");
 
 		const CParamNode* inherit2 = tempMan->LoadTemplate(ent2, "inherit2");
-		ScriptInterface::ToJSVal(rq, &val, inherit2);
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({'@parent':\"inherit1\", Test1A:{'@a':\"a2\", '@b':\"b1\", '@c':\"c1\", d:\"d2\", e:\"e1\", f:\"f1\", g:\"g2\"}})");
+		Script::ToJSVal(rq, &val, inherit2);
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({'@parent':\"inherit1\", Test1A:{'@a':\"a2\", '@b':\"b1\", '@c':\"c1\", d:\"d2\", e:\"e1\", f:\"f1\", g:\"g2\"}})");
 
 		const CParamNode* actor = tempMan->LoadTemplate(ent2, "actor|example1");
-		ScriptInterface::ToJSVal(rq, &val, &actor->GetChild("VisualActor"));
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({Actor:\"example1\", ActorOnly:(void 0), SilhouetteDisplay:\"false\", SilhouetteOccluder:\"false\", VisibleInAtlasOnly:\"false\"})");
+		Script::ToJSVal(rq, &val, &actor->GetChild("VisualActor"));
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({Actor:\"example1\", ActorOnly:(void 0), SilhouetteDisplay:\"false\", SilhouetteOccluder:\"false\", VisibleInAtlasOnly:\"false\"})");
 
 		const CParamNode* foundation = tempMan->LoadTemplate(ent2, "foundation|actor|example1");
-		ScriptInterface::ToJSVal(rq, &val, &foundation->GetChild("VisualActor"));
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({Actor:\"example1\", ActorOnly:(void 0), Foundation:(void 0), SilhouetteDisplay:\"false\", SilhouetteOccluder:\"false\", VisibleInAtlasOnly:\"false\"})");
+		Script::ToJSVal(rq, &val, &foundation->GetChild("VisualActor"));
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({Actor:\"example1\", ActorOnly:(void 0), Foundation:(void 0), SilhouetteDisplay:\"false\", SilhouetteOccluder:\"false\", VisibleInAtlasOnly:\"false\"})");
 
 #define GET_FIRST_ELEMENT(n, templateName) \
 		const CParamNode* n = tempMan->LoadTemplate(ent2, templateName); \
@@ -126,19 +128,19 @@ public:
 		{ \
 			if (it->first[0] == '@') \
 				continue; \
-			ScriptInterface::ToJSVal(rq, &val, it->second); \
+			Script::ToJSVal(rq, &val, it->second); \
 			break; \
 		}
 
 		GET_FIRST_ELEMENT(n1, "inherit_a");
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({'@datatype':\"tokens\", _string:\"a b c\"})");
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({'@datatype':\"tokens\", _string:\"a b c\"})");
 		GET_FIRST_ELEMENT(n2, "inherit_b");
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({'@datatype':\"tokens\", _string:\"a b c d\"})");
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({'@datatype':\"tokens\", _string:\"a b c d\"})");
 
 		GET_FIRST_ELEMENT(n3, "inherit_c");
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({'@a':\"b\", _string:\"a b c\"})");
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({'@a':\"b\", _string:\"a b c\"})");
 		GET_FIRST_ELEMENT(n4, "inherit_d");
-		TS_ASSERT_STR_EQUALS(man.GetScriptInterface().ToString(&val), "({'@a':\"b\", '@c':\"d\"})");
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({'@a':\"b\", '@c':\"d\"})");
 
 #undef GET_FIRST_ELEMENT
 	}

@@ -25,7 +25,6 @@
 #include "ps/GameSetup/Config.h"
 #include "ps/Pyrogenesis.h"
 #include "scriptinterface/FunctionWrapper.h"
-#include "scriptinterface/ScriptInterface.h"
 #include "scriptinterface/StructuredClone.h"
 #include "simulation2/components/ICmpAIManager.h"
 #include "simulation2/components/ICmpCommandQueue.h"
@@ -131,7 +130,7 @@ JS::Value GetEdgesOfStaticObstructionsOnScreenNearTo(const ScriptInterface& scri
 
 	ScriptRequest rq(scriptInterface);
 	JS::RootedValue edgeList(rq.cx);
-	ScriptInterface::CreateArray(rq, &edgeList);
+	Script::CreateArray(rq, &edgeList);
 	int edgeListIndex = 0;
 
 	float distanceThreshold = 10.0f;
@@ -176,7 +175,7 @@ JS::Value GetEdgesOfStaticObstructionsOnScreenNearTo(const ScriptInterface& scri
 
 			CFixedVector2D normal = -(nextCorner - corner).Perpendicular();
 			normal.Normalize();
-			ScriptInterface::CreateObject(
+			Script::CreateObject(
 				rq,
 				&edge,
 				"begin", corner,
@@ -185,7 +184,7 @@ JS::Value GetEdgesOfStaticObstructionsOnScreenNearTo(const ScriptInterface& scri
 				"normal", normal,
 				"order", "cw");
 
-			scriptInterface.SetPropertyInt(edgeList, edgeListIndex++, edge);
+			Script::SetPropertyInt(rq, edgeList, edgeListIndex++, edge);
 		}
 	}
 	return edgeList;

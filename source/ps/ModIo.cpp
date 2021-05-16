@@ -1,4 +1,4 @@
-/* Copyright (C) 2020 Wildfire Games.
+/* Copyright (C) 2021 Wildfire Games.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -36,7 +36,9 @@
 #include "ps/ModInstaller.h"
 #include "ps/Util.h"
 #include "scriptinterface/ScriptConversions.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/ScriptContext.h"
+#include "scriptinterface/ScriptRequest.h"
+#include "scriptinterface/JSON.h"
 
 #include <boost/algorithm/string.hpp>
 #include <iomanip>
@@ -589,7 +591,7 @@ bool ModIo::ParseGameIdResponse(const ScriptInterface& scriptInterface, const st
 
 	JS::RootedValue gameResponse(rq.cx);
 
-	if (!scriptInterface.ParseJSON(responseData, &gameResponse))
+	if (!Script::ParseJSON(rq, responseData, &gameResponse))
 		FAIL("Failed to parse response as JSON.");
 
 	if (!gameResponse.isObject())
@@ -632,7 +634,7 @@ bool ModIo::ParseGameIdResponse(const ScriptInterface& scriptInterface, const st
 		FAIL("id property not a number.");
 
 	id = -1;
-	if (!ScriptInterface::FromJSVal(rq, idProperty, id) || id <= 0)
+	if (!Script::FromJSVal(rq, idProperty, id) || id <= 0)
 		FAIL("Invalid id.");
 
 	return true;
@@ -660,7 +662,7 @@ bool ModIo::ParseModsResponse(const ScriptInterface& scriptInterface, const std:
 
 	JS::RootedValue modResponse(rq.cx);
 
-	if (!scriptInterface.ParseJSON(responseData, &modResponse))
+	if (!Script::ParseJSON(rq, responseData, &modResponse))
 		FAIL("Failed to parse response as JSON.");
 
 	if (!modResponse.isObject())
@@ -705,7 +707,7 @@ bool ModIo::ParseModsResponse(const ScriptInterface& scriptInterface, const std:
 	for (const std::string& prop : { __VA_ARGS__ }) \
 	{ \
 		std::string val; \
-		if (!ScriptInterface::FromJSProperty(rq, obj, prop.c_str(), val, true)) \
+		if (!Script::FromJSProperty(rq, obj, prop.c_str(), val, true)) \
 		{ \
 			ok  = false; \
 			copyStringError = "Failed to get " + prop + " from " + #obj + "."; \
@@ -745,21 +747,21 @@ bool ModIo::ParseModsResponse(const ScriptInterface& scriptInterface, const std:
 
 		// Parse metadata_blob (sig+deps)
 		std::string metadata_blob;
-		if (!ScriptInterface::FromJSProperty(rq, modFile, "metadata_blob", metadata_blob, true))
+		if (!Script::FromJSProperty(rq, modFile, "metadata_blob", metadata_blob, true))
 			INVALIDATE_DATA_AND_CONTINUE("Failed to get metadata_blob from modFile.");
 
 		JS::RootedValue metadata(rq.cx);
-		if (!scriptInterface.ParseJSON(metadata_blob, &metadata))
+		if (!Script::ParseJSON(rq, metadata_blob, &metadata))
 			INVALIDATE_DATA_AND_CONTINUE("Failed to parse metadata_blob as JSON.");
 
 		if (!metadata.isObject())
 			INVALIDATE_DATA_AND_CONTINUE("metadata_blob is not decoded as an object.");
 
-		if (!ScriptInterface::FromJSProperty(rq, metadata, "dependencies", data.dependencies, true))
+		if (!Script::FromJSProperty(rq, metadata, "dependencies", data.dependencies, true))
 			INVALIDATE_DATA_AND_CONTINUE("Failed to get dependencies from metadata_blob.");
 
 		std::vector<std::string> minisigs;
-		if (!ScriptInterface::FromJSProperty(rq, metadata, "minisigs", minisigs, true))
+		if (!Script::FromJSProperty(rq, metadata, "minisigs", minisigs, true))
 			INVALIDATE_DATA_AND_CONTINUE("Failed to get minisigs from metadata_blob.");
 
 		// Check we did find a valid matching signature.

@@ -37,6 +37,7 @@
 #include "ps/Profile.h"
 #include "ps/Threading.h"
 #include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "network/StunClient.h"
 
@@ -375,7 +376,7 @@ std::string CNetClient::TestReadGuiMessages()
 		GuiPoll(&msg);
 		if (msg.isUndefined())
 			break;
-		r += GetScriptInterface().ToString(&msg) + "\n";
+		r += Script::ToString(rq, &msg) + "\n";
 	}
 	return r;
 }
@@ -390,20 +391,20 @@ void CNetClient::PostPlayerAssignmentsToScript()
 	ScriptRequest rq(GetScriptInterface());
 
 	JS::RootedValue newAssignments(rq.cx);
-	ScriptInterface::CreateObject(rq, &newAssignments);
+	Script::CreateObject(rq, &newAssignments);
 
 	for (const std::pair<const CStr, PlayerAssignment>& p : m_PlayerAssignments)
 	{
 		JS::RootedValue assignment(rq.cx);
 
-		ScriptInterface::CreateObject(
+		Script::CreateObject(
 			rq,
 			&assignment,
 			"name", p.second.m_Name,
 			"player", p.second.m_PlayerID,
 			"status", p.second.m_Status);
 
-		GetScriptInterface().SetProperty(newAssignments, p.first.c_str(), assignment);
+		Script::SetProperty(rq, newAssignments, p.first.c_str(), assignment);
 	}
 
 	PushGuiMessage(
@@ -771,7 +772,7 @@ bool CNetClient::OnGameStart(void* context, CFsmEvent* event)
 	const ScriptInterface& scriptInterface = client->m_Game->GetSimulation2()->GetScriptInterface();
 	ScriptRequest rq(scriptInterface);
 	JS::RootedValue initAttribs(rq.cx);
-	scriptInterface.ParseJSON(message->m_InitAttributes, &initAttribs);
+	Script::ParseJSON(rq, message->m_InitAttributes, &initAttribs);
 
 	client->m_Game->SetPlayerID(player);
 	client->m_Game->StartGame(&initAttribs, "");
