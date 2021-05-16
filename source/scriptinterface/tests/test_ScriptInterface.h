@@ -18,6 +18,8 @@
 #include "lib/self_test.h"
 
 #include "scriptinterface/FunctionWrapper.h"
+#include "scriptinterface/JSON.h"
+#include "scriptinterface/Object.h"
 #include "scriptinterface/ScriptInterface.h"
 #include "scriptinterface/StructuredClone.h"
 
@@ -122,11 +124,11 @@ public:
 			JS::RootedValue prop_a(rq2.cx);
 			JS::RootedValue prop_b(rq2.cx);
 			JS::RootedValue prop_x1(rq2.cx);
-			TS_ASSERT(script2.GetProperty(obj2, "a", &prop_a));
-			TS_ASSERT(script2.GetProperty(obj2, "b", &prop_b));
+			TS_ASSERT(Script::GetProperty(rq2, obj2, "a", &prop_a));
+			TS_ASSERT(Script::GetProperty(rq2, obj2, "b", &prop_b));
 			TS_ASSERT(prop_a.isObject());
 			TS_ASSERT(prop_b.isObject());
-			TS_ASSERT(script2.GetProperty(prop_a, "0", &prop_x1));
+			TS_ASSERT(Script::GetProperty(rq2, prop_a, "0", &prop_x1));
 			TS_ASSERT(prop_x1.get() == prop_a.get());
 			TS_ASSERT(prop_x1.get() == prop_b.get());
 		}
@@ -160,7 +162,7 @@ public:
 		// Test that a mutable handle value as return value works.
 		ScriptFunction::Call(rq, val, "inc", &out);
 
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(4, nbr);
 
 		ScriptFunction::Call(rq, val, "add", nbr, nbrVal);
@@ -168,14 +170,14 @@ public:
 
 		// GetProperty JS::RootedValue* overload
 		nbr = 0;
-		script.GetProperty(val, "0", &out);
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::GetProperty(rq, val, "0", &out);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(nbr, 7);
 
 		// GetPropertyInt JS::RootedValue* overload
 		nbr = 0;
-		script.GetPropertyInt(val, 0, &out);
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::GetPropertyInt(rq, val, 0, &out);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(nbr, 7);
 
 		handle_templates_test(script, val, &out, nbrVal);
@@ -190,7 +192,7 @@ public:
 		ScriptFunction::CallVoid(rq, val, "setTo", nbrVal);
 		ScriptFunction::Call(rq, val, "inc", out);
 
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(4, nbr);
 
 		ScriptFunction::Call(rq, val, "add", nbr, nbrVal);
@@ -198,14 +200,14 @@ public:
 
 		// GetProperty JS::MutableHandleValue overload
 		nbr = 0;
-		script.GetProperty(val, "0", out);
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::GetProperty(rq, val, "0", out);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(nbr, 7);
 
 		// GetPropertyInt JS::MutableHandleValue overload
 		nbr = 0;
-		script.GetPropertyInt(val, 0, out);
-		ScriptInterface::FromJSVal(rq, out, nbr);
+		Script::GetPropertyInt(rq, val, 0, out);
+		Script::FromJSVal(rq, out, nbr);
 		TS_ASSERT_EQUALS(nbr, 7);
 	}
 
@@ -238,11 +240,11 @@ public:
 		JS::RootedValue val(rq.cx);
 		TS_ASSERT(script.Eval(input.c_str(), &val));
 
-		std::string stringified = script.StringifyJSON(&val);
+		std::string stringified = Script::StringifyJSON(rq, &val);
 		TS_ASSERT_STR_EQUALS(stringified, "{\n  \"x\": 1,\n  \"z\": [\n    2,\n    \"3\u263A\\ud800\"\n  ],\n  \"y\": true\n}");
 
-		TS_ASSERT(script.ParseJSON(stringified, &val));
-		TS_ASSERT_STR_EQUALS(script.ToString(&val), "({x:1, z:[2, \"3\\u263A\\uD800\"], y:true})");
+		TS_ASSERT(Script::ParseJSON(rq, stringified, &val));
+		TS_ASSERT_STR_EQUALS(Script::ToString(rq, &val), "({x:1, z:[2, \"3\\u263A\\uD800\"], y:true})");
 	}
 
 	// This function tests a common way to mod functions, by creating a wrapper that
@@ -263,7 +265,7 @@ public:
 		TS_ASSERT(script.Eval("f()", &out));
 
 		int outNbr = 0;
-		ScriptInterface::FromJSVal(rq, out, outNbr);
+		Script::FromJSVal(rq, out, outNbr);
 		TS_ASSERT_EQUALS(2, outNbr);
 	}
 };

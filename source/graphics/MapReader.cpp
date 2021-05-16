@@ -39,8 +39,10 @@
 #include "renderer/PostprocManager.h"
 #include "renderer/SkyManager.h"
 #include "renderer/WaterManager.h"
+#include "scriptinterface/Object.h"
 #include "scriptinterface/ScriptContext.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/ScriptRequest.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "simulation2/components/ICmpCinemaManager.h"
 #include "simulation2/components/ICmpGarrisonHolder.h"
@@ -379,14 +381,14 @@ void CMapSummaryReader::GetMapSettings(const ScriptInterface& scriptInterface, J
 {
 	ScriptRequest rq(scriptInterface);
 
-	ScriptInterface::CreateObject(rq, ret);
+	Script::CreateObject(rq, ret);
 
 	if (m_ScriptSettings.empty())
 		return;
 
 	JS::RootedValue scriptSettingsVal(rq.cx);
-	scriptInterface.ParseJSON(m_ScriptSettings, &scriptSettingsVal);
-	scriptInterface.SetProperty(ret, "settings", scriptSettingsVal, false);
+	Script::ParseJSON(rq, m_ScriptSettings, &scriptSettingsVal);
+	Script::SetProperty(rq, ret, "settings", scriptSettingsVal, false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1279,7 +1281,7 @@ int CMapReader::GenerateMap()
 			scriptPath = L"maps/random/"+m_ScriptFile;
 
 		// Stringify settings to pass across threads
-		std::string scriptSettings = pSimulation2->GetScriptInterface().StringifyJSON(&m_ScriptSettings);
+		std::string scriptSettings = Script::StringifyJSON(rq, &m_ScriptSettings);
 
 		// Try to generate map
 		m_MapGen->GenerateMap(scriptPath, scriptSettings);
@@ -1333,7 +1335,7 @@ int CMapReader::ParseTerrain()
 	// parse terrain from map data
 	//	an error here should stop the loading process
 #define GET_TERRAIN_PROPERTY(val, prop, out)\
-	if (!pSimulation2->GetScriptInterface().GetProperty(val, #prop, out))\
+if (!Script::GetProperty(rq, val, #prop, out))\
 		{	LOGERROR("CMapReader::ParseTerrain() failed to get '%s' property", #prop);\
 			throw PSERROR_Game_World_MapLoadFailed("Error parsing terrain data.\nCheck application log for details"); }
 
@@ -1408,7 +1410,7 @@ int CMapReader::ParseEntities()
 	// parse entities from map data
 	std::vector<Entity> entities;
 
-	if (!pSimulation2->GetScriptInterface().GetProperty(m_MapData, "entities", entities))
+	if (!Script::GetProperty(rq, m_MapData, "entities", entities))
 		LOGWARNING("CMapReader::ParseEntities() failed to get 'entities' property");
 
 	CSimulation2& sim = *pSimulation2;
@@ -1470,7 +1472,7 @@ int CMapReader::ParseEnvironment()
 	ScriptRequest rq(pSimulation2->GetScriptInterface());
 
 #define GET_ENVIRONMENT_PROPERTY(val, prop, out)\
-	if (!pSimulation2->GetScriptInterface().GetProperty(val, #prop, out))\
+	if (!Script::GetProperty(rq, val, #prop, out))\
 		LOGWARNING("CMapReader::ParseEnvironment() failed to get '%s' property", #prop);
 
 	JS::RootedValue envObj(rq.cx);
@@ -1570,7 +1572,7 @@ int CMapReader::ParseCamera()
 	CVector3D translation = CVector3D(100, 150, -100);
 
 #define GET_CAMERA_PROPERTY(val, prop, out)\
-	if (!pSimulation2->GetScriptInterface().GetProperty(val, #prop, out))\
+	if (!Script::GetProperty(rq, val, #prop, out))\
 		LOGWARNING("CMapReader::ParseCamera() failed to get '%s' property", #prop);
 
 	JS::RootedValue cameraObj(rq.cx);

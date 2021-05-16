@@ -76,7 +76,9 @@ that of Atlas depending on commandline parameters.
 #include "gui/GUIManager.h"
 #include "renderer/Renderer.h"
 #include "rlinterface/RLInterface.h"
+#include "scriptinterface/ScriptContext.h"
 #include "scriptinterface/ScriptEngine.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "simulation2/system/TurnManager.h"
 #include "soundmanager/ISoundManager.h"
@@ -250,8 +252,8 @@ static void PumpEvents()
 		if (g_GUI)
 		{
 			JS::RootedValue tmpVal(rq.cx);
-			ScriptInterface::ToJSVal(rq, &tmpVal, ev);
-			std::string data = g_GUI->GetScriptInterface()->StringifyJSON(&tmpVal);
+			Script::ToJSVal(rq, &tmpVal, ev);
+			std::string data = Script::StringifyJSON(rq, &tmpVal);
 			PROFILE2_ATTR("%s", data.c_str());
 		}
 		in_dispatch_event(&ev);

@@ -35,7 +35,7 @@
 #include "ps/Profile.h"
 #include "ps/Pyrogenesis.h"
 #include "renderer/Renderer.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/Object.h"
 
 #include <algorithm>
 #include <fstream>
@@ -491,16 +491,19 @@ namespace
 		const ScriptInterface& m_ScriptInterface;
 		JS::PersistentRooted<JS::Value> m_Root;
 		DumpTable(const ScriptInterface& scriptInterface, JS::HandleValue root) :
-			m_ScriptInterface(scriptInterface), m_Root(scriptInterface.GetGeneralJSContext(), root)
+			m_ScriptInterface(scriptInterface)
 		{
+			ScriptRequest rq(scriptInterface);
+			m_Root.init(rq.cx, root);
 		}
 
 		// std::for_each requires a move constructor and the use of JS::PersistentRooted<T> apparently breaks a requirement for an
 		// automatic move constructor
 		DumpTable(DumpTable && original) :
-			m_ScriptInterface(original.m_ScriptInterface),
-			m_Root(original.m_ScriptInterface.GetGeneralJSContext(), original.m_Root.get())
+			m_ScriptInterface(original.m_ScriptInterface)
 		{
+			ScriptRequest rq(m_ScriptInterface);
+			m_Root.init(rq.cx, original.m_Root.get());
 		}
 
 		void operator() (AbstractProfileTable* table)
@@ -508,13 +511,13 @@ namespace
 			ScriptRequest rq(m_ScriptInterface);
 
 			JS::RootedValue t(rq.cx);
-			ScriptInterface::CreateObject(
+			Script::CreateObject(
 				rq,
 				&t,
 				"cols", DumpCols(table),
 				"data", DumpRows(table));
 
-			m_ScriptInterface.SetProperty(m_Root, table->GetTitle().c_str(), t);
+			Script::SetProperty(rq, m_Root, table->GetTitle().c_str(), t);
 		}
 
 		std::vector<std::string> DumpCols(AbstractProfileTable* table)
@@ -534,25 +537,25 @@ namespace
 			ScriptRequest rq(m_ScriptInterface);
 
 			JS::RootedValue data(rq.cx);
-			ScriptInterface::CreateObject(rq, &data);
+			Script::CreateObject(rq, &data);
 
 			const std::vector<ProfileColumn>& columns = table->GetColumns();
 
 			for (size_t r = 0; r < table->GetNumberRows(); ++r)
 			{
 				JS::RootedValue row(rq.cx);
-				ScriptInterface::CreateArray(rq, &row);
+				Script::CreateArray(rq, &row);
 
-				m_ScriptInterface.SetProperty(data, table->GetCellText(r, 0).c_str(), row);
+				Script::SetProperty(rq, data, table->GetCellText(r, 0).c_str(), row);
 
 				if (table->GetChild(r))
 				{
 					JS::RootedValue childRows(rq.cx, DumpRows(table->GetChild(r)));
-					m_ScriptInterface.SetPropertyInt(row, 0, childRows);
+					Script::SetPropertyInt(rq, row, 0, childRows);
 				}
 
 				for (size_t c = 1; c < columns.size(); ++c)
-					m_ScriptInterface.SetPropertyInt(row, c, table->GetCellText(r, c));
+					Script::SetPropertyInt(rq, row, c, table->GetCellText(r, c));
 			}
 
 			return data;

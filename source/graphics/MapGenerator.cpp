@@ -36,6 +36,7 @@
 #include "scriptinterface/ScriptContext.h"
 #include "scriptinterface/ScriptConversions.h"
 #include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/helpers/MapEdgeTiles.h"
 
 #include <string>
@@ -119,14 +120,14 @@ bool CMapGeneratorWorker::Run()
 
 	// Parse settings
 	JS::RootedValue settingsVal(rq.cx);
-	if (!m_ScriptInterface->ParseJSON(m_Settings, &settingsVal) && settingsVal.isUndefined())
+	if (!Script::ParseJSON(rq, m_Settings, &settingsVal) && settingsVal.isUndefined())
 	{
 		LOGERROR("CMapGeneratorWorker::Run: Failed to parse settings");
 		return false;
 	}
 
 	// Prevent unintentional modifications to the settings object by random map scripts
-	if (!m_ScriptInterface->FreezeObject(settingsVal, true))
+	if (!Script::FreezeObject(rq, settingsVal, true))
 	{
 		LOGERROR("CMapGeneratorWorker::Run: Failed to deepfreeze settings");
 		return false;
@@ -134,8 +135,8 @@ bool CMapGeneratorWorker::Run()
 
 	// Init RNG seed
 	u32 seed = 0;
-	if (!m_ScriptInterface->HasProperty(settingsVal, "Seed") ||
-	    !m_ScriptInterface->GetProperty(settingsVal, "Seed", seed))
+	if (!Script::HasProperty(rq, settingsVal, "Seed") ||
+		!Script::GetProperty(rq, settingsVal, "Seed", seed))
 		LOGWARNING("CMapGeneratorWorker::Run: No seed value specified - using 0");
 
 	InitScriptInterface(seed);
@@ -144,7 +145,7 @@ bool CMapGeneratorWorker::Run()
 
 	// Copy settings to global variable
 	JS::RootedValue global(rq.cx, rq.globalValue());
-	if (!m_ScriptInterface->SetProperty(global, "g_MapSettings", settingsVal, true, true))
+	if (!Script::SetProperty(rq, global, "g_MapSettings", settingsVal, true, true))
 	{
 		LOGERROR("CMapGeneratorWorker::Run: Failed to define g_MapSettings");
 		return false;
@@ -162,9 +163,9 @@ bool CMapGeneratorWorker::Run()
 }
 
 #define REGISTER_MAPGEN_FUNC(func) \
-	ScriptFunction::Register<&CMapGeneratorWorker::func, ScriptFunction::ObjectFromCBData<CMapGeneratorWorker>>(rq, #func);
+	ScriptFunction::Register<&CMapGeneratorWorker::func, ScriptInterface::ObjectFromCBData<CMapGeneratorWorker>>(rq, #func);
 #define REGISTER_MAPGEN_FUNC_NAME(func, name) \
-	ScriptFunction::Register<&CMapGeneratorWorker::func, ScriptFunction::ObjectFromCBData<CMapGeneratorWorker>>(rq, name);
+	ScriptFunction::Register<&CMapGeneratorWorker::func, ScriptInterface::ObjectFromCBData<CMapGeneratorWorker>>(rq, name);
 
 void CMapGeneratorWorker::InitScriptInterface(const u32 seed)
 {
@@ -323,7 +324,7 @@ JS::Value CMapGeneratorWorker::LoadHeightmap(const VfsPath& filename)
 
 	ScriptRequest rq(m_ScriptInterface);
 	JS::RootedValue returnValue(rq.cx);
-	ToJSVal_vector(rq, &returnValue, heightmap);
+	Script::ToJSVal(rq, &returnValue, heightmap);
 	return returnValue;
 }
 
@@ -390,7 +391,7 @@ JS::Value CMapGeneratorWorker::LoadMapTerrain(const VfsPath& filename)
 
 	JS::RootedValue returnValue(rq.cx);
 
-	ScriptInterface::CreateObject(
+	Script::CreateObject(
 		rq,
 		&returnValue,
 		"height", heightmap,

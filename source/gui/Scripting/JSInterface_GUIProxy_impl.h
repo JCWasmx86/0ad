@@ -25,7 +25,7 @@
 #include "ps/CLogger.h"
 #include "scriptinterface/FunctionWrapper.h"
 #include "scriptinterface/ScriptExtraHeaders.h"
-#include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/ScriptRequest.h"
 
 #include <string>
 
@@ -164,8 +164,7 @@ std::unique_ptr<IGUIProxyObject> JSI_GUIProxy<T>::CreateJSObject(const ScriptReq
 template <typename T>
 bool JSI_GUIProxy<T>::get(JSContext* cx, JS::HandleObject proxy, JS::HandleValue UNUSED(receiver), JS::HandleId id, JS::MutableHandleValue vp) const
 {
-	ScriptInterface* pScriptInterface = ScriptInterface::GetScriptInterfaceAndCBData(cx)->pScriptInterface;
-	ScriptRequest rq(*pScriptInterface);
+	ScriptRequest rq(cx);
 
 	T* e = IGUIProxyObject::FromPrivateSlot<T>(proxy.get());
 	if (!e)
@@ -176,7 +175,7 @@ bool JSI_GUIProxy<T>::get(JSContext* cx, JS::HandleObject proxy, JS::HandleValue
 		return false;
 
 	std::string propName;
-	if (!ScriptInterface::FromJSVal(rq, idval, propName))
+	if (!Script::FromJSVal(rq, idval, propName))
 		return false;
 
 	// Return function properties. Specializable.
@@ -208,16 +207,16 @@ bool JSI_GUIProxy<T>::get(JSContext* cx, JS::HandleObject proxy, JS::HandleValue
 	}
 	else if (propName == "children")
 	{
-		ScriptInterface::CreateArray(rq, vp);
+		Script::CreateArray(rq, vp);
 
 		for (size_t i = 0; i < e->m_Children.size(); ++i)
-			pScriptInterface->SetPropertyInt(vp, i, e->m_Children[i]);
+			Script::SetPropertyInt(rq, vp, i, e->m_Children[i]);
 
 		return true;
 	}
 	else if (propName == "name")
 	{
-		ScriptInterface::ToJSVal(rq, vp, e->GetName());
+		Script::ToJSVal(rq, vp, e->GetName());
 		return true;
 	}
 	else if (e->SettingExists(propName))
@@ -242,20 +241,20 @@ bool JSI_GUIProxy<T>::set(JSContext* cx, JS::HandleObject proxy, JS::HandleId id
 		return result.fail(JSMSG_OBJECT_REQUIRED);
 	}
 
-	ScriptRequest rq(*ScriptInterface::GetScriptInterfaceAndCBData(cx)->pScriptInterface);
+	ScriptRequest rq(cx);
 
 	JS::RootedValue idval(rq.cx);
 	if (!JS_IdToValue(rq.cx, id, &idval))
 		return result.fail(JSMSG_BAD_PROP_ID);
 
 	std::string propName;
-	if (!ScriptInterface::FromJSVal(rq, idval, propName))
+	if (!Script::FromJSVal(rq, idval, propName))
 		return result.fail(JSMSG_BAD_PROP_ID);
 
 	if (propName == "name")
 	{
 		std::string value;
-		if (!ScriptInterface::FromJSVal(rq, vp, value))
+		if (!Script::FromJSVal(rq, vp, value))
 			return result.fail(JSMSG_BAD_PROP_ID);
 		e->SetName(value);
 		return result.succeed();
@@ -297,14 +296,14 @@ bool JSI_GUIProxy<T>::delete_(JSContext* cx, JS::HandleObject proxy, JS::HandleI
 		return result.fail(JSMSG_OBJECT_REQUIRED);
 	}
 
-	ScriptRequest rq(*ScriptInterface::GetScriptInterfaceAndCBData(cx)->pScriptInterface);
+	ScriptRequest rq(cx);
 
 	JS::RootedValue idval(rq.cx);
 	if (!JS_IdToValue(rq.cx, id, &idval))
 		return result.fail(JSMSG_BAD_PROP_ID);
 
 	std::string propName;
-	if (!ScriptInterface::FromJSVal(rq, idval, propName))
+	if (!Script::FromJSVal(rq, idval, propName))
 		return result.fail(JSMSG_BAD_PROP_ID);
 
 	// event handlers

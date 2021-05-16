@@ -20,9 +20,7 @@
 
 #include "ps/CStr.h"
 #include "ps/GameSetup/CmdLineArgs.h"
-#include "scriptinterface/ScriptInterface.h"
-
-class ScriptContext;
+#include "scriptinterface/ScriptForward.h"
 
 extern std::vector<CStr> g_modsLoaded;
 extern CmdLineArgs g_args;

@@ -43,6 +43,7 @@
 #include "renderer/WaterManager.h"
 #include "scriptinterface/FunctionWrapper.h"
 #include "scriptinterface/ScriptInterface.h"
+#include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "simulation2/components/ICmpPlayer.h"
 #include "simulation2/components/ICmpPlayerManager.h"
@@ -196,7 +197,7 @@ bool CGame::StartVisualReplay(const OsPath& replayPath)
 	ScriptRequest rq(scriptInterface);
 
 	JS::RootedValue attribs(rq.cx);
-	scriptInterface.ParseJSON(line, &attribs);
+	Script::ParseJSON(rq, line, &attribs);
 	StartGame(&attribs, "");
 
 	return true;
@@ -218,12 +219,12 @@ void CGame::RegisterInit(const JS::HandleValue attribs, const std::string& saved
 	m_Simulation2->SetInitAttributes(attribs);
 
 	std::string mapType;
-	scriptInterface.GetProperty(attribs, "mapType", mapType);
+	Script::GetProperty(rq, attribs, "mapType", mapType);
 
 	float speed;
-	if (scriptInterface.HasProperty(attribs, "gameSpeed"))
+	if (Script::HasProperty(rq, attribs, "gameSpeed"))
 	{
-		if (scriptInterface.GetProperty(attribs, "gameSpeed", speed))
+		if (Script::GetProperty(rq, attribs, "gameSpeed", speed))
 			SetSimRate(speed);
 		else
 			LOGERROR("GameSpeed could not be parsed.");
@@ -247,8 +248,8 @@ void CGame::RegisterInit(const JS::HandleValue attribs, const std::string& saved
 		std::wstring scriptFile;
 		JS::RootedValue settings(rq.cx);
 
-		scriptInterface.GetProperty(attribs, "script", scriptFile);
-		scriptInterface.GetProperty(attribs, "settings", &settings);
+		Script::GetProperty(rq, attribs, "script", scriptFile);
+		Script::GetProperty(rq, attribs, "settings", &settings);
 
 		m_World->RegisterInitRMS(scriptFile, *scriptInterface.GetContext(), settings, m_PlayerID);
 	}
@@ -256,8 +257,8 @@ void CGame::RegisterInit(const JS::HandleValue attribs, const std::string& saved
 	{
 		std::wstring mapFile;
 		JS::RootedValue settings(rq.cx);
-		scriptInterface.GetProperty(attribs, "map", mapFile);
-		scriptInterface.GetProperty(attribs, "settings", &settings);
+		Script::GetProperty(rq, attribs, "map", mapFile);
+		Script::GetProperty(rq, attribs, "settings", &settings);
 
 		m_World->RegisterInit(mapFile, *scriptInterface.GetContext(), settings, m_PlayerID);
 	}
@@ -333,7 +334,7 @@ PSRETURN CGame::ReallyStartGame()
 		ScriptRequest rq(scriptInterface);
 
 		JS::RootedValue global(rq.cx, rq.globalValue());
-		if (scriptInterface->HasProperty(global, "reallyStartGame"))
+		if (Script::HasProperty(rq, global, "reallyStartGame"))
 			ScriptFunction::CallVoid(rq, global, "reallyStartGame");
 	}
 

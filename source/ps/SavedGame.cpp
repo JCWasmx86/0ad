@@ -31,6 +31,8 @@
 #include "ps/Game.h"
 #include "ps/Mod.h"
 #include "ps/Pyrogenesis.h"
+#include "scriptinterface/Object.h"
+#include "scriptinterface/JSON.h"
 #include "scriptinterface/StructuredClone.h"
 #include "simulation2/Simulation2.h"
 
@@ -83,7 +85,7 @@ Status SavedGames::Save(const CStrW& name, const CStrW& description, CSimulation
 
 	JS::RootedValue metadata(rq.cx);
 
-	ScriptInterface::CreateObject(
+	Script::CreateObject(
 		rq,
 		&metadata,
 		"engine_version", engine_version,
@@ -101,7 +103,7 @@ Status SavedGames::Save(const CStrW& name, const CStrW& description, CSimulation
 
 	JS::RootedValue cameraMetadata(rq.cx);
 
-	ScriptInterface::CreateObject(
+	Script::CreateObject(
 		rq,
 		&cameraMetadata,
 		"PosX", cameraPosition.X,
@@ -111,12 +113,12 @@ Status SavedGames::Save(const CStrW& name, const CStrW& description, CSimulation
 		"RotY", cameraRotation.Y,
 		"Zoom", g_Game->GetView()->GetCameraZoom());
 
-	simulation.GetScriptInterface().SetProperty(guiMetadata, "camera", cameraMetadata);
+	Script::SetProperty(rq, guiMetadata, "camera", cameraMetadata);
 
-	simulation.GetScriptInterface().SetProperty(metadata, "gui", guiMetadata);
-	simulation.GetScriptInterface().SetProperty(metadata, "description", description);
+	Script::SetProperty(rq, metadata, "gui", guiMetadata);
+	Script::SetProperty(rq, metadata, "description", description);
 
-	std::string metadataString = simulation.GetScriptInterface().StringifyJSON(&metadata, true);
+	std::string metadataString = Script::StringifyJSON(rq, &metadata, true);
 
 	// Write the saved game as zip file containing the various components
 	PIArchiveWriter archiveWriter = CreateArchiveWriter_Zip(tempSaveFileRealPath, false);
@@ -162,9 +164,10 @@ public:
 	 */
 	CGameLoader(const ScriptInterface& scriptInterface, std::string* savedState) :
 		m_ScriptInterface(scriptInterface),
-		m_Metadata(scriptInterface.GetGeneralJSContext()),
 		m_SavedState(savedState)
 	{
+		ScriptRequest rq(scriptInterface);
+		m_Metadata.init(rq.cx);
 	}
 
 	static void ReadEntryCallback(const VfsPath& pathname, const CFileInfo& fileInfo, PIArchiveFile archiveFile, uintptr_t cbData)
@@ -179,7 +182,7 @@ public:
 			std::string buffer;
 			buffer.resize(fileInfo.Size());
 			WARN_IF_ERR(archiveFile->Load("", DummySharedPtr((u8*)buffer.data()), buffer.size()));
-			m_ScriptInterface.ParseJSON(buffer, &m_Metadata);
+			Script::ParseJSON(ScriptRequest(m_ScriptInterface), buffer, &m_Metadata);
 		}
 		else if (pathname == L"simulation.dat" && m_SavedState)
 		{
@@ -230,7 +233,7 @@ JS::Value SavedGames::GetSavedGames(const ScriptInterface& scriptInterface)
 	ScriptRequest rq(scriptInterface);
 
 	JS::RootedValue games(rq.cx);
-	ScriptInterface::CreateArray(rq, &games);
+	Script::CreateArray(rq, &games);
 
 	Status err;
 
@@ -266,13 +269,13 @@ JS::Value SavedGames::GetSavedGames(const ScriptInterface& scriptInterface)
 		JS::RootedValue metadata(rq.cx, loader.GetMetadata());
 
 		JS::RootedValue game(rq.cx);
-		ScriptInterface::CreateObject(
+		Script::CreateObject(
 			rq,
 			&game,
 			"id", pathnames[i].Basename(),
 			"metadata", metadata);
 
-		scriptInterface.SetPropertyInt(games, i, game);
+		Script::SetPropertyInt(rq, games, i, game);
 	}
 
 	return games;

@@ -85,7 +85,7 @@ size_t CGUIManager::GetPageCount() const
 	return m_PageStack.size();
 }
 
-void CGUIManager::SwitchPage(const CStrW& pageName, ScriptInterface* srcScriptInterface, JS::HandleValue initData)
+void CGUIManager::SwitchPage(const CStrW& pageName, const ScriptInterface* srcScriptInterface, JS::HandleValue initData)
 {
 	// The page stack is cleared (including the script context where initData came from),
 	// therefore we have to clone initData.
@@ -216,7 +216,7 @@ void CGUIManager::SGUIPage::LoadPage(shared_ptr<ScriptContext> scriptContext)
 	if (hotloadData)
 		Script::ReadStructuredClone(rq, hotloadData, &hotloadDataVal);
 
-	if (scriptInterface->HasProperty(global, "init") &&
+	if (Script::HasProperty(rq, global, "init") &&
 	    !ScriptFunction::CallVoid(rq, global, "init", initDataVal, hotloadDataVal))
 		LOGERROR("GUI page '%s': Failed to call init() function", utf8_from_wstring(m_Name));
 }

@@ -1,4 +1,4 @@
-/* Copyright (C) 2020 Wildfire Games.
+/* Copyright (C) 2021 Wildfire Games.
  * This file is part of 0 A.D.
  *
  * 0 A.D. is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 #include "gui/Scripting/JSInterface_GUISize.h"
 #include "ps/CLogger.h"
+#include "ps/CStr.h"
+#include "scriptinterface/Object.h"
+#include "scriptinterface/ScriptInterface.h"
 
 CGUISize::CGUISize()
 	: pixel(), percent()
@@ -70,7 +73,7 @@ bool CGUISize::FromString(const CStr& Value)
 
 	// Check the input is only numeric
 	const char* input = Value.c_str();
-	CStr buffer = "";
+	CStr buffer;
 	unsigned int coord = 0;
 	float pixels[4] = {0, 0, 0, 0};
 	float percents[4] = {0, 0, 0, 0};
@@ -142,8 +145,8 @@ bool CGUISize::FromString(const CStr& Value)
 
 void CGUISize::ToJSVal(const ScriptRequest& rq, JS::MutableHandleValue ret) const
 {
-	ScriptInterface* pScriptInterface = ScriptInterface::GetScriptInterfaceAndCBData(rq.cx)->pScriptInterface;
-	ret.setObjectOrNull(pScriptInterface->CreateCustomObject("GUISize"));
+	const ScriptInterface& scriptInterface = rq.GetScriptInterface();
+	ret.setObjectOrNull(scriptInterface.CreateCustomObject("GUISize"));
 
 	if (!ret.isObject())
 	{
@@ -159,7 +162,7 @@ void CGUISize::ToJSVal(const ScriptRequest& rq, JS::MutableHandleValue ret) cons
 	}
 
 #define P(x, y, z)\
-	if (!pScriptInterface->SetProperty(ret, #z, x.y)) \
+	if (!Script::SetProperty(rq, ret, #z, x.y)) \
 	{ \
 		ScriptException::Raise(rq, "Could not SetProperty '%s'", #z); \
 		return; \
@@ -177,12 +180,10 @@ void CGUISize::ToJSVal(const ScriptRequest& rq, JS::MutableHandleValue ret) cons
 
 bool CGUISize::FromJSVal(const ScriptRequest& rq, JS::HandleValue v)
 {
-	ScriptInterface* pScriptInterface = ScriptInterface::GetScriptInterfaceAndCBData(rq.cx)->pScriptInterface;
-
 	if (v.isString())
 	{
 		CStrW str;
-		if (!ScriptInterface::FromJSVal(rq, v, str))
+		if (!Script::FromJSVal(rq, v, str))
 		{
 			LOGERROR("CGUISize could not read JS string");
 			return false;
@@ -210,7 +211,7 @@ bool CGUISize::FromJSVal(const ScriptRequest& rq, JS::HandleValue v)
 	}
 
 #define P(x, y, z) \
-	if (!pScriptInterface->GetProperty(v, #z, x.y))\
+	if (!Script::GetProperty(rq, v, #z, x.y))\
 	{\
 		LOGERROR("CGUISize could not get object property '%s'", #z);\
 		return false;\
