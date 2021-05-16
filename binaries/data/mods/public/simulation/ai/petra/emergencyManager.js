@@ -29,7 +29,8 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 		// TODO: Actions depending on aggressive, cooperative, defensive
 		// If aggressive: DEATH!!!, one final battle
 		// If cooperative + defensive: Send resources to every? enemy to make peace
-		// If defensive: Make last battle.
+		// If defensive: Make last battle or flee to the next ally?
+		// Maybe say something like: Hold the line! (Motivational speech)
 	}
 };
 
