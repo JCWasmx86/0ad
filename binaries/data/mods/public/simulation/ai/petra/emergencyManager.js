@@ -1,3 +1,4 @@
+// TODO: (De)Serialization
 PETRA.EmergencyManager = function(config)
 {
 	this.Config = config;
@@ -7,6 +8,8 @@ PETRA.EmergencyManager = function(config)
 	this.numberOfStructures = 0;
 	this.passed100Pop = false;
 	this.peakCivicCentreCount = 0;
+	this.finishedMarching = false;
+	this.collectPosition = [];
 };
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
@@ -21,17 +24,76 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 	// losses.
 	if (this.troopsMarching(gameState))
 	{
+		API3.warn("FOO")
 		for (let ent of gameState.getOwnEntities().toEntityArray())
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
 	}
 	else
 	{
 		// TODO: Actions depending on aggressive, cooperative, defensive
-		// If aggressive: DEATH!!!, one final battle
+		// If aggressive: One final battle
 		// If cooperative + defensive: Send resources to every? enemy to make peace
 		// If defensive: Make last battle or flee to the next ally?
 		// Maybe say something like: Hold the line! (Motivational speech)
+		this.executeActions(gameState);
 	}
+};
+PETRA.EmergencyManager.prototype.executeActions = function(gameState)
+{
+	let personality = this.Config.personality;
+	API3.warn(JSON.stringify(personality));
+	if (personality.aggressive < personality.defensive)
+	{
+		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState))
+		{
+			let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+			let enemies = gameState.getEnemies();
+			let numEnemies = gameState.getNumPlayerEnemies();
+			for (let enemy of enemies)
+			{
+				if(gameState.ai.HQ.attackManager.defeated[i])
+				{
+					continue;
+				}
+				let tribute = {};
+				for (let resource of Resources.GetTributableCodes())
+				{
+					let tributableResourceCount = availableResources[resource] - 50;
+					tribute[resource] = tributableResourceCount / numEnemies;
+					numEnemies--;
+				}
+				Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": tribute });
+				let neutralityRequest = new Map();
+				neutralityRequest.set(enemy, {
+					"requestType": "neutral",
+					"timeSent": gameState.ai.elapsedTime
+				});
+				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": requestType });
+				PETRA.chatNewRequestDiplomacy(gameState, enemy, requestType, "sendRequest");
+			}
+		}
+		else
+		{
+			
+		}
+	}
+	else
+	{
+
+	}
+};
+
+PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState)
+{
+	let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	for (let resource of Resources.GetTributableCodes())
+	{
+		if (availableResources[resource] < 50)
+		{
+			return false;
+		}
+	}
+	return true;
 };
 
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
@@ -40,7 +102,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 		return false;
 	for (let ent of gameState.getOwnEntities().toEntityArray())
 	{
-		if(API3.VectorDistance(ent.position(), this.collectPosition) > 20)
+		if (ent && ent.position()&& ent.walkSpeed() > 0 /*???*/ && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 		{
 			return true;
 		}
