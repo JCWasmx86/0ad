@@ -9,7 +9,8 @@ PETRA.EmergencyManager = function(config)
 	this.passed100Pop = false;
 	this.peakCivicCentreCount = 0;
 	this.finishedMarching = false;
-	this.collectPosition = [];
+	this.collectPosition = [-1, -1];
+	this.sentTributes = false;
 	this.nextBattlePoint = [-1,-1];
 };
 
@@ -38,12 +39,14 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 		this.executeActions(gameState);
 	}
 };
+
 PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 {
 	let personality = this.Config.personality;
+	API3.warn(JSON.stringify(personality));
 	if (personality.aggressive < personality.defensive)
 	{
-		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState))
+		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			let enemies = gameState.getEnemies();
@@ -74,15 +77,23 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": neutralityRequest });
 				PETRA.chatNewRequestDiplomacy(gameState, enemy, neutralityRequest, "sendRequest");
 			}
+			this.sentTributes = true;
 		}
 		else
 		{
-			// TODO: Patrol around building
+			// TODO: Patrol around building; Repair it? Recruit new soldiers?
+			let ownEntities = gameState.getOwnEntities().toEntityArray();
+			for (let ent of ownEntities)
+			{
+				if (!ent.get("Attack"))
+					continue;
+				if (API3.VectorDistance(ent.position() , this.collectPosition) > 75)
+					ent.move(this.collectPosition[0], this.collectPosition[1]);
+			}
 		}
 	}
 	else
 	{
-		API3.warn(JSON.stringify(this.nextBattlePoint));
 		if (this.nextBattlePoint[0] == -1)
 		{
 			this.selectBattlePoint(gameState);
@@ -97,6 +108,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 			this.selectBattlePoint(gameState);
 			this.moveToBattlePoint(gameState);
 		}
+		// Else wait until we or the enemy are dead.
 	}
 };
 
@@ -108,7 +120,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 		if(enemy && enemy.position() && enemy.owner() != 0)
 		{
 			let distance = API3.VectorDistance(enemy.position(), averagePosition);
-			if (distance < 250)
+			if (distance < 125)
 			{
 				return false;
 			}
