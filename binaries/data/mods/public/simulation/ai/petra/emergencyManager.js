@@ -14,7 +14,7 @@ PETRA.EmergencyManager = function(config)
 	this.nextBattlePoint = [-1,-1];
 };
 
-PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
+PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 {
 	if (!this.collectedTroops)
 	{
@@ -36,11 +36,11 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 		// If cooperative + defensive: Send resources to every? enemy to make peace
 		// If defensive: Make last battle or flee to the next ally?
 		// Maybe say something like: Hold the line! (Motivational speech)
-		this.executeActions(gameState);
+		this.executeActions(gameState, events);
 	}
 };
 
-PETRA.EmergencyManager.prototype.executeActions = function(gameState)
+PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	let personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
