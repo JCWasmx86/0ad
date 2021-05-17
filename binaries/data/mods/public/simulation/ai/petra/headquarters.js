@@ -2677,7 +2677,7 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 	{
 		API3.warn("//EMERGENCY//CALLS FOR AID!");
 		gameState.emergencyState = true;
-		this.emergencyManager.handleEmergency(gameState);
+		this.emergencyManager.handleEmergency(gameState, events);
 		Engine.ProfileStop();
 		return;
 	}
