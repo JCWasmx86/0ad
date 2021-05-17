@@ -43,7 +43,6 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 {
 	let personality = this.Config.personality;
-	API3.warn(JSON.stringify(personality));
 	if (personality.aggressive < personality.defensive)
 	{
 		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
@@ -61,13 +60,15 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 				for (let resource of Resources.GetTributableCodes())
 				{
 					let tributableResourceCount = availableResources[resource] - 50;
-					if(tributableResourceCount < 0)
+					if(tributableResourceCount <= 0)
 					{
+						tribute[resource] = 0;
 						continue;
 					}
 					tribute[resource] = tributableResourceCount / numEnemies;
-					numEnemies--;
 				}
+				numEnemies--;
+				API3.warn(JSON.stringify(tribute));
 				Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": tribute });
 				let neutralityRequest = new Map();
 				neutralityRequest.set(enemy, {
@@ -75,7 +76,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 					"timeSent": gameState.ai.elapsedTime
 				});
 				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": neutralityRequest });
-				PETRA.chatNewRequestDiplomacy(gameState, enemy, neutralityRequest, "sendRequest");
+				PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
 			}
 			this.sentTributes = true;
 		}
