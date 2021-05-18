@@ -252,7 +252,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 {
 	let civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.peakCivicCentreCount = Math.max(this.peakCivicCentreCount, civicCentresCount);
-	if (civicCentresCount == 0 || this.peakCivicCentreCount - 2 >= civicCentresCount)
+	if ((civicCentresCount == 0 && this.peakCivicCentreCount >=1) || this.peakCivicCentreCount - 2 >= civicCentresCount)
 		return true;
 	let currentPopulation = gameState.getPopulation();
 	if (!this.passed100Pop)
@@ -290,7 +290,7 @@ PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 	// no matter the difficulty.
 	if (structureFactor >= 1 || populationFactor >= 0.4)
 		return false;
-	let resignFactors = [
+	let emergencyFactors = [
 		// [<popFactor>,<structureFactor>]
 		// Sandbox, never emergency
 		[0.0,0.0],
@@ -305,8 +305,8 @@ PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 		// Very hard, never emergency
 		[0.0,0.0]
 	];
-	let resignFactor = resignFactors[this.Config.difficulty];
-	return populationFactor < resignFactor[0] || structureFactor < resignFactor[1];
+	let emergencyFactor = emergencyFactors[this.Config.difficulty];
+	return populationFactor < emergencyFactors[0] || structureFactor < emergencyFactors[1];
 };
 
 PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
