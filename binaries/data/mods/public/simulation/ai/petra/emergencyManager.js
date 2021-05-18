@@ -90,7 +90,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			else
 			{
 				this.lastCounter = 0;
-				if(ownEntities.length * 2 < this.lastPeopleAlive)
+				if(ownEntities.length * 4 < this.lastPeopleAlive)
 				{
 					Engine.PostCommand(PlayerID,{"type": "resign"});
 					return;
