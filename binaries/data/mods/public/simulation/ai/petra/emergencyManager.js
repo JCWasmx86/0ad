@@ -73,13 +73,13 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					"timeSent": gameState.ai.elapsedTime
 				});
 				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": neutralityRequest });
+				// TODO: Check whether diplomacy changed.
 				PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
 			}
 			this.sentTributes = true;
 		}
 		else
 		{
-			// TODO: Patrol around building; Repair it? Recruit new soldiers?
 			let ownEntities = gameState.getOwnEntities().toEntityArray();
 			if (this.lastPeopleAlive == -1)
 			{
