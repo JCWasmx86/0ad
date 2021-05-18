@@ -12,6 +12,8 @@ PETRA.EmergencyManager = function(config)
 	this.collectPosition = [-1, -1];
 	this.sentTributes = false;
 	this.nextBattlePoint = [-1,-1];
+	this.lastPeopleAlive = -1;
+	this.lastCounter = 0;
 };
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
@@ -31,11 +33,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	}
 	else
 	{
-		// TODO: Actions depending on aggressive, cooperative, defensive
-		// If aggressive: One final battle
-		// If cooperative + defensive: Send resources to every? enemy to make peace
-		// If defensive: Make last battle or flee to the next ally?
-		// Maybe say something like: Hold the line! (Motivational speech)
+		// TODO: Maybe say something like: Hold the line! (Motivational speech)
 		this.executeActions(gameState, events);
 	}
 };
@@ -45,14 +43,14 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	let personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
-		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		if(personality.cooperative >= 0.05 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			let enemies = gameState.getEnemies();
 			let numEnemies = gameState.getNumPlayerEnemies();
 			for (let enemy of enemies)
 			{
-				if(gameState.ai.HQ.attackManager.defeated[enemy])
+				if(gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
 				{
 					continue;
 				}
@@ -68,7 +66,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					tribute[resource] = tributableResourceCount / numEnemies;
 				}
 				numEnemies--;
-				API3.warn(JSON.stringify(tribute));
 				Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": tribute });
 				let neutralityRequest = new Map();
 				neutralityRequest.set(enemy, {
@@ -84,6 +81,21 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		{
 			// TODO: Patrol around building; Repair it? Recruit new soldiers?
 			let ownEntities = gameState.getOwnEntities().toEntityArray();
+			if (this.lastPeopleAlive == -1)
+			{
+				this.lastPeopleAlive = ownEntities.length;
+			}
+			if (this.lastCounter < 5)
+				this.lastCounter++;
+			else
+			{
+				this.lastCounter = 0;
+				if(ownEntities.length * 2 < this.lastPeopleAlive)
+				{
+					Engine.PostCommand(PlayerID,{"type": "resign"});
+					return;
+				}
+			}
 			for (let ent of ownEntities)
 			{
 				if (!ent.get("Attack"))
