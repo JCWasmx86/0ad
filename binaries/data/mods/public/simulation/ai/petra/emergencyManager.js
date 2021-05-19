@@ -13,7 +13,10 @@ PETRA.EmergencyManager = function(config)
 	this.sentTributes = false;
 	this.nextBattlePoint = [-1,-1];
 	this.lastPeopleAlive = -1;
+	this.sentRequests = [];
 	this.lastCounter = 0;
+	this.neutralityCounter = 0;
+	this.finishedWaiting = false;
 };
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
@@ -65,6 +68,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					}
 					tribute[resource] = tributableResourceCount / numEnemies;
 				}
+				this.sentRequests.push(enemy);
 				numEnemies--;
 				Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": tribute });
 				let neutralityRequest = new Map();
@@ -80,6 +84,33 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		}
 		else
 		{
+			if(this.sentTributes && !this.finishedWaiting)
+			{
+				if (this.neutralityCounter < 30)
+				{
+					this.neutralityRequest++;
+					for(let event of events.DiplomacyChanged)
+					{
+						if (event.otherPlayer !== PlayerID)
+							continue;
+						let index = this.sentRequests.indexOf(event.player);
+						if (index != -1)
+						{
+							Engine.PostCommand(PlayerID, { "type": "diplomacy", "player": event.player, "to": "neutral" });
+							PETRA.chatNewDiplomacy(gameState, event.player, "neutral");
+							this.sentRequests = this.sentRequests.filter(function(value, idx, arr){return idx != index;});
+						}
+					}
+				}
+				else
+				{
+					for (let req of this.sentRequests)
+					{
+						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
+					}
+					this.finishedWaiting = true;
+				}
+			}
 			let ownEntities = gameState.getOwnEntities().toEntityArray();
 			if (this.lastPeopleAlive == -1)
 			{
@@ -225,7 +256,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 		return false;
 	for (let ent of gameState.getOwnEntities().toEntityArray())
 	{
-		if (ent && ent.position()&& ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+		if (ent && ent.position() && ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 		{
 			return true;
 		}
