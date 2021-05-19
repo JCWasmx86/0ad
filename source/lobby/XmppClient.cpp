@@ -20,12 +20,7 @@
 #include "XmppClient.h"
 #include "StanzaExtensions.h"
 
-#ifdef WIN32
-#  include <winsock2.h>
-#endif
-
 #include "i18n/L10n.h"
-#include "lib/external_libraries/enet.h"
 #include "lib/utf8.h"
 #include "network/NetServer.h"
 #include "network/NetClient.h"
@@ -370,12 +365,13 @@ void XmppClient::SendIqGetProfile(const std::string& player)
 /**
  * Request the Connection data (ip, port...) from the server.
  */
-void XmppClient::SendIqGetConnectionData(const std::string& jid, const std::string& password, bool localIP)
+void XmppClient::SendIqGetConnectionData(const std::string& jid, const std::string& password, const std::string& clientSalt, bool localIP)
 {
 	glooxwrapper::JID targetJID(jid);
 
 	ConnectionData* connectionData = new ConnectionData();
 	connectionData->m_Password = password;
+	connectionData->m_ClientSalt = clientSalt;
 	connectionData->m_IsLocalIP = localIP ? "1" : "0";
 	glooxwrapper::IQ iq(gloox::IQ::Get, targetJID, m_client->getID());
 	iq.addExtension(connectionData);
@@ -883,7 +879,7 @@ bool XmppClient::handleIq(const glooxwrapper::IQ& iq)
 					LOGWARNING("XmppClient: Received game with no IP in response to Game Register");
 					return true;
 				}
-				g_NetServer->SetConnectionData(publicIP, g_NetServer->GetPublicPort(), false);
+				g_NetServer->SetConnectionData(publicIP, g_NetServer->GetPublicPort());
 				return true;
 			}
 
@@ -979,7 +975,7 @@ bool XmppClient::handleIq(const glooxwrapper::IQ& iq)
 				m_client->send(response);
 				return true;
 			}
-			if (!g_NetServer->CheckPasswordAndIncrement(CStr(cd->m_Password.to_string()), iq.from().username()))
+			if (!g_NetServer->CheckPasswordAndIncrement(iq.from().username(), cd->m_Password.to_string(), cd->m_ClientSalt.to_string()))
 			{
 				glooxwrapper::IQ response(gloox::IQ::Result, iq.from(), iq.id());
 				ConnectionData* connectionData = new ConnectionData();
@@ -1484,18 +1480,13 @@ std::string XmppClient::RegistrationResultToString(gloox::RegistrationResult res
 #undef CASE
 }
 
-void XmppClient::SendStunEndpointToHost(const StunClient::StunEndpoint& stunEndpoint, const std::string& hostJIDStr)
+void XmppClient::SendStunEndpointToHost(const std::string& ip, u16 port, const std::string& hostJIDStr)
 {
 	DbgXMPP("SendStunEndpointToHost " << hostJIDStr);
 
-	char ipStr[256] = "(error)";
-	ENetAddress addr;
-	addr.host = ntohl(stunEndpoint.ip);
-	enet_address_get_host_ip(&addr, ipStr, ARRAY_SIZE(ipStr));
-
 	glooxwrapper::JID hostJID(hostJIDStr);
 	glooxwrapper::Jingle::Session session = m_sessionManager->createSession(hostJID);
-	session.sessionInitiate(ipStr, stunEndpoint.port);
+	session.sessionInitiate(ip.c_str(), port);
 }
 
 void XmppClient::handleSessionAction(gloox::Jingle::Action action, glooxwrapper::Jingle::Session& session, const glooxwrapper::Jingle::Session::Jingle& jingle)

@@ -33,6 +33,7 @@
 #include "ps/Compress.h"
 #include "ps/CStr.h"
 #include "ps/Game.h"
+#include "ps/Hashing.h"
 #include "ps/Loader.h"
 #include "ps/Profile.h"
 #include "ps/Threading.h"
@@ -184,7 +185,9 @@ void CNetClient::SetHostJID(const CStr& jid)
 
 void CNetClient::SetGamePassword(const CStr& hashedPassword)
 {
-	m_Password = hashedPassword;
+	// Hash on top with the user's name, to make sure not all
+	// hashing data is in control of the host.
+	m_Password = HashCryptographically(hashedPassword, m_UserName.ToUTF8());
 }
 
 void CNetClient::SetControllerSecret(const std::string& secret)
@@ -200,6 +203,11 @@ bool CNetClient::SetupConnection(ENetHost* enetClient)
 	SetAndOwnSession(session);
 	m_PollingThread = std::thread(Threading::HandleExceptions<CNetClientSession::RunNetLoop>::Wrapper, m_Session);
 	return ok;
+}
+
+void CNetClient::SetupConnectionViaLobby()
+{
+	g_XmppClient->SendIqGetConnectionData(m_HostJID, m_Password, m_UserName.ToUTF8(), false);
 }
 
 void CNetClient::SetupServerData(CStr address, u16 port, bool stun)
@@ -240,15 +248,8 @@ bool CNetClient::TryToConnect(const CStr& hostJID)
 	ENetHost* enetClient = nullptr;
 	if (g_XmppClient && m_UseSTUN)
 	{
-		// Find an unused port
-		for (int i = 0; i < 5 && !enetClient; ++i)
-		{
-			// Ports below 1024 are privileged on unix
-			u16 port = 1024 + rand() % (UINT16_MAX - 1024);
-			ENetAddress hostAddr{ ENET_HOST_ANY, port };
-			enetClient = enet_host_create(&hostAddr, 1, 1, 0, 0);
-			++hostAddr.port;
-		}
+		ENetAddress hostAddr{ ENET_HOST_ANY, ENET_PORT_ANY };
+		enetClient = enet_host_create(&hostAddr, 1, 1, 0, 0);
 
 		if (!enetClient)
 		{
@@ -259,9 +260,9 @@ bool CNetClient::TryToConnect(const CStr& hostJID)
 			return false;
 		}
 
-		StunClient::StunEndpoint stunEndpoint;
 		CStr ip;
-		if (!StunClient::FindStunEndpointJoin(*enetClient, stunEndpoint, ip))
+		u16 port;
+		if (!StunClient::FindPublicIP(*enetClient, ip, port))
 		{
 			PushGuiMessage(
 				"type", "netstatus",
@@ -275,12 +276,12 @@ bool CNetClient::TryToConnect(const CStr& hostJID)
 		// To work around that, send again a connection data request, but for internal IP this time.
 		if (ip == m_ServerAddress)
 		{
-			g_XmppClient->SendIqGetConnectionData(m_HostJID, m_Password, true);
+			g_XmppClient->SendIqGetConnectionData(m_HostJID, m_Password, m_UserName.ToUTF8(), true);
 			// Return true anyways - we're on a success path here.
 			return true;
 		}
 
-		g_XmppClient->SendStunEndpointToHost(stunEndpoint, hostJID);
+		g_XmppClient->SendStunEndpointToHost(ip, port, hostJID);
 
 		SDL_Delay(1000);
 

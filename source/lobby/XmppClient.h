@@ -86,7 +86,7 @@ public:
 	void SendIqGetProfile(const std::string& player);
 	void SendIqGameReport(const ScriptRequest& rq, JS::HandleValue data);
 	void SendIqRegisterGame(const ScriptRequest& rq, JS::HandleValue data);
-	void SendIqGetConnectionData(const std::string& jid, const std::string& password, bool localIP);
+	void SendIqGetConnectionData(const std::string& jid, const std::string& password, const std::string& clientSalt, bool localIP);
 	void SendIqUnregisterGame();
 	void SendIqChangeStateGame(const std::string& nbp, const std::string& players);
 	void SendIqLobbyAuth(const std::string& to, const std::string& token);
@@ -106,7 +106,7 @@ public:
 	JS::Value GUIGetBoardList(const ScriptRequest& rq);
 	JS::Value GUIGetProfile(const ScriptRequest& rq);
 
-	void SendStunEndpointToHost(const StunClient::StunEndpoint& stunEndpoint, const std::string& hostJID);
+	void SendStunEndpointToHost(const std::string& ip, u16 port, const std::string& hostJID);
 
 	/**
 	 * Convert gloox values to string or time.
