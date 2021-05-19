@@ -7,7 +7,7 @@ PETRA.EmergencyManager = function(config)
 	this.population = 0;
 	this.numberOfStructures = 0;
 	this.passed100Pop = false;
-	this.peakCivicCentreCount = 0;
+	this.peakCivicCentreCount = -1;
 	this.finishedMarching = false;
 	this.collectPosition = [-1, -1];
 	this.sentTributes = false;
@@ -42,7 +42,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	let personality = this.Config.personality;
-	if (personality.aggressive < personality.defensive)
+	if (personality.aggressive < personality.defensive * 20)
 	{
 		if(personality.cooperative >= 0.05 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
@@ -62,7 +62,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 						tribute[resource] = 0;
 						continue;
 					}
-					tribute[resource] = tributableResourceCount / numEnemies;
+					tribute[resource] = Math.round(tributableResourceCount / numEnemies);
 				}
 				this.sentRequests.push(enemy);
 				numEnemies--;
@@ -72,8 +72,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					"requestType": "neutral",
 					"timeSent": gameState.ai.elapsedTime
 				});
-				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": neutralityRequest });
-				// TODO: Check whether diplomacy changed.
+				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": "neutral" });
 				PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
 			}
 			this.sentTributes = true;
@@ -84,7 +83,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			{
 				if (this.neutralityCounter < 30)
 				{
-					this.neutralityRequest++;
+					this.neutralityCounter++;
 					for(let event of events.DiplomacyChanged)
 					{
 						if (event.otherPlayer !== PlayerID)
