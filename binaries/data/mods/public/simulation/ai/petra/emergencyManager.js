@@ -29,16 +29,14 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// Force these people to go to the position, where all others
 	// will be to avoid having minor skirmishes that may lead to heavy
 	// losses.
+	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
 	{
 		for (let ent of gameState.getOwnEntities().toEntityArray())
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
 	}
 	else
-	{
-		// TODO: Maybe say something like: Hold the line! (Motivational speech)
 		this.executeActions(gameState, events);
-	}
 };
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
@@ -54,9 +52,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			for (let enemy of enemies)
 			{
 				if(gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
-				{
 					continue;
-				}
 				let tribute = {};
 				for (let resource of Resources.GetTributableCodes())
 				{
@@ -105,17 +101,13 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				else
 				{
 					for (let req of this.sentRequests)
-					{
 						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
-					}
 					this.finishedWaiting = true;
 				}
 			}
 			let ownEntities = gameState.getOwnEntities().toEntityArray();
 			if (this.lastPeopleAlive == -1)
-			{
 				this.lastPeopleAlive = ownEntities.length;
-			}
 			if (this.lastCounter < 5)
 				this.lastCounter++;
 			else
@@ -139,14 +131,10 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	else
 	{
 		if (this.nextBattlePoint[0] == -1)
-		{
 			this.selectBattlePoint(gameState);
-		}
 
 		if (!this.isAtBattlePoint(gameState))
-		{
 			this.moveToBattlePoint(gameState);
-		}
 		else if (this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
@@ -165,9 +153,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 		{
 			let distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < 125)
-			{
 				return false;
-			}
 		}
 	}
 	return true;
@@ -206,9 +192,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 {
 	let entities = gameState.getOwnEntities().toEntityArray();
 	if (entities.length == 0)
-	{
 		return [-1, -1];
-	}
 	let nEntities = 0;
 	let sumX = 0;
 	let sumZ = 0;
@@ -224,9 +208,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 	}
 
 	if (nEntities == 0)
-	{
 		return [-1, -1];
-	}
 	return [sumX / nEntities, sumZ / nEntities];
 };
 
@@ -243,9 +225,7 @@ PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState
 	for (let resource of Resources.GetTributableCodes())
 	{
 		if (availableResources[resource] < 50)
-		{
 			return false;
-		}
 	}
 	return true;
 };
@@ -257,9 +237,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	for (let ent of gameState.getOwnEntities().toEntityArray())
 	{
 		if (ent && ent.position() && ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
-		{
 			return true;
-		}
 	}
 	this.finishedMarching = true;
 	return false;
@@ -345,18 +323,14 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 	this.ungarrisonAllUnits(gameState);
 	let entities = gameState.getOwnEntities().toEntityArray();
 	if (entities.length == 0)
-	{
 		return;
-	}
 	else if (!gameState.getOwnStructures().hasEntities())
 	{
 		this.collectInAveragePosition(entities, gameState);
 		return;
 	}
 	else
-	{
 		this.gotoSpecialBuilding(entities, gameState);
-	}
 };
 
 PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameState)
@@ -380,9 +354,7 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 	API3.warn(JSON.stringify(position));
 	this.collectPosition = position;
 	for(let ent of entities)
-	{
 		ent.move(position[0],position[1]);
-	}
 };
 
 PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
