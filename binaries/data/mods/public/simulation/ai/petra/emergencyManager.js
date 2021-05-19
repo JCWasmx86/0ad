@@ -42,9 +42,9 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	let personality = this.Config.personality;
-	if (personality.aggressive < personality.defensive * 20)
+	if (personality.aggressive < personality.defensive)
 	{
-		if(personality.cooperative >= 0.05 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			let enemies = gameState.getEnemies();
