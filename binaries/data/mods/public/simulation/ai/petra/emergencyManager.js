@@ -45,12 +45,12 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// losses.
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
-		this.moveToPoint(this.collectPosition);
+		this.moveToPoint(gameState, this.collectPosition);
 	else
 		this.executeActions(gameState, events);
 };
 
-PETRA.EmergencyManager.prototype.moveToPoint = function(point)
+PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 		if(this.isMovableEntity(ent))
@@ -154,11 +154,11 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			this.selectBattlePoint(gameState);
 
 		if (!this.isAtBattlePoint(gameState))
-			this.moveToPoint(this.nextBattlePoint);
+			this.moveToPoint(gameState, this.nextBattlePoint);
 		else if (this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
-			this.moveToPoint(this.nextBattlePoint);
+			this.moveToPoint(gameState, this.nextBattlePoint);
 		}
 		// Else wait until we or the enemy are dead.
 	}
@@ -346,7 +346,7 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 		this.getAveragePosition(gameState);
 	else
 		this.getSpecialBuildingPosition(entities, gameState);
-	this.moveToPoint(this.collectPosition);
+	this.moveToPoint(gameState, this.collectPosition);
 };
 
 PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities, gameState)
