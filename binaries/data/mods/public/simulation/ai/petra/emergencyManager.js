@@ -1,4 +1,4 @@
-// TODO: (De)Serialization
+// TODO: (De)Serialization? But it seems to work without, too.
 PETRA.EmergencyManager = function(config)
 {
 	this.Config = config;
@@ -217,10 +217,8 @@ PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState
 	let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 
 	for (let resource of Resources.GetTributableCodes())
-	{
 		if (availableResources[resource] < 50)
 			return false;
-	}
 	return true;
 };
 
@@ -229,10 +227,8 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	if(this.finishedMarching)
 		return false;
 	for (let ent of gameState.getOwnEntities().toEntityArray())
-	{
 		if (ent && ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 			return true;
-	}
 	this.finishedMarching = true;
 	return false;
 };
