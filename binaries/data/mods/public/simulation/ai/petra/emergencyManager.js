@@ -227,7 +227,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	if(this.finishedMarching)
 		return false;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
-		if (ent && ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+		if (ent && ent.walkSpeed() > 0&& ent.position() && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 			return true;
 	this.finishedMarching = true;
 	return false;
@@ -338,7 +338,6 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 		return;
 	}
 	const position = building.position();
-	API3.warn(JSON.stringify(position));
 	this.collectPosition = position;
 	for(const ent of entities)
 		ent.move(position[0], position[1]);
@@ -363,7 +362,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 		let nEntities = 0;
 		for(const ent of entities)
 		{
-			if(!ent)
+			if(!ent || !ent.position())
 				continue;
 			sumOfDistance += API3.VectorDistance(structure.position(), ent.position());
 			nEntities++;
