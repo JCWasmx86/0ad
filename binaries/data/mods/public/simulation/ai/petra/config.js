@@ -6,7 +6,7 @@ PETRA.Config = function(difficulty, behavior)
 	// for instance "balanced", "aggressive" or "defensive"
 	this.behavior = behavior || "random";
 
-	// debug level: 0=none, 1=sanity checks, 2=debug, 3=detailed debug, -100=serializatio debug
+	// debug level: 0=none, 1=sanity checks, 2=debug, 3=detailed debug, -100=serialization debug
 	this.debug = 0;
 
 	this.chat = true;	// false to prevent AI's chats

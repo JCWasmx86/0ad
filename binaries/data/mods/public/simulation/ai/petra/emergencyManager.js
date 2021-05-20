@@ -115,7 +115,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			}
 			for (const ent of ownEntities)
 			{
-				if (!ent.get("Attack"))
+				if (!ent.get("Attack") || !ent.position())
 					continue;
 				if (API3.VectorDistance(ent.position(), this.collectPosition) > 75)
 					ent.move(this.collectPosition[0], this.collectPosition[1]);
@@ -143,7 +143,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	for (const enemy of gameState.getEnemyEntities().toEntityArray())
 	{
-		if(enemy && enemy.owner() != 0)
+		if(enemy && enemy.position() && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < 125)
@@ -169,7 +169,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	let nearestEnemyDistance = 100000;
 	for (const enemy of enemies)
 	{
-		if(enemy && enemy.owner() != 0)
+		if(enemy && enemy.position() && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
@@ -192,7 +192,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 	let sumZ = 0;
 	for (const ent of entities)
 	{
-		if (ent && ent.walkSpeed() > 0)
+		if (ent && ent.position() && ent.walkSpeed() > 0)
 		{
 			nEntities++;
 			const pos = ent.position();
@@ -332,7 +332,7 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 	else if (this.hasBuilding(gameState, "Dock"))
 		building = this.getSpecialBuilding(gameState, "Dock", entities);
 
-	if (!building)
+	if (!building || !building.position())
 	{
 		this.collectInAveragePosition(entities, gameState);
 		return;
@@ -356,7 +356,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 		return potentialStructures[0];
 	for(const structure of potentialStructures)
 	{
-		if (!structure)
+		if (!structure || !structure.position())
 			continue;
 		let sumOfDistance = 0;
 		let nEntities = 0;
@@ -406,4 +406,31 @@ PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
 			}
 		}
 	}
+};
+
+PETRA.EmergencyManager.prototype.Serialize = function()
+{
+	return {
+		"collectedTroops": this.collectedTroops,
+		"counterForCheckingEmergency": this.counterForCheckingEmergency,
+		"population": this.population,
+		"numberOfStructures": this.numberOfStructures,
+		"passed100Pop": this.passed100Pop,
+		"peakCivicCentreCount": this.peakCivicCentreCount,
+		"finishedMarching": this.finishedMarching,
+		"collectPosition": this.collectPosition,
+		"sentTributes": this.sentTributes,
+		"nextBattlePoint": this.nextBattlePoint,
+		"lastPeopleAlive": this.lastPeopleAlive,
+		"sentRequests": this.sentRequests,
+		"lastCounter": this.lastCounter,
+		"neutralityCounter": this.neutralityCounter,
+		"finishedWaiting": this.finishedWaiting
+	};
+};
+
+PETRA.EmergencyManager.prototype.Deserialize = function(data)
+{
+	for (const key in data)
+		this[key] = data[key];
 };
