@@ -23,7 +23,7 @@ PETRA.EmergencyManager = function(config)
 	this.lastPeopleAlive = -1;
 	// A list of all neutrality requests that were sent.
 	this.sentRequests = [];
-	// Used in defensive: How long to wait to check the 
+	// Used in defensive: How long to wait to check the
 	// number of living people in order to decide, whether
 	// this bot resigns.
 	this.lastCounter = 0;
@@ -157,12 +157,17 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	}
 };
 
+PETRA.EmergencyManager.prototype.validEntity = function(ent)
+{
+	return ent && ent.position();
+};
+
 PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 {
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	for (const enemy of gameState.getEnemyEntities().toEntityArray())
 	{
-		if(enemy && enemy.position() && enemy.owner() != 0)
+		if(this.validEntity(enemy) && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < 125)
@@ -172,11 +177,16 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	return true;
 };
 
+PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
+{
+	return this.validEntity(ent) && ent.walkSpeed() > 0;
+};
+
 PETRA.EmergencyManager.prototype.moveToBattlePoint = function(gameState)
 {
 	const entities = gameState.getOwnEntities().toEntityArray();
 	for (const ent of entities)
-		if (ent && ent.walkSpeed() > 0)
+		if (this.isMovableEntity(ent))
 			ent.move(this.nextBattlePoint[0], this.nextBattlePoint[1]);
 };
 
@@ -188,7 +198,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	let nearestEnemyDistance = 100000;
 	for (const enemy of enemies)
 	{
-		if(enemy && enemy.position() && enemy.owner() != 0)
+		if(this.validEntity(enemy) && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
@@ -211,7 +221,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 	let sumZ = 0;
 	for (const ent of entities)
 	{
-		if (ent && ent.position() && ent.walkSpeed() > 0)
+		if (this.validEntity(ent) && this.isMovableEntity(ent))
 		{
 			nEntities++;
 			const pos = ent.position();
@@ -246,7 +256,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	if(this.finishedMarching)
 		return false;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
-		if (ent && ent.walkSpeed() > 0 && ent.position() && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+		if (this.isMovableEntity(ent) && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 			return true;
 	this.finishedMarching = true;
 	return false;
@@ -279,7 +289,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 		return false;
 	}
 	// When the population was by over 100
-	// and now is over 80, this could mean an attack lead by this
+	// and now is e.g. over 80, this could mean an attack lead by this
 	// bot => No reason for emergency.
 	if (currentPopulation >= 60)
 		return false;
@@ -351,7 +361,7 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 	else if (this.hasBuilding(gameState, "Dock"))
 		building = this.getSpecialBuilding(gameState, "Dock", entities);
 
-	if (!building || !building.position())
+	if (!this.validEntity(building))
 	{
 		this.collectInAveragePosition(entities, gameState);
 		return;
@@ -377,13 +387,13 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 		return potentialStructures[0];
 	for(const structure of potentialStructures)
 	{
-		if (!structure || !structure.position())
+		if (!this.validEntity(structure))
 			continue;
 		let sumOfDistance = 0;
 		let nEntities = 0;
 		for(const ent of entities)
 		{
-			if(!ent || !ent.position())
+			if(!this.validEntity(ent))
 				continue;
 			sumOfDistance += API3.VectorDistance(structure.position(), ent.position());
 			nEntities++;
@@ -405,7 +415,7 @@ PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, g
 	this.collectPosition = this.getAveragePositionOfMovableEntities(gameState);
 	for(const ent of entities)
 	{
-		if (ent && ent.walkSpeed > 0)
+		if (this.isMovableEntity(ent))
 		{
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
 			ent.setStance("standground");
