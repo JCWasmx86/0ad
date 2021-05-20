@@ -11,7 +11,7 @@ PETRA.EmergencyManager = function(config)
 	this.finishedMarching = false;
 	this.collectPosition = [-1, -1];
 	this.sentTributes = false;
-	this.nextBattlePoint = [-1,-1];
+	this.nextBattlePoint = [-1, -1];
 	this.lastPeopleAlive = -1;
 	this.sentRequests = [];
 	this.lastCounter = 0;
@@ -32,7 +32,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
 	{
-		for (let ent of gameState.getOwnEntities().toEntityArray())
+		for (const ent of gameState.getOwnEntities().toEntityArray())
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
 	}
 	else
@@ -41,22 +41,22 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
-	let personality = this.Config.personality;
+	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
 		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
-			let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-			let enemies = gameState.getEnemies();
+			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+			const enemies = gameState.getEnemies();
 			let numEnemies = gameState.getNumPlayerEnemies();
-			for (let enemy of enemies)
+			for (const enemy of enemies)
 			{
 				if(gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
 					continue;
-				let tribute = {};
-				for (let resource of Resources.GetTributableCodes())
+				const tribute = {};
+				for (const resource of Resources.GetTributableCodes())
 				{
-					let tributableResourceCount = availableResources[resource] - 50;
+					const tributableResourceCount = availableResources[resource] - 50;
 					if(tributableResourceCount <= 0)
 					{
 						tribute[resource] = 0;
@@ -79,11 +79,11 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				if (this.neutralityCounter < 30)
 				{
 					this.neutralityCounter++;
-					for(let event of events.DiplomacyChanged)
+					for(const event of events.DiplomacyChanged)
 					{
 						if (event.otherPlayer !== PlayerID)
 							continue;
-						let index = this.sentRequests.indexOf(event.player);
+						const index = this.sentRequests.indexOf(event.player);
 						if (index != -1)
 						{
 							Engine.PostCommand(PlayerID, { "type": "diplomacy", "player": event.player, "to": "neutral" });
@@ -94,12 +94,12 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 				else
 				{
-					for (let req of this.sentRequests)
+					for (const req of this.sentRequests)
 						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
 					this.finishedWaiting = true;
 				}
 			}
-			let ownEntities = gameState.getOwnEntities().toEntityArray();
+			const ownEntities = gameState.getOwnEntities().toEntityArray();
 			if (this.lastPeopleAlive == -1)
 				this.lastPeopleAlive = ownEntities.length;
 			if (this.lastCounter < 5)
@@ -109,15 +109,15 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				this.lastCounter = 0;
 				if(ownEntities.length * 4 < this.lastPeopleAlive)
 				{
-					Engine.PostCommand(PlayerID,{"type": "resign"});
+					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
 				}
 			}
-			for (let ent of ownEntities)
+			for (const ent of ownEntities)
 			{
 				if (!ent.get("Attack"))
 					continue;
-				if (API3.VectorDistance(ent.position() , this.collectPosition) > 75)
+				if (API3.VectorDistance(ent.position(), this.collectPosition) > 75)
 					ent.move(this.collectPosition[0], this.collectPosition[1]);
 			}
 		}
@@ -140,12 +140,12 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 {
-	let averagePosition = this.getAveragePositionOfMovableEntities(gameState);
-	for (let enemy of gameState.getEnemyEntities().toEntityArray())
+	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
+	for (const enemy of gameState.getEnemyEntities().toEntityArray())
 	{
 		if(enemy && enemy.owner() != 0)
 		{
-			let distance = API3.VectorDistance(enemy.position(), averagePosition);
+			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < 125)
 				return false;
 		}
@@ -155,23 +155,23 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 
 PETRA.EmergencyManager.prototype.moveToBattlePoint = function(gameState)
 {
-	let entities = gameState.getOwnEntities().toEntityArray();
-	for (let ent of entities)
+	const entities = gameState.getOwnEntities().toEntityArray();
+	for (const ent of entities)
 		if (ent && ent.walkSpeed() > 0)
 			ent.move(this.nextBattlePoint[0], this.nextBattlePoint[1]);
 };
 
 PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 {
-	let averagePosition = this.getAveragePositionOfMovableEntities(gameState);
-	let enemies = gameState.getEnemyEntities().toEntityArray();
+	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
+	const enemies = gameState.getEnemyEntities().toEntityArray();
 	let nearestEnemy;
 	let nearestEnemyDistance = 100000;
-	for (let enemy of enemies)
+	for (const enemy of enemies)
 	{
 		if(enemy && enemy.owner() != 0)
 		{
-			let distance = API3.VectorDistance(enemy.position(), averagePosition);
+			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
 			{
 				nearestEnemy = enemy;
@@ -184,18 +184,18 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 
 PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(gameState)
 {
-	let entities = gameState.getOwnEntities().toEntityArray();
+	const entities = gameState.getOwnEntities().toEntityArray();
 	if (entities.length == 0)
 		return [-1, -1];
 	let nEntities = 0;
 	let sumX = 0;
 	let sumZ = 0;
-	for (let ent of entities)
+	for (const ent of entities)
 	{
 		if (ent && ent.walkSpeed() > 0)
 		{
 			nEntities++;
-			let pos = ent.position();
+			const pos = ent.position();
 			sumX += pos[0];
 			sumZ += pos[1];
 		}
@@ -208,15 +208,15 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 
 PETRA.EmergencyManager.prototype.isAtBattlePoint = function(gameState)
 {
-	let averagePosition = this.getAveragePositionOfMovableEntities(gameState);
+	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	return API3.VectorDistance(averagePosition, this.nextBattlePoint) < 75;
 };
 
 PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState)
 {
-	let availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 
-	for (let resource of Resources.GetTributableCodes())
+	for (const resource of Resources.GetTributableCodes())
 		if (availableResources[resource] < 50)
 			return false;
 	return true;
@@ -226,7 +226,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 {
 	if(this.finishedMarching)
 		return false;
-	for (let ent of gameState.getOwnEntities().toEntityArray())
+	for (const ent of gameState.getOwnEntities().toEntityArray())
 		if (ent && ent.walkSpeed() > 0 && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 			return true;
 	this.finishedMarching = true;
@@ -249,11 +249,11 @@ PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
 
 PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 {
-	let civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
+	const civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.peakCivicCentreCount = Math.max(this.peakCivicCentreCount, civicCentresCount);
 	if ((civicCentresCount == 0 && this.peakCivicCentreCount >=1) || this.peakCivicCentreCount - 2 >= civicCentresCount)
 		return true;
-	let currentPopulation = gameState.getPopulation();
+	const currentPopulation = gameState.getPopulation();
 	if (!this.passed100Pop)
 	{
 		this.passed100Pop = currentPopulation >= 100;
@@ -272,16 +272,16 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
  */
 PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 {
-	let oldPopulation = this.population;
+	const oldPopulation = this.population;
 	this.population = gameState.getPopulation();
 	if (oldPopulation == 0)
 		return false;
-	let oldNumberOfStructures = this.numberOfStructures;
+	const oldNumberOfStructures = this.numberOfStructures;
 	this.numberOfStructures = gameState.getOwnStructures().length;
 	if (oldNumberOfStructures == 0)
 		return false;
-	let populationFactor = this.population / oldPopulation;
-	let structureFactor = this.numberOfStructures / oldNumberOfStructures;
+	const populationFactor = this.population / oldPopulation;
+	const structureFactor = this.numberOfStructures / oldNumberOfStructures;
 	// Growth means no emergency, no matter the difficulty
 	if (populationFactor >=1 && structureFactor >= 1)
 		return false;
@@ -289,36 +289,33 @@ PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 	// no matter the difficulty.
 	if (structureFactor >= 1 || populationFactor >= 0.4)
 		return false;
-	let emergencyFactors = [
+	const emergencyFactors = [
 		// [<popFactor>,<structureFactor>]
-		// Sandbox, never emergency
-		[0.0,0.0],
+		// Sandbox, never emergency because of huge losses
+		[0.0, 0.0],
 		// Very easy
-		[0.8,0.8],
+		[0.8, 0.8],
 		// Easy
-		[0.7,0.7],
+		[0.7, 0.7],
 		// Medium
-		[0.6,0.6],
+		[0.6, 0.6],
 		// Hard
-		[0.2,0.2],
-		// Very hard, never emergency
-		[0.0,0.0]
+		[0.2, 0.2],
+		// Very hard, never emergency because of huge losses
+		[0.0, 0.0]
 	];
-	let emergencyFactor = emergencyFactors[this.Config.difficulty];
-	return populationFactor < emergencyFactors[0] || structureFactor < emergencyFactors[1];
+	const emergencyFactor = emergencyFactors[this.Config.difficulty];
+	return populationFactor < emergencyFactor[0] || structureFactor < emergencyFactor[1];
 };
 
 PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 {
 	this.ungarrisonAllUnits(gameState);
-	let entities = gameState.getOwnEntities().toEntityArray();
+	const entities = gameState.getOwnEntities().toEntityArray();
 	if (entities.length == 0)
 		return;
 	else if (!gameState.getOwnStructures().hasEntities())
-	{
 		this.collectInAveragePosition(entities, gameState);
-		return;
-	}
 	else
 		this.gotoSpecialBuilding(entities, gameState);
 };
@@ -340,11 +337,11 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 		this.collectInAveragePosition(entities, gameState);
 		return;
 	}
-	let position = building.position();
+	const position = building.position();
 	API3.warn(JSON.stringify(position));
 	this.collectPosition = position;
-	for(let ent of entities)
-		ent.move(position[0],position[1]);
+	for(const ent of entities)
+		ent.move(position[0], position[1]);
 };
 
 PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
@@ -355,16 +352,16 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 {
 	let averageWay = 1000000;
 	let nearestStructure;
-	let potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
+	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
 	if(potentialStructures.length == 0)
 		return potentialStructures[0];
-	for(let structure of potentialStructures)
+	for(const structure of potentialStructures)
 	{
 		if (!structure)
 			continue;
 		let sumOfDistance = 0;
 		let nEntities = 0;
-		for(let ent of entities)
+		for(const ent of entities)
 		{
 			if(!ent)
 				continue;
@@ -373,7 +370,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 		}
 		if(nEntities == 0)
 			continue;
-		let avgWayToThisStructure = sumOfDistance / nEntities;
+		const avgWayToThisStructure = sumOfDistance / nEntities;
 		if(averageWay > avgWayToThisStructure)
 		{
 			averageWay = avgWayToThisStructure;
@@ -386,7 +383,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, gameState)
 {
 	this.collectPosition = this.getAveragePositionOfMovableEntities(gameState);
-	for(let ent of entities)
+	for(const ent of entities)
 	{
 		if (ent && ent.walkSpeed > 0)
 		{
@@ -396,17 +393,17 @@ PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, g
 	}
 };
 PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
-	let structures = gameState.getOwnStructures().toEntityArray();
-	for (let structure of structures)
+	const structures = gameState.getOwnStructures().toEntityArray();
+	for (const structure of structures)
 	{
-		let garrisoned = structure.garrisoned();
+		const garrisoned = structure.garrisoned();
 		if (garrisoned)
 		{
-			for (let entId of garrisoned)
+			for (const entId of garrisoned)
 			{
-				let ent = gameState.getEntityById(entId);
+				const ent = gameState.getEntityById(entId);
 				if (ent.owner() === PlayerID)
-						structure.unload(entId);
+					structure.unload(entId);
 			}
 		}
 	}
