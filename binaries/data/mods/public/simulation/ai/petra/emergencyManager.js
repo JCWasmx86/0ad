@@ -1,20 +1,34 @@
-// TODO: (De)Serialization? But it seems to work without, too.
 PETRA.EmergencyManager = function(config)
 {
 	this.Config = config;
 	this.collectedTroops = false;
+	// Counter to delay counting the population and structures
+	// to around 3 minutes.
 	this.counterForCheckingEmergency = 0;
+	// Last number of workers+soldiers+siege machines or structures
+	// used for calculating, whether an emergency is there,
+	// based on the change.
 	this.population = 0;
 	this.numberOfStructures = 0;
 	this.passed100Pop = false;
+	// Maximum number of built civic centres
 	this.peakCivicCentreCount = -1;
 	this.finishedMarching = false;
+	// Point to collect in case of emergency
 	this.collectPosition = [-1, -1];
 	this.sentTributes = false;
+	// Used in aggressive: The point where to go next.
 	this.nextBattlePoint = [-1, -1];
+	// Used for checking, whether to resign.
 	this.lastPeopleAlive = -1;
+	// A list of all neutrality requests that were sent.
 	this.sentRequests = [];
+	// Used in defensive: How long to wait to check the 
+	// number of living people in order to decide, whether
+	// this bot resigns.
 	this.lastCounter = 0;
+	// Counter to wait for until the neutrality requests
+	// expire.
 	this.neutralityCounter = 0;
 	this.finishedWaiting = false;
 };
@@ -31,10 +45,8 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// losses.
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
-	{
 		for (const ent of gameState.getOwnEntities().toEntityArray())
 			ent.move(this.collectPosition[0], this.collectPosition[1]);
-	}
 	else
 		this.executeActions(gameState, events);
 };
@@ -44,6 +56,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
+		// If this bot is cooperative, it will send as much tributes as possible and will
+		// try to make peace with every enemy.
 		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
@@ -74,6 +88,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		}
 		else
 		{
+			// Check for every changed diplomacy in case of sent
+			// neutrality requests.
 			if(this.sentTributes && !this.finishedWaiting)
 			{
 				if (this.neutralityCounter < 30)
@@ -99,6 +115,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					this.finishedWaiting = true;
 				}
 			}
+			// Check whether to resign. (Here: If more than 75% were killed)
 			const ownEntities = gameState.getOwnEntities().toEntityArray();
 			if (this.lastPeopleAlive == -1)
 				this.lastPeopleAlive = ownEntities.length;
@@ -113,6 +130,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					return;
 				}
 			}
+			// "Patrol" around the collect position.
 			for (const ent of ownEntities)
 			{
 				if (!ent.get("Attack") || !ent.position())
@@ -124,6 +142,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	}
 	else
 	{
+		// Select initial battle point
 		if (this.nextBattlePoint[0] == -1)
 			this.selectBattlePoint(gameState);
 
@@ -227,7 +246,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	if(this.finishedMarching)
 		return false;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
-		if (ent && ent.walkSpeed() > 0&& ent.position() && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+		if (ent && ent.walkSpeed() > 0 && ent.position() && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
 			return true;
 	this.finishedMarching = true;
 	return false;
@@ -237,7 +256,7 @@ PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
 {
 	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
 		return true;
-	// TODO: Check, whether this is an appropriate value, currently around 3 minutes
+	// TODO: Check, whether this is an appropriate value; currently around 3 minutes
 	if (this.counterForCheckingEmergency < 60)
 	{
 		this.counterForCheckingEmergency++;
@@ -323,8 +342,8 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameState)
 {
 	let building;
-	// TODO: Unify; Find more buildings that are nice points
-	// for the probably? last battle.
+	// TODO: Find more buildings that are nice points
+	// for the probably? last battle. Or collect around hero?
 	if (this.hasBuilding(gameState, "CivCentre"))
 		building = this.getSpecialBuilding(gameState, "CivCentre", entities);
 	else if (this.hasBuilding(gameState, "Temple"))
@@ -347,6 +366,8 @@ PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
 {
 	return gameState.getOwnEntitiesByClass(className).hasEntities();
 };
+
+// Find the average nearest building of a class for all entities.
 PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, className, entities)
 {
 	let averageWay = 1000000;
@@ -391,6 +412,7 @@ PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, g
 		}
 	}
 };
+
 PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
 	const structures = gameState.getOwnStructures().toEntityArray();
 	for (const structure of structures)
