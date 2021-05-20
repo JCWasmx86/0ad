@@ -45,10 +45,16 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// losses.
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
-		for (const ent of gameState.getOwnEntities().toEntityArray())
-			ent.move(this.collectPosition[0], this.collectPosition[1]);
+		this.moveToPoint(this.collectPosition);
 	else
 		this.executeActions(gameState, events);
+};
+
+PETRA.EmergencyManager.prototype.moveToPoint = function(point)
+{
+	for (const ent of gameState.getOwnEntities().toEntityArray())
+		if(this.isMovableEntity(ent))
+			ent.move(point[0], point[1]);
 };
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
@@ -110,6 +116,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 				else
 				{
+					// Shall we exit emergency mode, if all are neutral now?
 					for (const req of this.sentRequests)
 						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
 					this.finishedWaiting = true;
@@ -147,11 +154,11 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			this.selectBattlePoint(gameState);
 
 		if (!this.isAtBattlePoint(gameState))
-			this.moveToBattlePoint(gameState);
+			this.moveToPoint(this.nextBattlePoint);
 		else if (this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
-			this.moveToBattlePoint(gameState);
+			this.moveToPoint(this.nextBattlePoint);
 		}
 		// Else wait until we or the enemy are dead.
 	}
@@ -180,14 +187,6 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
 {
 	return this.validEntity(ent) && ent.walkSpeed() > 0;
-};
-
-PETRA.EmergencyManager.prototype.moveToBattlePoint = function(gameState)
-{
-	const entities = gameState.getOwnEntities().toEntityArray();
-	for (const ent of entities)
-		if (this.isMovableEntity(ent))
-			ent.move(this.nextBattlePoint[0], this.nextBattlePoint[1]);
 };
 
 PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
@@ -344,12 +343,13 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 	if (entities.length == 0)
 		return;
 	else if (!gameState.getOwnStructures().hasEntities())
-		this.collectInAveragePosition(entities, gameState);
+		this.getAveragePosition(gameState);
 	else
-		this.gotoSpecialBuilding(entities, gameState);
+		this.getSpecialBuildingPosition(entities, gameState);
+	this.moveToPoint(this.collectPosition);
 };
 
-PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameState)
+PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities, gameState)
 {
 	let building;
 	// TODO: Find more buildings that are nice points
@@ -363,13 +363,11 @@ PETRA.EmergencyManager.prototype.gotoSpecialBuilding = function(entities, gameSt
 
 	if (!this.validEntity(building))
 	{
-		this.collectInAveragePosition(entities, gameState);
+		this.getAveragePosition(gameState);
 		return;
 	}
 	const position = building.position();
 	this.collectPosition = position;
-	for(const ent of entities)
-		ent.move(position[0], position[1]);
 };
 
 PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
@@ -410,17 +408,9 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 	return nearestStructure;
 };
 
-PETRA.EmergencyManager.prototype.collectInAveragePosition = function(entities, gameState)
+PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
 {
 	this.collectPosition = this.getAveragePositionOfMovableEntities(gameState);
-	for(const ent of entities)
-	{
-		if (this.isMovableEntity(ent))
-		{
-			ent.move(this.collectPosition[0], this.collectPosition[1]);
-			ent.setStance("standground");
-		}
-	}
 };
 
 PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
