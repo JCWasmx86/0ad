@@ -207,7 +207,7 @@ PETRA.Config = function(difficulty, behavior)
 	// Each number in this array is a "phase". This phase is reached,
 	// if this amount of population is reached.
 	// If the population is reduced, the phase is reduced, too.
-	// If the phase is reduced by two (TODO: Configurable), this is an emergency.
+	// If the phase is reduced by phasesToLoseUntilEmergency, this is an emergency.
 	this.phasesForSteadyDecline =
 	{
 		"50": [
@@ -219,11 +219,24 @@ PETRA.Config = function(difficulty, behavior)
 			65,
 			85
 		],
+		"150": [
+			40,
+			65,
+			85,
+			120
+		],
 		"200": [
 			40,
 			100,
 			140,
 			170
+		],
+		"250": [
+			40,
+			100,
+			140,
+			170,
+			220
 		],
 		"300": [
 			50,
@@ -258,6 +271,12 @@ PETRA.Config = function(difficulty, behavior)
 
 	// If this amount of phases is lost, trigger an emergency.
 	this.phasesToLoseUntilEmergency = 2;
+
+	// If the bot is attacked, this sets the delay for
+	// checking, how much percent of units/structures were lost.
+	// If this value is higher, it is easier, if it is lower,
+	// it is more difficult.
+	this.fastDestructionDelay = 60;
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)
