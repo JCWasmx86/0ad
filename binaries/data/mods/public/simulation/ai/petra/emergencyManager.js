@@ -10,7 +10,6 @@ PETRA.EmergencyManager = function(config)
 	// based on the change.
 	this.referencePopulation = 0;
 	this.referenceStructureCount = 0;
-	this.passed100Pop = false;
 	// Maximum number of built civic centres
 	this.peakCivicCentreCount = -1;
 	this.finishedMarching = false;
@@ -35,6 +34,32 @@ PETRA.EmergencyManager = function(config)
 	// the number of people reduced to less than this threshold factor
 	// then trigger an emergency.
 	this.attackThreshold = 0.4;
+
+	this.phases = [];
+	this.currentPhase = -1;
+	this.maxPhase = -1;
+};
+
+PETRA.EmergencyManager.prototype.initPhases = function(gameState)
+{
+	let maxPop = gameState.getPopulationMax();
+	let lastLimit = 0;
+	for (const populationLimit in this.Config.phasesForSteadyDecline)
+	{
+		if (maxPop == populationLimit)
+			break;
+		else if (maxPop > populationLimit)
+			lastLimit = Number(populationLimit);
+		else
+		{
+			let diffToHigherLimit = Math.abs(maxPop - populationLimit);
+			let diffToLowerLimit = Math.abs(maxPop - lastLimit);
+			if (diffToHigherLimit >= diffToLowerLimit)
+				lastLimit = populationLimit;
+				break;
+		}
+	}
+	this.phases = this.Config.phasesForSteadyDecline[lastLimit];
 };
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
@@ -80,7 +105,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				const tribute = {};
 				for (const resource of Resources.GetTributableCodes())
 				{
-					const tributableResourceCount = availableResources[resource] - 50;
+					const tributableResourceCount = availableResources[resource] - this.Config.retainedResourcesAfterTribute;
 					if (tributableResourceCount <= 0)
 					{
 						tribute[resource] = 0;
@@ -102,7 +127,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			// neutrality requests.
 			if (this.sentTributes && !this.finishedWaiting)
 			{
-				if (this.neutralityCounter < 30)
+				if (this.neutralityCounter < this.Config.neutralityRequestWaitingDuration)
 				{
 					this.neutralityCounter++;
 					for (const event of events.DiplomacyChanged)
@@ -135,7 +160,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			else
 			{
 				this.lastCounter = 0;
-				if (ownEntities.length * 4 < this.lastPeopleAlive)
+				if (ownEntities.length < this.Config.lossesForResign * this.lastPeopleAlive)
 				{
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
@@ -146,7 +171,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			{
 				if (!ent.get("Attack") || !ent.position())
 					continue;
-				if (API3.VectorDistance(ent.position(), this.collectPosition) > 75)
+				if (API3.VectorDistance(ent.position(), this.collectPosition) > this.Config.patrouilleRange)
 					ent.move(this.collectPosition[0], this.collectPosition[1]);
 			}
 		}
@@ -284,20 +309,19 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 {
 	const civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.peakCivicCentreCount = Math.max(this.peakCivicCentreCount, civicCentresCount);
-	if ((civicCentresCount == 0 && this.peakCivicCentreCount >=1) || this.peakCivicCentreCount - this.Config.civicCentreLossTrigger >= civicCentresCount)
+	if ((civicCentresCount == 0 && this.peakCivicCentreCount >= 1) || this.peakCivicCentreCount - this.Config.civicCentreLossTrigger >= civicCentresCount)
 		return true;
 	const currentPopulation = gameState.getPopulation();
-	if (!this.passed100Pop)
+	if (currentPopulation >= this.phases[this.currentPhase + 1])
 	{
-		this.passed100Pop = currentPopulation >= 100;
-		return false;
+		this.currentPhase++;
+		this.maxPhase = Math.max(this.currentPhase, this.maxPhase);
 	}
-	// When the population was by over 100
-	// and now is e.g. over 80, this could mean an attack lead by this
-	// bot => No reason for emergency.
-	if (currentPopulation >= 60)
-		return false;
-	return true;
+	else if (this.currentPhase >= 1 && this.currentPopulation < this.phases[this.currentPhase - 1])
+		this.currentPhase--;
+	if (this.maxPhase - this.currentPhase >= this.phasesToLoseUntilEmergency)
+		return true;
+	return false;
 };
 /**
  * Check whether an emergency is there. An emergency is, if a lot of
