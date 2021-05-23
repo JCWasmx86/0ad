@@ -159,6 +159,33 @@ PETRA.Config = function(difficulty, behavior)
 	};
 
 	this.garrisonHealthLevel = { "low": 0.4, "medium": 0.55, "high": 0.7 };
+
+	// In the emergency mode, the range around the position
+	// of all units in which no enemy should be to consider it
+	// free from enemies.
+	this.enemyDetectionRange = 125;
+
+	// Number of civic centres to lose until emergency
+	this.civicCentreLossTrigger = 2;
+
+	// Factors determining, how many percent of structures or
+	// population have to be around after a certain timespan to
+	// avoid triggering an emergency.
+	// [<populationFactor>,<structureFactor>]
+	this.emergencyFactors = [
+		// Sandbox, never emergency because of huge losses
+		[0.0, 0.0],
+		// Very easy
+		[0.8, 0.8],
+		// Easy
+		[0.7, 0.7],
+		// Medium
+		[0.6, 0.6],
+		// Hard
+		[0.2, 0.2],
+		// Very hard, never emergency because of huge losses
+		[0.0, 0.0]
+	];
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)
