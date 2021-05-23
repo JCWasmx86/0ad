@@ -53,7 +53,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
 	for (const ent of gameState.getOwnEntities().toEntityArray())
-		if(this.isMovableEntity(ent))
+		if (this.isMovableEntity(ent))
 			ent.move(point[0], point[1]);
 };
 
@@ -64,20 +64,20 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
-		if(personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		if (personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			const enemies = gameState.getEnemies();
 			let numEnemies = gameState.getNumPlayerEnemies();
 			for (const enemy of enemies)
 			{
-				if(gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
+				if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
 					continue;
 				const tribute = {};
 				for (const resource of Resources.GetTributableCodes())
 				{
 					const tributableResourceCount = availableResources[resource] - 50;
-					if(tributableResourceCount <= 0)
+					if (tributableResourceCount <= 0)
 					{
 						tribute[resource] = 0;
 						continue;
@@ -96,7 +96,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		{
 			// Check for every changed diplomacy in case of sent
 			// neutrality requests.
-			if(this.sentTributes && !this.finishedWaiting)
+			if (this.sentTributes && !this.finishedWaiting)
 			{
 				if (this.neutralityCounter < 30)
 				{
@@ -131,7 +131,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			else
 			{
 				this.lastCounter = 0;
-				if(ownEntities.length * 4 < this.lastPeopleAlive)
+				if (ownEntities.length * 4 < this.lastPeopleAlive)
 				{
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
@@ -174,7 +174,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	for (const enemy of gameState.getEnemyEntities().toEntityArray())
 	{
-		if(this.validEntity(enemy) && enemy.owner() != 0)
+		if (this.validEntity(enemy) && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < 125)
@@ -197,7 +197,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	let nearestEnemyDistance = 100000;
 	for (const enemy of enemies)
 	{
-		if(this.validEntity(enemy) && enemy.owner() != 0)
+		if (this.validEntity(enemy) && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
@@ -252,7 +252,7 @@ PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState
 
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 {
-	if(this.finishedMarching)
+	if (this.finishedMarching)
 		return false;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 		if (this.isMovableEntity(ent) && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
@@ -381,7 +381,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 	let averageWay = 1000000;
 	let nearestStructure;
 	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
-	if(potentialStructures.length == 0)
+	if (potentialStructures.length == 0)
 		return potentialStructures[0];
 	for(const structure of potentialStructures)
 	{
@@ -391,15 +391,15 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 		let nEntities = 0;
 		for(const ent of entities)
 		{
-			if(!this.validEntity(ent))
+			if (!this.validEntity(ent))
 				continue;
 			sumOfDistance += API3.VectorDistance(structure.position(), ent.position());
 			nEntities++;
 		}
-		if(nEntities == 0)
+		if (nEntities == 0)
 			continue;
 		const avgWayToThisStructure = sumOfDistance / nEntities;
-		if(averageWay > avgWayToThisStructure)
+		if (averageWay > avgWayToThisStructure)
 		{
 			averageWay = avgWayToThisStructure;
 			nearestStructure = structure;
