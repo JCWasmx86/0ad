@@ -178,7 +178,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	for (const enemy of gameState.getEnemyEntities().toEntityArray())
 	{
-		if (this.validEntity(enemy) && enemy.owner() != 0)
+		if (this.validEntity(enemy) && enemy.owner() > 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < this.Config.enemyDetectionRange)
