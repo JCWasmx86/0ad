@@ -101,7 +101,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				if (this.neutralityCounter < 30)
 				{
 					this.neutralityCounter++;
-					for(const event of events.DiplomacyChanged)
+					for (const event of events.DiplomacyChanged)
 					{
 						if (event.otherPlayer !== PlayerID)
 							continue;
@@ -383,13 +383,13 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
 	if (potentialStructures.length == 0)
 		return potentialStructures[0];
-	for(const structure of potentialStructures)
+	for (const structure of potentialStructures)
 	{
 		if (!this.validEntity(structure))
 			continue;
 		let sumOfDistance = 0;
 		let nEntities = 0;
-		for(const ent of entities)
+		for (const ent of entities)
 		{
 			if (!this.validEntity(ent))
 				continue;
