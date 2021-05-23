@@ -38,6 +38,8 @@ PETRA.EmergencyManager = function(config)
 	this.phases = [];
 	this.currentPhase = -1;
 	this.maxPhase = -1;
+
+	this.resignCheckDelay = 5;
 };
 
 PETRA.EmergencyManager.prototype.initPhases = function(gameState)
@@ -161,7 +163,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			}
 			if (this.lastPeopleAlive == -1)
 				this.lastPeopleAlive = movableEntitiesCount;
-			if (this.lastCounter < 5)
+			if (this.lastCounter < this.resignCheckDelay)
 				this.lastCounter++;
 			else
 			{
@@ -302,7 +304,7 @@ PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
 	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
 		return true;
 	// TODO: Check, whether this is an appropriate value; currently around 3 minutes
-	if (this.counterForCheckingEmergency < 60)
+	if (this.counterForCheckingEmergency < this.Config.fastDestructionDelay)
 	{
 		this.counterForCheckingEmergency++;
 		return false;
