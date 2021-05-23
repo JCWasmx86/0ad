@@ -178,7 +178,7 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 	// In the emergency mode, the range around the position
 	// of all units in which no enemy should be to consider it
 	// free from enemies.
-	this.enemyDetectionRange = 125;
+	this.enemyDetectionRange = 75;
 
 	// Number of civic centres to lose until emergency
 	this.civicCentreLossTrigger = 2;
@@ -223,7 +223,7 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 	// if this amount of population is reached.
 	// If the population is reduced, the phase is reduced, too.
 	// If the phase is reduced by two (TODO: Configurable), this is an emergency.
-	this.phasesForSteadyDecline = 
+	this.phasesForSteadyDecline =
 	{
 		"50": [
 			10,
