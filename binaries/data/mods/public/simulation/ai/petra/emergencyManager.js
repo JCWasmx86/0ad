@@ -42,7 +42,7 @@ PETRA.EmergencyManager = function(config)
 
 PETRA.EmergencyManager.prototype.initPhases = function(gameState)
 {
-	let maxPop = gameState.getPopulationMax();
+	const maxPop = gameState.getPopulationMax();
 	let lastLimit = 0;
 	for (const populationLimit in this.Config.phasesForSteadyDecline)
 	{
@@ -52,11 +52,11 @@ PETRA.EmergencyManager.prototype.initPhases = function(gameState)
 			lastLimit = Number(populationLimit);
 		else
 		{
-			let diffToHigherLimit = Math.abs(maxPop - populationLimit);
-			let diffToLowerLimit = Math.abs(maxPop - lastLimit);
+			const diffToHigherLimit = Math.abs(maxPop - populationLimit);
+			const diffToLowerLimit = Math.abs(maxPop - lastLimit);
 			if (diffToHigherLimit >= diffToLowerLimit)
 				lastLimit = populationLimit;
-				break;
+			break;
 		}
 	}
 	this.phases = this.Config.phasesForSteadyDecline[lastLimit];
@@ -153,14 +153,20 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			}
 			// Check whether to resign. (Here: If more than 75% were killed)
 			const ownEntities = gameState.getOwnEntities().toEntityArray();
+			let movableEntitiesCount = 0;
+			for (let ent of ownEntities)
+			{
+				if (ent.walkSpeed() > 0)
+					movableEntitiesCount++;
+			}
 			if (this.lastPeopleAlive == -1)
-				this.lastPeopleAlive = ownEntities.length;
+				this.lastPeopleAlive = movableEntitiesCount;
 			if (this.lastCounter < 5)
 				this.lastCounter++;
 			else
 			{
 				this.lastCounter = 0;
-				if (ownEntities.length < this.Config.lossesForResign * this.lastPeopleAlive)
+				if (movableEntitiesCount < this.Config.lossesForResign * this.lastPeopleAlive)
 				{
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
@@ -451,7 +457,6 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"counterForCheckingEmergency": this.counterForCheckingEmergency,
 		"referencePopulation": this.referencePopulation,
 		"referenceStructureCount": this.referenceStructureCount,
-		"passed100Pop": this.passed100Pop,
 		"peakCivicCentreCount": this.peakCivicCentreCount,
 		"finishedMarching": this.finishedMarching,
 		"collectPosition": this.collectPosition,
@@ -461,7 +466,10 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"sentRequests": this.sentRequests,
 		"lastCounter": this.lastCounter,
 		"neutralityCounter": this.neutralityCounter,
-		"finishedWaiting": this.finishedWaiting
+		"finishedWaiting": this.finishedWaiting,
+		"phases": this.phases,
+		"currentPhase": this.currentPhase,
+		"maxPhase": this.maxPhase
 	};
 };
 
