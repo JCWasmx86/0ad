@@ -70,6 +70,8 @@ PETRA.HQ.prototype.init = function(gameState, queues)
 	this.treasures.registerUpdates();
 	this.currentPhase = gameState.currentPhase();
 	this.decayingStructures = new Set();
+
+	this.emergencyManager.initPhases(gameState);
 };
 
 /**

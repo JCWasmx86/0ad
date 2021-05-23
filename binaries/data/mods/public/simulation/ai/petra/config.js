@@ -186,6 +186,78 @@ PETRA.Config = function(difficulty, behavior)
 		// Very hard, never emergency because of huge losses
 		[0.0, 0.0]
 	];
+
+	// How much of each resource should be saved, when sending
+	// tributes in case of emergency.
+	this.retainedResourcesAfterTribute = 50;
+
+	// How long to wait until the neutrality requests expire.
+	this.neutralityRequestWaitingDuration = 30;
+
+	// The size of the area around the collect point in case
+	// of emergency.
+	this.patrouilleRange = 75;
+
+	// If this percentage was killed in emergency mode, resign if
+	// this bot has defensive personality.
+	this.lossesForResign = 0.8;
+
+	// These are single phases used to check for steady decline.
+	// Each one has a key with the max population and an array.
+	// Each number in this array is a "phase". This phase is reached,
+	// if this amount of population is reached.
+	// If the population is reduced, the phase is reduced, too.
+	// If the phase is reduced by two (TODO: Configurable), this is an emergency.
+	this.phasesForSteadyDecline = 
+	{
+		"50": [
+			10,
+			20,
+		],
+		"100": [
+			40,
+			65,
+			85
+		],
+		"200": [
+			40,
+			100,
+			140,
+			170
+		],
+		"300": [
+			50,
+			150,
+			190,
+			225,
+			260
+		],
+		"400": [
+			75,
+			125,
+			175,
+			225,
+			275
+		],
+		"500": [
+			100,
+			175,
+			275,
+			350,
+			450
+		],
+		"600": [
+			125,
+			200,
+			300,
+			400,
+			500,
+			575
+		]
+	};
+
+	// If this amount of phases is lost, trigger an emergency.
+	this.phasesToLoseUntilEmergency = 2;
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)
