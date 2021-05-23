@@ -8,8 +8,8 @@ PETRA.EmergencyManager = function(config)
 	// Last number of workers+soldiers+siege machines or structures
 	// used for calculating, whether an emergency is there,
 	// based on the change.
-	this.population = 0;
-	this.numberOfStructures = 0;
+	this.referencePopulation = 0;
+	this.referenceStructureCount = 0;
 	this.passed100Pop = false;
 	// Maximum number of built civic centres
 	this.peakCivicCentreCount = -1;
@@ -31,6 +31,10 @@ PETRA.EmergencyManager = function(config)
 	// expire.
 	this.neutralityCounter = 0;
 	this.finishedWaiting = false;
+	// If the number of structures increased/stagnated, but
+	// the number of people reduced to less than this threshold factor
+	// then trigger an emergency.
+	this.attackThreshold = 0.4;
 };
 
 PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
@@ -177,7 +181,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 		if (this.validEntity(enemy) && enemy.owner() != 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
-			if (distance < 125)
+			if (distance < this.Config.enemyDetectionRange)
 				return false;
 		}
 	}
@@ -194,10 +198,11 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	const enemies = gameState.getEnemyEntities().toEntityArray();
 	let nearestEnemy;
-	let nearestEnemyDistance = 100000;
+	let nearestEnemyDistance = Infinity;
 	for (const enemy of enemies)
 	{
-		if (this.validEntity(enemy) && enemy.owner() != 0)
+		// Exclude Gaia and INVALID_PLAYER
+		if (this.validEntity(enemy) && enemy.owner() > 0)
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
@@ -279,7 +284,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 {
 	const civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.peakCivicCentreCount = Math.max(this.peakCivicCentreCount, civicCentresCount);
-	if ((civicCentresCount == 0 && this.peakCivicCentreCount >=1) || this.peakCivicCentreCount - 2 >= civicCentresCount)
+	if ((civicCentresCount == 0 && this.peakCivicCentreCount >=1) || this.peakCivicCentreCount - this.Config.civicCentreLossTrigger >= civicCentresCount)
 		return true;
 	const currentPopulation = gameState.getPopulation();
 	if (!this.passed100Pop)
@@ -300,39 +305,24 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
  */
 PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 {
-	const oldPopulation = this.population;
-	this.population = gameState.getPopulation();
+	const oldPopulation = this.referencePopulation;
+	this.referencePopulation = gameState.getPopulation();
 	if (oldPopulation == 0)
 		return false;
-	const oldNumberOfStructures = this.numberOfStructures;
-	this.numberOfStructures = gameState.getOwnStructures().length;
+	const oldNumberOfStructures = this.referenceStructureCount;
+	this.referenceStructureCount = gameState.getOwnStructures().length;
 	if (oldNumberOfStructures == 0)
 		return false;
-	const populationFactor = this.population / oldPopulation;
-	const structureFactor = this.numberOfStructures / oldNumberOfStructures;
+	const populationFactor = this.referencePopulation / oldPopulation;
+	const structureFactor = this.referenceStructureCount / oldNumberOfStructures;
 	// Growth means no emergency, no matter the difficulty
 	if (populationFactor >=1 && structureFactor >= 1)
 		return false;
 	// This means more an attack of the bot, no defense operation,
 	// no matter the difficulty.
-	if (structureFactor >= 1 || populationFactor >= 0.4)
+	if (structureFactor >= 1 || populationFactor >= this.attackThreshold)
 		return false;
-	const emergencyFactors = [
-		// [<popFactor>,<structureFactor>]
-		// Sandbox, never emergency because of huge losses
-		[0.0, 0.0],
-		// Very easy
-		[0.8, 0.8],
-		// Easy
-		[0.7, 0.7],
-		// Medium
-		[0.6, 0.6],
-		// Hard
-		[0.2, 0.2],
-		// Very hard, never emergency because of huge losses
-		[0.0, 0.0]
-	];
-	const emergencyFactor = emergencyFactors[this.Config.difficulty];
+	const emergencyFactor = this.Config.emergencyFactors[this.Config.difficulty];
 	return populationFactor < emergencyFactor[0] || structureFactor < emergencyFactor[1];
 };
 
@@ -378,7 +368,7 @@ PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
 // Find the average nearest building of a class for all entities.
 PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, className, entities)
 {
-	let averageWay = 1000000;
+	let averageWay = Infinity;
 	let nearestStructure;
 	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
 	if (potentialStructures.length == 0)
@@ -435,8 +425,8 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 	return {
 		"collectedTroops": this.collectedTroops,
 		"counterForCheckingEmergency": this.counterForCheckingEmergency,
-		"population": this.population,
-		"numberOfStructures": this.numberOfStructures,
+		"referencePopulation": this.referencePopulation,
+		"referenceStructureCount": this.referenceStructureCount,
 		"passed100Pop": this.passed100Pop,
 		"peakCivicCentreCount": this.peakCivicCentreCount,
 		"finishedMarching": this.finishedMarching,
