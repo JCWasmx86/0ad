@@ -156,7 +156,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			// Check whether to resign. (Here: If more than 75% were killed)
 			const ownEntities = gameState.getOwnEntities().toEntityArray();
 			let movableEntitiesCount = 0;
-			for (let ent of ownEntities)
+			for (const ent of ownEntities)
 			{
 				if (ent.walkSpeed() > 0)
 					movableEntitiesCount++;
