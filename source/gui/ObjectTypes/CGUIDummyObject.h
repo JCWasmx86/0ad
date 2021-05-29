@@ -35,7 +35,7 @@ class CGUIDummyObject : public IGUIObject
 public:
 	CGUIDummyObject(CGUI& pGUI) : IGUIObject(pGUI) {}
 
-	virtual void Draw() {}
+	virtual void Draw(CCanvas2D& UNUSED(canvas)) {}
 
 	/**
 	 * Empty can never be hovered. It is only a category.
