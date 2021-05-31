@@ -19,8 +19,8 @@
 
 #include "CInput.h"
 
+#include "graphics/Canvas2D.h"
 #include "graphics/FontMetrics.h"
-#include "graphics/ShaderManager.h"
 #include "graphics/TextRenderer.h"
 #include "gui/CGUI.h"
 #include "gui/CGUIScrollBarVertical.h"
@@ -1187,7 +1187,7 @@ void CInput::UpdateCachedSize()
 	m_GeneratedPlaceholderTextValid = false;
 }
 
-void CInput::Draw(CCanvas2D& UNUSED(canvas))
+void CInput::Draw(CCanvas2D& canvas)
 {
 	if (m_CursorBlinkRate > 0.0)
 	{
@@ -1209,7 +1209,7 @@ void CInput::Draw(CCanvas2D& UNUSED(canvas))
 	if (m_Mask && m_MaskChar->length() > 0)
 		mask_char = (*m_MaskChar)[0];
 
-	m_pGUI.DrawSprite(m_Sprite, m_CachedActualSize);
+	m_pGUI.DrawSprite(m_Sprite, canvas, m_CachedActualSize);
 
 	float scroll = 0.f;
 	if (m_ScrollBar && m_MultiLine)
@@ -1264,9 +1264,7 @@ void CInput::Draw(CCanvas2D& UNUSED(canvas))
 	float h = (float)font.GetHeight();
 	float ls = (float)font.GetLineSpacing();
 
-	CShaderTechniquePtr tech = g_Renderer.GetShaderManager().LoadEffect(str_gui_text);
-
-	CTextRenderer textRenderer(tech->GetShader());
+	CTextRenderer textRenderer;
 	textRenderer.Font(font_name);
 
 	// Set the Z to somewhat more, so we can draw a selected area between the
@@ -1398,7 +1396,7 @@ void CInput::Draw(CCanvas2D& UNUSED(canvas))
 							rect.right = m_CachedActualSize.right;
 					}
 
-					m_pGUI.DrawSprite(m_SpriteSelectArea, rect);
+					m_pGUI.DrawSprite(m_SpriteSelectArea, canvas, rect);
 				}
 
 				if (i < (int)it->m_ListOfX.size())
@@ -1426,8 +1424,6 @@ void CInput::Draw(CCanvas2D& UNUSED(canvas))
 
 	// Setup initial color (then it might change and change back, when drawing selected area)
 	textRenderer.Color(m_TextColor);
-
-	tech->BeginPass();
 
 	bool using_selected_color = false;
 
@@ -1517,30 +1513,28 @@ void CInput::Draw(CCanvas2D& UNUSED(canvas))
 		textRenderer.Translate(0.f, ls, 0.f);
 	}
 
-	textRenderer.Render();
+	canvas.DrawText(textRenderer);
 
 	if (cliparea != CRect())
 		glDisable(GL_SCISSOR_TEST);
 
-	tech->EndPass();
-
 	if (m_Caption->empty() && !m_PlaceholderText->GetRawString().empty())
-		DrawPlaceholderText(cliparea);
+		DrawPlaceholderText(canvas, cliparea);
 
 	// Draw scrollbars on top of the content
 	if (m_ScrollBar && m_MultiLine)
-		IGUIScrollBarOwner::Draw();
+		IGUIScrollBarOwner::Draw(canvas);
 
 	// Draw the overlays last
-	m_pGUI.DrawSprite(m_SpriteOverlay, m_CachedActualSize);
+	m_pGUI.DrawSprite(m_SpriteOverlay, canvas, m_CachedActualSize);
 }
 
-void CInput::DrawPlaceholderText(const CRect& clipping)
+void CInput::DrawPlaceholderText(CCanvas2D& canvas, const CRect& clipping)
 {
 	if (!m_GeneratedPlaceholderTextValid)
 		SetupGeneratedPlaceholderText();
 
-	m_GeneratedPlaceholderText.Draw(m_pGUI, m_PlaceholderColor, m_CachedActualSize.TopLeft(), clipping);
+	m_GeneratedPlaceholderText.Draw(m_pGUI, canvas, m_PlaceholderColor, m_CachedActualSize.TopLeft(), clipping);
 }
 
 void CInput::UpdateText(int from, int to_before, int to_after)
