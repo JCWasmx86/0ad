@@ -4,7 +4,7 @@ GameSettings.prototype.Attributes.Biome = class Biome extends GameSetting
 	{
 		this.biomes = loadBiomes();
 		this.biomeData = {};
-		for (let biome of this.biomes)
+		for (const biome of this.biomes)
 			this.biomeData[biome.Id] = biome;
 		this.cachedMapData = undefined;
 
@@ -30,15 +30,23 @@ GameSettings.prototype.Attributes.Biome = class Biome extends GameSetting
 			this.setBiome(this.getLegacySetting(attribs, "Biome"));
 	}
 
+	filterBiome(available)
+	{
+		if (typeof available === "string")
+			return biome => biome.Id.startsWith(available);
+
+		return biome => available.indexOf(biome.Id) !== -1;
+	}
+
 	onMapChange()
 	{
-		let mapData = this.settings.map.data;
+		const mapData = this.settings.map.data;
 		if (mapData && mapData.settings && mapData.settings.SupportedBiomes !== undefined)
 		{
 			if (mapData.settings.SupportedBiomes === this.cachedMapData)
 				return;
 			this.cachedMapData = mapData.settings.SupportedBiomes;
-			this.available = new Set(this.biomes.filter(biome => biome.Id.indexOf(mapData.settings.SupportedBiomes) !== -1)
+			this.available = new Set(this.biomes.filter(this.filterBiome(mapData.settings.SupportedBiomes))
 				.map(biome => biome.Id));
 			this.biome = "random";
 		}
@@ -79,7 +87,7 @@ GameSettings.prototype.Attributes.Biome = class Biome extends GameSetting
 
 		if (this.biome !== "random")
 			return false;
-		this.biome = pickRandom(this.available);
+		this.biome = pickRandom(Array.from(this.available));
 		return true;
 	}
 };
