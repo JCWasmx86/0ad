@@ -167,7 +167,6 @@ void GUIRenderer::UpdateDrawCallCache(const CGUI& pGUI, DrawCalls& Calls, const 
 			LOGERROR("Trying to use a sprite that doesn't exist (\"%s\").", SpriteName.c_str());
 			return;
 		}
-		
 		it = Sprites.emplace(SpriteName, std::move(sprite)).first;
 	}
 
