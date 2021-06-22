@@ -66,11 +66,6 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.currentPhase = cnter;
 	this.maxPhase = cnter;
 	// All other fields didn't change.
-	// Now cleanup the entire state we messed with
-	const neutrals = gameState.getNeutrals();
-	// Otherwise, the AI will later send troops there, that will just stand around.
-	for (const player of neutrals)
-		gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, player);
 };
 
 PETRA.EmergencyManager.prototype.initPhases = function(gameState)
@@ -141,6 +136,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			{
 				if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
 					continue;
+				gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, enemy);
 				const tribute = {};
 				for (const resource of Resources.GetTributableCodes())
 				{
