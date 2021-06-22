@@ -40,6 +40,37 @@ PETRA.EmergencyManager = function(config)
 	this.maxPhase = -1;
 
 	this.resignCheckDelay = 5;
+
+	// Used for limiting the amount of marching.
+	this.marchCounter = 0;
+};
+PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
+{
+	this.initPhases(gameState);
+	gameState.emergencyState = false;
+	this.collectedTroops = false;
+	this.counterForCheckingEmergency = 0;
+	this.referencePopulation = gameState.getPopulation();
+	this.referenceStructureCount = gameState.getOwnStructures().length;
+	this.peakCivicCentreCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
+	this.finishedMarching = false;
+	this.collectPosition = [-1, -1];
+	this.sentTributes = false;
+	let cnter = 0;
+	for(const treshold of this.phases)
+	{
+		if (treshold > this.referencePopulation)
+			break;
+		cnter++;
+	}
+	this.currentPhase = cnter;
+	this.maxPhase = cnter;
+	// All other fields didn't change.
+	// Now cleanup the entire state we messed with
+	const neutrals = gameState.getNeutrals();
+	// Otherwise, the AI will later send troops there, that will just stand around.
+	for (const player of neutrals)
+		gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, player);
 };
 
 PETRA.EmergencyManager.prototype.initPhases = function(gameState)
@@ -87,6 +118,12 @@ PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 		if (this.isMovableEntity(ent))
 			ent.move(point[0], point[1]);
 };
+PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
+{
+	return gameState.getOwnStructures().filter(ent => {
+		return ent && ent.get("TerritoryInfluence") !== undefined && ent.get("TerritoryInfluence").Root;
+	}).length != 0;
+};
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
@@ -95,7 +132,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
-		if (personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		if (personality.cooperative >= 0.15 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			const enemies = gameState.getEnemies();
@@ -147,10 +184,14 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 				else
 				{
-					// Shall we exit emergency mode, if all are neutral now?
 					for (const req of this.sentRequests)
 						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
 					this.finishedWaiting = true;
+					if (this.sentRequests.length == 0 && this.hasAvailableTerritoryRoot(gameState))
+					{
+						this.resetToNormal(gameState);
+						return;
+					}
 				}
 			}
 			// Check whether to resign. (Here: If more than 75% were killed)
@@ -190,8 +231,11 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		if (this.nextBattlePoint[0] == -1)
 			this.selectBattlePoint(gameState);
 
-		if (!this.isAtBattlePoint(gameState))
+		if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
+		{
+			this.marchCounter++;
 			this.moveToPoint(gameState, this.nextBattlePoint);
+		}
 		else if (this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
@@ -245,6 +289,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 			}
 		}
 	}
+	this.marchCounter = 0;
 	this.nextBattlePoint = nearestEnemy.position();
 };
 
@@ -258,7 +303,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 	let sumZ = 0;
 	for (const ent of entities)
 	{
-		if (this.validEntity(ent) && this.isMovableEntity(ent))
+		if (this.validEntity(ent) && this.isMovableEntity(ent) && !ent.hasClass("Ship"))
 		{
 			nEntities++;
 			const pos = ent.position();
@@ -292,9 +337,16 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 {
 	if (this.finishedMarching)
 		return false;
-	for (const ent of gameState.getOwnEntities().toEntityArray())
-		if (this.isMovableEntity(ent) && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
-			return true;
+	// Ships are excluded, as they can't reach every location.
+	// TODO: Add timer, as some units e.g. can't cross the ocean, thus leading to an infinite call of this
+	// method.
+	if (this.marchCounter < this.Config.maximumMarchingDuration)
+	{
+		this.marchCounter++;
+		for (const ent of gameState.getOwnEntities().toEntityArray())
+			if (this.isMovableEntity(ent) && !ent.hasClass("Ship") && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+				return true;
+	}
 	this.finishedMarching = true;
 	return false;
 };
@@ -303,7 +355,6 @@ PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
 {
 	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
 		return true;
-	// TODO: Check, whether this is an appropriate value; currently around 3 minutes
 	if (this.counterForCheckingEmergency < this.Config.fastDestructionDelay)
 	{
 		this.counterForCheckingEmergency++;
@@ -403,7 +454,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, classN
 	let averageWay = Infinity;
 	let nearestStructure;
 	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
-	if (potentialStructures.length == 0)
+	if (potentialStructures.length == 1)
 		return potentialStructures[0];
 	for (const structure of potentialStructures)
 	{
@@ -436,19 +487,13 @@ PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
 };
 
 PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
-	const structures = gameState.getOwnStructures().toEntityArray();
-	for (const structure of structures)
+	const garrisonManager = gameState.ai.HQ.garrisonManager;
+	const holders = garrisonManager.holders;
+	for (const [id, data] of holders.entries())
 	{
-		const garrisoned = structure.garrisoned();
-		if (garrisoned)
-		{
-			for (const entId of garrisoned)
-			{
-				const ent = gameState.getEntityById(entId);
-				if (ent.owner() === PlayerID)
-					structure.unload(entId);
-			}
-		}
+		for (const garrisonedEnt of data.list)
+			garrisonManager.leaveGarrison(gameState.getEntityById(garrisonedEnt));
+		holders.delete(id);
 	}
 };
 
