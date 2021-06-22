@@ -127,7 +127,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
-		if (personality.cooperative >= 0.15 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		if (personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
 			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			const enemies = gameState.getEnemies();
