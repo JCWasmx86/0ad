@@ -292,6 +292,10 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 	// If this value is higher, it is easier, if it is lower,
 	// it is more difficult.
 	this.fastDestructionDelay = 60;
+
+	// Limit how long the troops are maximum marching to get to the
+	// collect point.
+	this.maximumMarchingDuration = 100;
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)
