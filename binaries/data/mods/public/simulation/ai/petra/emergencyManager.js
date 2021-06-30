@@ -488,7 +488,11 @@ PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
 	for (const [id, data] of holders.entries())
 	{
 		for (const garrisonedEnt of data.list)
-			garrisonManager.leaveGarrison(gameState.getEntityById(garrisonedEnt));
+		{
+			const ent = gameState.getEntityById(garrisonedEnt);
+			if (ent)
+				garrisonManager.leaveGarrison(ent);
+		}
 		holders.delete(id);
 	}
 };
