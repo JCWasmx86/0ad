@@ -9,15 +9,15 @@
 # Martin H <pilino@posteo.de>, 2021
 # Latein Lebt, 2021
 # nautilusx, 2021
-# Heraklit of Ephesos, 2021
 # xtother90, 2021
+# Heraklit of Ephesos, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D. — Empires Ascendant\n"
 "POT-Creation-Date: 2021-06-07 07:53+0000\n"
 "PO-Revision-Date: 2021-04-23 16:19+0000\n"
-"Last-Translator: xtother90, 2021\n"
+"Last-Translator: Heraklit of Ephesos, 2021\n"
 "Language-Team: German (https://www.transifex.com/wildfire-games/teams/17418/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,19 +30,17 @@ msgctxt "Campaign Template"
 msgid ""
 "Discover the new maps in Alpha 25 with a demo campaign, taking you through "
 "all of them."
-msgstr ""
-"Entdecke die neuen Karten in Alpha 25 mit einer Demo-Kampagne, die sie dir "
-"alle vorstellt."
+msgstr "Eine Demo-Kampagne stellt Dir alle neuen Karten in Alpha 25 vor."
 
 #: campaigns/new_maps.jsonName
 msgctxt "Campaign Template"
 msgid "Demo campaign - new maps"
-msgstr "Demokampagne - Neue Karten"
+msgstr "Demo-Kampagne - neue Karten"
 
 #: campaigns/tutorial.jsonDescription
 msgctxt "Campaign Template"
 msgid "Learn how to play 0 A.D."
-msgstr "0 A.D. spielen lernen."
+msgstr "0 A.D. kennenlernen."
 
 #: campaigns/tutorial.jsonLevels.eco_walkthrough.Description
 msgctxt "Campaign Template"
@@ -62,7 +60,7 @@ msgstr ""
 #: campaigns/tutorial.jsonLevels.eco_walkthrough.Name
 msgctxt "Campaign Template"
 msgid "Economy Walkthrough"
-msgstr "Wirtschaftseinführung"
+msgstr "Einführung in die Wirtschaft"
 
 #: campaigns/tutorial.jsonLevels.introduction.Description
 msgctxt "Campaign Template"
@@ -92,11 +90,11 @@ msgstr "Verfügbar"
 #: gui/campaigns/default_menu/CampaignMenu.js:217
 #, javascript-format
 msgid "Error loading campaign run %s: %s."
-msgstr "Fehler beim Laden des Kampagnenlaufs %s: %s.-"
+msgstr "Fehler beim Laden des Durchlaufs %s: %s der Kampagne."
 
 #: gui/campaigns/default_menu/CampaignMenu.xml:(caption):14
 msgid "Campaign Name"
-msgstr "Kampagnenname"
+msgstr "Name der Kampagne"
 
 #: gui/campaigns/default_menu/CampaignMenu.xml:(caption):45
 msgid "No scenario selected"
@@ -121,7 +119,7 @@ msgstr "Gespeichertes Spiel fortsetzen"
 #: gui/campaigns/default_menu/CampaignMenu.xml:(heading):27
 msgctxt "campaignLevelList"
 msgid "Scenario Name"
-msgstr "Szenarioname"
+msgstr "Name des Szenarios"
 
 #: gui/campaigns/default_menu/CampaignMenu.xml:(heading):31
 msgctxt "campaignLevelList"
@@ -136,7 +134,7 @@ msgstr "Datei kann nicht geladen werden"
 #, javascript-format
 msgid "Are you sure you want to delete run %s? This cannot be undone."
 msgstr ""
-"Bist du sicher, dass du den Lauf %s löschen willst? Dies kann nicht "
+"Bist du sicher, dass du den Durchlauf %s löschen willst? Dies kann nicht "
 "rückgängig gemacht werden."
 
 #: gui/campaigns/load_modal/LoadModal.js:105
@@ -158,11 +156,11 @@ msgstr "Kampagne laden"
 
 #: gui/campaigns/load_modal/LoadModal.xml:(caption):20
 msgid "No ongoing campaigns."
-msgstr "Keine laufenden Kampagnen."
+msgstr "Keine laufenden Kampagnen"
 
 #: gui/campaigns/load_modal/LoadModal.xml:(caption):24
 msgid "Name of selected run:"
-msgstr "Name des gewählten Laufs:"
+msgstr "Name des gewählten Durchlaufs:"
 
 #: gui/campaigns/load_modal/LoadModal.xml:(caption):31
 #: gui/campaigns/new_modal/NewCampaignModal.xml:(caption):23
@@ -179,7 +177,7 @@ msgstr "Eine Kampagne starten"
 
 #: gui/campaigns/new_modal/NewCampaignModal.xml:(caption):16
 msgid "Please enter the name of your new campaign run:"
-msgstr "Gib einen Namen für deinen neuen Kampagnenlauf ein:"
+msgstr "Gib einen Namen für deinen neuen Durchlauf der Kampagne ein:"
 
 #: gui/campaigns/new_modal/NewCampaignModal.xml:(caption):27
 #: gui/campaigns/setup/CampaignSetupPage.xml:(caption):55
@@ -188,7 +186,7 @@ msgstr "Kampagne starten"
 
 #: gui/campaigns/setup/CampaignSetupPage.js:40
 msgid "No campaign selected."
-msgstr "Keine Kampagne ausgewählt."
+msgstr "Keine Kampagne ausgewählt"
 
 #: gui/campaigns/setup/CampaignSetupPage.xml:(caption):10
 msgid "Campaigns"
@@ -196,7 +194,7 @@ msgstr "Kampagnen"
 
 #: gui/campaigns/setup/CampaignSetupPage.xml:(caption):37
 msgid "No Campaign selected"
-msgstr "Keine Kampagne ausgewählt."
+msgstr "Keine Kampagne ausgewählt"
 
 #: gui/campaigns/setup/CampaignSetupPage.xml:(caption):50
 msgid "Main Menu"
