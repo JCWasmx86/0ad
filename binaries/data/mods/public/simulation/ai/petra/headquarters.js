@@ -617,7 +617,7 @@ PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 {
 	// default template
 	let requirementsDef = [ ["costsResource", 1, "food"] ];
-	let classesDef = ["Support", "Worker"];
+	const classesDef = ["Support+Worker"];
 	let templateDef = this.findBestTrainableUnit(gameState, classesDef, requirementsDef);
 
 	// counting the workers that aren't part of a plan
@@ -703,9 +703,9 @@ PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 		else
 			requirements = [ ["strength", 1] ];
 
-		let classes = ["CitizenSoldier", "Infantry"];
-		//  We want at least 33% ranged and 33% melee
-		classes.push(pickRandom(["Ranged", "Melee", "Infantry"]));
+		const classes = [["CitizenSoldier", "Infantry"]];
+		// We want at least 33% ranged and 33% melee.
+		classes[0].push(pickRandom(["Ranged", "Melee", "Infantry"]));
 
 		template = this.findBestTrainableUnit(gameState, classes, requirements);
 	}
@@ -724,10 +724,9 @@ PETRA.HQ.prototype.findBestTrainableUnit = function(gameState, classes, requirem
 	let units;
 	if (classes.indexOf("Hero") != -1)
 		units = gameState.findTrainableUnits(classes, []);
-	else if (classes.indexOf("Siege") != -1)	// We do not want siege tower as AI does not know how to use it
-		units = gameState.findTrainableUnits(classes, ["SiegeTower"]);
-	else						// We do not want hero when not explicitely specified
-		units = gameState.findTrainableUnits(classes, ["Hero"]);
+	// We do not want siege tower as AI does not know how to use it nor hero when not explicitely specified.
+	else
+		units = gameState.findTrainableUnits(classes, ["Hero", "SiegeTower"]);
 
 	if (!units.length)
 		return undefined;

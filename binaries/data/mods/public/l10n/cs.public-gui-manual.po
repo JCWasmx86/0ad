@@ -11,15 +11,15 @@
 # fri, 2014-2018
 # Petr Hála <halapetr@selfnet.cz>, 2016
 # Robin Kriebel <kriebel.robin@gmail.com>, 2016,2020
-# Tomáš Matýs <thommathys@gmail.com>, 2018
+# Tomáš Matýs <thommathys@gmail.com>, 2018,2021
 # Vladim Štér <vladim.ster94@gmail.com>, 2021
 # Vojtěch Valigura <Encounter@seznam.cz>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
 "POT-Creation-Date: 2021-06-07 07:53+0000\n"
-"PO-Revision-Date: 2021-07-05 15:07+0000\n"
-"Last-Translator: Lukáš Bačovský <l.bacovsky@gmail.com>\n"
+"PO-Revision-Date: 2021-07-21 11:08+0000\n"
+"Last-Translator: Tomáš Matýs <thommathys@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/wildfire-games/0ad/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,7 +106,7 @@ msgid ""
 "game or against one or more computer players (AI). The default AI (Petra) is"
 " under development and may not always be up to date on the new features, but"
 " you can play the game with or against it nonetheless."
-msgstr ""
+msgstr "• [font=\"sans-bold-14\"]Hra pro jednoho hráče[font=\"sans-14\"] – Hrajte hru v režimu pískoviště proti jednomu nebo více protivníkům s umělou inteligencí (AI). Výchozí umělá inteligence (Petra) je ve vývoji a nemusí být vždy aktuální na úrovni nových funkcí,  ale můžete hrát hru s nebo proti ní."
 
 #: gui/manual/intro.txt:21
 msgid ""
@@ -120,7 +120,7 @@ msgid ""
 " The game uses UDP port 20595, so the host must configure their "
 "NAT/firewall/etc. to allow this. Other players can then select “Join game” "
 "and enter the host's IP address."
-msgstr ""
+msgstr "Pro nastavení hry pro více hráčů musí jeden hráč vybrat možnost “Pořádat hru”. Hra používá port UDP 20595, takže pořadatel musí pro její povolení nastavit NAT/firewall/atd. Jiní hráči potom mohou vybrat “Připojit se ke hře” a zadat adresu IP pořadatele."
 
 #: gui/manual/intro.txt:25
 msgid "[font=\"sans-bold-16\"]Game setup[font=\"sans-14\"]"
@@ -144,7 +144,7 @@ msgstr "• [font=\"sans-bold-14\"]Náhodná Mapa[font=\"sans-14\"] – Mapa aut
 msgid ""
 "• [font=\"sans-bold-14\"]Scenario map[font=\"sans-14\"] – A map created by "
 "map designers and with fixed civilizations"
-msgstr ""
+msgstr "• [font=\"sans-bold-14\"]Mapa Scénáře[font=\"sans-14\"] – Mapa vytvořená návrháři s pevně přednastavenými civilizacemi"
 
 #: gui/manual/intro.txt:31
 msgid ""
@@ -159,7 +159,7 @@ msgid ""
 "over land and demo maps are maps used for testing purposes (generally not "
 "useful to play on). The “All Maps” filter shows all maps together in one "
 "list."
-msgstr ""
+msgstr "Potom lze mapy dále filtrovat. Výchozí mapy jsou všeobecně hratelné. Námořní mapy jsou mapami, kde ne všichni protivníci jsou dosažitelní po souši a ukázkové mapy se používají ke zkušebním účelům (obecně se moc hrát nedají). Filtr “Všechny mapy” ukazuje všechny mapy dohromady v jednom seznamu."
 
 #: gui/manual/intro.txt:35
 msgid ""
@@ -168,7 +168,7 @@ msgid ""
 "controls which player (decides where you start on the map etc.). The options"
 " are either a human player, an AI or no player at all (the opponent will "
 "just be idle)."
-msgstr ""
+msgstr "Nakonec změňte nastavení. U náhodných map jde o počet hráčů, velikost mapy atd. U scénářů můžete zvolit jen to, kdo ovládá kterého hráče (rozhoduje, kde na mapě začnete atd.). Možnosti jsou buď lidský hráč nebo umělá inteligence, nebo vůbec žádný hráč (protivník bude prostě zůstávat v nečinnosti)."
 
 #: gui/manual/intro.txt:37
 msgid "When you are ready to start, click the “Start game” button."
@@ -182,61 +182,61 @@ msgstr "[font=\"sans-bold-16\"]Klávesové zkratky[font=\"sans-14\"]"
 msgid ""
 "You may change hotkeys in [font=\"sans-bold-14\"]Options > "
 "Hotkeys[font=\"sans-14\"] to suit your liking."
-msgstr ""
+msgstr "Klávesové zkratky můžete změnit v nabídce [font=\"sans-bold-14\"]Možnosti > Klávesové zkratky[font=\"sans-14\"] podle svých představ."
 
 #: gui/manual/intro.txt:42
 msgid "[font=\"sans-bold-14\"]Program-wide[font=\"sans-14\"]"
-msgstr ""
+msgstr "[font=\"sans-bold-14\"]V celém programu[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:43
 msgid ""
 "  hotkey.exit – Immediately close the game, without asking for confirmation"
-msgstr ""
+msgstr "hotkey.exit – Okamžitě ukončit hru, bez potvrzení"
 
 #: gui/manual/intro.txt:44
 msgid "  hotkey.togglefullscreen – Toggle between fullscreen and windowed"
-msgstr ""
+msgstr "hotkey.togglefullscreen – Přepnout mezi režimem na celou obrazovku a okenním režimem"
 
 #: gui/manual/intro.txt:45
 msgid "  hotkey.console.toggle – Toggle console"
-msgstr ""
+msgstr "hotkey.console.toggle – Přepnout konzoli"
 
 #: gui/manual/intro.txt:46
 msgid "  hotkey.fps.toggle – Toggle frame counter (FPS)"
-msgstr ""
+msgstr " hotkey.fps.toggle – Přepnout počítadlo snímků (FPS)"
 
 #: gui/manual/intro.txt:47
 msgid ""
 "  hotkey.profile.toggle – Toggle real-time profiler (cycles through the "
 "displays of information)"
-msgstr ""
+msgstr " hotkey.profile.toggle – Přepnout profilování ve skutečném čase (přepíná se přes zobrazení informací)"
 
 #: gui/manual/intro.txt:48
 msgid ""
 "  hotkey.profile.save – Save current profiler data to “logs/profile.txt”"
-msgstr ""
+msgstr "hotkey.profile.save – Uložit data nynějšího profilu do “logs/profile.txt”"
 
 #: gui/manual/intro.txt:49
 msgid ""
 "  hotkey.screenshot – Take screenshot (in .png format, location is displayed"
 " in the top left of the GUI after the file has been saved, and can also be "
 "seen in the console/logs if you miss it there)"
-msgstr ""
+msgstr " hotkey.screenshot – Sejmout snímek obrazovky (ve formátu .png, umístění je zobrazeno v levé horní části uživatelského rozhraní, jakmile byl soubor uložen, a lze je také vidět v konzoli/zápisech, pokud je tu propásnete)"
 
 #: gui/manual/intro.txt:50
 msgid ""
 "  hotkey.bigscreenshot – Take huge screenshot (6400×4800 pixels, in .bmp "
 "format, location is displayed in the top left of the GUI after the file has "
 "been saved, and can also be seen in the console/logs if you miss it there)"
-msgstr ""
+msgstr " hotkey.bigscreenshot – Udělat obrovský snímek obrazovky (6400px*4800px, ve formátu .bmp, umístění je zobrazeno v levé horní části uživatelského rozhraní, jakmile byl soubor uložen, a lze je také vidět v konzoli/zápisech, pokud je tu propásnete)"
 
 #: gui/manual/intro.txt:51
 msgid "  hotkey.tab.next – Switch to the next tab"
-msgstr ""
+msgstr "hotkey.tab.next – Přepnout na další kartu"
 
 #: gui/manual/intro.txt:52
 msgid "  hotkey.tab.prev – Switch to the previous tab"
-msgstr ""
+msgstr "hotkey.tab.prev – Přepnout na předchozí kartu"
 
 #: gui/manual/intro.txt:54
 msgid "[font=\"sans-bold-14\"]In Game[font=\"sans-14\"]"
@@ -246,25 +246,25 @@ msgstr "[font=\"sans-bold-14\"]Ve hře[font=\"sans-14\"]"
 msgid ""
 "  Double Left Click \\[on unit] – Select all of your units of the same kind "
 "on the screen (even if they're different ranks)"
-msgstr ""
+msgstr "Dvojité klepnutí levým tlačítkem myši \\[na jednotku] – Vybrat všechny vaše jednotky téhož druhu na obrazovce (i když mají rozdílnou hodnost)"
 
 #: gui/manual/intro.txt:56
 msgid ""
 "  Triple Left Click \\[on unit] – Select all of your units of the same kind "
 "and the same rank on the screen"
-msgstr ""
+msgstr "Trojité klepnutí levým tlačítkem myši \\[na jednotku] – Vybrat všechny své na obrazovce se nacházející jednotky téhož typu"
 
 #: gui/manual/intro.txt:57
 msgid ""
 "  Alt + Double Left Click \\[on unit] – Select all your units of the same "
 "kind on the entire map (even if they have different ranks)"
-msgstr ""
+msgstr "Alt + dvojité klepnutí levým tlačítkem myši \\[na jednotku] – Vybrat všechny své stejné jednotky na mapě (i když jde o jednotky různých hodností)"
 
 #: gui/manual/intro.txt:58
 msgid ""
 "  Alt + Triple Left Click \\[on unit] – Select all your units of the same "
 "kind and rank on the entire map"
-msgstr ""
+msgstr "Alt + trojité klepnutí levým tlačítkem myši \\[na jednotku] – Vybrat všechny své na celé mapě se nacházející jednotky téhož typu a hodnosti"
 
 #: gui/manual/intro.txt:59
 msgid "  hotkey.quicksave – Quicksave"
@@ -276,15 +276,15 @@ msgstr "hotkey.quickload – Rychlonačtení"
 
 #: gui/manual/intro.txt:61
 msgid "  hotkey.session.gui.menu.toggle – Toggle menu"
-msgstr ""
+msgstr "hotkey.session.gui.menu.toggle – Přepnout nabídku"
 
 #: gui/manual/intro.txt:62
 msgid "  hotkey.timeelapsedcounter.toggle – Toggle time elapsed counter"
-msgstr ""
+msgstr "hotkey.timeelapsedcounter.toggle – Přepnout počítadlo uplynulého času"
 
 #: gui/manual/intro.txt:63
 msgid "  hotkey.cancel – Close all dialogs (chat, menu)"
-msgstr ""
+msgstr "hotkey.cancel – Zavřít všechna dialogová okna (chat, nabídka)"
 
 #: gui/manual/intro.txt:64
 msgid "  hotkey.confirm – Open chat or send message"
@@ -320,13 +320,13 @@ msgstr " • With hotkey.session.noconfirmation – Okamžite vymazat aktuálně
 msgid ""
 "  hotkey.selection.add – Modifier – add to selection (works with clicking "
 "and hotkeys, e.g. the idle hotkeys)"
-msgstr ""
+msgstr "hotkey.selection.add – Modifikátor – přidat do výběru (funguje s klikáním a klávesovými zkratkami, např. nečinné klávesové zkratky)"
 
 #: gui/manual/intro.txt:71
 msgid ""
 "  hotkey.selection.remove – Modifier – remove from selection (works with "
 "clicking and hotkeys, e.g. the idle hotkeys)"
-msgstr ""
+msgstr "hotkey.selection.remove –  Modifikátor – odebrat z výběru (funguje s klikáním a klávesovými zkratkami, např. nečinné klávesové zkratky)"
 
 #: gui/manual/intro.txt:72
 msgid ""
@@ -341,25 +341,25 @@ msgstr " hotkey.selection.cancel – Zrušit výběr všech jednotek či místa 
 
 #: gui/manual/intro.txt:74
 msgid "  hotkey.selection.idlebuilder – Select idle builder"
-msgstr ""
+msgstr "hotkey.selection.idlebuilder – Vyberte nečinného stavitele"
 
 #: gui/manual/intro.txt:75
 msgid "  hotkey.selection.idlewarrior – Select idle fighter"
-msgstr ""
+msgstr " hotkey.selection.idlewarrior – Vyberte nečinného bojovníka"
 
 #: gui/manual/intro.txt:76
 msgid ""
 "  hotkey.selection.idleworker – Select idle worker (including citizen-"
 "soldiers)"
-msgstr ""
+msgstr " hotkey.selection.idleworker – Vyberte nečinného pracovníka (včetně občanských vojáků)"
 
 #: gui/manual/intro.txt:77
 msgid "  hotkey.selection.idleunit – Select idle unit"
-msgstr ""
+msgstr " hotkey.selection.idleunit – Vyberte nečinnou jednotku"
 
 #: gui/manual/intro.txt:78
 msgid "  hotkey.session.stop – Stop (halt) the currently selected units"
-msgstr ""
+msgstr " hotkey.session.stop – Zastavit  (zastavit postup) nyní vybrané jednotky."
 
 #: gui/manual/intro.txt:79
 msgid "  hotkey.session.backtowork – The unit will go back to work"
@@ -369,7 +369,7 @@ msgstr " hotkey.session.backtowork – Jednotka se vrátí k práci"
 msgid ""
 "  hotkey.session.unload – Unload the garrisoned units of the selected "
 "structure(s)"
-msgstr ""
+msgstr "hotkey.session.unload – Vyložit obsazené jednotky vybrané stavby (staveb)"
 
 #: gui/manual/intro.txt:81
 msgid ""
@@ -387,7 +387,7 @@ msgstr "hotkey.selection.group.select.1 – Vyber jednotky/budovy z první kontr
 msgid ""
 "  hotkey.selection.group.add.1 – Add control group 1 (to 0) to the selected "
 "unit(s)/structure(s)"
-msgstr ""
+msgstr " hotkey.selection.group.add.1 – Přidejte kontrolní skupinu 1 (k 0) k vybrané jednotce (jednotkám) / stavbě (stavbám)"
 
 #: gui/manual/intro.txt:84
 msgid ""
@@ -399,7 +399,7 @@ msgstr " hotkey.camera.jump.set.1 – Označ současnou pozici umístění kamer
 msgid ""
 "  hotkey.camera.jump.1 – Move the camera to a marked position. Jump back to "
 "the last location if the camera is already over the marked position"
-msgstr ""
+msgstr " hotkey.camera.jump.1 – Přesunout kameru na označenou polohu. Skočit zpět na poslední místo, pokud je kamera již nad označenou polohou."
 
 #: gui/manual/intro.txt:86
 msgid ""
@@ -408,29 +408,29 @@ msgid ""
 "hotkey.session.queueunit.5, hotkey.session.queueunit.6, "
 "hotkey.session.queueunit.7 – With training structure selected. Add the 1st, "
 "2nd, … unit shown to the training queue for all the selected structures"
-msgstr ""
+msgstr "hotkey.session.queueunit.1, hotkey.session.queueunit.2, hotkey.session.queueunit.3, hotkey.session.queueunit.4, hotkey.session.queueunit.5, hotkey.session.queueunit.6, hotkey.session.queueunit.7 – S vybranou stavbou, kde probíhá výcvik. Přidejte 1., 2.,… zobrazenou jednotku do výcvikové fronty pro všechny vybrané stavby"
 
 #: gui/manual/intro.txt:87
 msgid ""
 "  hotkey.session.highlightguarded with unit(s) selected – Highlight the "
 "unit(s)/structure(s) guarded by the selection"
-msgstr ""
+msgstr "hotkey.session.highlightguarded s vybranou jednotkou (jednotkami) – Zvýrazněte jednotku (jednotky) / stavbu (stavby) střežené výběrem"
 
 #: gui/manual/intro.txt:88
 msgid ""
 "  hotkey.session.highlightguarding with unit(s)/structure(s) selected – "
 "Highlight the unit(s) guarding the selection"
-msgstr ""
+msgstr "hotkey.session.highlightguarding s vybranými jednotkou (jednotkami) / stavbou (stavbami) – Zvýrazněte jednotku (jednotky) chránící výběr"
 
 #: gui/manual/intro.txt:89
 msgid ""
 "  highlightguarding.showstatusbars – See all status bars (which would also "
 "show the building progress)"
-msgstr ""
+msgstr "highlightguarding.showstatusbars – Vidět všechny stavové proužky (čímž je současně ukázán i postup stavění)"
 
 #: gui/manual/intro.txt:90
 msgid "  hotkey.summary – Toggle summary window"
-msgstr ""
+msgstr "hotkey.summary – Přepnout okno shrnutí"
 
 #: gui/manual/intro.txt:91
 msgid "  hotkey.lobby – Show the multiplayer lobby in a dialog window"
@@ -438,29 +438,29 @@ msgstr "hotkey.lobby – Ukázat hráčské lobby v dialgovém okně"
 
 #: gui/manual/intro.txt:92
 msgid "  hotkey.session.gui.diplomacy.toggle – Toggle in-game diplomacy panel"
-msgstr ""
+msgstr "hotkey.session.gui.diplomacy.toggle – Přepnout panel diplomacie během hry"
 
 #: gui/manual/intro.txt:93
 msgid ""
 "  hotkey.session.gui.barter.toggle – Toggle in-game barter and trade panel"
-msgstr ""
+msgstr " hotkey.session.gui.barter.toggle – Přepnout během hry směnný a obchodní panel"
 
 #: gui/manual/intro.txt:94
 msgid ""
 "  hotkey.session.gui.objectives.toggle – Toggle in-game objectives panel"
-msgstr ""
+msgstr " hotkey.session.gui.objectives.toggle – Přepnout panel cílů během hry"
 
 #: gui/manual/intro.txt:95
 msgid "  hotkey.session.gui.tutorial.toggle – Toggle in-game tutorial panel"
-msgstr ""
+msgstr " hotkey.session.gui.tutorial.toggle – Přepnout panel výuky během hry"
 
 #: gui/manual/intro.txt:96
 msgid "  hotkey.structree – Toggle structure tree panel"
-msgstr ""
+msgstr "hotkey.structree – Přepnout panel  stromu staveb"
 
 #: gui/manual/intro.txt:97
 msgid "  hotkey.civinfo – Toggle civilization info panel"
-msgstr ""
+msgstr " hotkey.civinfo – Přepnout informační panel civilizace"
 
 #: gui/manual/intro.txt:99
 msgid "[font=\"sans-bold-14\"]Modify mouse action[font=\"sans-14\"]"
@@ -468,7 +468,7 @@ msgstr "[font=\"sans-bold-14\"]Nastavit možnost akce při stisknutí myši[font
 
 #: gui/manual/intro.txt:100
 msgid "  hotkey.session.garrison + Right Click on structure – Garrison"
-msgstr ""
+msgstr "hotkey.session.garrison + kliknutí na budovu pravým tlačítkem myši – Umísti posádku"
 
 #: gui/manual/intro.txt:101
 msgid "  hotkey.session.repair + Right Click on structure – Repair"
@@ -476,7 +476,7 @@ msgstr " hotkey.session.repair + kliknutí na budovu pravým tlačítkem myši �
 
 #: gui/manual/intro.txt:102
 msgid "  hotkey.session.patrol + Right Click – Patrol"
-msgstr ""
+msgstr "hotkey.session.patrol + kliknutí pravým tlačítkem myši – Hlídkuj"
 
 #: gui/manual/intro.txt:103
 msgid ""
@@ -489,13 +489,13 @@ msgid ""
 "  hotkey.session.orderone + Right Click – Order one unit from the current "
 "selection to move/build/gather/etc. and unselect it. Used to quickly "
 "dispatch units with specific tasks"
-msgstr ""
+msgstr "hotkey.session.orderone + klepnutí pravým tlačítkem myši – Přikažte jedné jednotce z nynějšího výběru, aby se přesunula / stavěla / sbírala / atd., a zrušte výběr. Používá se k rychlému odeslání jednotek se zvláštními úkoly."
 
 #: gui/manual/intro.txt:105
 msgid ""
 "  hotkey.session.batchtrain + Left Click when training units – Add units in "
 "batches (the batch size is 5 by default and can be changed in the options)"
-msgstr ""
+msgstr " hotkey.session.batchtrain + klepnutí levým tlačítkem myši při výcviku jednotek – Přidat jednotky ve skupinách (výchozí velikost je 5 a lze ji změnit ve volbách)"
 
 #: gui/manual/intro.txt:106
 msgid ""
@@ -519,156 +519,156 @@ msgstr " hotkey.selection.militaryonly + podržení a táhnutí levým tlačítk
 msgid ""
 "  hotkey.selection.nonmilitaryonly + Left Drag over units on map – Only "
 "select non-military units"
-msgstr ""
+msgstr "hotkey.selection.nonmilitaryonly + podržení a táhnutí levým tlačítkem myši přes jednotky na mapě – Vybere jen nevojenské jednotky"
 
 #: gui/manual/intro.txt:110
 msgid ""
 "  hotkey.selection.idleonly + Left Drag over units on map – Only select idle"
 " units"
-msgstr ""
+msgstr "hotkey.selection.idleonly + podržení a táhnutí levým tlačítkem myši přes jednotky na mapě – Vybere jen nečinné jednotky"
 
 #: gui/manual/intro.txt:111
 msgid ""
 "  hotkey.selection.woundedonly + Left Drag over units on map – Only select "
 "wounded units"
-msgstr ""
+msgstr "hotkey.selection.woundedonly + podržení a táhnutí levým tlačítkem myši přes jednotky na mapě – Vybere jen poraněné jednotky"
 
 #: gui/manual/intro.txt:112
 msgid ""
 "  Right Click with a structure(s) selected – Set a rally point for units "
 "created/ungarrisoned from that structure"
-msgstr ""
+msgstr "Klepnutí pravým tlačítkem myši, když je vybrána stavba(stavby) – Nastaví shromažďovací bod pro jednotky vytvořené/odvelené z té budovy"
 
 #: gui/manual/intro.txt:113
 msgid ""
 "  hotkey.session.garrison + Right Click with unit(s) selected – Garrison (If"
 " the cursor is over an own or allied structure)"
-msgstr ""
+msgstr " hotkey.session.garrison + Klepnutí pravým tlačítkem myši, když je vybrána jednotka(jednotky) – Umísti posádku (Pokud je kurzor nad vlastní nebo spojeneckou stavbou)"
 
 #: gui/manual/intro.txt:114
 msgid ""
 "  hotkey.session.attack + Right Click with unit(s) selected – Attack "
 "(instead of capture or gather)"
-msgstr ""
+msgstr "hotkey.session.attack + Klepnutí pravým tlačítkem myši, když je vybrána jednotka(jednotky) – Útoč (namísto zajmutí nebo shromažďování surovin)"
 
 #: gui/manual/intro.txt:115
 msgid ""
 "  hotkey.session.attackmove + Right Click with unit(s) selected – Attack "
 "move (by default all enemy units and structures along the way are targeted)"
-msgstr ""
+msgstr "hotkey.session.attackmove + Klepnutí pravým tlačítkem myši, když je vybrána jednotka(jednotky) – Útočný pohyb (ve výchozím nastavení jsou zaměřeny všechny nepřátelské jednotky a stavby po cestě)"
 
 #: gui/manual/intro.txt:116
 msgid ""
 "  hotkey.session.attackmoveUnit + Right Click with unit(s) selected – Attack"
 " move, only units along the way are targeted"
-msgstr ""
+msgstr " hotkey.session.attackmoveUnit + Klepnutí pravým tlačítkem myši, když je vybrána jednotka(jednotky) – Útočný pohyb, zaměřeny jsou pouze jednotky na cestě"
 
 #: gui/manual/intro.txt:117
 msgid ""
 "  hotkey.session.snaptoedges + Mouse Move near structures – Align the new "
 "structure with an existing nearby structure"
-msgstr ""
+msgstr "hotkey.session.snaptoedges + Pohyb myší v blízkosti staveb – Zarovnejte novou stavbu s existující stavbou poblíž v okolí"
 
 #: gui/manual/intro.txt:118
 msgid "  hotkey.session.flare + Right Click – Send a flare to your allies"
-msgstr ""
+msgstr "hotkey.session.flare + Klepnutí pravým tlačítkem myši – Pošlete světlici svým spojencům"
 
 #: gui/manual/intro.txt:120
 msgid "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
-msgstr ""
+msgstr "[font=\"sans-bold-14\"]Překrytí [font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:121
 msgid "  hotkey.session.gui.toggle – Toggle the GUI"
-msgstr ""
+msgstr "hotkey.session.gui.toggle – Přepnout GUI"
 
 #: gui/manual/intro.txt:122
 msgid ""
 "  hotkey.session.devcommands.toggle – Toggle developer overlay (with "
 "developer options)"
-msgstr ""
+msgstr "hotkey.session.devcommands.toggle – Přepnout vývojářské překrytí (s vývojářskými možnostmi )"
 
 #: gui/manual/intro.txt:123
 msgid ""
 "  hotkey.wireframe – Toggle wireframe mode (press once to get wireframes "
 "overlaid over the textured models, twice to get just the wireframes colored "
 "by the textures, thrice to get back to normal textured mode)"
-msgstr ""
+msgstr " hotkey.wireframe – Přepnout drátový režim (stisknout jednou pro pokrytí texturovaných modelů drátěnou kostrou, dvakrát pro získání drátěné sítě obarvené texturami, třikrát pro návrat do normálního texturovaného režimu)"
 
 #: gui/manual/intro.txt:124
 msgid ""
 "  hotkey.silhouettes – Toggle unit silhouettes (might give a small "
 "performance boost)"
-msgstr ""
+msgstr "hotkey.silhouettes – Přepnout obrysy jednotek (může mírně zlepšit výkon)"
 
 #: gui/manual/intro.txt:125
 msgid "  hotkey.session.diplomacycolors – Toggle diplomacy colors"
-msgstr ""
+msgstr " hotkey.session.diplomacycolors – Přepínat barvy diplomacie"
 
 #: gui/manual/intro.txt:126
 msgid ""
 "  hotkey.session.toggleattackrange – Toggle attack range visualizations of "
 "selected units and structures"
-msgstr ""
+msgstr "hotkey.session.toggleattackrange – Přepnout znázornění dosahu útočné aury vybraných jednotek a staveb"
 
 #: gui/manual/intro.txt:127
 msgid ""
 "  hotkey.session.toggleaurasrange – Toggle aura range visualizations of "
 "selected units and structures"
-msgstr ""
+msgstr "hotkey.session.toggleaurasrange – Přepnout znázornění dosahu aury vybraných jednotek a staveb"
 
 #: gui/manual/intro.txt:128
 msgid ""
 "  hotkey.session.togglehealrange – Toggle heal range visualizations of "
 "selected units"
-msgstr ""
+msgstr "hotkey.session.togglehealrange – Přepnout znázornění léčivého dosahu vybraných jednotek"
 
 #: gui/manual/intro.txt:130
 msgid "[font=\"sans-bold-14\"]Camera manipulation[font=\"sans-14\"]"
-msgstr ""
+msgstr "[font=\"sans-bold-14\"]Manipulace s kamerou[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:131
 msgid "  hotkey.camera.up – Pan screen up"
-msgstr ""
+msgstr "hotkey.camera.up – Pohybovat kamerou nahoru"
 
 #: gui/manual/intro.txt:132
 msgid "  hotkey.camera.down – Pan screen down"
-msgstr ""
+msgstr " hotkey.camera.down – Pohybovat kamerou dolů"
 
 #: gui/manual/intro.txt:133
 msgid "  hotkey.camera.left – Pan screen left"
-msgstr ""
+msgstr "hotkey.camera.left – Pohybovat kamerou doleva"
 
 #: gui/manual/intro.txt:134
 msgid "  hotkey.camera.right – Pan screen right"
-msgstr ""
+msgstr "hotkey.camera.right – Pohybovat kamerou doprava"
 
 #: gui/manual/intro.txt:135
 msgid "  hotkey.camera.rotate.up – Rotate camera to look upward"
-msgstr ""
+msgstr "hotkey.camera.rotate.up – Otáčet kamerou, aby pohled směřoval nahoru"
 
 #: gui/manual/intro.txt:136
 msgid "  hotkey.camera.rotate.down – Rotate camera to look downward"
-msgstr ""
+msgstr " hotkey.camera.rotate.down – Otáčet kamerou, aby pohled směřoval dolů"
 
 #: gui/manual/intro.txt:137
 msgid "  hotkey.camera.rotate.cw – Rotate camera clockwise around terrain"
-msgstr ""
+msgstr "hotkey.camera.rotate.cw – Otáčet kamerou po směru hodinových ručiček okolo terénu krajiny"
 
 #: gui/manual/intro.txt:138
 msgid ""
 "  hotkey.camera.rotate.ccw – Rotate camera counter-clockwise around terrain"
-msgstr ""
+msgstr "hotkey.camera.rotate.ccw – Otáčet kamerou proti směru hodinových ručiček okolo terénu krajiny"
 
 #: gui/manual/intro.txt:139
 msgid ""
 "  hotkey.camera.rotate.wheel.cw – Rotate camera clockwise around terrain"
-msgstr ""
+msgstr "hotkey.camera.rotate.wheel.cw – Otáčet kamerou po směru hodinových ručiček okolo terénu krajiny"
 
 #: gui/manual/intro.txt:140
 msgid ""
 "  hotkey.camera.rotate.wheel.ccw – Rotate camera counter-clockwise around "
 "terrain"
-msgstr ""
+msgstr " hotkey.camera.rotate.wheel.ccw – Otáčet kamerou proti směru hodinových ručiček okolo terénu krajiny"
 
 #: gui/manual/intro.txt:141
 msgid ""
@@ -684,21 +684,21 @@ msgstr " hotkey.camera.reset – Zresetujte přiblížení kamery a její orient
 msgid ""
 "  hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Zoom in (keep pressed"
 " for continuous zoom)"
-msgstr ""
+msgstr "hotkey.camera.zoom.in, hotkey.camera.zoom.wheel.in – Přiblížit (podržte stisknuté pro plynulé přiblížení)"
 
 #: gui/manual/intro.txt:144
 msgid ""
 "  hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Zoom out (keep "
 "pressed for continuous zoom)"
-msgstr ""
+msgstr " hotkey.camera.zoom.out, hotkey.camera.zoom.wheel.out – Oddálit (podržte stisknuté pro plynulé oddálení)"
 
 #: gui/manual/intro.txt:145
 msgid "  hotkey.camera.pan – Keep pressed and move the mouse to pan"
-msgstr ""
+msgstr " hotkey.camera.pan – Držte stisknutou myš a pohybem myší posouvejte"
 
 #: gui/manual/intro.txt:147
 msgid "[font=\"sans-bold-14\"]During Structure Placement[font=\"sans-14\"]"
-msgstr ""
+msgstr "[font=\"sans-bold-14\"]Během umístění stavby[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:148
 msgid ""
@@ -713,7 +713,7 @@ msgstr "hotkey.session.rotate.cw – Struktura rotace 15 stupňů ve směru hodi
 msgid ""
 "  Left Drag – Rotate structure using mouse (foundation will be placed on "
 "mouse release)"
-msgstr ""
+msgstr "Tažení levým tlačítkem myši – Otáčet stavbou pomocí myši (základ bude umístěn při uvolnění tlačítka myši)"
 
 #: gui/manual/intro.txt:152
 msgid "[font=\"sans-bold-14\"]When loading a saved game[font=\"sans-14\"]"
