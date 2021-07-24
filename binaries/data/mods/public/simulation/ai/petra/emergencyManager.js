@@ -14,7 +14,7 @@ PETRA.EmergencyManager = function(config)
 	this.peakCivicCentreCount = -1;
 	this.finishedMarching = false;
 	// Point to collect in case of emergency
-	this.collectPosition = [-1, -1];
+	this.musterPosition = [-1, -1];
 	this.sentTributes = false;
 	// Used in aggressive: The point where to go next.
 	this.nextBattlePoint = [-1, -1];
@@ -54,7 +54,7 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.referenceStructureCount = gameState.getOwnStructures().length;
 	this.peakCivicCentreCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.finishedMarching = false;
-	this.collectPosition = [-1, -1];
+	this.musterPosition = [-1, -1];
 	this.sentTributes = false;
 	let cnter = 0;
 	for(const treshold of this.phases)
@@ -102,7 +102,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// losses.
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
 	if (this.troopsMarching(gameState))
-		this.moveToPoint(gameState, this.collectPosition);
+		this.moveToPoint(gameState, this.musterPosition);
 	else
 		this.executeActions(gameState, events);
 };
@@ -123,19 +123,23 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	const personality = this.Config.personality;
-	if (personality.aggressive < personality.defensive)
+	const cmpPlayer = Engine.QueryInterface(this.entity, IID_Player);
+	if (personality.aggressive < personality.defensive && cmpPlayer && !cmpPlayer.GetLockTeams())
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
 		if (personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
 		{
-			const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 			const enemies = gameState.getEnemies();
 			let numEnemies = gameState.getNumPlayerEnemies();
 			for (const enemy of enemies)
 			{
 				if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
+				{
+					numEnemies--;
 					continue;
+				}
+				const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 				gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, enemy);
 				const tribute = {};
 				for (const resource of Resources.GetTributableCodes())
@@ -207,6 +211,15 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				this.lastCounter = 0;
 				if (movableEntitiesCount < this.Config.lossesForResign * this.lastPeopleAlive)
 				{
+					var allResources = gameState.ai.queueManager.getAvailableResources(gameState);
+					const allies = gameState.getAllies();
+					// Just give the first non-dead ally we can find all our resources
+					for (const ally of allies)
+						if (!gameState.ai.HQ.attackManager.defeated[ally])
+						{
+							Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": allResources });
+							break;
+						}
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
 				}
@@ -216,8 +229,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			{
 				if (!ent.get("Attack") || !ent.position())
 					continue;
-				if (API3.VectorDistance(ent.position(), this.collectPosition) > this.Config.patrouilleRange)
-					ent.move(this.collectPosition[0], this.collectPosition[1]);
+				if (API3.VectorDistance(ent.position(), this.musterPosition) > this.Config.patrouilleRange)
+					ent.move(this.musterPosition[0], this.musterPosition[1]);
 			}
 		}
 	}
@@ -249,16 +262,9 @@ PETRA.EmergencyManager.prototype.validEntity = function(ent)
 PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 {
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
-	for (const enemy of gameState.getEnemyEntities().toEntityArray())
-	{
-		if (this.validEntity(enemy) && enemy.owner() > 0)
-		{
-			const distance = API3.VectorDistance(enemy.position(), averagePosition);
-			if (distance < this.Config.enemyDetectionRange)
-				return false;
-		}
-	}
-	return true;
+	return !!gameState.getEnemyEntities().toEntityArray().find(e => this.validEntity(e) &&
+																e.owner() > 0 &&
+																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange);
 };
 
 PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
@@ -322,11 +328,7 @@ PETRA.EmergencyManager.prototype.isAtBattlePoint = function(gameState)
 PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState)
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-
-	for (const resource of Resources.GetTributableCodes())
-		if (availableResources[resource] < 50)
-			return false;
-	return true;
+	return !Resources.GetTributableCodes().find(r => availableResources[resource] < 50).length;
 };
 
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
@@ -340,7 +342,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	{
 		this.marchCounter++;
 		for (const ent of gameState.getOwnEntities().toEntityArray())
-			if (this.isMovableEntity(ent) && !ent.hasClass("Ship") && API3.VectorDistance(ent.position(), this.collectPosition) > 40)
+			if (this.isMovableEntity(ent) && !ent.hasClass("Ship") && API3.VectorDistance(ent.position(), this.musterPosition) > 40)
 				return true;
 	}
 	this.finishedMarching = true;
@@ -374,9 +376,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 	}
 	else if (this.currentPhase >= 1 && this.currentPopulation < this.phases[this.currentPhase - 1])
 		this.currentPhase--;
-	if (this.maxPhase - this.currentPhase >= this.phasesToLoseUntilEmergency)
-		return true;
-	return false;
+	return this.maxPhase - this.currentPhase >= this.phasesToLoseUntilEmergency;
 };
 /**
  * Check whether an emergency is there. An emergency is, if a lot of
@@ -409,77 +409,37 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 {
 	this.ungarrisonAllUnits(gameState);
 	const entities = gameState.getOwnEntities().toEntityArray();
-	if (entities.length == 0)
+	if (!entities.length)
 		return;
-	else if (!gameState.getOwnStructures().hasEntities())
-		this.getAveragePosition(gameState);
+	if (!gameState.getOwnStructures().hasEntities())
+		this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
 	else
 		this.getSpecialBuildingPosition(entities, gameState);
-	this.moveToPoint(gameState, this.collectPosition);
+	this.moveToPoint(gameState, this.musterPosition);
 };
 
 PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities, gameState)
 {
 	let building;
-	// TODO: Find more buildings that are nice points
-	// for the probably? last battle. Or collect around hero?
-	if (this.hasBuilding(gameState, "CivCentre"))
-		building = this.getSpecialBuilding(gameState, "CivCentre", entities);
-	else if (this.hasBuilding(gameState, "Temple"))
-		building = this.getSpecialBuilding(gameState, "Temple", entities);
-	else if (this.hasBuilding(gameState, "Dock"))
-		building = this.getSpecialBuilding(gameState, "Dock", entities);
-
+	gameState.getOwnStructures()
+	var roots = gameState.getOwnStructures().filter(ent => {
+		return ent && ent.get("TerritoryInfluence") !== undefined && ent.get("TerritoryInfluence").Root;
+	});
+	// The optimal solution would be probably getting the average distance from each
+	// entity to this building, but this would require a lot of calculation
+	if(roots.length)
+		building = roots[0];
 	if (!this.validEntity(building))
 	{
-		this.getAveragePosition(gameState);
+		this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
 		return;
 	}
-	const position = building.position();
-	this.collectPosition = position;
-};
-
-PETRA.EmergencyManager.prototype.hasBuilding = function(gameState, className)
-{
-	return gameState.getOwnEntitiesByClass(className).hasEntities();
-};
-
-// Find the average nearest building of a class for all entities.
-PETRA.EmergencyManager.prototype.getSpecialBuilding = function(gameState, className, entities)
-{
-	let averageWay = Infinity;
-	let nearestStructure;
-	const potentialStructures = gameState.getOwnEntitiesByClass(className).toEntityArray();
-	if (potentialStructures.length == 1)
-		return potentialStructures[0];
-	for (const structure of potentialStructures)
-	{
-		if (!this.validEntity(structure))
-			continue;
-		let sumOfDistance = 0;
-		let nEntities = 0;
-		for (const ent of entities)
-		{
-			if (!this.validEntity(ent))
-				continue;
-			sumOfDistance += API3.VectorDistance(structure.position(), ent.position());
-			nEntities++;
-		}
-		if (nEntities == 0)
-			continue;
-		const avgWayToThisStructure = sumOfDistance / nEntities;
-		if (averageWay > avgWayToThisStructure)
-		{
-			averageWay = avgWayToThisStructure;
-			nearestStructure = structure;
-		}
-	}
-	return nearestStructure;
+	this.musterPosition = building.position();;
 };
 
 PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
 {
-	this.collectPosition = this.getAveragePositionOfMovableEntities(gameState);
+	this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
 };
 
 PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
@@ -506,7 +466,7 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"referenceStructureCount": this.referenceStructureCount,
 		"peakCivicCentreCount": this.peakCivicCentreCount,
 		"finishedMarching": this.finishedMarching,
-		"collectPosition": this.collectPosition,
+		"musterPosition": this.musterPosition,
 		"sentTributes": this.sentTributes,
 		"nextBattlePoint": this.nextBattlePoint,
 		"lastPeopleAlive": this.lastPeopleAlive,

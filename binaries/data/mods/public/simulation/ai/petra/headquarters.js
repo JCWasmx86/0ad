@@ -2667,7 +2667,6 @@ PETRA.HQ.prototype.getAccountedWorkers = function(gameState)
 PETRA.HQ.prototype.update = function(gameState, queues, events)
 {
 	Engine.ProfileStart("Headquarters update");
-	gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre"));
 	if (this.emergencyManager.checkForEmergency(gameState))
 	{
 		gameState.emergencyState = true;
