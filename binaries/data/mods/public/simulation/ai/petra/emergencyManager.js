@@ -123,8 +123,7 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	const personality = this.Config.personality;
-	const cmpPlayer = Engine.QueryInterface(this.entity, IID_Player);
-	if (personality.aggressive < personality.defensive && cmpPlayer && !cmpPlayer.GetLockTeams())
+	if (personality.aggressive < personality.defensive && !gameState.sharedScript.playersData[PlayerID].teamsLocked)
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
@@ -217,6 +216,9 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					for (const ally of allies)
 						if (!gameState.ai.HQ.attackManager.defeated[ally])
 						{
+							const tribute = {};
+							for (const resource of Resources.GetTributableCodes())
+								tribute[resource] = allResources[resource];
 							Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": allResources });
 							break;
 						}
@@ -328,7 +330,7 @@ PETRA.EmergencyManager.prototype.isAtBattlePoint = function(gameState)
 PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState)
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-	return !Resources.GetTributableCodes().find(r => availableResources[resource] < 50).length;
+	return !!Resources.GetTributableCodes().find(r => availableResources[r] < 50);
 };
 
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
@@ -421,7 +423,6 @@ PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities, gameState)
 {
 	let building;
-	gameState.getOwnStructures()
 	var roots = gameState.getOwnStructures().filter(ent => {
 		return ent && ent.get("TerritoryInfluence") !== undefined && ent.get("TerritoryInfluence").Root;
 	});
@@ -434,7 +435,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities,
 		this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
 		return;
 	}
-	this.musterPosition = building.position();;
+	this.musterPosition = building.position();
 };
 
 PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
