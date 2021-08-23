@@ -79,6 +79,7 @@ that of Atlas depending on commandline parameters.
 #include "rlinterface/RLInterface.h"
 #include "scriptinterface/ScriptContext.h"
 #include "scriptinterface/ScriptEngine.h"
+#include "scriptinterface/ScriptInterface.h"
 #include "scriptinterface/JSON.h"
 #include "simulation2/Simulation2.h"
 #include "simulation2/system/TurnManager.h"
@@ -192,6 +193,8 @@ static InReaction MainInputHandler(const SDL_Event_* ev)
 		else
 		{
 			LOGMESSAGE("Installed mod %s", installer.GetInstalledMods().front());
+			ScriptInterface modInterface("Engine", "Mod", g_ScriptContext);
+			g_Mods.UpdateAvailableMods(modInterface);
 			RestartEngine();
 		}
 		break;
@@ -662,9 +665,16 @@ static void RunGameOrAtlas(int argc, const char* argv[])
 
 			// Install the mods without deleting the pyromod files
 			for (const OsPath& modPath : modsToInstall)
-				installer.Install(modPath, g_ScriptContext, true);
+			{
+				CModInstaller::ModInstallationResult result = installer.Install(modPath, g_ScriptContext, true);
+				if (result != CModInstaller::ModInstallationResult::SUCCESS)
+					LOGERROR("Failed to install '%s'", modPath.string8().c_str());
+			}
 
 			installedMods = installer.GetInstalledMods();
+
+			ScriptInterface modInterface("Engine", "Mod", g_ScriptContext);
+			g_Mods.UpdateAvailableMods(modInterface);
 		}
 
 		if (isNonVisual)

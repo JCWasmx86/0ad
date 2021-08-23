@@ -247,7 +247,7 @@ UnitAI.prototype.UnitFsmSpec = {
 
 	// Called when being told to walk as part of a formation
 	"Order.FormationWalk": function(msg) {
-		if (!this.AbleToMove())
+		if (!this.IsFormationMember() || !this.AbleToMove())
 			return this.FinishOrder();
 
 		if (this.CanPack())
@@ -868,6 +868,36 @@ UnitAI.prototype.UnitFsmSpec = {
 
 			this.CallMemberFunction("Heal", [msg.data.target, false]);
 
+			this.SetNextState("MEMBER");
+			return ACCEPT_ORDER;
+		},
+
+		"Order.CollectTreasure": function(msg) {
+			// TODO: on what should we base this range?
+			if (this.CheckTargetRangeExplicit(msg.data.target, 0, 20))
+			{
+				this.CallMemberFunction("CollectTreasure", [msg.data.target, false, false]);
+				this.SetNextState("MEMBER");
+
+				return ACCEPT_ORDER;
+			}
+			if (msg.data.secondTry || !this.CheckTargetVisible(msg.data.target))
+				return this.FinishOrder();
+
+			msg.data.secondTry = true;
+			this.PushOrderFront("WalkToTargetRange", { "target": msg.data.target, "min": 0, "max": 20 });
+			return ACCEPT_ORDER;
+		},
+
+		"Order.CollectTreasureNearPosition": function(msg) {
+			// TODO: on what should we base this range?
+			if (!this.CheckPointRangeExplicit(msg.data.x, msg.data.z, 0, 20))
+			{
+				this.PushOrderFront("WalkToPointRange", { "x": msg.data.x, "z": msg.data.z, "min": 0, "max": 20 });
+				return ACCEPT_ORDER;
+			}
+
+			this.CallMemberFunction("CollectTreasureNearPosition", [msg.data.x, msg.data.z, false, false]);
 			this.SetNextState("MEMBER");
 			return ACCEPT_ORDER;
 		},
@@ -5193,6 +5223,7 @@ UnitAI.prototype.GetTargetPositions = function()
 		case "ReturnResource":
 		case "Repair":
 		case "Garrison":
+		case "CollectTreasure":
 			var cmpTargetPosition = Engine.QueryInterface(order.data.target, IID_Position);
 			if (!cmpTargetPosition || !cmpTargetPosition.IsInWorld())
 				return targetPositions;
@@ -5930,16 +5961,12 @@ UnitAI.prototype.FindWalkAndFightTargets = function()
 {
 	if (this.IsFormationController())
 	{
-		let cmpUnitAI;
+		let foundSomething = false;
 		let cmpFormation = Engine.QueryInterface(this.entity, IID_Formation);
-		for (let ent of cmpFormation.members)
-		{
-			if (!(cmpUnitAI = Engine.QueryInterface(ent, IID_UnitAI)))
-				continue;
-			if (cmpUnitAI.FindWalkAndFightTargets())
-				return true;
-		}
-		return false;
+		for (const ent of cmpFormation.members)
+			if (Engine.QueryInterface(ent, IID_UnitAI)?.FindWalkAndFightTargets())
+				foundSomething = true;
+		return foundSomething;
 	}
 
 	let cmpAttack = Engine.QueryInterface(this.entity, IID_Attack);

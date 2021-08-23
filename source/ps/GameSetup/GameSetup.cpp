@@ -866,6 +866,7 @@ bool Init(const CmdLineArgs& args, int flags)
 	if (flags & INIT_MODS)
 	{
 		ScriptInterface modInterface("Engine", "Mod", g_ScriptContext);
+		g_Mods.UpdateAvailableMods(modInterface);
 		std::vector<CStr> mods;
 		if (args.Has("mod"))
 			mods = args.GetMultiple("mod");
@@ -876,7 +877,7 @@ bool Init(const CmdLineArgs& args, int flags)
 			boost::split(mods, modsStr, boost::algorithm::is_space(), boost::token_compress_on);
 		}
 
-		if (!g_Mods.EnableMods(modInterface, mods, flags & INIT_MODS_PUBLIC))
+		if (!g_Mods.EnableMods(mods, flags & INIT_MODS_PUBLIC))
 		{
 			// In non-visual mode, fail entirely.
 			if (args.Has("autostart-nonvisual"))
