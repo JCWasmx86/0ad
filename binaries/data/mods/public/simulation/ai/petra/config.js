@@ -204,7 +204,7 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 
 	// How much of each resource should be saved, when sending
 	// tributes in case of emergency.
-	this.retainedResourcesAfterTribute = 50;
+	this.retainedResourcesAfterTribute = 500;
 
 	// How long to wait until the neutrality requests expire.
 	this.neutralityRequestWaitingDuration = 30;

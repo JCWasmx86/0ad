@@ -572,7 +572,7 @@ PETRA.AttackManager.prototype.getEnemyPlayer = function(gameState, attack)
 
 /**
  * Target the player with the most advanced wonder.
- * TODO currently the first built wonder is kept, should chek on the minimum wonderDuration left instead.
+ * TODO currently the first built wonder is kept, should check on the minimum wonderDuration left instead.
  */
 PETRA.AttackManager.prototype.getWonderEnemyPlayer = function(gameState, attack)
 {

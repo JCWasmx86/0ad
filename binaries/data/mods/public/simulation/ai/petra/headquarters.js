@@ -2195,7 +2195,10 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 	Engine.ProfileStart("Headquarters update");
 	if (this.emergencyManager.checkForEmergency(gameState))
 	{
-		gameState.emergencyState = true;
+		gameState.emergencyState[PlayerID] = true;
+		this.garrisonManager.updateEmergency(gameState, events);
+		this.diplomacyManager.updateEmergency(gameState, events);
+		//this.attackManager.updateEmergency(gameState, events);
 		this.emergencyManager.handleEmergency(gameState, events);
 		Engine.ProfileStop();
 		return;
