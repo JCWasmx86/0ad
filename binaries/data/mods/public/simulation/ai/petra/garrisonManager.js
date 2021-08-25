@@ -11,6 +11,15 @@ PETRA.GarrisonManager = function(Config)
 	this.Config = Config;
 	this.holders = new Map();
 	this.decayingStructures = new Map();
+	this.inEmergency = false;
+};
+
+PETRA.GarrisonManager.prototype.updateEmergency = function(gameState, events) {
+	// We don't have anything else to do.
+	if (this.inEmergency)
+		return;
+	this.inEmergency = true;
+	this.ungarrisonAllUnits(gameState);
 };
 
 PETRA.GarrisonManager.prototype.update = function(gameState, events)
@@ -364,9 +373,22 @@ PETRA.GarrisonManager.prototype.removeDecayingStructure = function(entId)
 	this.decayingStructures.delete(entId);
 };
 
+PETRA.GarrisonManager.prototype.ungarrisonAllUnits = function(gameState) {
+	for (const [id, data] of this.holders.entries())
+	{
+		for (const garrisonedEnt of data.list)
+		{
+			const ent = gameState.getEntityById(garrisonedEnt);
+			if (ent)
+				this.leaveGarrison(ent);
+		}
+		this.holders.delete(id);
+	}
+};
+
 PETRA.GarrisonManager.prototype.Serialize = function()
 {
-	return { "holders": this.holders, "decayingStructures": this.decayingStructures };
+	return { "holders": this.holders, "decayingStructures": this.decayingStructures, "inEmergency": this.inEmergency };
 };
 
 PETRA.GarrisonManager.prototype.Deserialize = function(data)

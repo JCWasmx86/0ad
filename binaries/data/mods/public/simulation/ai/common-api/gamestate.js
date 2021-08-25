@@ -23,7 +23,7 @@ m.GameState.prototype.init = function(SharedScript, state, player)
 	this.alliedVictory = SharedScript.alliedVictory;
 	this.ceasefireActive = SharedScript.ceasefireActive;
 	this.ceasefireTimeRemaining = SharedScript.ceasefireTimeRemaining;
-
+	this.emergencyState = new Map();
 	// get the list of possible phases for this civ:
 	// we assume all of them are researchable from the civil center
 	this.phases = [];

@@ -32,6 +32,8 @@ PETRA.DiplomacyManager = function(Config)
 	this.receivedDiplomacyRequests = new Map();
 	this.sentDiplomacyRequests = new Map();
 	this.sentDiplomacyRequestLapseTime = 120 + randFloat(10, 100);
+	this.waitsForResponses = false;
+	this.responseCounter = -1;
 };
 
 /**
@@ -517,6 +519,92 @@ PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState
 			PETRA.chatNewRequestDiplomacy(gameState, player, data.requestType, "requestExpired");
 			this.sentDiplomacyRequests.delete(player);
 		}
+};
+
+PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events) {
+	const personality = this.Config.personality;
+	API3.warn(personality.aggressive < personality.defensive);
+	API3.warn(gameState.sharedScript.playersData[PlayerID].teamsLocked);
+	API3.warn(personality.cooperative >= 0.5);
+	API3.warn(this.enoughResourcesForTributes(gameState));
+	API3.warn(this.waitsForResponses);
+	if (personality.aggressive < personality.defensive
+			&& !gameState.sharedScript.playersData[PlayerID].teamsLocked
+			&& personality.cooperative >= 0.5
+			&& this.enoughResourcesForTributes(gameState)
+			&& !this.waitsForResponses)
+	{
+		API3.warn("defensive + !teamsLocked + cooperative + enoughResources + !waits");
+		if(!this.waitsForResponses) {
+			this.tryGettingNeutral(gameState);
+			this.responseCounter = 0;
+			API3.warn("Sent neutrality requests!");
+			this.waitsForResponses = true;
+		}
+	}
+	this.checkEvents(gameState, events);
+	if(this.waitsForResponses && gameState.getEnemies().length && this.responseCounter < this.Config.neutralityRequestWaitingDuration) {
+		API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
+		this.responseCounter++;
+	}
+};
+
+PETRA.DiplomacyManager.prototype.expiredNeutralityRequest = function() {
+	return this.responseCounter != -1 && this.responseCounter == this.Config.neutralityRequestWaitingDuration;
+}
+PETRA.DiplomacyManager.prototype.expireNeutralityRequests = function(gameState) {
+	for (let [player, data] of this.sentDiplomacyRequests) {
+		if (data.requestType == "neutral") {
+			PETRA.chatNewRequestDiplomacy(gameState, player, data.requestType, "requestExpired");
+			this.sentDiplomacyRequests.delete(player);
+		}
+	}
+};
+
+PETRA.DiplomacyManager.prototype.tryGettingNeutral = function(gameState) {
+	const enemies = gameState.getEnemies();
+	let numEnemies = gameState.getNumPlayerEnemies();
+	for (const enemy of enemies)
+	{
+		if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
+		{
+			numEnemies--;
+			continue;
+		}
+		gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, enemy);
+		this.sentDiplomacyRequests.set(enemy, {
+			"requestType": "neutral",
+			"timeSent": gameState.ai.elapsedTime
+		});
+		API3.warn("Sending neutrality request!");
+		Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": this.buildTributeForGettingNeutral(gameState, numEnemies) });
+		Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": "neutral" });
+		PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
+		numEnemies--;
+	}
+};
+
+PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameState, numEnemies) {
+	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	const tribute = {};
+	API3.warn("Making tribute");
+	for (const resource of Resources.GetTributableCodes())
+	{
+		const tributableResourceCount = availableResources[resource] - this.Config.retainedResourcesAfterTribute;
+		if (tributableResourceCount <= 0)
+		{
+			tribute[resource] = 0;
+			continue;
+		}
+		tribute[resource] = Math.round(tributableResourceCount / numEnemies);
+	}
+	return tribute;
+};
+
+PETRA.DiplomacyManager.prototype.enoughResourcesForTributes = function(gameState)
+{
+	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	return !(!!Resources.GetTributableCodes().find(r => availableResources[r] < 50));
 };
 
 PETRA.DiplomacyManager.prototype.update = function(gameState, events)

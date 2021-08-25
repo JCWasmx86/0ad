@@ -47,7 +47,7 @@ PETRA.EmergencyManager = function(config)
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 {
 	this.initPhases(gameState);
-	gameState.emergencyState = false;
+	gameState.emergencyState[PlayerID] = false;
 	this.collectedTroops = false;
 	this.counterForCheckingEmergency = 0;
 	this.referencePopulation = gameState.getPopulation();
@@ -109,6 +109,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
+	API3.warn("Moving to P(" + point[0] + "/" + point[1] + ")");
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 		if (this.isMovableEntity(ent))
 			ent.move(point[0], point[1]);
@@ -123,76 +124,56 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	const personality = this.Config.personality;
-	if (personality.aggressive < personality.defensive && !gameState.sharedScript.playersData[PlayerID].teamsLocked)
+	if (personality.aggressive < personality.defensive)
 	{
 		// If this bot is cooperative, it will send as much tributes as possible and will
 		// try to make peace with every enemy.
-		if (personality.cooperative >= 0.5 && this.enoughResourcesForTributes(gameState) && !this.sentTributes)
+		API3.warn("Defensive");
+		if (personality.cooperative >= 0.5 &&
+			!this.sentTributes &&
+			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
+			gameState.ai.HQ.diplomacyManager.enoughResourcesForTributes(gameState))
 		{
-			const enemies = gameState.getEnemies();
-			let numEnemies = gameState.getNumPlayerEnemies();
-			for (const enemy of enemies)
-			{
-				if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
-				{
-					numEnemies--;
-					continue;
-				}
-				const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-				gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, enemy);
-				const tribute = {};
-				for (const resource of Resources.GetTributableCodes())
-				{
-					const tributableResourceCount = availableResources[resource] - this.Config.retainedResourcesAfterTribute;
-					if (tributableResourceCount <= 0)
-					{
-						tribute[resource] = 0;
-						continue;
-					}
-					tribute[resource] = Math.round(tributableResourceCount / numEnemies);
-				}
-				this.sentRequests.push(enemy);
-				numEnemies--;
-				Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": tribute });
-				Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": "neutral" });
-				PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
-			}
+			API3.warn("Sent tributes!");
 			this.sentTributes = true;
 		}
 		else
 		{
 			// Check for every changed diplomacy in case of sent
 			// neutrality requests.
-			if (this.sentTributes && !this.finishedWaiting)
+			if (this.sentTributes && !gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
 			{
-				if (this.neutralityCounter < this.Config.neutralityRequestWaitingDuration)
-				{
-					this.neutralityCounter++;
-					for (const event of events.DiplomacyChanged)
-					{
-						if (event.otherPlayer !== PlayerID)
-							continue;
-						const index = this.sentRequests.indexOf(event.player);
-						if (index != -1)
-						{
-							Engine.PostCommand(PlayerID, { "type": "diplomacy", "player": event.player, "to": "neutral" });
-							PETRA.chatNewDiplomacy(gameState, event.player, "neutral");
-							this.sentRequests = this.sentRequests.filter(function(value, idx, arr){return idx != index;});
-						}
-					}
+				API3.warn("Waiting until neutrality!");
+				const enemies = gameState.getEnemies();
+				var numEnemies = 0;
+				for(const enemy of enemies) {
+					if(enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
+						continue;
+					numEnemies++;
 				}
-				else
-				{
-					for (const req of this.sentRequests)
-						PETRA.chatNewRequestDiplomacy(gameState, req, "neutral", "requestExpired");
-					this.finishedWaiting = true;
-					if (this.sentRequests.length == 0 && this.hasAvailableTerritoryRoot(gameState))
+				API3.warn("" + numEnemies + " are left!");
+				if(numEnemies == 0) {
+					if(this.hasAvailableTerritoryRoot(gameState))
 					{
+						API3.warn("Back to normal");
+						gameState.emergencyState[PlayerID] = false;
 						this.resetToNormal(gameState);
-						return;
 					}
+					else
+					{
+						API3.warn("No root found");
+					}
+					return;
 				}
+				if(!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest()) {
+					API3.warn("Still waiting");
+					return;
+				}
+				API3.warn("Expired!");
+				gameState.ai.HQ.diplomacyManager.expireNeutraliyRequests(gameState);
+				return;
 			}
+			API3.warn("HEREEEE!");
 			// Check whether to resign. (Here: If more than 75% were killed)
 			const ownEntities = gameState.getOwnEntities().toEntityArray();
 			let movableEntitiesCount = 0;
@@ -238,6 +219,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	}
 	else
 	{
+		API3.warn("Aggressive");
 		// Select initial battle point
 		if (this.nextBattlePoint[0] == -1)
 			this.selectBattlePoint(gameState);
@@ -327,12 +309,6 @@ PETRA.EmergencyManager.prototype.isAtBattlePoint = function(gameState)
 	return API3.VectorDistance(averagePosition, this.nextBattlePoint) < 75;
 };
 
-PETRA.EmergencyManager.prototype.enoughResourcesForTributes = function(gameState)
-{
-	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-	return !!Resources.GetTributableCodes().find(r => availableResources[r] < 50);
-};
-
 PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 {
 	if (this.finishedMarching)
@@ -353,7 +329,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 
 PETRA.EmergencyManager.prototype.checkForEmergency = function(gameState)
 {
-	if (gameState.emergencyState || this.steadyDeclineCheck(gameState))
+	if (gameState.emergencyState[PlayerID] || this.steadyDeclineCheck(gameState))
 		return true;
 	if (this.counterForCheckingEmergency < this.Config.fastDestructionDelay)
 	{
@@ -409,7 +385,6 @@ PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 
 PETRA.EmergencyManager.prototype.collectTroops = function(gameState)
 {
-	this.ungarrisonAllUnits(gameState);
 	const entities = gameState.getOwnEntities().toEntityArray();
 	if (!entities.length)
 		return;
@@ -441,21 +416,6 @@ PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities,
 PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
 {
 	this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
-};
-
-PETRA.EmergencyManager.prototype.ungarrisonAllUnits = function(gameState) {
-	const garrisonManager = gameState.ai.HQ.garrisonManager;
-	const holders = garrisonManager.holders;
-	for (const [id, data] of holders.entries())
-	{
-		for (const garrisonedEnt of data.list)
-		{
-			const ent = gameState.getEntityById(garrisonedEnt);
-			if (ent)
-				garrisonManager.leaveGarrison(ent);
-		}
-		holders.delete(id);
-	}
 };
 
 PETRA.EmergencyManager.prototype.Serialize = function()
