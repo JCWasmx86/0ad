@@ -737,6 +737,21 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	return true;
 };
 
+PETRA.AttackManager.prototype.updateEmergency = function() {
+	// First call will stop all attacks, the second call to this
+	// function will essentially be a no-op.
+	for (let attackType in this.upcomingAttacks)
+		for (let attack of this.upcomingAttacks[attackType])
+			attack.targetPlayer = undefined;
+	for (let attackType in this.startedAttacks)
+		for (let i = 0; i < this.startedAttacks[attackType].length; ++i)
+		{
+			let attack = this.startedAttacks[attackType][i];
+			attack.Abort(gameState);
+			this.startedAttacks[attackType].splice(i--, 1);
+		}
+};
+
 PETRA.AttackManager.prototype.Serialize = function()
 {
 	let properties = {

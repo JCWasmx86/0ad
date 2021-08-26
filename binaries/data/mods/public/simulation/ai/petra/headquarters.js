@@ -2672,10 +2672,10 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 		// TODO: Stop recruiting
 		this.garrisonManager.updateEmergency(gameState, events);
 		this.diplomacyManager.updateEmergency(gameState, events);
-		//this.attackManager.updateEmergency(gameState, events);
+		this.attackManager.updateEmergency(gameState, events);
 		this.emergencyManager.handleEmergency(gameState, events);
 		if (!gameState.emergencyState[playerID]) {
-			// Garrisonmanager will do everything by itself
+			// GarrisonManager, AttackManager will do everything by themselves
 			this.diplomacyManager.exitEmergency(gameState);
 		}
 		Engine.ProfileStop();
