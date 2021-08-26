@@ -753,7 +753,7 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	return true;
 };
 
-PETRA.AttackManager.prototype.updateEmergency = function() {
+PETRA.AttackManager.prototype.updateEmergency = function(gameState) {
 	// First call will stop all attacks, the second call to this
 	// function will essentially be a no-op.
 	for (const attackType in this.upcomingAttacks)
