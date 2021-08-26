@@ -156,14 +156,16 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				API3.warn("Waiting until neutrality!");
 				const enemies = gameState.getEnemies();
 				var numEnemies = 0;
-				for(const enemy of enemies) {
-					if(enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
+				for (const enemy of enemies)
+				{
+					if (enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
 						continue;
 					numEnemies++;
 				}
 				API3.warn("" + numEnemies + " are left!");
-				if(numEnemies == 0) {
-					if(this.hasAvailableTerritoryRoot(gameState))
+				if (numEnemies == 0)
+				{
+					if (this.hasAvailableTerritoryRoot(gameState))
 					{
 						API3.warn("Back to normal");
 						gameState.emergencyState[PlayerID] = false;
@@ -175,7 +177,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					}
 					return;
 				}
-				if(!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest()) {
+				if (!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
+				{
 					API3.warn("Still waiting");
 					return;
 				}
@@ -215,7 +218,9 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 						}
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
-				} else if (movableEntitiesCount >= this.lastPeopleAlive * (1 + this.Config.lossesForResign / 2)) {
+				}
+				else if (movableEntitiesCount >= this.lastPeopleAlive * (1 + this.Config.lossesForResign / 2))
+				{
 					if(backToNormalCounter < this.Config.defensiveStateDuration)
 						this.backToNormalCounter++;
 					else
