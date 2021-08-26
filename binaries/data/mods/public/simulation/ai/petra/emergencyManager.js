@@ -43,6 +43,8 @@ PETRA.EmergencyManager = function(config)
 
 	// Used for limiting the amount of marching.
 	this.marchCounter = 0;
+
+	this.lastPoint = [-1, -1];
 };
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 {
@@ -109,7 +111,11 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
-	API3.warn("Moving to P(" + point[0] + "/" + point[1] + ")");
+	// Otherwise the people would walk a few steps, stay still, continue
+	// to walk until the destination is reached.
+	if(this.lastPoint == point)
+		return;
+	this.lastPoint = point;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 		if (this.isMovableEntity(ent))
 			ent.move(point[0], point[1]);
