@@ -566,6 +566,7 @@ PETRA.DiplomacyManager.prototype.tryGettingNeutral = function(gameState) {
 	let numEnemies = gameState.getNumPlayerEnemies();
 	for (const enemy of enemies)
 	{
+		// Exclude Gaia and defeated enemies
 		if (gameState.ai.HQ.attackManager.defeated[enemy] || enemy == 0)
 		{
 			numEnemies--;
@@ -596,7 +597,8 @@ PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameSt
 			tribute[resource] = 0;
 			continue;
 		}
-		tribute[resource] = Math.round(tributableResourceCount / numEnemies);
+		// Weird bugfix.
+		tribute[resource] = Math.round(tributableResourceCount / (numEnemies == 0 ? 1 : numEnemies));
 	}
 	return tribute;
 };
@@ -605,6 +607,11 @@ PETRA.DiplomacyManager.prototype.enoughResourcesForTributes = function(gameState
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 	return !(!!Resources.GetTributableCodes().find(r => availableResources[r] < 50));
+};
+
+PETRA.DiplomacyManager.prototype.exitEmergency = function(gameState, events) {
+	this.waitsForResponses = false;
+	this.responseCounter = -1;
 };
 
 PETRA.DiplomacyManager.prototype.update = function(gameState, events)
@@ -645,7 +652,9 @@ PETRA.DiplomacyManager.prototype.Serialize = function()
 		"betrayWeighting": this.betrayWeighting,
 		"receivedDiplomacyRequests": this.receivedDiplomacyRequests,
 		"sentDiplomacyRequests": this.sentDiplomacyRequests,
-		"sentDiplomacyRequestLapseTime": this.sentDiplomacyRequestLapseTime
+		"sentDiplomacyRequestLapseTime": this.sentDiplomacyRequestLapseTime,
+		"waitsForResponses": this.waitsForResponses,
+		"responseCounter": this.responseCounter
 	};
 };
 

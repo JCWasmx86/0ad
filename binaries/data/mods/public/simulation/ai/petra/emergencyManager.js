@@ -39,13 +39,14 @@ PETRA.EmergencyManager = function(config)
 	this.currentPhase = -1;
 	this.maxPhase = -1;
 
-	this.resignCheckDelay = 5;
-
 	// Used for limiting the amount of marching.
 	this.marchCounter = 0;
-
+	// Used as a workaround for walking bug
 	this.lastPoint = [-1, -1];
+	// Counter for checking whether to return to normal, if defensive+!cooperative
+	this.backToNormalCounter = 0;
 };
+
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 {
 	this.initPhases(gameState);
@@ -67,6 +68,9 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	}
 	this.currentPhase = cnter;
 	this.maxPhase = cnter;
+	this.marchCounter = 0;
+	this.lastPoint = [-1, -1];
+	this.backToNormalCounter = 0;
 	// All other fields didn't change.
 };
 
@@ -190,7 +194,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			}
 			if (this.lastPeopleAlive == -1)
 				this.lastPeopleAlive = movableEntitiesCount;
-			if (this.lastCounter < this.resignCheckDelay)
+			if (this.lastCounter < this.Config.resignCheckDelay)
 				this.lastCounter++;
 			else
 			{
@@ -211,6 +215,16 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 						}
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
+				} else if (movableEntitiesCount >= this.lastPeopleAlive * (1 + this.Config.lossesForResign / 2)) {
+					if(backToNormalCounter < this.Config.defensiveStateDuration)
+						this.backToNormalCounter++;
+					else
+					{
+						API3.warn("defensive + !cooperative: Back to normal");
+						gameState.emergencyState[playerID] = false;
+						this.resetToNormal(gameState);
+						return;
+					}
 				}
 			}
 			// "Patrol" around the collect position.
@@ -363,7 +377,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 	return this.maxPhase - this.currentPhase >= this.phasesToLoseUntilEmergency;
 };
 /**
- * Check whether an emergency is there. An emergency is, if a lot of
+ * Check whether this is an emergency. An emergency is, if a lot of
  * people are killed and/or a lot of buildings are destroyed.
  */
 PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
@@ -443,7 +457,10 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"finishedWaiting": this.finishedWaiting,
 		"phases": this.phases,
 		"currentPhase": this.currentPhase,
-		"maxPhase": this.maxPhase
+		"maxPhase": this.maxPhase,
+		"marchCounter": this.marchCounter,
+		"testPoint": this.testPoint,
+		"backToNormalCounter": this.backToNormalCounter
 	};
 };
 

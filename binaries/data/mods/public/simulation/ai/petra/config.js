@@ -296,6 +296,14 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 	// Limit how long the troops are maximum marching to get to the
 	// collect point.
 	this.maximumMarchingDuration = 100;
+
+	// How often to check, whether the AI should resign, after it
+	// collected on one point.
+	this.resignCheckDelay = 5;
+
+	// How often the AI should check, whether there were any losses
+	// in emergency mode until it returns to normal.
+	this.defensiveStateDuration = 20;
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)
