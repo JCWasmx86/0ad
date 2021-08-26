@@ -217,7 +217,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
 				}
-				else if (movableEntitiesCount >= this.lastPeopleAlive * ( (1 + this.Config.lossesForResign) / 2))
+				else if (movableEntitiesCount >= this.lastPeopleAlive * ((1 + this.Config.lossesForResign) / 2))
 				{
 					API3.warn("Waiting until returning: " + this.backToNormalCounter + "/" + this.Config.defensiveStateDuration);
 					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
@@ -243,7 +243,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	}
 	else
 	{
-		// TODO: Destroy all our buildings? 
+		// TODO: Destroy all our buildings?
 		API3.warn("Aggressive");
 		// Select initial battle point
 		if (this.nextBattlePoint[0] == -1)
