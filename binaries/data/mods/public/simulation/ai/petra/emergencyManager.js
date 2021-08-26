@@ -136,8 +136,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
-		// If this bot is cooperative, it will send as much tributes as possible and will
-		// try to make peace with every enemy.
 		API3.warn("Defensive");
 		if (personality.cooperative >= 0.5 &&
 			!this.sentTributes &&
@@ -149,8 +147,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		}
 		else
 		{
-			// Check for every changed diplomacy in case of sent
-			// neutrality requests.
 			if (this.sentTributes && !gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
 			{
 				API3.warn("Waiting until neutrality!");
@@ -223,7 +219,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				{
 					if (backToNormalCounter < this.Config.defensiveStateDuration)
 						this.backToNormalCounter++;
-					else
+					else if (this.hasAvailableTerritoryRoot(gameState))
 					{
 						API3.warn("defensive + !cooperative: Back to normal");
 						gameState.emergencyState[playerID] = false;
@@ -339,8 +335,6 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	if (this.finishedMarching)
 		return false;
 	// Ships are excluded, as they can't reach every location.
-	// TODO: Add timer, as some units e.g. can't cross the ocean, thus leading to an infinite call of this
-	// method.
 	if (this.marchCounter < this.Config.maximumMarchingDuration)
 	{
 		this.marchCounter++;
