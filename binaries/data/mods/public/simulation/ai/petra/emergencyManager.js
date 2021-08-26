@@ -45,6 +45,8 @@ PETRA.EmergencyManager = function(config)
 	this.lastPoint = [-1, -1];
 	// Counter for checking whether to return to normal, if defensive+!cooperative
 	this.backToNormalCounter = 0;
+
+	this.nearestEnemy = null;
 };
 
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
@@ -215,14 +217,15 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					Engine.PostCommand(PlayerID, { "type": "resign" });
 					return;
 				}
-				else if (movableEntitiesCount >= this.lastPeopleAlive * (1 + this.Config.lossesForResign / 2))
+				else if (movableEntitiesCount >= this.lastPeopleAlive * ( (1 + this.Config.lossesForResign) / 2))
 				{
-					if (backToNormalCounter < this.Config.defensiveStateDuration)
+					API3.warn("Waiting until returning: " + this.backToNormalCounter + "/" + this.Config.defensiveStateDuration);
+					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
 						this.backToNormalCounter++;
 					else if (this.hasAvailableTerritoryRoot(gameState))
 					{
 						API3.warn("defensive + !cooperative: Back to normal");
-						gameState.emergencyState[playerID] = false;
+						gameState.emergencyState[PlayerID] = false;
 						this.resetToNormal(gameState);
 						return;
 					}
@@ -240,6 +243,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	}
 	else
 	{
+		// TODO: Destroy all our buildings? 
 		API3.warn("Aggressive");
 		// Select initial battle point
 		if (this.nextBattlePoint[0] == -1)
@@ -250,7 +254,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			this.marchCounter++;
 			this.moveToPoint(gameState, this.nextBattlePoint);
 		}
-		else if (this.noEnemiesNear(gameState))
+		else if (this.noEnemiesNear(gameState) || this.nearestEnemy.hitpoints() == 0)
 		{
 			this.selectBattlePoint(gameState);
 			this.moveToPoint(gameState, this.nextBattlePoint);
@@ -297,6 +301,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 		}
 	}
 	this.marchCounter = 0;
+	this.nearestEnemy = nearestEnemy;
 	this.nextBattlePoint = nearestEnemy.position();
 };
 
@@ -459,7 +464,8 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"maxPhase": this.maxPhase,
 		"marchCounter": this.marchCounter,
 		"testPoint": this.testPoint,
-		"backToNormalCounter": this.backToNormalCounter
+		"backToNormalCounter": this.backToNormalCounter,
+		"nearestEnemy": this.nearestEnemy
 	};
 };
 
