@@ -60,7 +60,7 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.musterPosition = [-1, -1];
 	this.sentTributes = false;
 	let cnter = 0;
-	for(const treshold of this.phases)
+	for (const treshold of this.phases)
 	{
 		if (treshold > this.referencePopulation)
 			break;
@@ -117,7 +117,7 @@ PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
 	// Otherwise the people would walk a few steps, stay still, continue
 	// to walk until the destination is reached.
-	if(this.lastPoint == point)
+	if (this.lastPoint == point)
 		return;
 	this.lastPoint = point;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
@@ -221,7 +221,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 				else if (movableEntitiesCount >= this.lastPeopleAlive * (1 + this.Config.lossesForResign / 2))
 				{
-					if(backToNormalCounter < this.Config.defensiveStateDuration)
+					if (backToNormalCounter < this.Config.defensiveStateDuration)
 						this.backToNormalCounter++;
 					else
 					{
@@ -428,7 +428,7 @@ PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities,
 	});
 	// The optimal solution would be probably getting the average distance from each
 	// entity to this building, but this would require a lot of calculation
-	if(roots.length)
+	if (roots.length)
 		building = roots[0];
 	if (!this.validEntity(building))
 	{
