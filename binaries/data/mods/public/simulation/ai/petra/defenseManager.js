@@ -14,7 +14,7 @@ PETRA.DefenseManager = function(Config)
 	this.attackedAllies = {};
 };
 
-PETRA.DefenseManager.prototype.exitEmergency = function(gameState)
+PETRA.DefenseManager.prototype.exitEmergency = function()
 {
 	// TODO: Check, whether this breaks anything
 	this.armies = [];

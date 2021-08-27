@@ -2678,7 +2678,7 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 		{
 			// GarrisonManager, AttackManager will do everything by themselves
 			this.diplomacyManager.exitEmergency();
-			this.defenseManager.exitEmergency(gameState);
+			this.defenseManager.exitEmergency();
 			this.buildManager.exitEmergency(gameState);
 		}
 		Engine.ProfileStop();

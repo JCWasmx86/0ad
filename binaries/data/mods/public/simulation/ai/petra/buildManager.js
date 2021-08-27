@@ -23,7 +23,7 @@ PETRA.BuildManager.prototype.init = function(gameState)
 
 PETRA.BuildManager.prototype.exitEmergency = function(gameState)
 {
-	// TODO: Check, whether this breaks anything
+	// JCWASMX86_TODO: Check, whether this breaks anything
 	this.builderCounters = new Map();
 	this.unbuildables = new Map();
 	this.init(gameState);
