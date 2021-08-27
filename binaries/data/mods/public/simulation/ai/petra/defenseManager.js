@@ -14,6 +14,15 @@ PETRA.DefenseManager = function(Config)
 	this.attackedAllies = {};
 };
 
+PETRA.DefenseManager.prototype.exitEmergency = function(gameState)
+{
+	// TODO: Check, whether this breaks anything
+	this.armies = [];
+	this.targetList = [];
+	this.attackingArmies = {};
+	this.attackingUnits = {};
+	this.attackedAllies = {};
+};
 PETRA.DefenseManager.prototype.update = function(gameState, events)
 {
 	Engine.ProfileStart("Defense Manager");
