@@ -16,7 +16,7 @@ PETRA.DefenseManager = function(Config)
 
 PETRA.DefenseManager.prototype.exitEmergency = function()
 {
-	// TODO: Check, whether this breaks anything
+	// JCWASMX86_TODO: Check, whether this breaks anything
 	this.armies = [];
 	this.targetList = [];
 	this.attackingArmies = {};
