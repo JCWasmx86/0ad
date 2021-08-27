@@ -2155,6 +2155,10 @@ PETRA.AttackPlan.prototype.hasForceOrder = function(data, value)
  */
 PETRA.AttackPlan.prototype.getAttackAccess = function(gameState)
 {
+	// JCWASMX86_TODO: Not sure why it is needed, but otherwise
+	// it would throw errors.
+	if (this.position == undefined)
+		return 0;
 	for (let ent of this.unitCollection.filterNearest(this.position, 1).values())
 		return PETRA.getLandAccess(gameState, ent);
 
