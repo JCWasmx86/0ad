@@ -21,6 +21,14 @@ PETRA.BuildManager.prototype.init = function(gameState)
 		this.incrementBuilderCounters(civ, ent, 1);
 };
 
+PETRA.BuildManager.prototype.exitEmergency = function(gameState)
+{
+	// TODO: Check, whether this breaks anything
+	this.builderCounters = new Map();
+	this.unbuildables = new Map();
+	this.init(gameState);
+};
+
 PETRA.BuildManager.prototype.incrementBuilderCounters = function(civ, ent, increment)
 {
 	for (let buildable of ent.buildableEntities(civ))
