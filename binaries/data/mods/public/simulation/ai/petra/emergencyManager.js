@@ -102,6 +102,11 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 {
 	if (!this.collectedTroops)
 	{
+		const entities = gameState.getOwnEntities().toEntityArray();
+		for (const ent of entities) {
+			if (ent)
+				ent.stopAllProduction(101);
+		}
 		this.collectTroops(gameState);
 		this.collectedTroops = true;
 	}
