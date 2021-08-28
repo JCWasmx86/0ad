@@ -2669,7 +2669,6 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 	if (this.emergencyManager.checkForEmergency(gameState))
 	{
 		gameState.emergencyState[PlayerID] = true;
-		// TODO: Stop recruiting
 		this.garrisonManager.updateEmergency(gameState, events);
 		this.diplomacyManager.updateEmergency(gameState, events);
 		this.attackManager.updateEmergency(gameState);
