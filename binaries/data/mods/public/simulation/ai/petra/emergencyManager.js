@@ -216,7 +216,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 							const tribute = {};
 							for (const resource of Resources.GetTributableCodes())
 								tribute[resource] = allResources[resource];
-							Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": allResources });
+							Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": tribute });
 							break;
 						}
 					Engine.PostCommand(PlayerID, { "type": "resign" });
