@@ -103,8 +103,9 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	if (!this.collectedTroops)
 	{
 		const entities = gameState.getOwnEntities().toEntityArray();
-		for (const ent of entities) {
-			if (ent)
+		for (const ent of entities)
+		{
+			if (ent) // 101 to stop everything, not the ones that are finished <=99.
 				ent.stopAllProduction(101);
 		}
 		this.collectTroops(gameState);
@@ -252,19 +253,49 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		API3.warn("Aggressive");
 		// Select initial battle point
 		if (this.nextBattlePoint[0] == -1)
+		{
+			for (const ent of gameState.getOwnEntities().toEntityArray())
+				ent.setStance("violent");
 			this.selectBattlePoint(gameState);
+			API3.warn("Initial point: " + this.nextBattlePoint);
+			API3.warn(this.nearestEnemy.toString());
+		}
 
 		if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
 		{
-			this.marchCounter++;
-			this.moveToPoint(gameState, this.nextBattlePoint);
+			API3.warn(this.marchCounter + "//" + this.Config.maximumMarchingDuration);
+			if (this.nearestEnemy !== undefined)
+				this.nextBattlePoint = this.nearestEnemy.position();
+			this.aggressiveAttack(gameState);
+			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0) {
+				this.selectBattlePoint(gameState);
+				this.aggressiveAttack(gameState);
+				API3.warn("New: " + this.nearestEnemy.toString());
+			} else
+				this.marchCounter++;
 		}
-		else if (this.noEnemiesNear(gameState) || this.nearestEnemy.hitpoints() == 0)
+		else if (this.nearestEnemy == undefined ||
+				this.nearestEnemy.hitpoints() == 0 ||
+				this.marchCounter == this.Config.maximumMarchingDuration ||
+				!this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
-			this.moveToPoint(gameState, this.nextBattlePoint);
+			this.aggressiveAttack(gameState);
+			API3.warn("Entity: " + this.nearestEnemy.toString());
 		}
 		// Else wait until we or the enemy are dead.
+	}
+};
+
+PETRA.EmergencyManager.prototype.aggressiveAttack = function(gameState)
+{
+	if (this.nearestEnemy == undefined)
+		return;
+	for (const ent of gameState.getOwnEntities().toEntityArray())
+	{
+		// ent.attackMove(this.nearestEnemy.position()[0], this.nearestEnemy.position()[1], targetClasses, false, true);
+		ent.attack(this.nearestEnemy.id(), false, false, true);
+		// ent.move(this.nearestEnemy.position()[0], this.nearestEnemy.position()[1]);
 	}
 };
 
@@ -278,7 +309,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	return !!gameState.getEnemyEntities().toEntityArray().find(e => this.validEntity(e) &&
 																e.owner() > 0 &&
-																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange);
+																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange * 0.001);
 };
 
 PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
@@ -307,7 +338,8 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	}
 	this.marchCounter = 0;
 	this.nearestEnemy = nearestEnemy;
-	this.nextBattlePoint = nearestEnemy.position();
+	if (nearestEnemy !== undefined)
+		this.nextBattlePoint = nearestEnemy.position();
 };
 
 PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(gameState)
@@ -349,7 +381,7 @@ PETRA.EmergencyManager.prototype.troopsMarching = function(gameState)
 	{
 		this.marchCounter++;
 		for (const ent of gameState.getOwnEntities().toEntityArray())
-			if (this.isMovableEntity(ent) && !ent.hasClass("Ship") && API3.VectorDistance(ent.position(), this.musterPosition) > 40)
+			if (this.isMovableEntity(ent) && !ent.hasClass("Ship") && API3.VectorDistance(ent.position(), this.musterPosition) > 60)
 				return true;
 	}
 	this.finishedMarching = true;
