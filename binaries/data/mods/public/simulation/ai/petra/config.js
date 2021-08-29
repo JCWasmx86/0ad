@@ -211,7 +211,7 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 
 	// The size of the area around the collect point in case
 	// of emergency.
-	this.patrouilleRange = 75;
+	this.patrolRange = 75;
 
 	// If this percentage was killed in emergency mode, resign if
 	// this bot has defensive personality.

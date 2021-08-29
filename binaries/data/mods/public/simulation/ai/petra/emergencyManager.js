@@ -1,6 +1,6 @@
-PETRA.EmergencyManager = function(config)
+PETRA.EmergencyManager = function(Config)
 {
-	this.Config = config;
+	this.Config = Config;
 	this.collectedTroops = false;
 	// Counter to delay counting the population and structures
 	// to around 3 minutes.
@@ -242,7 +242,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			{
 				if (!ent.get("Attack") || !ent.position())
 					continue;
-				if (API3.VectorDistance(ent.position(), this.musterPosition) > this.Config.patrouilleRange)
+				if (API3.VectorDistance(ent.position(), this.musterPosition) > this.Config.patrolRange)
 					ent.move(this.musterPosition[0], this.musterPosition[1]);
 			}
 		}
@@ -267,11 +267,13 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			if (this.nearestEnemy !== undefined)
 				this.nextBattlePoint = this.nearestEnemy.position();
 			this.aggressiveAttack(gameState);
-			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0) {
+			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0) 
+			{
 				this.selectBattlePoint(gameState);
 				this.aggressiveAttack(gameState);
 				API3.warn("New: " + this.nearestEnemy.toString());
-			} else
+			}
+			else
 				this.marchCounter++;
 		}
 		else if (this.nearestEnemy == undefined ||
@@ -281,7 +283,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		{
 			this.selectBattlePoint(gameState);
 			this.aggressiveAttack(gameState);
-			API3.warn("Entity: " + this.nearestEnemy.toString());
+			if (this.nearestEnemy)
+				API3.warn("Entity: " + this.nearestEnemy.toString());
 		}
 		// Else wait until we or the enemy are dead.
 	}
@@ -309,7 +312,7 @@ PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
 	return !!gameState.getEnemyEntities().toEntityArray().find(e => this.validEntity(e) &&
 																e.owner() > 0 &&
-																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange * 0.001);
+																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange);
 };
 
 PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
