@@ -524,16 +524,12 @@ PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState
 PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 {
 	const personality = this.Config.personality;
-	API3.warn(personality.aggressive < personality.defensive);
-	API3.warn(gameState.sharedScript.playersData[PlayerID].teamsLocked);
-	API3.warn(personality.cooperative >= 0.5);
-	API3.warn(this.enoughResourcesForTributes(gameState));
-	API3.warn(this.waitsForResponses);
 	if (personality.aggressive < personality.defensive &&
 			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
 			personality.cooperative >= 0.5 &&
 			this.enoughResourcesForTributes(gameState) &&
-			!this.waitsForResponses)
+			!this.waitsForResponses &&
+			!gameState.ai.HQ.EmergencyManager.troopsMarching(gameState))
 	{
 		API3.warn("defensive + !teamsLocked + cooperative + enoughResources + !waits");
 		if (!this.waitsForResponses)
@@ -545,7 +541,8 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 		}
 	}
 	this.checkEvents(gameState, events);
-	if (this.waitsForResponses && gameState.getEnemies().length &&
+	if (this.waitsForResponses &&
+		gameState.getEnemies().length &&
 		this.responseCounter < this.Config.neutralityRequestWaitingDuration)
 	{
 		API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
