@@ -267,7 +267,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			if (this.nearestEnemy !== undefined)
 				this.nextBattlePoint = this.nearestEnemy.position();
 			this.aggressiveAttack(gameState);
-			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0) 
+			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0)
 			{
 				this.selectBattlePoint(gameState);
 				this.aggressiveAttack(gameState);
