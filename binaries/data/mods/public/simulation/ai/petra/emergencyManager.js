@@ -1,3 +1,9 @@
+/**
+ * Emergency manager
+ *
+ * Checks, whether there is an emergency and acts accordingly based on the personality
+ * of the AI.
+ */
 PETRA.EmergencyManager = function(Config)
 {
 	this.Config = Config;
@@ -82,7 +88,7 @@ PETRA.EmergencyManager.prototype.initPhases = function(gameState)
 	let lastLimit = 0;
 	for (const populationLimit in this.Config.phasesForSteadyDecline)
 	{
-		if (maxPop == populationLimit)
+		if (maxPop === populationLimit)
 			break;
 		else if (maxPop > populationLimit)
 			lastLimit = Number(populationLimit);
@@ -125,7 +131,7 @@ PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
 {
 	// Otherwise the people would walk a few steps, stay still, continue
 	// to walk until the destination is reached.
-	if (this.lastPoint == point)
+	if (this.lastPoint === point)
 		return;
 	this.lastPoint = point;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
@@ -136,7 +142,7 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 {
 	return gameState.getOwnStructures().filter(ent => {
 		return ent && ent.get("TerritoryInfluence") !== undefined && ent.get("TerritoryInfluence").Root;
-	}).length != 0;
+	}).length > 0;
 };
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
@@ -157,49 +163,13 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		{
 			if (this.sentTributes && !gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
 			{
-				API3.warn("Waiting until neutrality!");
-				const enemies = gameState.getEnemies();
-				var numEnemies = 0;
-				for (const enemy of enemies)
-				{
-					if (enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
-						continue;
-					numEnemies++;
-				}
-				API3.warn("" + numEnemies + " are left!");
-				if (numEnemies == 0)
-				{
-					if (this.hasAvailableTerritoryRoot(gameState))
-					{
-						API3.warn("Back to normal");
-						gameState.emergencyState[PlayerID] = false;
-						this.resetToNormal(gameState);
-					}
-					else
-					{
-						API3.warn("No root found");
-					}
-					return;
-				}
-				if (!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
-				{
-					API3.warn("Still waiting");
-					return;
-				}
-				API3.warn("Expired!");
-				gameState.ai.HQ.diplomacyManager.expireNeutraliyRequests(gameState);
+				this.waitForExpiration(gameState);
 				return;
 			}
 			API3.warn("HEREEEE!");
 			// Check whether to resign. (Here: If more than 75% were killed)
-			const ownEntities = gameState.getOwnEntities().toEntityArray();
-			let movableEntitiesCount = 0;
-			for (const ent of ownEntities)
-			{
-				if (ent.walkSpeed() > 0)
-					movableEntitiesCount++;
-			}
-			if (this.lastPeopleAlive == -1)
+			const movableEntitiesCount = this.countMovableEntities(gameState);
+			if (this.lastPeopleAlive === -1)
 				this.lastPeopleAlive = movableEntitiesCount;
 			if (this.lastCounter < this.Config.resignCheckDelay)
 				this.lastCounter++;
@@ -208,19 +178,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				this.lastCounter = 0;
 				if (movableEntitiesCount < this.Config.lossesForResign * this.lastPeopleAlive)
 				{
-					var allResources = gameState.ai.queueManager.getAvailableResources(gameState);
-					const allies = gameState.getAllies();
-					// Just give the first non-dead ally we can find all our resources
-					for (const ally of allies)
-						if (!gameState.ai.HQ.attackManager.defeated[ally])
-						{
-							const tribute = {};
-							for (const resource of Resources.GetTributableCodes())
-								tribute[resource] = allResources[resource];
-							Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": tribute });
-							break;
-						}
-					Engine.PostCommand(PlayerID, { "type": "resign" });
+					this.resign(gameState);
 					return;
 				}
 				else if (movableEntitiesCount >= this.lastPeopleAlive * ((1 + this.Config.lossesForResign) / 2))
@@ -238,71 +196,137 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 			}
 			// "Patrol" around the collect position.
-			for (const ent of ownEntities)
+			for (const ent of gameState.getOwnEntities().toEntityArray())
 			{
 				if (!ent.get("Attack") || !ent.position())
 					continue;
 				if (API3.VectorDistance(ent.position(), this.musterPosition) > this.Config.patrolRange)
-					ent.move(this.musterPosition[0], this.musterPosition[1]);
+					ent.move(this.musterPosition[0] + this.generateDeviation(this.Config.patrolRange / 2),
+						this.musterPosition[1] + this.generateDeviation(this.Config.patrolRange / 2));
 			}
 		}
 	}
 	else
-	{
-		// TODO: Destroy all our buildings?
-		API3.warn("Aggressive");
-		// Select initial battle point
-		if (this.nextBattlePoint[0] == -1)
-		{
-			for (const ent of gameState.getOwnEntities().toEntityArray())
-				ent.setStance("violent");
-			this.selectBattlePoint(gameState);
-			if (!this.nextBattlePoint)
-				return;
-			API3.warn("Initial point: " + this.nextBattlePoint);
-			API3.warn(this.nearestEnemy.toString());
-		}
+		this.aggressiveActions(gameState);
+};
 
-		if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
+PETRA.EmergencyManager.prototype.generateDeviation = function(max)
+{
+	return Math.floor((Math.random() * max) + 1);
+};
+
+PETRA.EmergencyManager.prototype.countMovableEntities = function(gameState)
+{
+	const ownEntities = gameState.getOwnEntities().toEntityArray();
+	let movableEntitiesCount = 0;
+	for (const ent of ownEntities)
+	{
+		if (ent.walkSpeed() > 0)
+			movableEntitiesCount++;
+	}
+	return movableEntitiesCount;
+};
+PETRA.EmergencyManager.prototype.resign = function(gameState)
+{
+	var allResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	const allies = gameState.getAllies();
+	// Just give the first non-dead ally we can find all our resources
+	for (const ally of allies)
+		if (!gameState.ai.HQ.attackManager.defeated[ally] && ally !== PlayerID)
 		{
-			API3.warn(this.marchCounter + "//" + this.Config.maximumMarchingDuration);
-			if (this.nearestEnemy && this.nearestEnemy.position())
-				this.nextBattlePoint = this.nearestEnemy.position();
-			this.aggressiveAttack(gameState);
-			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0)
-			{
-				this.selectBattlePoint(gameState);
-				if (!this.nextBattlePoint)
-					return;
-				this.aggressiveAttack(gameState);
-				API3.warn("New: " + this.nearestEnemy.toString());
-			}
-			else
-				this.marchCounter++;
+			const tribute = {};
+			for (const resource of Resources.GetTributableCodes())
+				tribute[resource] = allResources[resource];
+			Engine.PostCommand(PlayerID, { "type": "tribute", "player": ally, "amounts": tribute });
+			break;
 		}
-		else if (this.nearestEnemy == undefined ||
-				this.nearestEnemy.hitpoints() == 0 ||
-				this.marchCounter == this.Config.maximumMarchingDuration ||
-				!this.noEnemiesNear(gameState))
+	Engine.PostCommand(PlayerID, { "type": "resign" });
+};
+
+PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
+{
+	API3.warn("Waiting until neutrality!");
+	const enemies = gameState.getEnemies();
+	var numEnemies = 0;
+	for (const enemy of enemies)
+	{
+		if (enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
+			continue;
+		numEnemies++;
+	}
+	API3.warn("" + numEnemies + " are left!");
+	if (numEnemies === 0)
+	{
+		if (this.hasAvailableTerritoryRoot(gameState))
+		{
+			API3.warn("Back to normal");
+			gameState.emergencyState[PlayerID] = false;
+			this.resetToNormal(gameState);
+		}
+		else
+		{
+			API3.warn("No root found");
+		}
+		return;
+	}
+	if (!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
+	{
+		API3.warn("Still waiting");
+		return;
+	}
+	API3.warn("Expired!");
+	gameState.ai.HQ.diplomacyManager.expireNeutraliyRequests(gameState);
+};
+PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
+{
+	// TODO: Destroy all our buildings?
+	API3.warn("Aggressive");
+	// Select initial battle point
+	if (this.nextBattlePoint[0] === -1)
+	{
+		for (const ent of gameState.getOwnEntities().toEntityArray())
+			ent.setStance("violent");
+		this.selectBattlePoint(gameState);
+		if (!this.nextBattlePoint)
+			return;
+		API3.warn("Initial point: " + this.nextBattlePoint);
+		API3.warn(this.nearestEnemy.toString());
+	}
+
+	if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
+	{
+		API3.warn(this.marchCounter + "//" + this.Config.maximumMarchingDuration);
+		if (this.nearestEnemy && this.nearestEnemy.position())
+			this.nextBattlePoint = this.nearestEnemy.position();
+		this.aggressiveAttack(gameState);
+		if (this.nearestEnemy && this.nearestEnemy.hitpoints() === 0)
 		{
 			this.selectBattlePoint(gameState);
 			if (!this.nextBattlePoint)
 				return;
 			this.aggressiveAttack(gameState);
-			API3.warn("Entity: " + this.nearestEnemy.toString());
+			API3.warn("New: " + this.nearestEnemy.toString());
 		}
-		// Else wait until we or the enemy are dead.
+		else
+			this.marchCounter++;
+	}
+	else if (this.nearestEnemy === undefined ||
+			this.nearestEnemy.hitpoints() === 0 ||
+			this.marchCounter === this.Config.maximumMarchingDuration ||
+			!this.noEnemiesNear(gameState))
+	{
+		this.selectBattlePoint(gameState);
+		if (!this.nextBattlePoint)
+			return;
+		this.aggressiveAttack(gameState);
+		API3.warn("Entity: " + this.nearestEnemy.toString());
 	}
 };
 
 PETRA.EmergencyManager.prototype.aggressiveAttack = function(gameState)
 {
 	for (const ent of gameState.getOwnEntities().toEntityArray())
-	{
-		// ent.attackMove(this.nearestEnemy.position()[0], this.nearestEnemy.position()[1], targetClasses, false, true);
 		ent.attack(this.nearestEnemy.id(), false, false, true);
-		// ent.move(this.nearestEnemy.position()[0], this.nearestEnemy.position()[1]);
-	}
 };
 
 PETRA.EmergencyManager.prototype.validEntity = function(ent)
@@ -313,14 +337,18 @@ PETRA.EmergencyManager.prototype.validEntity = function(ent)
 PETRA.EmergencyManager.prototype.noEnemiesNear = function(gameState)
 {
 	const averagePosition = this.getAveragePositionOfMovableEntities(gameState);
-	return !!gameState.getEnemyEntities().toEntityArray().find(e => this.validEntity(e) &&
-																e.owner() > 0 &&
+	return !!gameState.getEnemyEntities().toEntityArray().find(e => this.validEntityWithValidOwner(e) &&
 																API3.VectorDistance(e.position(), averagePosition) < this.Config.enemyDetectionRange);
 };
 
 PETRA.EmergencyManager.prototype.isMovableEntity = function(ent)
 {
 	return this.validEntity(ent) && ent.walkSpeed() > 0;
+};
+PETRA.EmergencyManager.prototype.validEntityWithValidOwner = function(ent)
+{
+	// Exclude Gaia and INVALID_PLAYER
+	return this.validEntity(ent) && ent.owner() > 0;
 };
 
 PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
@@ -331,8 +359,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	let nearestEnemyDistance = Infinity;
 	for (const enemy of enemies)
 	{
-		// Exclude Gaia and INVALID_PLAYER
-		if (this.validEntity(enemy) && enemy.owner() > 0)
+		if (this.validEntityWithValidOwner(enemy))
 		{
 			const distance = API3.VectorDistance(enemy.position(), averagePosition);
 			if (distance < nearestEnemyDistance)
@@ -353,14 +380,14 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(gameState)
 {
 	const entities = gameState.getOwnEntities().toEntityArray();
-	if (entities.length == 0)
+	if (entities.length === 0)
 		return [-1, -1];
 	let nEntities = 0;
 	let sumX = 0;
 	let sumZ = 0;
 	for (const ent of entities)
 	{
-		if (this.validEntity(ent) && this.isMovableEntity(ent) && !ent.hasClass("Ship"))
+		if (this.isMovableEntity(ent) && !ent.hasClass("Ship"))
 		{
 			nEntities++;
 			const pos = ent.position();
@@ -369,7 +396,7 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 		}
 	}
 
-	if (nEntities == 0)
+	if (nEntities === 0)
 		return [-1, -1];
 	return [sumX / nEntities, sumZ / nEntities];
 };
@@ -413,7 +440,7 @@ PETRA.EmergencyManager.prototype.steadyDeclineCheck = function(gameState)
 {
 	const civicCentresCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.peakCivicCentreCount = Math.max(this.peakCivicCentreCount, civicCentresCount);
-	if ((civicCentresCount == 0 && this.peakCivicCentreCount >= 1) || this.peakCivicCentreCount - this.Config.civicCentreLossTrigger >= civicCentresCount)
+	if ((civicCentresCount === 0 && this.peakCivicCentreCount >= 1) || this.peakCivicCentreCount - this.Config.civicCentreLossTrigger >= civicCentresCount)
 		return true;
 	const currentPopulation = gameState.getPopulation();
 	if (currentPopulation >= this.phases[this.currentPhase + 1])
@@ -433,16 +460,16 @@ PETRA.EmergencyManager.prototype.destructionCheck = function(gameState)
 {
 	const oldPopulation = this.referencePopulation;
 	this.referencePopulation = gameState.getPopulation();
-	if (oldPopulation == 0)
+	if (oldPopulation === 0)
 		return false;
 	const oldNumberOfStructures = this.referenceStructureCount;
 	this.referenceStructureCount = gameState.getOwnStructures().length;
-	if (oldNumberOfStructures == 0)
+	if (oldNumberOfStructures === 0)
 		return false;
 	const populationFactor = this.referencePopulation / oldPopulation;
 	const structureFactor = this.referenceStructureCount / oldNumberOfStructures;
 	// Growth means no emergency, no matter the difficulty
-	if (populationFactor >=1 && structureFactor >= 1)
+	if (populationFactor >= 1 && structureFactor >= 1)
 		return false;
 	// This means more an attack of the bot, no defense operation,
 	// no matter the difficulty.
