@@ -379,8 +379,8 @@ PETRA.GarrisonManager.prototype.ungarrisonAllUnits = function(gameState) {
 			if (ent)
 				this.leaveGarrison(ent);
 		}
-		this.holders.delete(id);
 	}
+	this.holders.clear();
 };
 
 PETRA.GarrisonManager.prototype.Serialize = function()
