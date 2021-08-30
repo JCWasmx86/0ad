@@ -529,7 +529,7 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 			personality.cooperative >= 0.5 &&
 			this.enoughResourcesForTributes(gameState) &&
 			!this.waitsForResponses &&
-			!gameState.ai.HQ.EmergencyManager.troopsMarching(gameState))
+			!gameState.ai.HQ.emergencyManager.troopsMarching(gameState))
 	{
 		API3.warn("defensive + !teamsLocked + cooperative + enoughResources + !waits");
 		if (!this.waitsForResponses)

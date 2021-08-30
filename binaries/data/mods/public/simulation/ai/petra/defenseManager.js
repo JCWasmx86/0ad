@@ -16,13 +16,30 @@ PETRA.DefenseManager = function(Config)
 
 PETRA.DefenseManager.prototype.exitEmergency = function()
 {
-	// JCWASMX86_TODO: Check, whether this breaks anything
-	this.armies = [];
-	this.targetList = [];
 	this.attackingArmies = {};
 	this.attackingUnits = {};
 	this.attackedAllies = {};
 };
+PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
+{
+	// Function is no-op after one call
+	for (const army of this.armies) // No other relevant code from checkEvents
+		army.checkEvents(gameState, events);
+	for (let i = 0; i < this.targetList.length; ++i)
+	{
+		const target = gameState.getEntityById(this.targetList[i]);
+		if (!target || !target.position() || !gameState.isPlayerEnemy(target.owner()))
+			this.targetList.splice(i--, 1);
+	}
+	for (let i = 0; i < this.armies.length; ++i)
+	{
+		const army = this.armies[i];
+		army.update(gameState);
+		army.clear(gameState);
+		this.armies.splice(i--, 1);
+	}
+};
+
 PETRA.DefenseManager.prototype.update = function(gameState, events)
 {
 	Engine.ProfileStart("Defense Manager");

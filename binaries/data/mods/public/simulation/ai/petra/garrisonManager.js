@@ -11,14 +11,10 @@ PETRA.GarrisonManager = function(Config)
 	this.Config = Config;
 	this.holders = new Map();
 	this.decayingStructures = new Map();
-	this.inEmergency = false;
 };
 
 PETRA.GarrisonManager.prototype.updateEmergency = function(gameState, events) {
-	// We don't have anything else to do.
-	if (this.inEmergency)
-		return;
-	this.inEmergency = true;
+	this.update(gameState, events);
 	this.ungarrisonAllUnits(gameState);
 };
 
@@ -39,12 +35,12 @@ PETRA.GarrisonManager.prototype.update = function(gameState, events)
 				continue;
 			let data = this.holders.get(id);
 			let newHolder = gameState.getEntityById(evt.newentity);
-			if (newHolder && newHolder.isGarrisonHolder())
+			if (!gameState.emergencyState[PlayerID] && newHolder && newHolder.isGarrisonHolder())
 			{
 				this.holders.delete(id);
 				this.holders.set(evt.newentity, data);
 			}
-			else
+			else if (gameState.emergencyState[PlayerID])
 			{
 				for (let entId of data.list)
 				{
@@ -102,7 +98,7 @@ PETRA.GarrisonManager.prototype.update = function(gameState, events)
 			let ent = gameState.getEntityById(list[j]);
 			if (!ent)	// unit must have been killed while garrisoning
 				list.splice(j--, 1);
-			else if (holder.garrisoned().indexOf(list[j]) !== -1)   // unit is garrisoned
+			else if (holder.garrisoned().indexOf(list[j]) !== -1 || gameState.emergencyState[PlayerID])   // unit is garrisoned
 			{
 				this.leaveGarrison(ent);
 				list.splice(j--, 1);
@@ -179,13 +175,14 @@ PETRA.GarrisonManager.prototype.update = function(gameState, events)
 			for (let entId of holder.garrisoned())
 			{
 				let ent = gameState.getEntityById(entId);
-				if (ent.owner() === PlayerID && !this.keepGarrisoned(ent, holder, around))
+				if (gameState.emergencyState[PlayerID] ||
+						(ent.owner() === PlayerID && !this.keepGarrisoned(ent, holder, around)))
 					holder.unload(entId);
 			}
 			for (let j = 0; j < list.length; ++j)
 			{
 				let ent = gameState.getEntityById(list[j]);
-				if (this.keepGarrisoned(ent, holder, around))
+				if (this.keepGarrisoned(ent, holder, around) && !gameState.emergencyState[PlayerID])
 					continue;
 				if (ent.getMetadata(PlayerID, "garrisonHolder") == id)
 				{
@@ -208,7 +205,7 @@ PETRA.GarrisonManager.prototype.update = function(gameState, events)
 		let ent = gameState.getEntityById(id);
 		if (!ent || ent.owner() !== PlayerID)
 			this.decayingStructures.delete(id);
-		else if (this.numberOfGarrisonedSlots(ent) < gmin)
+		else if (this.numberOfGarrisonedSlots(ent) < gmin && !gameState.emergencyState[PlayerID])
 			gameState.ai.HQ.defenseManager.garrisonUnitsInside(gameState, ent, { "min": gmin, "type": PETRA.GarrisonManager.TYPE_DECAY });
 	}
 };
@@ -394,7 +391,7 @@ PETRA.GarrisonManager.prototype.ungarrisonAllUnits = function(gameState) {
 
 PETRA.GarrisonManager.prototype.Serialize = function()
 {
-	return { "holders": this.holders, "decayingStructures": this.decayingStructures, "inEmergency": this.inEmergency };
+	return { "holders": this.holders, "decayingStructures": this.decayingStructures };
 };
 
 PETRA.GarrisonManager.prototype.Deserialize = function(data)
