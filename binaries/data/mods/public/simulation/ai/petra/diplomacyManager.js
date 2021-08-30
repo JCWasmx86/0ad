@@ -375,15 +375,15 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 	let requiredTribute;
 	let request = this.receivedDiplomacyRequests.get(player);
 	let moreEnemiesThanAllies = gameState.getEnemies().length > gameState.getMutualAllies().length;
-
+	const emergency = gameState.emergencyState[PlayerID];
 	// For any given diplomacy request be likely to permanently decline
-	if (!request && gameState.getPlayerCiv() !== gameState.getPlayerCiv(player) && randBool(0.6) ||
-	    !moreEnemiesThanAllies || gameState.ai.HQ.attackManager.currentEnemyPlayer === player)
+	if ((!request && gameState.getPlayerCiv() !== gameState.getPlayerCiv(player) && randBool(0.6) ||
+	    !moreEnemiesThanAllies || gameState.ai.HQ.attackManager.currentEnemyPlayer === player) && !emergency)
 	{
 		this.receivedDiplomacyRequests.set(player, { "requestType": requestType, "status": "declinedRequest" });
 		response = "decline";
 	}
-	else if (request && request.status !== "accepted" && request.requestType !== "ally")
+	else if (request && request.status !== "accepted" && request.requestType !== "ally" && !emergency)
 	{
 		if (request.status === "declinedRequest")
 			response = "decline";
@@ -396,7 +396,7 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 		}
 	}
 	else if (requestType === "ally" && gameState.getEntities(player).length < gameState.getOwnEntities().length && randBool(0.4) ||
-	         requestType === "neutral" && moreEnemiesThanAllies && randBool(0.8))
+	         requestType === "neutral" && moreEnemiesThanAllies && randBool(0.8) || emergency)
 	{
 		response = "accept";
 		this.changePlayerDiplomacy(gameState, player, requestType);
