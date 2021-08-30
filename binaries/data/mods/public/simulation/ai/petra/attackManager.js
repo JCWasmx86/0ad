@@ -49,7 +49,6 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 {
 	for (let evt of events.PlayerDefeated)
 		this.defeated[evt.playerId] = true;
-
 	let answer = "decline";
 	let other;
 	let targetPlayer;
@@ -87,13 +86,15 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 				{
 					if (attack.state === "completing" ||
 						attack.targetPlayer !== targetPlayer ||
-						attack.unitCollection.length < 3)
+						attack.unitCollection.length < 3 ||
+						gameState.emergencyState[PlayerID])
 						continue;
 					attack.forceStart();
 					attack.requested = true;
 				}
 			}
-			answer = "join";
+			if (!gameState.emergencyState[PlayerID])
+				answer = "join";
 		}
 		else if (other !== undefined)
 			answer = "other";
@@ -737,9 +738,11 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	return true;
 };
 
-PETRA.AttackManager.prototype.updateEmergency = function(gameState) {
+PETRA.AttackManager.prototype.updateEmergency = function(gameState, events) {
 	// First call will stop all attacks, the second call to this
 	// function will essentially be a no-op.
+	this.bombingAttacks = new Map();
+	this.checkEvents(gameState, events);
 	for (const attackType in this.upcomingAttacks)
 		for (const attack of this.upcomingAttacks[attackType])
 			attack.targetPlayer = undefined;
@@ -751,7 +754,6 @@ PETRA.AttackManager.prototype.updateEmergency = function(gameState) {
 			this.startedAttacks[attackType].splice(i--, 1);
 		}
 };
-
 PETRA.AttackManager.prototype.Serialize = function()
 {
 	let properties = {

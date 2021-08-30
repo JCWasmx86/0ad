@@ -257,6 +257,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 			for (const ent of gameState.getOwnEntities().toEntityArray())
 				ent.setStance("violent");
 			this.selectBattlePoint(gameState);
+			if (!this.nextBattlePoint)
+				return;
 			API3.warn("Initial point: " + this.nextBattlePoint);
 			API3.warn(this.nearestEnemy.toString());
 		}
@@ -264,12 +266,14 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 		if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
 		{
 			API3.warn(this.marchCounter + "//" + this.Config.maximumMarchingDuration);
-			if (this.nearestEnemy !== undefined)
+			if (this.nearestEnemy && this.nearestEnemy.position())
 				this.nextBattlePoint = this.nearestEnemy.position();
 			this.aggressiveAttack(gameState);
 			if (this.nearestEnemy && this.nearestEnemy.hitpoints() == 0)
 			{
 				this.selectBattlePoint(gameState);
+				if (!this.nextBattlePoint)
+					return;
 				this.aggressiveAttack(gameState);
 				API3.warn("New: " + this.nearestEnemy.toString());
 			}
@@ -282,9 +286,10 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				!this.noEnemiesNear(gameState))
 		{
 			this.selectBattlePoint(gameState);
+			if (!this.nextBattlePoint)
+				return;
 			this.aggressiveAttack(gameState);
-			if (this.nearestEnemy)
-				API3.warn("Entity: " + this.nearestEnemy.toString());
+			API3.warn("Entity: " + this.nearestEnemy.toString());
 		}
 		// Else wait until we or the enemy are dead.
 	}
@@ -292,8 +297,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.aggressiveAttack = function(gameState)
 {
-	if (this.nearestEnemy == undefined)
-		return;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 	{
 		// ent.attackMove(this.nearestEnemy.position()[0], this.nearestEnemy.position()[1], targetClasses, false, true);
@@ -341,8 +344,10 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	}
 	this.marchCounter = 0;
 	this.nearestEnemy = nearestEnemy;
-	if (nearestEnemy !== undefined)
+	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
+	else  // TODO: Destroy all own buildings
+		Engine.PostCommand(PlayerID, { "type": "resign" });
 };
 
 PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(gameState)

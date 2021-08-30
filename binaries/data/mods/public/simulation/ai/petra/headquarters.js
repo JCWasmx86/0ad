@@ -2198,7 +2198,7 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 		gameState.emergencyState[PlayerID] = true;
 		this.garrisonManager.updateEmergency(gameState, events);
 		this.diplomacyManager.updateEmergency(gameState, events);
-		this.attackManager.updateEmergency(gameState);
+		this.attackManager.updateEmergency(gameState, events);
 		this.emergencyManager.handleEmergency(gameState, events);
 		if (!gameState.emergencyState[PlayerID])
 		{
