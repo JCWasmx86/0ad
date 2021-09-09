@@ -550,7 +550,7 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 	if (this.waitsForResponses &&
 		gameState.getEnemies().length)
 	{
-		if (this.responseCounter < this.Config.neutralityRequestWaitingDuration) 
+		if (this.responseCounter < this.Config.neutralityRequestWaitingDuration)
 		{
 			API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
 			this.responseCounter++;
@@ -558,8 +558,9 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 		else if (this.responseCounter == this.Config.neutralityRequestWaitingDuration)
 		{
 			this.expireNeutralityRequests(gameState);
-			this.responseCounter++; // To avoid either incrementing the counter further
-									// or expiring the requests all the time.
+			// To avoid either incrementing the counter further or expiring
+			// the requests all the time
+			this.responseCounter++;
 		}
 	}
 };

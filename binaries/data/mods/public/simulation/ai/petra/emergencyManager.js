@@ -52,7 +52,7 @@ PETRA.EmergencyManager = function(Config)
 	// Counter for checking whether to return to normal, if defensive+!cooperative
 	this.backToNormalCounter = 0;
 
-	this.nearestEnemy = undefined;	
+	this.nearestEnemy = undefined;
 };
 
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
