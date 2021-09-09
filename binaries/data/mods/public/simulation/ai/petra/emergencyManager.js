@@ -52,7 +52,7 @@ PETRA.EmergencyManager = function(Config)
 	// Counter for checking whether to return to normal, if defensive+!cooperative
 	this.backToNormalCounter = 0;
 
-	this.nearestEnemy = null;
+	this.nearestEnemy = undefined;	
 };
 
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
@@ -145,13 +145,14 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 	}).length > 0;
 };
 
+
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
 	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
 		API3.warn("Defensive");
-		if (personality.cooperative >= 0.5 &&
+		if (personality.cooperative >= 0.1 &&
 			!this.sentTributes &&
 			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
 			gameState.ai.HQ.diplomacyManager.enoughResourcesForTributes(gameState))
@@ -269,17 +270,11 @@ PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 		}
 		return;
 	}
-	if (!gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
-	{
-		API3.warn("Still waiting");
-		return;
-	}
-	API3.warn("Expired!");
-	gameState.ai.HQ.diplomacyManager.expireNeutraliyRequests(gameState);
 };
 PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 {
-	// TODO: Destroy all our buildings?
+	for (const ent of gameState.getOwnStructures().toEntityArray())
+		ent.destroy();
 	API3.warn("Aggressive");
 	// Select initial battle point
 	if (this.nextBattlePoint[0] === -1)
@@ -325,6 +320,8 @@ PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 
 PETRA.EmergencyManager.prototype.aggressiveAttack = function(gameState)
 {
+	if (this.nearestEnemy === undefined)
+		return;
 	for (const ent of gameState.getOwnEntities().toEntityArray())
 		ent.attack(this.nearestEnemy.id(), false, false, true);
 };

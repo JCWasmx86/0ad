@@ -524,9 +524,15 @@ PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState
 PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 {
 	const personality = this.Config.personality;
+	API3.warn(personality.aggressive < personality.defensive);
+	API3.warn(!gameState.sharedScript.playersData[PlayerID].teamsLocked);
+	API3.warn(personality.cooperative >= 0.1);
+	API3.warn(this.enoughResourcesForTributes(gameState));
+	API3.warn(!this.waitsForResponses);
+	API3.warn(!gameState.ai.HQ.emergencyManager.troopsMarching(gameState));
 	if (personality.aggressive < personality.defensive &&
 			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
-			personality.cooperative >= 0.5 &&
+			personality.cooperative >= 0.1 &&
 			this.enoughResourcesForTributes(gameState) &&
 			!this.waitsForResponses &&
 			!gameState.ai.HQ.emergencyManager.troopsMarching(gameState))
@@ -542,17 +548,25 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 	}
 	this.checkEvents(gameState, events);
 	if (this.waitsForResponses &&
-		gameState.getEnemies().length &&
-		this.responseCounter < this.Config.neutralityRequestWaitingDuration)
+		gameState.getEnemies().length)
 	{
-		API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
-		this.responseCounter++;
+		if (this.responseCounter < this.Config.neutralityRequestWaitingDuration) 
+		{
+			API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
+			this.responseCounter++;
+		}
+		else if (this.responseCounter == this.Config.neutralityRequestWaitingDuration)
+		{
+			this.expireNeutralityRequests(gameState);
+			this.responseCounter++; // To avoid either incrementing the counter further
+									// or expiring the requests all the time.
+		}
 	}
 };
 
 PETRA.DiplomacyManager.prototype.expiredNeutralityRequest = function()
 {
-	return this.responseCounter != -1 && this.responseCounter == this.Config.neutralityRequestWaitingDuration;
+	return this.responseCounter != -1 && this.responseCounter >= this.Config.neutralityRequestWaitingDuration;
 };
 
 PETRA.DiplomacyManager.prototype.expireNeutralityRequests = function(gameState)
@@ -614,7 +628,8 @@ PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameSt
 PETRA.DiplomacyManager.prototype.enoughResourcesForTributes = function(gameState)
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-	return !(!!Resources.GetTributableCodes().find(r => availableResources[r] < 50));
+	API3.warn(JSON.stringify(availableResources));
+	return !Resources.GetTributableCodes().find(r => availableResources[r] < 50);
 };
 
 PETRA.DiplomacyManager.prototype.exitEmergency = function()
