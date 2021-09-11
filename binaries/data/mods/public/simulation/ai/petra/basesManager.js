@@ -153,7 +153,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 		if (!ent || ent.owner() != PlayerID || ent.getMetadata(PlayerID, "base") === undefined)
 			continue;
 		const base = this.getBaseByID(ent.getMetadata(PlayerID, "base"));
-		if (!base.anchorId || base.anchorId != evt.entity)
+		if (!base || !base.anchorId || base.anchorId != evt.entity)
 			continue;
 		base.anchorId = evt.newentity;
 		base.anchor = ent;

@@ -4,6 +4,28 @@
  * Checks, whether there is an emergency and acts accordingly based on the personality
  * of the AI.
  */
+// Petra error: attacking army 14 without access
+/*
+ERROR: JavaScript error: simulation/ai/petra/entityExtend.js line 162
+target is undefined
+  PETRA.allowCapture@simulation/ai/petra/entityExtend.js:162:6
+  PETRA.DefenseManager.prototype.assignDefenders/<@simulation/ai/petra/defenseManager.js:494:47
+  PETRA.DefenseManager.prototype.assignDefenders@simulation/ai/petra/defenseManager.js:492:44
+  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:97:7
+  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
+  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
+  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
+*/
+/*
+ERROR: JavaScript error: simulation/ai/petra/basesManager.js line 158
+base is undefined
+  PETRA.BasesManager.prototype.checkEvents@simulation/ai/petra/basesManager.js:158:7
+  PETRA.HQ.prototype.checkEvents@simulation/ai/petra/headquarters.js:119:20
+  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2242:7
+  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
+  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
+*/
+// Petra error in incrementBuilderCounters for structures/maur/farmstead with count < 0
 PETRA.EmergencyManager = function(Config)
 {
 	this.Config = Config;
@@ -66,6 +88,7 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.peakCivicCentreCount = gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).length;
 	this.finishedMarching = false;
 	this.musterPosition = [-1, -1];
+	this.lastPeopleAlive = -1;
 	this.sentTributes = false;
 	let cnter = 0;
 	for (const treshold of this.phases)
