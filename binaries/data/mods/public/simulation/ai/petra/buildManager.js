@@ -25,8 +25,10 @@ PETRA.BuildManager.prototype.exitEmergency = function(gameState)
 {
 	// JCWASMX86_TODO: Check, whether this breaks anything
 	this.builderCounters = new Map();
-	this.unbuildables = new Map();
 	this.init(gameState);
+	let civ = gameState.getPlayerCiv();
+	for (let ent of gameState.getOwnUnits().values())
+		this.incrementBuilderCounters(civ, ent, 1);
 };
 
 PETRA.BuildManager.prototype.incrementBuilderCounters = function(civ, ent, increment)

@@ -159,7 +159,7 @@ PETRA.setSeaAccess = function(gameState, ent)
 /** Decide if we should try to capture (returns true) or destroy (return false) */
 PETRA.allowCapture = function(gameState, ent, target)
 {
-	if (!target.isCapturable() || !ent.canCapture(target))
+	if (!target || !target.isCapturable() || !ent.canCapture(target))
 		return false;
 	if (target.isInvulnerable())
 		return true;

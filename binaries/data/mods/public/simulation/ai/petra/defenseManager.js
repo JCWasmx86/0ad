@@ -35,6 +35,14 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 	{
 		const army = this.armies[i];
 		army.update(gameState);
+		for (let entId of army.foeEntities)
+		{
+			let ent = gameState.getEntityById(entId);
+			if (!ent || !ent.position())
+				continue;
+			ent.setMetadata(PlayerID, "access", 0);
+			break;
+		}
 		army.clear(gameState);
 		this.armies.splice(i--, 1);
 	}
