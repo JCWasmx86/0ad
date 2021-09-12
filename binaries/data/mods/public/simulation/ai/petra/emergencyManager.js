@@ -407,7 +407,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	this.nearestEnemy = nearestEnemy;
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
-	else { // TODO: Destroy all own 
+	else { // TODO: Destroy all own
 		for (const ent of gameState.getOwnEntities().toEntityArray())
 			ent.destroy();
 		Engine.PostCommand(PlayerID, { "type": "resign" });
