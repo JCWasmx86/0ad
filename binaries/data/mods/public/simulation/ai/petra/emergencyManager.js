@@ -25,7 +25,19 @@ base is undefined
   PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
   m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
 */
+/*
+ERROR: JavaScript error: simulation/ai/common-api/entity.js line 784
+target is undefined
+  canAttackTarget@simulation/ai/common-api/entity.js:784:16
+  PETRA.DefenseManager.prototype.assignDefenders/<@simulation/ai/petra/defenseManager.js:494:17
+  PETRA.DefenseManager.prototype.assignDefenders@simulation/ai/petra/defenseManager.js:492:44
+  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:97:7
+  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
+  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
+  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
+*/
 // Petra error in incrementBuilderCounters for structures/maur/farmstead with count < 0
+// unknown type in garrisonManager undefined for Athenian Hoplite id 13212 inside Barracks id 12541
 PETRA.EmergencyManager = function(Config)
 {
 	this.Config = Config;
@@ -252,6 +264,8 @@ PETRA.EmergencyManager.prototype.countMovableEntities = function(gameState)
 };
 PETRA.EmergencyManager.prototype.resign = function(gameState)
 {
+	for (const ent of gameState.getOwnEntities().toEntityArray())
+		ent.destroy();
 	var allResources = gameState.ai.queueManager.getAvailableResources(gameState);
 	const allies = gameState.getAllies();
 	// Just give the first non-dead ally we can find all our resources
@@ -393,8 +407,11 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	this.nearestEnemy = nearestEnemy;
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
-	else  // TODO: Destroy all own buildings
+	else { // TODO: Destroy all own 
+		for (const ent of gameState.getOwnEntities().toEntityArray())
+			ent.destroy();
 		Engine.PostCommand(PlayerID, { "type": "resign" });
+	}
 };
 
 PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(gameState)

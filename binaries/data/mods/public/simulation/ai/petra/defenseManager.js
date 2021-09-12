@@ -19,6 +19,8 @@ PETRA.DefenseManager.prototype.exitEmergency = function()
 	this.attackingArmies = {};
 	this.attackingUnits = {};
 	this.attackedAllies = {};
+	this.armies = [];
+	this.targetList = [];
 };
 PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 {
@@ -491,6 +493,8 @@ PETRA.DefenseManager.prototype.assignDefenders = function(gameState)
 				// Do not assign defender if it cannot attack at least part of the attacking army.
 				if (!armiesNeeding[a].army.foeEntities.some(eEnt => {
 					let eEntID = gameState.getEntityById(eEnt);
+					if (!eEntID)
+						return false;
 					return ent.canAttackTarget(eEntID, PETRA.allowCapture(gameState, ent, eEntID));
 					}))
 					continue;

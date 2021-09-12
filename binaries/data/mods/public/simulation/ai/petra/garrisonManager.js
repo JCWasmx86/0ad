@@ -378,6 +378,7 @@ PETRA.GarrisonManager.prototype.ungarrisonAllUnits = function(gameState) {
 			const ent = gameState.getEntityById(garrisonedEnt);
 			if (ent)
 				this.leaveGarrison(ent);
+			ent.setMetadata("garrisonType", "force");
 		}
 	}
 	this.holders.clear();
