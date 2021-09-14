@@ -38,6 +38,21 @@ target is undefined
 */
 // Petra error in incrementBuilderCounters for structures/maur/farmstead with count < 0
 // unknown type in garrisonManager undefined for Athenian Hoplite id 13212 inside Barracks id 12541
+/*
+undefined has no properties
+  PETRA.DefenseManager.prototype.checkEvents@simulation/ai/petra/defenseManager.js:664:8
+  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:59:7
+  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
+  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
+  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
+ERROR: JavaScript error: simulation/ai/petra/defenseManager.js line 664
+army is undefined
+  PETRA.DefenseManager.prototype.checkEvents@simulation/ai/petra/defenseManager.js:664:8
+  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:59:7
+  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
+  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
+  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
+*/
 PETRA.EmergencyManager = function(Config)
 {
 	this.Config = Config;
