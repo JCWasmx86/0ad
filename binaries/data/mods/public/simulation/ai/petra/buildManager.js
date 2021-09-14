@@ -23,7 +23,6 @@ PETRA.BuildManager.prototype.init = function(gameState)
 
 PETRA.BuildManager.prototype.exitEmergency = function(gameState)
 {
-	// JCWASMX86_TODO: Check, whether this breaks anything
 	this.builderCounters = new Map();
 	this.init(gameState);
 	let civ = gameState.getPlayerCiv();
