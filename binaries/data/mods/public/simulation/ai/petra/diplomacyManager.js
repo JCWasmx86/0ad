@@ -623,6 +623,7 @@ PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameSt
 		// Weird bugfix.
 		tribute[resource] = Math.round(tributableResourceCount / (numEnemies == 0 ? 1 : numEnemies));
 	}
+	API3.warn(JSON.stringify(tribute));
 	return tribute;
 };
 
