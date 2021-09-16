@@ -289,6 +289,12 @@ PETRA.Config = function(difficulty, behavior)
 	// How often the AI should check, whether there were any losses
 	// in emergency mode until it returns to normal.
 	this.defensiveStateDuration = 20;
+
+	this.unusedNoAllyTechs = [
+		"Player/sharedLos",
+		"Market/InternationalBonus",
+		"Player/sharedDropsites"
+	];
 };
 
 PETRA.Config.prototype.setConfig = function(gameState)

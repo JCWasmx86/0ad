@@ -42,7 +42,10 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 			let ent = gameState.getEntityById(entId);
 			if (!ent || !ent.position())
 				continue;
-			ent.setMetadata(PlayerID, "access", 0);
+			ent.deleteMetadata(PlayerID, "access");
+			ent.deleteMetadata(PlayerID, "plan");
+			ent.setMetadata(PlayerID, "PartOfArmy", undefined);
+			ent.setMetadata(PlayerID, "subrole", undefined);
 			break;
 		}
 		army.clear(gameState);
