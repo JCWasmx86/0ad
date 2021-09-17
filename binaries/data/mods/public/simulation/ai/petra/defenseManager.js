@@ -39,6 +39,7 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 		army.update(gameState);
 		for (let entId of army.foeEntities)
 		{
+			army.removeFoe(gameState, entId);
 			let ent = gameState.getEntityById(entId);
 			if (!ent || !ent.position())
 				continue;
@@ -49,6 +50,7 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 		}
 		for (let entId of army.ownEntities)
 		{
+			army.removeOwn(gameState, entId);
 			let ent = gameState.getEntityById(entId);
 			if (!ent || !ent.position())
 				continue;
