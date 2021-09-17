@@ -102,6 +102,7 @@ PETRA.EmergencyManager = function(Config)
 	this.backToNormalCounter = 0;
 
 	this.nearestEnemy = undefined;
+	this.emergencyPeakPopulation = 0;
 };
 
 PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
@@ -129,6 +130,7 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.marchCounter = 0;
 	this.lastPoint = [-1, -1];
 	this.backToNormalCounter = 0;
+	this.emergencyPeakPopulation = 0;
 	// All other fields didn't change.
 };
 
@@ -166,13 +168,25 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 		}
 		this.collectTroops(gameState);
 		this.collectedTroops = true;
+		this.emergencyPeakPopulation = this.countMovableEntities(gameState);
 	}
 	// Force these people to go to the position, where all others
 	// will be to avoid having minor skirmishes that may lead to heavy
 	// losses.
 	// TODO: Maybe say something like: Hold the line! (Motivational speech)
+	// TODO: Set flare to collect position?
 	if (this.troopsMarching(gameState))
+	{
+		if (this.Config.personality.aggressive < this.Config.personality.defensive)
+		{
+			if (this.countMovableEntities(gameState) < this.Config.lossesForResign * this.emergencyPeakPopulation)
+			{
+				this.resign(gameState);
+				return;
+			}
+		}
 		this.moveToPoint(gameState, this.musterPosition);
+	}
 	else
 		this.executeActions(gameState, events);
 };
@@ -317,9 +331,7 @@ PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 			this.resetToNormal(gameState);
 		}
 		else
-		{
 			API3.warn("No root found");
-		}
 		return;
 	}
 };
@@ -589,7 +601,8 @@ PETRA.EmergencyManager.prototype.Serialize = function()
 		"marchCounter": this.marchCounter,
 		"testPoint": this.testPoint,
 		"backToNormalCounter": this.backToNormalCounter,
-		"nearestEnemy": this.nearestEnemy
+		"nearestEnemy": this.nearestEnemy,
+		"emergencyPeakPopulation": this.emergencyPeakPopulation
 	};
 };
 
