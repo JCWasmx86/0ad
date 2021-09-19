@@ -27,12 +27,6 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 	// Function is no-op after one call
 	for (const army of this.armies) // No other relevant code from checkEvents
 		army.checkEvents(gameState, events);
-	for (let i = 0; i < this.targetList.length; ++i)
-	{
-		const target = gameState.getEntityById(this.targetList[i]);
-		if (!target || !target.position() || !gameState.isPlayerEnemy(target.owner()))
-			this.targetList.splice(i--, 1);
-	}
 	for (let i = 0; i < this.armies.length; ++i)
 	{
 		const army = this.armies[i];
@@ -59,7 +53,17 @@ PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
 			ent.setMetadata(PlayerID, "PartOfArmy", undefined);
 			ent.setMetadata(PlayerID, "subrole", undefined);
 		}
-		army.clear(gameState);
+		while (army.ownEntities.length)
+		{
+			const entId = army.ownEntities[0];
+			army.removeOwn(gameState, entId);
+			const ent = gameState.getEntityById(entId);
+			if (ent)
+				ent.stopMoving();
+		}
+		while (army.foeEntities.length)
+			army.removeFoe(gameState, army.foeEntities[0]);
+		// army.clear(gameState);
 		this.armies.splice(i--, 1);
 	}
 };
