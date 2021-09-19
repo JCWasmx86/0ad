@@ -749,7 +749,7 @@ PETRA.AttackManager.prototype.updateEmergency = function(gameState, events) {
 	for (const attackType in this.startedAttacks)
 		for (let i = 0; i < this.startedAttacks[attackType].length; ++i)
 		{
-			const attack = this.startedAttacks[attackType][i].Abort(gameState);
+			this.startedAttacks[attackType][i].Abort(gameState);
 			this.startedAttacks[attackType].splice(i--, 1);
 		}
 };
