@@ -177,13 +177,11 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// TODO: Set flare to collect position?
 	if (this.troopsMarching(gameState))
 	{
-		if (this.Config.personality.aggressive < this.Config.personality.defensive)
+		if (this.Config.personality.aggressive < this.Config.personality.defensive &&
+			this.countMovableEntities(gameState) < this.Config.lossesForResign * this.emergencyPeakPopulation * 0.6)
 		{
-			if (this.countMovableEntities(gameState) < this.Config.lossesForResign * this.emergencyPeakPopulation)
-			{
-				this.resign(gameState);
-				return;
-			}
+			this.resign(gameState);
+			return;
 		}
 		this.moveToPoint(gameState, this.musterPosition);
 	}
