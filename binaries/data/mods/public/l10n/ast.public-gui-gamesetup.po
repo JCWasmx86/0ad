@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
 "POT-Creation-Date: 2021-08-30 07:08+0000\n"
-"PO-Revision-Date: 2021-09-20 19:12+0000\n"
+"PO-Revision-Date: 2021-10-08 01:09+0000\n"
 "Last-Translator: David Sowa <isithere2@yahoo.com>\n"
 "Language-Team: Asturian (http://www.transifex.com/wildfire-games/0ad/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +123,7 @@ msgstr "Xugador"
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/GameSettingsLayout.js:40
 msgctxt "Match settings tab name"
 msgid "Game Type"
-msgstr "Tipu de partida"
+msgstr "Tipu d'alcuentru"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/AIConfigButton.js:32
 #, javascript-format
@@ -154,7 +154,7 @@ msgstr "Al debalu"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:80
 msgid "Picks one civilization at random when the game starts."
-msgstr "Escueye una civilización al debalu al entamar la partida."
+msgstr "Escueye una civilización al debalu al aniciar l'alcuentru."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerColor.js:48
 msgid "Pick a color."
@@ -254,15 +254,15 @@ msgstr "Nómada"
 msgid ""
 "In Nomad mode, players start with only few units and have to find a suitable"
 " place to build their city. Ceasefire is recommended."
-msgstr "En mou nómada, los xugadores entamen con un puñáu d'unidaes y tienen qu'atopar un llugar afayadizu onde s'asitiar. Aconséyase la enducia."
+msgstr "En mou nómada, los xugadores entamen con un puñáu d'unidaes y tienen qu'atopar un llugar afayadizu u s'asitiar. Aconséyase la enducia."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Rating.js:27
 msgid "Rated Game"
-msgstr "Partida clasificada"
+msgstr "Alcuentru clasificáu"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Rating.js:30
 msgid "Toggle if this game will be rated for the leaderboard."
-msgstr "Alterna la clasificación d'esta partida en marcador."
+msgstr "Alterna la clasificación d'esti alcuentru en marcador."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RegicideGarrison.js:27
 msgid "Hero Garrison"
@@ -288,11 +288,11 @@ msgstr "Alterna'l mapa descubiertu (velo too)."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Spies.js:26
 msgid "Disable Spies"
-msgstr "Desactivar espíes"
+msgstr "Desactivar especuladores"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Spies.js:29
 msgid "Disable spies during the game."
-msgstr "Fai que los espíes tean desactivaos na partida."
+msgstr "Fai que los especuladores tean desactivaos nel alcuentru."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Treasures.js:25
 msgid "Disable Treasures"
@@ -335,7 +335,7 @@ msgstr "Día"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:60
 msgid "Select whether the match takes place at daylight or night."
-msgstr "Escueyi si la partida asocede pel día o pela nueche."
+msgstr "Escueyi si l'alcuentru asocede pel día o pela nueche."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:63
 msgctxt "daytime selection"
@@ -452,7 +452,7 @@ msgstr "Recursos iniciales"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:53
 msgid "Select the game's starting resources."
-msgstr "Esbilla los recursos iniciales de la partida."
+msgstr "Esbilla los recursos iniciales del alcuentru."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/StartingResources.js:56
 #, javascript-format
@@ -632,7 +632,7 @@ msgstr "Señala que tas preparáu pa xugar."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:86
 msgid "Stay ready even when the game settings change."
-msgstr "Siguir preparáu, inda que cambien los axustes de la partida."
+msgstr "Siguir preparáu, inda que cambien los axustes del alcuentru."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/ReadyButton.js:87
 msgid "State that you are not ready to play."
@@ -649,17 +649,17 @@ msgstr "Reafita les cuadrielles al valor por defeutu."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:65
 msgid "Start Game!"
-msgstr "¡Aniciar partida!"
+msgstr "¡Aniciar alcuentru!"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:68
 msgid "Start a new game with the current settings."
-msgstr "Entama una partida nueva colos axustes actuales."
+msgstr "Anicia un alcuentru nuevu colos axustes actuales."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/StartGameButton.js:71
 msgid ""
 "Start a new game with the current settings (disabled until all players are "
 "ready)."
-msgstr "Entama una partida nueva colos axustes actuales (cuando toos tean preparaos)."
+msgstr "Anicia un alcuentru nuevu colos axustes actuales (cuando toos tean preparaos)."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatInputPanel.js:55
 #, javascript-format
@@ -683,17 +683,17 @@ msgstr "%(username)s %(message)s"
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientConnection.js:27
 #, javascript-format
 msgid "%(username)s has joined"
-msgstr "%(username)s entró na partida"
+msgstr "%(username)s entró n'alcuentru"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientConnection.js:30
 #, javascript-format
 msgid "%(username)s has left"
-msgstr "%(username)s dexó la partida"
+msgstr "%(username)s dexó l'alcuentru"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientKicked.js:22
 #, javascript-format
 msgid "%(username)s has been kicked"
-msgstr "Espuxóse a %(username)s de la partida"
+msgstr "Espuxóse a %(username)s"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/ClientKicked.js:25
 #, javascript-format
@@ -712,7 +712,7 @@ msgstr "* ¡%(username)s ta preparáu!"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatMessages/GameSettingsChanged.js:22
 msgid "Game settings have been changed"
-msgstr "Los axustes de la partida cambiaron"
+msgstr "Los axustes del alcuentru cambiaron"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Chat/ChatPanel.xml:(caption):9
 msgid "Send"
@@ -743,7 +743,7 @@ msgstr "Activáronse les trampes."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingWarning.js:43
 msgid "Rated game."
-msgstr "Partida clasificada."
+msgstr "Alcuentru clasificáu."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingsTabs.js:74
 #, javascript-format
@@ -777,7 +777,7 @@ msgstr "Configuración del alcuentru"
 #: gui/gamesetup_mp/gamesetup_mp.js:59
 #, javascript-format
 msgid "%(name)s's game"
-msgstr "Partida de %(name)s"
+msgstr "Alcuentru de %(name)s"
 
 #: gui/gamesetup_mp/gamesetup_mp.js:123
 msgid "Please enter a valid server name."
@@ -834,7 +834,7 @@ msgstr "Rexistrándose en sirvidor..."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:282
 msgid "Game has already started, rejoining..."
-msgstr "Yá entamó la partida, rexuniéndose..."
+msgstr "Yá entamó l'alcuentru, rexuniéndose..."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:361
 msgid "Game name already in use."
@@ -843,7 +843,7 @@ msgstr "Esi nomatu yá ta n'usu."
 #: gui/gamesetup_mp/gamesetup_mp.js:376
 #, javascript-format
 msgid "Cannot host game: %(message)s."
-msgstr "Nun pue agospiase la partida: %(message)s."
+msgstr "Nun pue agospiase l'alcuentru: %(message)s."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:377 gui/gamesetup_mp/gamesetup_mp.js:406
 #: gui/gamesetup_mp/gamesetup_mp.js:435 gui/gamesetup_mp/gamesetup_mp.js:450
@@ -853,12 +853,12 @@ msgstr "Fallu"
 #: gui/gamesetup_mp/gamesetup_mp.js:405 gui/gamesetup_mp/gamesetup_mp.js:449
 #, javascript-format
 msgid "Cannot join game: %(message)s."
-msgstr "Nun pue xunise a la partida: %(message)s."
+msgstr "Nun pue xunise al alcuentru: %(message)s."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:464
 #, javascript-format
 msgid "%(playername)s's game"
-msgstr "Partida de %(playername)s"
+msgstr "Alcuentru de %(playername)s"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):18
 msgid "Multiplayer"
@@ -866,7 +866,7 @@ msgstr "Dellos xugadores"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):24
 msgid "Joining an existing game."
-msgstr "Xuniéndose a una partida esistente."
+msgstr "Xuniéndose a un alcuentru esistente."
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):28
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):70
@@ -1061,7 +1061,7 @@ msgstr "«¡Ayó! ¡Deixa de ḷḷorar! Arréu que m'asasinan, acabo mechor que
 msgid ""
 "“Sex and sleep alone make me conscious that I am mortal.” \\n— Alexander the"
 " Great (Plutarch, “Parallel Lives”, “Alexander”, sec. 22)"
-msgstr "«Decátome que soi mortal dormiendo y faciendo l'amor.» \\n— Alexandru'l Grande (Plutarcu, «Vides paraleles», «Alexandru», seic. 22)"
+msgstr "«Decátome que soi mortal dormiendo y faciendo l'amor.» \\n— Alexandre Magnu (Plutarcu, «Vides paraleles», «Alexandre», seic. 22)"
 
 #: gui/text/quotes.txt:21
 msgid ""
@@ -1069,7 +1069,7 @@ msgid ""
 "you know that the end and object of conquest is to avoid the vices and "
 "infirmities of the subdued?” \\n— Alexander the Great (Plutarch, “Parallel "
 "Lives”, “Alexander”, sec. 40)"
-msgstr "«Vivir a lo pavo ye cosa de siervos; los nobles trabayen. \\[...] ¿Nun sabéis que'l finxu de conquistar ye quitase de les zunes de los vencíos?» \\n— Alexandru'l Grande (Plutarcu, «Vides paraleles», «Alexandru», seic. 40)"
+msgstr "«Vivir a lo pavo ye cosa de siervos; los nobles trabayen. \\[...] ¿Nun sabéis que'l finxu de conquistar ye quitase de les zunes de los vencíos?» \\n— Alexandre Magnu (Plutarcu, «Vides paraleles», «Alexandre», seic. 40)"
 
 #: gui/text/quotes.txt:22
 msgid ""
@@ -1077,7 +1077,7 @@ msgid ""
 "danger; and it is delightful to live a life of valor and to die leaving "
 "behind immortal glory.” \\n— Alexander the Great, addressing his troops "
 "(Arrian, “The Anabasis of Alexander”, 5.26)"
-msgstr "«Son curioses les obres de los que se meten nel trabayu y cuerren peligru; y presta vivir como home y morrer dexando atrás gloria inmortal.» \\n— Alexandru'l Grande, afalando a les tropes (Arrianu, «La espedición d'Alexandru», 5.26)"
+msgstr "«Son curioses les obres de los que se meten nel trabayu y cuerren peligru; y presta vivir como home y morrer dexando atrás gloria inmortal.» \\n— Alexandre Magnu, afalando a les tropes (Arrianu, «La espedición d'Alexandre», 5.26)"
 
 #: gui/text/quotes.txt:23
 msgid ""
@@ -1085,26 +1085,26 @@ msgid ""
 "labors themselves, provided they lead to glorious achievements.” \\n— "
 "Alexander the Great, addressing his troops (Arrian, “The Anabasis of "
 "Alexander”, 5.26)"
-msgstr "«Camiento yo que'l paisanu bien ñacíu nun trabaya con otru envís que'l de trabayar, siempres que lleve a obres curioses.» \\n— Alexandru'l Grande, afalando a les tropes (Arrianu, «La espedición d'Alexandru», 5.26)"
+msgstr "«Camiento yo que'l paisanu bien ñacíu nun trabaya con otru envís que'l de trabayar, siempres que lleve a obres curioses.» \\n— Alexandre Magnu, afalando a les tropes (Arrianu, «La espedición d'Alexandre», 5.26)"
 
 #: gui/text/quotes.txt:24
 msgid ""
 "“If I were not Alexander, I should wish to be Diogenes \\[of Sinope].” \\n— "
 "Alexander the Great, impressed by the simplicity of the philosopher he had "
 "met (Plutarch, “Moralia”, “On the Fortunes of Alexander the Great”, 332a–b)"
-msgstr "«Si yo nun fuere Alexandru, sedría Dióxenes \\[de Sinope].» \\n— Alexandru'l Grande, amelláu pola llaneza del filósofu qu'acabare d'alcontrar (Plutarcu, «Moralia», «Sobre la fortuna d'Alexandru'l Grande», 332a–b)"
+msgstr "«Si yo nun fuere Alexandre, sedría Dióxenes \\[de Sinope].» \\n— Alexandre Magnu, amelláu pola llaneza del filósofu qu'acabare d'alcontrar (Plutarcu, «Moralia», «Sobre la fortuna d'Alexandre Magnu», 332a–b)"
 
 #: gui/text/quotes.txt:25
 msgid ""
 "“To the strongest!” \\n— Alexander the Great, on his death bed, when asked "
 "who should succeed him as king (Arrian, “The Anabasis of Alexander”, 7.26)"
-msgstr "«¡Al más fuerte!» \\n— Alexandru'l Grande, enantes de morrer, entrugáu quién había asocedelu (Arrianu, «La espedición d'Alexandru», 7.26)"
+msgstr "«¡Al más fuerte!» \\n— Alexandre Magnu, enantes de morrer, entrugáu quién había asocedelu (Arrianu, «La espedición d'Alexandre», 7.26)"
 
 #: gui/text/quotes.txt:26
 msgid ""
 "“I do not steal victory.” \\n— Alexander the Great, when suggested to raid "
 "the Persians at night (Plutarch, “Parallel Lives”, “Alexander”, sec. 31)"
-msgstr "«Nun furto la victoria.» \\n— Alexandru'l Grande, cuando se-y encamentó asaltar de nueche a los perses (Plutarcu, «Vides paraleles», «Alexandru», seic. 31)"
+msgstr "«Nun furto la victoria.» \\n— Alexandre Magnu, cuando se-y encamentó asaltar de nueche a los perses (Plutarcu, «Vides paraleles», «Alexandre», seic. 31)"
 
 #: gui/text/quotes.txt:27
 msgid ""
@@ -1202,7 +1202,7 @@ msgid ""
 "immediately poured it upon the ground in the sight of all.” \\n— Arrian "
 "about Alexander's march through the Gedrosian desert (“The Anabasis of "
 "Alexander”, 6.26)"
-msgstr "«Hata Alexandru apabentaba de sede y malapenes siguía al frente l'exércitu \\[…]. Entrín y non, dalgunos de los soldaos llixeros \\[…] atoparon agua \\[…], metiéronlo nun cascu y lleváronlo al rei. Elli acoyólos y agradeció-yoslo, pero garrándolo a la vista de toos lo vertió.» \\n— Arrianu sobre la marcha d'Alexandru pel ermu de Xedrosia («La espedición d'Alexandru», 6.26)"
+msgstr "«Hata Alexandre apabentaba de sede y malapenes siguía al frente l'exércitu \\[…]. Entrín y non, dalgunos de los soldaos llixeros \\[…] atoparon agua \\[…], metiéronlo nun cascu y lleváronlo al rei. Elli acoyólos y agradeció-yoslo, pero garrándolo a la vista de toos lo vertió.» \\n— Arrianu sobre la marcha d'Alexandre pel ermu de Xedrosia («La espedición d'Alexandre», 6.26)"
 
 #: gui/text/quotes.txt:41
 msgid ""
@@ -1213,7 +1213,7 @@ msgid ""
 "had already raised his sword against Alexander from behind when Clitus \\[…]"
 " cut his arm off.” \\n— Arrian about the Battle of the Granicus (“The "
 "Anabasis of Alexander”, 1.15)"
-msgstr "«\\[Alexandru] clavó la llancia na cara de Mithridates y valtólu. Entós Rhoesaces \\[un pérsicu] \\[…]-y solmenó un espadazu na tiesta. \\[…] A esti Alexandru tamién lu valtó furándo-y la coraza hata'l pechu. Mentanto, Sphithridates \\[un persa] alzare la cuchiella detrás d'Alexandru, pero Clitus antemanólo \\[…] y cortó-y el brazu.» \\n— Arrianu sobre la batalla del Gránicu («La espedición d'Alexandru», 1.15)"
+msgstr "«\\[Alexandre] clavó la llancia na cara de Mithridates y valtólu. Entós Rhoesaces \\[un pérsicu] \\[…]-y solmenó un espadazu na tiesta. \\[…] A esti Alexandre tamién lu valtó furándo-y la coraza hata'l pechu. Mentanto, Sphithridates \\[un persa] alzare la cuchiella detrás d'Alexandre, pero Clitus antemanólo \\[…] y cortó-y el brazu.» \\n— Arrianu sobre la batalla del Gránicu («La espedición d'Alexandre», 1.15)"
 
 #: gui/text/quotes.txt:42
 msgid ""
@@ -1329,14 +1329,14 @@ msgid ""
 "It was impossible for the weak or cowardly to retreat; man to man they "
 "fought like in single combat.” \\n— Curtius Rufus about the Battle of Issus "
 "(“Histories of Alexander the Great”, III. 11.5)"
-msgstr "«Entóncenes s'arramóu muitísima sangre, porque los dous frentes cutían, puxando arma contra arma ya emponiéndose unu a outru las puntas a la boca. Daqueḷḷa nun se-ḷḷys deixóu afuxire nin al ḷḷerciosu nin al cobarde; taban apertaos na mesma güelga, amarrándose cuasimente en combate singular.» \\n— Curciu Rufu sobre la batalla d'Isu («Hestories d'Alexandru'l Grande», III. 11.5)"
+msgstr "«Entóncenes s'arramóu muitísima sangre, porque los dous frentes cutían, puxando arma contra arma ya emponiéndose unu a outru las puntas a la boca. Daqueḷḷa nun se-ḷḷys deixóu afuxire nin al ḷḷerciosu nin al cobarde; taban apertaos na mesma güelga, amarrándose cuasimente en combate singular.» \\n— Curciu Rufu sobre la batalla d'Isu («Hestories d'Alexandre Magnu», III. 11.5)"
 
 #: gui/text/quotes.txt:58
 msgid ""
 "“I am Cyrus, who won for the Persians their empire. Therefore do not "
 "begrudge me this bit of earth that covers my bones.” \\n— Cyrus the Great's "
 "epitaph (Plutarch, “Parallel Lives”, “Alexander”, sec. 69)"
-msgstr "«Yo so Ciru, el que ganó a los perses l'imperiu; poro, nun enveyéis esta pequeñeza de tierra que m'envolubra'l cuerpu.» \\n— L'epitafiu de Ciru'l Grande (Plutarcu, «Vides paraleles», «Alexandru», seic. 69)"
+msgstr "«Yo so Ciru, el que ganó a los perses l'imperiu; poro, nun enveyéis esta pequeñeza de tierra que m'envolubra'l cuerpu.» \\n— L'epitafiu de Ciru'l Grande (Plutarcu, «Vides paraleles», «Alexandre», seic. 69)"
 
 #: gui/text/quotes.txt:59
 msgid ""
@@ -1431,7 +1431,7 @@ msgid ""
 "“Yes, stand a little out of my sunshine.” \\n— Diogenes of Sinope to "
 "Alexander the Great, who asked if he could help in in any way (Plutarch, "
 "“Parallel Lives”, “Alexander”, sec. 14)"
-msgstr "«Escíbiate un poco del sol.» \\n— Dióxenes de Sinope a Alexandru'l Grande, que-y entrugare si precisaba ayuda (Plutarcu, «Vides paraleles», «Alexandru», seic. 14)"
+msgstr "«Escíbiate un poco del sol.» \\n— Dióxenes de Sinope a Alexandre Magnu, que-y entrugare si precisaba ayuda (Plutarcu, «Vides paraleles», «Alexandre», seic. 14)"
 
 #: gui/text/quotes.txt:72
 msgid ""
@@ -1935,7 +1935,7 @@ msgid ""
 "“He \\[Alexander] thought nothing invincible for the courageous, and nothing"
 " secure for the cowardly.” \\n— Plutarch (“Parallel Lives”, “Alexander”, "
 "sec. 58)"
-msgstr "«\\[Alexandru] cuidó que nada yera invencible pal coraxosu nin seguro pal cobarde.» \\n— Plutarcu («Vides paraleles», «Alexandru», seic. 58)"
+msgstr "«\\[Alexandre] cuidó que nada yera invencible pal coraxosu nin seguro pal cobarde.» \\n— Plutarcu («Vides paraleles», «Alexandre», seic. 58)"
 
 #: gui/text/quotes.txt:145
 msgid ""
@@ -1945,7 +1945,7 @@ msgid ""
 "received many wounds, at last was struck on the neck with a mace, and leaned"
 " against the city wall, his eyes still fixed upon his foes.” \\n— Plutarch "
 "about the Mallian Campaign (“Parallel Lives”, “Alexander”, sec. 63)"
-msgstr "«Ún \\[…] tiró-y una flecha con tanta precisión y reflundiu qu'ella-y furó la coraza, clavándo-y nes costielles pel pechu. \\[…] Alexandru reculó énte'l güelpe y defitóse toriáu, \\[…] pero finalmente mató al bárbaru. Sicasí, recibiere mancadures enforma. A lo último, macexáu en pescuezu, apostó contra la muralla, agüeyando los enemigos.\" \\n— Plutarcu sobre la campaña malia («Vides paraleles\", «Alexandru», seic. 63)"
+msgstr "«Ún \\[…] tiró-y una flecha con tanta precisión y reflundiu qu'ella-y furó la coraza, clavándo-y nes costielles pel pechu. \\[…] Alexandre reculó énte'l güelpe y defitóse toriáu, \\[…] pero finalmente mató al bárbaru. Sicasí, recibiere mancadures enforma. A lo último, macexáu en pescuezu, apostó contra la muralla, agüeyando los enemigos.\" \\n— Plutarcu sobre la campaña malia («Vides paraleles\", «Alexandre», seic. 63)"
 
 #: gui/text/quotes.txt:146
 msgid ""
