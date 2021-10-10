@@ -25,8 +25,8 @@ PETRA.BuildManager.prototype.exitEmergency = function(gameState)
 {
 	this.builderCounters = new Map();
 	this.init(gameState);
-	let civ = gameState.getPlayerCiv();
-	for (let ent of gameState.getOwnUnits().values())
+	const civ = gameState.getPlayerCiv();
+	for (const ent of gameState.getOwnUnits().values())
 		this.incrementBuilderCounters(civ, ent, 1);
 };
 
