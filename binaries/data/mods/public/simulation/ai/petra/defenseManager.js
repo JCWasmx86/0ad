@@ -22,7 +22,7 @@ PETRA.DefenseManager.prototype.exitEmergency = function()
 	this.armies = [];
 	this.targetList = [];
 };
-PETRA.DefenseManager.prototype.updateEmergency = function(gameState, events)
+PETRA.DefenseManager.prototype.handleEmergency = function(gameState, events)
 {
 	// Function is no-op after one call
 	for (const army of this.armies) // No other relevant code from checkEvents

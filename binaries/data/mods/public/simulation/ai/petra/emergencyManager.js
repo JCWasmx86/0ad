@@ -1,7 +1,7 @@
 /**
  * Emergency manager
  *
- * Checks, whether there is an emergency and acts accordingly based on the personality
+ * Checks whether there is an emergency and acts accordingly based on the personality
  * of the AI.
  */
 // Petra error: attacking army 14 without access
@@ -248,7 +248,11 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				{
 					API3.warn("Waiting until returning: " + this.backToNormalCounter + "/" + this.Config.defensiveStateDuration);
 					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
+					{
+						if (this.backToNormalCounter == Math.round(this.Config.defensiveStateDuration * 0.75))
+						gameState.ai.diplomacyManager.askForResources(gameState);
 						this.backToNormalCounter++;
+					}
 					else if (this.hasAvailableTerritoryRoot(gameState))
 					{
 						API3.warn("defensive + !cooperative: Back to normal");

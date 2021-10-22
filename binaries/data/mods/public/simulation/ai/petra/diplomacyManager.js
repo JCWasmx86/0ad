@@ -34,6 +34,7 @@ PETRA.DiplomacyManager = function(Config)
 	this.sentDiplomacyRequestLapseTime = 120 + randFloat(10, 100);
 	this.waitsForResponses = false;
 	this.responseCounter = -1;
+	this.callForAidCounter = 0;
 };
 
 /**
@@ -395,8 +396,8 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 			requiredTribute = request;
 		}
 	}
-	else if (requestType === "ally" && gameState.getEntities(player).length < gameState.getOwnEntities().length && randBool(0.4) ||
-	         requestType === "neutral" && moreEnemiesThanAllies && randBool(0.8) || emergency)
+	else if ((requestType === "ally" && gameState.getEntities(player).length < gameState.getOwnEntities().length && randBool(0.4) ||
+	         requestType === "neutral" && moreEnemiesThanAllies && randBool(0.8)) || emergency)
 	{
 		response = "accept";
 		this.changePlayerDiplomacy(gameState, player, requestType);
@@ -521,7 +522,19 @@ PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState
 		}
 };
 
-PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
+PETRA.DiplomacyManager.prototype.callForAid = function(gameState)
+{
+	for (const ally of gameState.getAllies())
+		PETRA.chatEmergency(gameState, ally, "help");
+};
+
+PETRA.DiplomacyManager.prototype.askForResources = function(gameState)
+{
+	for (const ally of gameState.getAllies())
+		PETRA.chatEmergency(gameState, ally, "resources");
+};
+
+PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 {
 	const personality = this.Config.personality;
 	API3.warn(personality.aggressive < personality.defensive);
@@ -530,9 +543,18 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 	API3.warn(this.enoughResourcesForTributes(gameState));
 	API3.warn(!this.waitsForResponses);
 	API3.warn(!gameState.ai.HQ.emergencyManager.troopsMarching(gameState));
+	if (this.callForAidCounter == 0)
+	{
+		this.callForAid(gameState);
+		this.callForAidCounter++;
+	}
+	else if (this.callForAidCounter < 120)
+		this.callForAidCounter++;
+	else
+		this.callForAidCounter = 0;
 	if (personality.aggressive < personality.defensive &&
 			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
-			personality.cooperative >= 0.1 &&
+			personality.cooperative >= 0.5 &&
 			this.enoughResourcesForTributes(gameState) &&
 			!this.waitsForResponses &&
 			!gameState.ai.HQ.emergencyManager.troopsMarching(gameState))
@@ -547,8 +569,7 @@ PETRA.DiplomacyManager.prototype.updateEmergency = function(gameState, events)
 		}
 	}
 	this.checkEvents(gameState, events);
-	if (this.waitsForResponses &&
-		gameState.getEnemies().length)
+	if (this.waitsForResponses && gameState.getEnemies().length)
 	{
 		if (this.responseCounter < this.Config.neutralityRequestWaitingDuration)
 		{
@@ -631,7 +652,7 @@ PETRA.DiplomacyManager.prototype.enoughResourcesForTributes = function(gameState
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 	API3.warn(JSON.stringify(availableResources));
-	return !Resources.GetTributableCodes().find(r => availableResources[r] < 50);
+	return !Resources.GetTributableCodes().find(r => availableResources[r] < 500);
 };
 
 PETRA.DiplomacyManager.prototype.exitEmergency = function()
