@@ -11,14 +11,14 @@ PETRA.launchAttackMessages = {
 PETRA.emergencyMessages = {
 	// JCWASMX86_TODO
 	"help": [
-		markForTranslation("%(_player_)s, I am in need of help. Send troops or I will be be extinguished!"),
+		markForTranslation("%(_player_)s, I am in need of help. Send troops or I will be extinguished!"),
 		markForTranslation("My empire may fall soon. Will you, %(_player_)s, help me to survive in this dark hour?"),
 		markForTranslation("My enemies encircled me. I want to remind you of our alliance, %(_player_)s")
 	],
 	"resources": [
 		markForTranslation("The dark hours are over now! Send me resources to rebuild my empire to new glory!"),
 		markForTranslation("I was nearly extinguished. But now I need resources to get my revenge"),
-		markForTranslation("If you give me resources, we can conquer the world together")
+		markForTranslation("If you give me resources, we can conquer the world together!")
 	]
 };
 

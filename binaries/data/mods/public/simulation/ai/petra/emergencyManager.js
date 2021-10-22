@@ -250,7 +250,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
 					{
 						if (this.backToNormalCounter == Math.round(this.Config.defensiveStateDuration * 0.75))
-						gameState.ai.diplomacyManager.askForResources(gameState);
+						gameState.ai.HQ.diplomacyManager.askForResources(gameState);
 						this.backToNormalCounter++;
 					}
 					else if (this.hasAvailableTerritoryRoot(gameState))
