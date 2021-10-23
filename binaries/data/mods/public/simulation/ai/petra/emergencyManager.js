@@ -4,55 +4,6 @@
  * Checks whether there is an emergency and acts accordingly based on the personality
  * of the AI.
  */
-// Petra error: attacking army 14 without access
-/*
-ERROR: JavaScript error: simulation/ai/petra/entityExtend.js line 162
-target is undefined
-  PETRA.allowCapture@simulation/ai/petra/entityExtend.js:162:6
-  PETRA.DefenseManager.prototype.assignDefenders/<@simulation/ai/petra/defenseManager.js:494:47
-  PETRA.DefenseManager.prototype.assignDefenders@simulation/ai/petra/defenseManager.js:492:44
-  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:97:7
-  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
-  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
-  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
-*/
-/*
-ERROR: JavaScript error: simulation/ai/petra/basesManager.js line 158
-base is undefined
-  PETRA.BasesManager.prototype.checkEvents@simulation/ai/petra/basesManager.js:158:7
-  PETRA.HQ.prototype.checkEvents@simulation/ai/petra/headquarters.js:119:20
-  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2242:7
-  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
-  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
-*/
-/*
-ERROR: JavaScript error: simulation/ai/common-api/entity.js line 784
-target is undefined
-  canAttackTarget@simulation/ai/common-api/entity.js:784:16
-  PETRA.DefenseManager.prototype.assignDefenders/<@simulation/ai/petra/defenseManager.js:494:17
-  PETRA.DefenseManager.prototype.assignDefenders@simulation/ai/petra/defenseManager.js:492:44
-  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:97:7
-  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
-  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
-  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
-*/
-// Petra error in incrementBuilderCounters for structures/maur/farmstead with count < 0
-// unknown type in garrisonManager undefined for Athenian Hoplite id 13212 inside Barracks id 12541
-/*
-undefined has no properties
-  PETRA.DefenseManager.prototype.checkEvents@simulation/ai/petra/defenseManager.js:664:8
-  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:59:7
-  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
-  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
-  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
-ERROR: JavaScript error: simulation/ai/petra/defenseManager.js line 664
-army is undefined
-  PETRA.DefenseManager.prototype.checkEvents@simulation/ai/petra/defenseManager.js:664:8
-  PETRA.DefenseManager.prototype.update@simulation/ai/petra/defenseManager.js:59:7
-  PETRA.HQ.prototype.update@simulation/ai/petra/headquarters.js:2291:22
-  PETRA.PetraBot.prototype.OnUpdate@simulation/ai/petra/_petrabot.js:118:11
-  m.BaseAI.prototype.HandleMessage@simulation/ai/common-api/baseAI.js:64:7
-*/
 PETRA.EmergencyManager = function(Config)
 {
 	this.Config = Config;
@@ -173,8 +124,8 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 	// Force these people to go to the position, where all others
 	// will be to avoid having minor skirmishes that may lead to heavy
 	// losses.
-	// TODO: Maybe say something like: Hold the line! (Motivational speech)
-	// TODO: Set flare to collect position?
+	// They will just walk a straight line. A better solution would be
+	// to only walk through neutral and allied territory to lose less troops.
 	if (this.troopsMarching(gameState))
 	{
 		if (this.Config.personality.aggressive < this.Config.personality.defensive &&
@@ -207,6 +158,11 @@ PETRA.EmergencyManager.prototype.hasAvailableTerritoryRoot = function(gameState)
 	}).length > 0;
 };
 
+PETRA.EmergencyManager.prototype.allowedToTribute = function(gameState, cooperativity)
+{
+	const lockedTeams = gameState.sharedScript.playersData[PlayerID].teamsLocked;
+	return cooperativity >= 0.5 && this.sentTributes && !lockedTeams && gameState.ai.HQ.diplomacyManager.enoughResourcesForTributes(gameState);
+};
 
 PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 {
@@ -214,10 +170,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	if (personality.aggressive < personality.defensive)
 	{
 		API3.warn("Defensive");
-		if (personality.cooperative >= 0.1 &&
-			!this.sentTributes &&
-			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
-			gameState.ai.HQ.diplomacyManager.enoughResourcesForTributes(gameState))
+		if (this.allowedToTribute(gameState, personality.cooperative))
 		{
 			API3.warn("Sent tributes!");
 			this.sentTributes = true;
@@ -250,7 +203,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
 					{
 						if (this.backToNormalCounter == Math.round(this.Config.defensiveStateDuration * 0.75))
-						gameState.ai.HQ.diplomacyManager.askForResources(gameState);
+							gameState.ai.HQ.diplomacyManager.askForResources(gameState);
 						this.backToNormalCounter++;
 					}
 					else if (this.hasAvailableTerritoryRoot(gameState))
@@ -262,14 +215,16 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					}
 				}
 			}
+			const halfPatrolRange = this.Config.patrolRange / 2;
 			// "Patrol" around the collect position.
 			for (const ent of gameState.getOwnEntities().toEntityArray())
 			{
 				if (!ent.get("Attack") || !ent.position())
 					continue;
+				const xDeviation = this.generateDeviation(halfPatrolRange);
+				const yDeviation = this.generateDeviation(halfPatrolRange);
 				if (API3.VectorDistance(ent.position(), this.musterPosition) > this.Config.patrolRange)
-					ent.move(this.musterPosition[0] + this.generateDeviation(this.Config.patrolRange / 2),
-						this.musterPosition[1] + this.generateDeviation(this.Config.patrolRange / 2));
+					ent.move(this.musterPosition[0] + xDeviation, this.musterPosition[1] + yDeviation);
 			}
 		}
 	}
@@ -287,10 +242,8 @@ PETRA.EmergencyManager.prototype.countMovableEntities = function(gameState)
 	const ownEntities = gameState.getOwnEntities().toEntityArray();
 	let movableEntitiesCount = 0;
 	for (const ent of ownEntities)
-	{
 		if (ent.walkSpeed() > 0)
 			movableEntitiesCount++;
-	}
 	return movableEntitiesCount;
 };
 PETRA.EmergencyManager.prototype.resign = function(gameState)
@@ -436,7 +389,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	this.nearestEnemy = nearestEnemy;
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
-	else { // TODO: Destroy all own
+	else {
 		for (const ent of gameState.getOwnEntities().toEntityArray())
 			ent.destroy();
 		Engine.PostCommand(PlayerID, { "type": "resign" });
@@ -573,11 +526,6 @@ PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities,
 		return;
 	}
 	this.musterPosition = building.position();
-};
-
-PETRA.EmergencyManager.prototype.getAveragePosition = function(gameState)
-{
-	this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
 };
 
 PETRA.EmergencyManager.prototype.Serialize = function()

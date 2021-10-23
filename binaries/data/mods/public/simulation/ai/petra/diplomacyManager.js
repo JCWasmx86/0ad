@@ -534,6 +534,16 @@ PETRA.DiplomacyManager.prototype.askForResources = function(gameState)
 		PETRA.chatEmergency(gameState, ally, "resources");
 };
 
+PETRA.DiplomacyManager.prototype.canSendNeutralityRequests(gameState)
+{
+	const personality = this.Config.personality;
+	const locked_teams = gameState.sharedScript.playersData[PlayerID].teamsLocked;
+	// TODO: Better names for these helper variables
+	const bool1 = personality.aggressive < personality.defensive && !locked_teams && personality.cooperative >= 0.5;
+	const bool2 = this.enoughResourcesForTributes(gameState) && ! this.waitsForResponses && !gameState.ai.HQ.emergencyManager.troopsMarching(gameState);
+	return bool1 && bool2;
+};
+
 PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 {
 	const personality = this.Config.personality;
@@ -552,12 +562,7 @@ PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 		this.callForAidCounter++;
 	else
 		this.callForAidCounter = 0;
-	if (personality.aggressive < personality.defensive &&
-			!gameState.sharedScript.playersData[PlayerID].teamsLocked &&
-			personality.cooperative >= 0.5 &&
-			this.enoughResourcesForTributes(gameState) &&
-			!this.waitsForResponses &&
-			!gameState.ai.HQ.emergencyManager.troopsMarching(gameState))
+	if (this.canSendNeutralityRequests(gameState))
 	{
 		API3.warn("defensive + !teamsLocked + cooperative + enoughResources + !waits");
 		if (!this.waitsForResponses)

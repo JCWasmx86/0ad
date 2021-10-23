@@ -9,7 +9,6 @@ PETRA.launchAttackMessages = {
 	]
 };
 PETRA.emergencyMessages = {
-	// JCWASMX86_TODO
 	"help": [
 		markForTranslation("%(_player_)s, I am in need of help. Send troops or I will be extinguished!"),
 		markForTranslation("My empire may fall soon. Will you, %(_player_)s, help me to survive in this dark hour?"),
