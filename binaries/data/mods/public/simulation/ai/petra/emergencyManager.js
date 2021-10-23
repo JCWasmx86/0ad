@@ -169,12 +169,8 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
 	{
-		API3.warn("Defensive");
 		if (this.allowedToTribute(gameState, personality.cooperative))
-		{
-			API3.warn("Sent tributes!");
 			this.sentTributes = true;
-		}
 		else
 		{
 			if (this.sentTributes && !gameState.ai.HQ.diplomacyManager.expiredNeutralityRequest())
@@ -182,7 +178,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				this.waitForExpiration(gameState);
 				return;
 			}
-			API3.warn("HEREEEE!");
 			// Check whether to resign. (Here: If more than 75% were killed)
 			const movableEntitiesCount = this.countMovableEntities(gameState);
 			if (this.lastPeopleAlive === -1)
@@ -199,7 +194,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 				}
 				else if (movableEntitiesCount >= this.lastPeopleAlive * ((1 + this.Config.lossesForResign) / 2))
 				{
-					API3.warn("Waiting until returning: " + this.backToNormalCounter + "/" + this.Config.defensiveStateDuration);
 					if (this.backToNormalCounter < this.Config.defensiveStateDuration)
 					{
 						if (this.backToNormalCounter == Math.round(this.Config.defensiveStateDuration * 0.75))
@@ -208,7 +202,6 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 					}
 					else if (this.hasAvailableTerritoryRoot(gameState))
 					{
-						API3.warn("defensive + !cooperative: Back to normal");
 						gameState.emergencyState[PlayerID] = false;
 						this.resetToNormal(gameState);
 						return;
@@ -267,7 +260,6 @@ PETRA.EmergencyManager.prototype.resign = function(gameState)
 
 PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 {
-	API3.warn("Waiting until neutrality!");
 	const enemies = gameState.getEnemies();
 	var numEnemies = 0;
 	for (const enemy of enemies)
@@ -276,17 +268,13 @@ PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 			continue;
 		numEnemies++;
 	}
-	API3.warn("" + numEnemies + " are left!");
 	if (numEnemies === 0)
 	{
 		if (this.hasAvailableTerritoryRoot(gameState))
 		{
-			API3.warn("Back to normal");
 			gameState.emergencyState[PlayerID] = false;
 			this.resetToNormal(gameState);
 		}
-		else
-			API3.warn("No root found");
 		return;
 	}
 };
@@ -294,7 +282,6 @@ PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 {
 	for (const ent of gameState.getOwnStructures().toEntityArray())
 		ent.destroy();
-	API3.warn("Aggressive");
 	// Select initial battle point
 	if (this.nextBattlePoint[0] === -1)
 	{
@@ -303,13 +290,10 @@ PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 		this.selectBattlePoint(gameState);
 		if (!this.nextBattlePoint)
 			return;
-		API3.warn("Initial point: " + this.nextBattlePoint);
-		API3.warn(this.nearestEnemy.toString());
 	}
 
 	if (!this.isAtBattlePoint(gameState) && this.marchCounter < this.Config.maximumMarchingDuration)
 	{
-		API3.warn(this.marchCounter + "//" + this.Config.maximumMarchingDuration);
 		if (this.nearestEnemy && this.nearestEnemy.position())
 			this.nextBattlePoint = this.nearestEnemy.position();
 		this.aggressiveAttack(gameState);
@@ -319,7 +303,6 @@ PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 			if (!this.nextBattlePoint)
 				return;
 			this.aggressiveAttack(gameState);
-			API3.warn("New: " + this.nearestEnemy.toString());
 		}
 		else
 			this.marchCounter++;
@@ -333,7 +316,6 @@ PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 		if (!this.nextBattlePoint)
 			return;
 		this.aggressiveAttack(gameState);
-		API3.warn("Entity: " + this.nearestEnemy.toString());
 	}
 };
 

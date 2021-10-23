@@ -63,7 +63,6 @@ PETRA.DefenseManager.prototype.handleEmergency = function(gameState, events)
 		}
 		while (army.foeEntities.length)
 			army.removeFoe(gameState, army.foeEntities[0]);
-		// army.clear(gameState);
 		this.armies.splice(i--, 1);
 	}
 };

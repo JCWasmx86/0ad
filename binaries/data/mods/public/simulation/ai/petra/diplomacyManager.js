@@ -547,12 +547,6 @@ PETRA.DiplomacyManager.prototype.canSendNeutralityRequests(gameState)
 PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 {
 	const personality = this.Config.personality;
-	API3.warn(personality.aggressive < personality.defensive);
-	API3.warn(!gameState.sharedScript.playersData[PlayerID].teamsLocked);
-	API3.warn(personality.cooperative >= 0.1);
-	API3.warn(this.enoughResourcesForTributes(gameState));
-	API3.warn(!this.waitsForResponses);
-	API3.warn(!gameState.ai.HQ.emergencyManager.troopsMarching(gameState));
 	if (this.callForAidCounter == 0)
 	{
 		this.callForAid(gameState);
@@ -564,12 +558,10 @@ PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 		this.callForAidCounter = 0;
 	if (this.canSendNeutralityRequests(gameState))
 	{
-		API3.warn("defensive + !teamsLocked + cooperative + enoughResources + !waits");
 		if (!this.waitsForResponses)
 		{
 			this.tryGettingNeutral(gameState);
 			this.responseCounter = 0;
-			API3.warn("Sent neutrality requests!");
 			this.waitsForResponses = true;
 		}
 	}
@@ -577,10 +569,7 @@ PETRA.DiplomacyManager.prototype.handleEmergency = function(gameState, events)
 	if (this.waitsForResponses && gameState.getEnemies().length)
 	{
 		if (this.responseCounter < this.Config.neutralityRequestWaitingDuration)
-		{
-			API3.warn("Response counter: " + this.responseCounter + "/" + this.Config.neutralityRequestWaitingDuration);
 			this.responseCounter++;
-		}
 		else if (this.responseCounter == this.Config.neutralityRequestWaitingDuration)
 		{
 			this.expireNeutralityRequests(gameState);
@@ -625,7 +614,6 @@ PETRA.DiplomacyManager.prototype.tryGettingNeutral = function(gameState)
 			"requestType": "neutral",
 			"timeSent": gameState.ai.elapsedTime
 		});
-		API3.warn("Sending neutrality request!");
 		Engine.PostCommand(PlayerID, { "type": "tribute", "player": enemy, "amounts": this.buildTributeForGettingNeutral(gameState, numEnemies) });
 		Engine.PostCommand(PlayerID, { "type": "diplomacy-request", "source": PlayerID, "player": enemy, "to": "neutral" });
 		PETRA.chatNewRequestDiplomacy(gameState, enemy, "neutral", "sendRequest");
@@ -637,7 +625,6 @@ PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameSt
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
 	const tribute = {};
-	API3.warn("Making tribute");
 	for (const resource of Resources.GetTributableCodes())
 	{
 		const tributableResourceCount = availableResources[resource] - this.Config.retainedResourcesAfterTribute;
@@ -649,14 +636,12 @@ PETRA.DiplomacyManager.prototype.buildTributeForGettingNeutral = function(gameSt
 		// Weird bugfix.
 		tribute[resource] = Math.round(tributableResourceCount / (numEnemies == 0 ? 1 : numEnemies));
 	}
-	API3.warn(JSON.stringify(tribute));
 	return tribute;
 };
 
 PETRA.DiplomacyManager.prototype.enoughResourcesForTributes = function(gameState)
 {
 	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
-	API3.warn(JSON.stringify(availableResources));
 	return !Resources.GetTributableCodes().find(r => availableResources[r] < 500);
 };
 
