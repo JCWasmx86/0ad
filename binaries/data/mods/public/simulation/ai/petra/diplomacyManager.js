@@ -591,7 +591,7 @@ PETRA.DiplomacyManager.prototype.expireNeutralityRequests = function(gameState)
 	{
 		if (data.requestType == "neutral")
 		{
-			PETRA.chatNewRequestDiplomacy(gameState, player, data.requestType, "requestExpired");
+			PETRA.chatNewRequestDiplomacy(gameState, player, "neutral", "requestExpired");
 			this.sentDiplomacyRequests.delete(player);
 		}
 	}
