@@ -354,6 +354,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
 	else {
+		// We destroyed all own structures, so we can't do anything besides resigning.
 		gameState.getOwnEntities().forEach(ent => ent.destroy());
 		Engine.PostCommand(PlayerID, { "type": "resign" });
 	}
