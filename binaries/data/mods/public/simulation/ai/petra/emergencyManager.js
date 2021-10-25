@@ -70,9 +70,9 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.lastPeopleAlive = -1;
 	this.sentTributes = false;
 	let cnter = 0;
-	for (const treshold of this.phases)
+	for (const threshold of this.phases)
 	{
-		if (treshold > this.referencePopulation)
+		if (threshold > this.referencePopulation)
 			break;
 		cnter++;
 	}
@@ -227,22 +227,16 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
 
 PETRA.EmergencyManager.prototype.generateDeviation = function(max)
 {
-	return Math.floor((Math.random() * max) + 1);
+	return (Math.random() > 0.5 ? -1 : 1) * Math.floor((Math.random() * max) + 1);
 };
 
 PETRA.EmergencyManager.prototype.countMovableEntities = function(gameState)
 {
-	const ownEntities = gameState.getOwnEntities().toEntityArray();
-	let movableEntitiesCount = 0;
-	for (const ent of ownEntities)
-		if (ent.walkSpeed() > 0)
-			movableEntitiesCount++;
-	return movableEntitiesCount;
+	return gameState.getOwnEntities().toEntityArray().filter(ent => ent.walkSpeed() > 0).length;
 };
 PETRA.EmergencyManager.prototype.resign = function(gameState)
 {
-	for (const ent of gameState.getOwnEntities().toEntityArray())
-		ent.destroy();
+	gameState.getOwnEntities().forEach(ent => ent.destroy());
 	var allResources = gameState.ai.queueManager.getAvailableResources(gameState);
 	const allies = gameState.getAllies();
 	// Just give the first non-dead ally we can find all our resources
@@ -260,14 +254,9 @@ PETRA.EmergencyManager.prototype.resign = function(gameState)
 
 PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 {
-	const enemies = gameState.getEnemies();
-	var numEnemies = 0;
-	for (const enemy of enemies)
-	{
-		if (enemy <= 0 || gameState.ai.HQ.attackManager.defeated[enemy])
-			continue;
-		numEnemies++;
-	}
+	const numEnemies = gameState.getEnemies().toEntityArray()
+					.filter(enemy => enemy >= 0 && !gameState.ai.HQ.attackManager.defeated[enemy])
+					.length;
 	if (numEnemies === 0)
 	{
 		if (this.hasAvailableTerritoryRoot(gameState))
@@ -280,13 +269,11 @@ PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 };
 PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
 {
-	for (const ent of gameState.getOwnStructures().toEntityArray())
-		ent.destroy();
+	gameState.getOwnStructures().forEach(ent => ent.destroy());
 	// Select initial battle point
 	if (this.nextBattlePoint[0] === -1)
 	{
-		for (const ent of gameState.getOwnEntities().toEntityArray())
-			ent.setStance("violent");
+		gameState.getOwnEntities().forEach(ent => ent.setStance("violent"));
 		this.selectBattlePoint(gameState);
 		if (!this.nextBattlePoint)
 			return;
@@ -323,8 +310,7 @@ PETRA.EmergencyManager.prototype.aggressiveAttack = function(gameState)
 {
 	if (this.nearestEnemy === undefined)
 		return;
-	for (const ent of gameState.getOwnEntities().toEntityArray())
-		ent.attack(this.nearestEnemy.id(), false, false, true);
+	gameState.getOwnEntities().forEach(ent => ent.attack(this.nearestEnemy.id(), false, false, true));
 };
 
 PETRA.EmergencyManager.prototype.validEntity = function(ent)
@@ -372,8 +358,7 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
 	else {
-		for (const ent of gameState.getOwnEntities().toEntityArray())
-			ent.destroy();
+		gameState.getOwnEntities().forEach(ent => ent.destroy());
 		Engine.PostCommand(PlayerID, { "type": "resign" });
 	}
 };
