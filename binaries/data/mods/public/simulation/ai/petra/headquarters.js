@@ -2200,7 +2200,7 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 		this.diplomacyManager.handleEmergency(gameState, events);
 		this.attackManager.handleEmergency(gameState, events);
 		this.defenseManager.handleEmergency(gameState, events);
-		this.emergencyManager.handleEmergency(gameState, events);
+		this.emergencyManager.handleEmergency(gameState);
 		if (!gameState.emergencyState[PlayerID])
 		{
 			// GarrisonManager, AttackManager will do everything by themselves

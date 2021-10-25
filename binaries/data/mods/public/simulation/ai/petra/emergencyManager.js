@@ -107,7 +107,7 @@ PETRA.EmergencyManager.prototype.initPhases = function(gameState)
 	this.phases = this.Config.phasesForSteadyDecline[lastLimit];
 };
 
-PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
+PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 {
 	if (!this.collectedTroops)
 	{
@@ -137,7 +137,7 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState, events)
 		this.moveToPoint(gameState, this.musterPosition);
 	}
 	else
-		this.executeActions(gameState, events);
+		this.executeActions(gameState);
 };
 
 PETRA.EmergencyManager.prototype.moveToPoint = function(gameState, point)
@@ -164,7 +164,7 @@ PETRA.EmergencyManager.prototype.allowedToTribute = function(gameState, cooperat
 	return cooperativity >= 0.5 && this.sentTributes && !lockedTeams && gameState.ai.HQ.diplomacyManager.enoughResourcesForTributes(gameState);
 };
 
-PETRA.EmergencyManager.prototype.executeActions = function(gameState, events)
+PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 {
 	const personality = this.Config.personality;
 	if (personality.aggressive < personality.defensive)
@@ -257,14 +257,10 @@ PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 	const numEnemies = gameState.getEnemies().toEntityArray()
 					.filter(enemy => enemy >= 0 && !gameState.ai.HQ.attackManager.defeated[enemy])
 					.length;
-	if (numEnemies === 0)
+	if (numEnemies === 0 && this.hasAvailableTerritoryRoot(gameState))
 	{
-		if (this.hasAvailableTerritoryRoot(gameState))
-		{
-			gameState.emergencyState[PlayerID] = false;
-			this.resetToNormal(gameState);
-		}
-		return;
+		gameState.emergencyState[PlayerID] = false;
+		this.resetToNormal(gameState);
 	}
 };
 PETRA.EmergencyManager.prototype.aggressiveActions = function(gameState)
@@ -372,7 +368,6 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 	let sumX = 0;
 	let sumZ = 0;
 	for (const ent of entities)
-	{
 		if (this.isMovableEntity(ent) && !ent.hasClass("Ship"))
 		{
 			nEntities++;
@@ -380,7 +375,6 @@ PETRA.EmergencyManager.prototype.getAveragePositionOfMovableEntities = function(
 			sumX += pos[0];
 			sumZ += pos[1];
 		}
-	}
 
 	if (nEntities === 0)
 		return [-1, -1];
