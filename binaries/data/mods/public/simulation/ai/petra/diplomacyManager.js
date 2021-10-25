@@ -534,7 +534,7 @@ PETRA.DiplomacyManager.prototype.askForResources = function(gameState)
 		PETRA.chatEmergency(gameState, ally, "resources");
 };
 
-PETRA.DiplomacyManager.prototype.canSendNeutralityRequests(gameState)
+PETRA.DiplomacyManager.prototype.canSendNeutralityRequests = function(gameState)
 {
 	const personality = this.Config.personality;
 	const locked_teams = gameState.sharedScript.playersData[PlayerID].teamsLocked;
