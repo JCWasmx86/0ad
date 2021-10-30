@@ -540,7 +540,7 @@ PETRA.DiplomacyManager.prototype.canSendNeutralityRequests = function(gameState)
 	const locked_teams = gameState.sharedScript.playersData[PlayerID].teamsLocked;
 	// TODO: Better names for these helper variables
 	const bool1 = personality.aggressive < personality.defensive && !locked_teams && personality.cooperative >= 0.5;
-	const bool2 = this.enoughResourcesForTributes(gameState) && ! this.waitsForResponses && !gameState.ai.HQ.emergencyManager.troopsMarching(gameState);
+	const bool2 = this.enoughResourcesForTributes(gameState) && !this.waitsForResponses && !gameState.ai.HQ.emergencyManager.troopsMarching(gameState);
 	return bool1 && bool2;
 };
 

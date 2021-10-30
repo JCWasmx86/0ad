@@ -31,10 +31,10 @@ PETRA.DefenseManager.prototype.handleEmergency = function(gameState, events)
 	{
 		const army = this.armies[i];
 		army.update(gameState);
-		for (let entId of army.foeEntities)
+		for (const entId of army.foeEntities)
 		{
 			army.removeFoe(gameState, entId);
-			let ent = gameState.getEntityById(entId);
+			const ent = gameState.getEntityById(entId);
 			if (!ent || !ent.position())
 				continue;
 			ent.deleteMetadata(PlayerID, "access");
@@ -42,10 +42,10 @@ PETRA.DefenseManager.prototype.handleEmergency = function(gameState, events)
 			ent.setMetadata(PlayerID, "PartOfArmy", undefined);
 			ent.setMetadata(PlayerID, "subrole", undefined);
 		}
-		for (let entId of army.ownEntities)
+		for (const entId of army.ownEntities)
 		{
 			army.removeOwn(gameState, entId);
-			let ent = gameState.getEntityById(entId);
+			const ent = gameState.getEntityById(entId);
 			if (!ent || !ent.position())
 				continue;
 			ent.deleteMetadata(PlayerID, "access");

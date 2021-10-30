@@ -255,8 +255,8 @@ PETRA.EmergencyManager.prototype.resign = function(gameState)
 PETRA.EmergencyManager.prototype.waitForExpiration = function(gameState)
 {
 	const numEnemies = gameState.getEnemies().toEntityArray()
-					.filter(enemy => enemy >= 0 && !gameState.ai.HQ.attackManager.defeated[enemy])
-					.length;
+		.filter(enemy => enemy >= 0 && !gameState.ai.HQ.attackManager.defeated[enemy])
+		.length;
 	if (numEnemies === 0 && this.hasAvailableTerritoryRoot(gameState))
 	{
 		gameState.emergencyState[PlayerID] = false;
@@ -353,7 +353,8 @@ PETRA.EmergencyManager.prototype.selectBattlePoint = function(gameState)
 	this.nearestEnemy = nearestEnemy;
 	if (nearestEnemy && nearestEnemy.position())
 		this.nextBattlePoint = nearestEnemy.position();
-	else {
+	else
+	{
 		// We destroyed all own structures, so we can't do anything besides resigning.
 		gameState.getOwnEntities().forEach(ent => ent.destroy());
 		Engine.PostCommand(PlayerID, { "type": "resign" });
