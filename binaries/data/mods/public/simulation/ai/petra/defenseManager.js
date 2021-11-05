@@ -606,7 +606,7 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 		if (plan !== undefined && plan >= 0)
 		{
 			let attack = gameState.ai.HQ.attackManager.getPlan(plan);
-			if (attack && attack.state != "unexecuted")
+			if (attack && attack.state != PETRA.AttackPlan.STATE_UNEXECUTED)
 				continue;
 		}
 
