@@ -19,6 +19,7 @@ PETRA.AttackManager = function(Config)
 	this.defeated = {};
 };
 
+
 /** More initialisation for stuff that needs the gameState */
 PETRA.AttackManager.prototype.init = function(gameState)
 {
@@ -63,7 +64,7 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 		{
 			for (let attack of this.upcomingAttacks[attackType])
 			{
-				if (attack.state === "completing")
+				if (attack.state === PETRA.AttackPlan.STATE_COMPLETING)
 				{
 					if (attack.targetPlayer === targetPlayer)
 						available += attack.unitCollection.length;
@@ -85,7 +86,7 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 			{
 				for (let attack of this.upcomingAttacks[attackType])
 				{
-					if (attack.state === "completing" ||
+					if (attack.state ===PETRA.AttackPlan.STATE_COMPLETING ||
 						attack.targetPlayer !== targetPlayer ||
 						attack.unitCollection.length < 3)
 						continue;
@@ -266,20 +267,20 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 
 			let updateStep = attack.updatePreparation(gameState);
 			// now we're gonna check if the preparation time is over
-			if (updateStep == 1 || attack.isPaused())
+			if (updateStep == PETRA.AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused())
 			{
 				// just chillin'
-				if (attack.state == "unexecuted")
+				if (attack.state == PETRA.AttackPlan.STATE_UNEXECUTED)
 					++unexecutedAttacks[attackType];
 			}
-			else if (updateStep == 0)
+			else if (updateStep == PETRA.AttackPlan.PREPARATION_FAILED)
 			{
 				if (this.Config.debug > 1)
 					API3.warn("Attack Manager: " + attack.getType() + " plan " + attack.getName() + " aborted.");
 				attack.Abort(gameState);
 				this.upcomingAttacks[attackType].splice(i--, 1);
 			}
-			else if (updateStep == 2)
+			else if (updateStep == PETRA.AttackPlan.PREPARATION_START)
 			{
 				if (attack.StartAttack(gameState))
 				{
@@ -733,7 +734,7 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	attackPlan.targetPlayer = target.owner();
 	attackPlan.targetPos = pos;
 	attackPlan.target = target;
-	attackPlan.state = "arrived";
+	attackPlan.state = PETRA.AttackPlan.STATE_ARRIVED;
 	return true;
 };
 
