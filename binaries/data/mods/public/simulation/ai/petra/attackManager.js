@@ -86,7 +86,7 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 			{
 				for (let attack of this.upcomingAttacks[attackType])
 				{
-					if (attack.state ===PETRA.AttackPlan.STATE_COMPLETING ||
+					if (attack.state === PETRA.AttackPlan.STATE_COMPLETING ||
 						attack.targetPlayer !== targetPlayer ||
 						attack.unitCollection.length < 3)
 						continue;

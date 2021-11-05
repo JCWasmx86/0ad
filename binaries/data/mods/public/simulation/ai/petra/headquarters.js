@@ -201,7 +201,7 @@ PETRA.HQ.prototype.checkEvents = function(gameState, events)
 			else if (ent.getMetadata(PlayerID, "garrisonType"))
 			{
 				// we were supposed to be autogarrisoned, but this has failed (may-be full)
-				ent.setMetadata(PlayerID, "garrisonType", undefined);
+				ent.setMetadata(PlayerID, "garrisonType", PETRA.GarrisonManager.TYPE_INVALID);
 			}
 
 			// Check if this unit is no more needed in its attack plan
@@ -1869,7 +1869,7 @@ PETRA.HQ.prototype.trainEmergencyUnits = function(gameState, positions)
 	}
 	let metadata = { "role": "worker", "base": nearestAnchor.getMetadata(PlayerID, "base"), "plan": -1, "trainer": nearestAnchor.id() };
 	if (autogarrison)
-		metadata.garrisonType = "protection";
+		metadata.garrisonType = PETRA.GarrisonManager.TYPE_PROTECTION;
 	gameState.ai.queues.emergency.addPlan(new PETRA.TrainingPlan(gameState, templateFound[0], metadata, 1, 1));
 	return true;
 };
