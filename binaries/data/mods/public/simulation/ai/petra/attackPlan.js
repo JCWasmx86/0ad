@@ -226,9 +226,9 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 	return true;
 };
 
-PETRA.AttackPlan.STATE_UNEXECUTED = 0;
-PETRA.AttackPlan.STATE_COMPLETING = 1;
-PETRA.AttackPlan.STATE_ARRIVED = 2;
+PETRA.AttackPlan.PREPARATION_FAILED = 0;
+PETRA.AttackPlan.PREPARATION_KEEP_GOING = 1;
+PETRA.AttackPlan.PREPARATION_START = 2;
 
 PETRA.AttackPlan.PRIORITY_DEFAULT = 70;
 PETRA.AttackPlan.PRIORITY_HUGE_ATTACK = 90;
@@ -239,18 +239,18 @@ PETRA.AttackPlan.PRIORITY_RUSH = 250;
  * Not yet tested
  */
 PETRA.AttackPlan.SIEGE_NOT_TESTED = 0;
-/**
- * Not yet any siege trainer
- */
+ /**
+  * Not yet any siege trainer
+  */
 PETRA.AttackPlan.SIEGE_NO_TRAINER = 1; // Doesn't seem to be used.
-/**
- * Siege added in build orders
- */
+ /**
+  * Siege added in build orders
+  */
 PETRA.AttackPlan.SIEGE_ADDED = 2;
 
-PETRA.AttackPlan.PREPARATION_FAILED = 0;
-PETRA.AttackPlan.PREPARATION_KEEP_GOING = 1;
-PETRA.AttackPlan.PREPARATION_START = 2;
+PETRA.AttackPlan.STATE_UNEXECUTED = 0;
+PETRA.AttackPlan.STATE_COMPLETING = 1;
+PETRA.AttackPlan.STATE_ARRIVED = 2;
 
 PETRA.AttackPlan.TYPE_DEFAULT = 0;
 PETRA.AttackPlan.TYPE_HUGE_ATTACK = 1;
