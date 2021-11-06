@@ -13,12 +13,12 @@ PETRA.GarrisonManager = function(Config)
 	this.decayingStructures = new Map();
 };
 
-PETRA.GarrisonManager.TYPE_INVALID = 0;
-PETRA.GarrisonManager.TYPE_FORCE = 1;
-PETRA.GarrisonManager.TYPE_TRADE = 2;
-PETRA.GarrisonManager.TYPE_PROTECTION = 3;
-PETRA.GarrisonManager.TYPE_DECAY = 4;
-PETRA.GarrisonManager.TYPE_EMERGENCY = 5;
+PETRA.GarrisonManager.TYPE_INVALID = undefined;
+PETRA.GarrisonManager.TYPE_FORCE = "force";
+PETRA.GarrisonManager.TYPE_TRADE = "trade";
+PETRA.GarrisonManager.TYPE_PROTECTION = "protection";
+PETRA.GarrisonManager.TYPE_DECAY = "decay";
+PETRA.GarrisonManager.TYPE_EMERGENCY = "emergency";
 
 PETRA.GarrisonManager.prototype.update = function(gameState, events)
 {

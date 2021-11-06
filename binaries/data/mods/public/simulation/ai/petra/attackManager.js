@@ -9,8 +9,8 @@ PETRA.AttackManager = function(Config)
 	this.attackNumber = 0;
 	this.rushNumber = 0;
 	this.raidNumber = 0;
-	this.upcomingAttacks = [[], [], [], []];
-	this.startedAttacks = [[], [], [], []];
+	this.upcomingAttacks = { "Rush": [], "Raid": [], "Attack": [], "HugeAttack": [] };
+	this.startedAttacks = { "Rush": [], "Raid": [], "Attack": [], "HugeAttack": [] };
 	this.bombingAttacks = new Map();// Temporary attacks for siege units while waiting their current attack to start
 	this.debugTime = 0;
 	this.maxRushes = 0;
@@ -253,7 +253,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 	}
 
 	this.checkEvents(gameState, events);
-	const unexecutedAttacks = [[], [], [], []];
+	const unexecutedAttacks = { "Rush": 0, "Raid": 0, "Attack": 0, "HugeAttack": 0 };
 	for (let attackType in this.upcomingAttacks)
 	{
 		for (let i = 0; i < this.upcomingAttacks[attackType].length; ++i)
@@ -321,7 +321,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 	let barracksNb = gameState.getOwnEntitiesByClass("Barracks", true).filter(API3.Filters.isBuilt()).length;
 	if (this.rushNumber < this.maxRushes && barracksNb >= 1)
 	{
-		if (unexecutedAttacks[PETRA.AttackPlan.TYPE_RUSH] === 0)
+		if (unexecutedAttacks.Rush === 0)
 		{
 			// we have a barracks and we want to rush, rush.
 			let data = { "targetSize": this.rushSize[this.rushNumber] };
@@ -332,20 +332,20 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 					API3.warn("Military Manager: Rushing plan " + this.totalNumber + " with maxRushes " + this.maxRushes);
 				this.totalNumber++;
 				attackPlan.init(gameState);
-				this.upcomingAttacks[PETRA.AttackPlan.TYPE_RUSH].push(attackPlan);
+				this.upcomingAttacks.Rush.push(attackPlan);
 			}
 			this.rushNumber++;
 		}
 	}
-	else if (unexecutedAttacks[PETRA.AttackPlan.TYPE_DEFAULT] == 0 && unexecutedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK] == 0 &&
-		this.startedAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length + this.startedAttacks.length < Math.min(2, 1 + Math.round(gameState.getPopulationMax()/100)) &&
-		(this.startedAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length + this.startedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length == 0 ||
+	else if (unexecutedAttacks.Attack == 0 && unexecutedAttacks.HugeAttack == 0 &&
+		this.startedAttacks.Attack.length + this.startedAttacks.length < Math.min(2, 1 + Math.round(gameState.getPopulationMax()/100)) &&
+		(this.startedAttacks.Attack.length + this.startedAttacks.HugeAttack.length == 0 ||
 		gameState.getPopulationMax() - gameState.getPopulation() > 12))
 	{
 		if (barracksNb >= 1 && (gameState.currentPhase() > 1 || gameState.isResearching(gameState.getPhaseName(2))) ||
 			!gameState.ai.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
 		{
-			const type = this.attackNumber < 2 || this.startedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length > 0 ? PETRA.AttackPlan.TYPE_DEFAULT : PETRA.AttackPlan.TYPE_HUGE_ATTACK;
+			const type = this.attackNumber < 2 || this.startedAttacks.HugeAttack.length > 0 ? PETRA.AttackPlan.TYPE_DEFAULT : PETRA.AttackPlan.TYPE_HUGE_ATTACK;
 			let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, type);
 			if (attackPlan.failed)
 				this.attackPlansEncounteredWater = true; // hack
@@ -361,7 +361,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		}
 	}
 
-	if (unexecutedAttacks[PETRA.AttackPlan.TYPE_RAID] === 0 && gameState.ai.HQ.defenseManager.targetList.length)
+	if (unexecutedAttacks.Raid === 0 && gameState.ai.HQ.defenseManager.targetList.length)
 	{
 		let target;
 		for (let targetId of gameState.ai.HQ.defenseManager.targetList)
@@ -649,7 +649,7 @@ PETRA.AttackManager.prototype.raidTargetEntity = function(gameState, ent)
 	this.raidNumber++;
 	this.totalNumber++;
 	attackPlan.init(gameState);
-	this.upcomingAttacks[PETRA.AttackPlan.TYPE_RAID].push(attackPlan);
+	this.upcomingAttacks.Raid.push(attackPlan);
 	return attackPlan;
 };
 

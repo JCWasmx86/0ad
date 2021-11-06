@@ -441,7 +441,7 @@ PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 	let alpha = 0.85;
 	if (!gameState.isTemplateAvailable(gameState.applyCiv("structures/{civ}/field")))
 		supportRatio = Math.min(this.supportRatio, 0.1);
-	if (this.attackManager.rushNumber < this.attackManager.maxRushes || this.attackManager.upcomingAttacks[PETRA.AttackPlan.TYPE_RUSH].length)
+	if (this.attackManager.rushNumber < this.attackManager.maxRushes || this.attackManager.upcomingAttacks.Rush.length)
 		alpha = 0.7;
 	if (gameState.isCeasefireActive())
 		alpha += (1 - alpha) * Math.min(Math.max(gameState.ceasefireTimeRemaining - 120, 0), 180) / 180;

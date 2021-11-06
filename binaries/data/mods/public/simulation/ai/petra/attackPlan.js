@@ -239,23 +239,23 @@ PETRA.AttackPlan.PRIORITY_RUSH = 250;
  * Not yet tested
  */
 PETRA.AttackPlan.SIEGE_NOT_TESTED = 0;
- /**
-  * Not yet any siege trainer
-  */
+/**
+ * Not yet any siege trainer
+ */
 PETRA.AttackPlan.SIEGE_NO_TRAINER = 1; // Doesn't seem to be used.
- /**
-  * Siege added in build orders
-  */
+/**
+ * Siege added in build orders
+ */
 PETRA.AttackPlan.SIEGE_ADDED = 2;
 
-PETRA.AttackPlan.STATE_UNEXECUTED = 0;
-PETRA.AttackPlan.STATE_COMPLETING = 1;
-PETRA.AttackPlan.STATE_ARRIVED = 2;
+PETRA.AttackPlan.STATE_UNEXECUTED = "unexecuted";
+PETRA.AttackPlan.STATE_COMPLETING = "completing";
+PETRA.AttackPlan.STATE_ARRIVED = "arrived";
 
-PETRA.AttackPlan.TYPE_DEFAULT = 0;
-PETRA.AttackPlan.TYPE_HUGE_ATTACK = 1;
-PETRA.AttackPlan.TYPE_RAID = 2;
-PETRA.AttackPlan.TYPE_RUSH = 3;
+PETRA.AttackPlan.TYPE_DEFAULT = "Attack";
+PETRA.AttackPlan.TYPE_HUGE_ATTACK = "HugeAttack";
+PETRA.AttackPlan.TYPE_RAID = "Raid";
+PETRA.AttackPlan.TYPE_RUSH = "Rush";
 
 PETRA.AttackPlan.prototype.init = function(gameState)
 {
@@ -511,14 +511,14 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 			if (this.Config.debug > 1)
 			{
 				let am = gameState.ai.HQ.attackManager;
-				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_RAID].length +
-					  " rush " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_RUSH].length +
-					  " attack " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length +
-					  " huge " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length);
-				API3.warn(" attacks started: raid " + am.startedAttacks[PETRA.AttackPlan.TYPE_RAID].length +
-					  " rush " + am.startedAttacks[PETRA.AttackPlan.TYPE_RUSH].length +
-					  " attack " + am.startedAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length +
-					  " huge " + am.startedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length);
+				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks.Raid.length +
+					  " rush " + am.upcomingAttacks.Rush.length +
+					  " attack " + am.upcomingAttacks.Attack.length +
+					  " huge " + am.upcomingAttacks.HugeAttack.length);
+				API3.warn(" attacks started: raid " + am.startedAttacks.Raid.length +
+					  " rush " + am.startedAttacks.Rush.length +
+					  " attack " + am.startedAttacks.Attack.length +
+					  " huge " + am.startedAttacks.HugeAttack.length);
 			}
 			return PETRA.AttackPlan.PREPARATION_FAILED;
 		}
