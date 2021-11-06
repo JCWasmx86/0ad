@@ -4,7 +4,6 @@
  * To making sure units are built, and pushing elements to the queue manager otherwise
  * It also handles the actual attack, though much work is needed on that.
  */
-
 PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 {
 	this.Config = Config;

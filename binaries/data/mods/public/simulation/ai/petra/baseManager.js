@@ -35,6 +35,23 @@ PETRA.BaseManager = function(gameState, basesManager)
 	this.timeNextIdleCheck = 0;
 };
 
+/**
+ * New base with an anchor
+ */
+PETRA.BaseManager.STATE_INVALID = 0;
+/**
+ * New base with a foundation anchor
+ */
+PETRA.BaseManager.STATE_UNCONSTRUCTED = 1;
+/**
+ * Captured base with an anchor
+ */
+PETRA.BaseManager.STATE_CAPTURED = 2;
+/**
+ * Anchorless base, currently with dock
+ */
+PETRA.BaseManager.STATE_ANCHORLESS = 3;
+
 PETRA.BaseManager.prototype.init = function(gameState, state)
 {
 	if (state == PETRA.BaseManager.STATE_UNCONSTRUCTED)
@@ -63,22 +80,6 @@ PETRA.BaseManager.prototype.init = function(gameState, state)
 		this.gatherers[res] = { "nextCheck": 0, "used": 0, "lost": 0 };
 	}
 };
-/**
- * New base with an anchor
- */
-PETRA.BaseManager.STATE_INVALID = 0;
-/**
- * New base with a foundation anchor
- */
-PETRA.BaseManager.STATE_UNCONSTRUCTED = 1;
-/**
- * Captured base with an anchor
- */
-PETRA.BaseManager.STATE_CAPTURED = 2;
-/**
- * Anchorless base, currently with dock
- */
-PETRA.BaseManager.STATE_ANCHORLESS = 3;
 
 PETRA.BaseManager.prototype.reset = function(gameState, state)
 {
