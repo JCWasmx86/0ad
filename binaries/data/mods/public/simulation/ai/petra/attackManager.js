@@ -19,7 +19,6 @@ PETRA.AttackManager = function(Config)
 	this.defeated = {};
 };
 
-
 /** More initialisation for stuff that needs the gameState */
 PETRA.AttackManager.prototype.init = function(gameState)
 {
