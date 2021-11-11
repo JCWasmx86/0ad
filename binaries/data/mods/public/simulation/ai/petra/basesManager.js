@@ -25,7 +25,7 @@ PETRA.BasesManager.prototype.init = function(gameState)
 	// Initialize base map. Each pixel is a base ID, or 0 if not or not accessible.
 	this.basesMap = new API3.Map(gameState.sharedScript, "territory");
 
-	this.noBase = new PETRA.BaseManager(gameState, this);
+	this.noBase = new PETRA.BaseManager(gameState, this, this.HQ);
 	this.noBase.init(gameState, undefined, this.HQ);
 	this.noBase.accessIndex = 0;
 
@@ -110,7 +110,7 @@ PETRA.BasesManager.prototype.createBase = function(gameState, ent, type)
 
 	if (!newbase)
 	{
-		newbase = new PETRA.BaseManager(gameState, this);
+		newbase = new PETRA.BaseManager(gameState, this, this.HQ);
 		newbase.init(gameState, type, this.HQ);
 		this.baseManagers.push(newbase);
 	}
@@ -774,7 +774,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 	for (const key in data.properties)
 		this[key] = data.properties[key];
 
-	this.noBase = new PETRA.BaseManager(gameState, this);
+	this.noBase = new PETRA.BaseManager(gameState, this, this.HQ);
 	this.noBase.Deserialize(gameState, data.noBase);
 	this.noBase.init(gameState, undefined, this.HQ);
 	this.noBase.Deserialize(gameState, data.noBase);
@@ -783,7 +783,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 	for (const basedata of data.baseManagers)
 	{
 		// The first call to deserialize set the ID base needed by entitycollections.
-		const newbase = new PETRA.BaseManager(gameState, this);
+		const newbase = new PETRA.BaseManager(gameState, this, this.HQ);
 		newbase.Deserialize(gameState, basedata);
 		newbase.init(gameState, undefined, this.HQ);
 		newbase.Deserialize(gameState, basedata);

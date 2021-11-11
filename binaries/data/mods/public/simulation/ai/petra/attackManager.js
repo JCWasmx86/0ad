@@ -326,7 +326,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		{
 			// we have a barracks and we want to rush, rush.
 			let data = { "targetSize": this.rushSize[this.rushNumber] };
-			let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, "Rush", data);
+			let attackPlan = new PETRA.AttackPlan(gameState, this.HQ, this.Config, this.totalNumber, "Rush", data);
 			if (!attackPlan.failed)
 			{
 				if (this.Config.debug > 1)
@@ -346,7 +346,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 			!this.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
 		{
 			let type = this.attackNumber < 2 || this.startedAttacks.HugeAttack.length > 0 ? "Attack" : "HugeAttack";
-			let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, type);
+			let attackPlan = new PETRA.AttackPlan(gameState, this.HQ, this.Config, this.totalNumber, type);
 			if (attackPlan.failed)
 				this.attackPlansEncounteredWater = true; // hack
 			else
@@ -641,7 +641,7 @@ PETRA.AttackManager.prototype.cancelAttacksAgainstPlayer = function(gameState, p
 PETRA.AttackManager.prototype.raidTargetEntity = function(gameState, ent)
 {
 	let data = { "target": ent };
-	let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, "Raid", data);
+	let attackPlan = new PETRA.AttackPlan(gameState, this.HQ, this.Config, this.totalNumber, "Raid", data);
 	if (attackPlan.failed)
 		return null;
 	if (this.Config.debug > 1)
@@ -688,7 +688,7 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	let attackData = data.uniqueTarget ? { "uniqueTargetId": target.id() } : undefined;
 	let pos = target.position();
 	let attackType = "Attack";
-	let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, attackType, attackData);
+	let attackPlan = new PETRA.AttackPlan(gameState, this.HQ, this.Config, this.totalNumber, attackType, attackData);
 	if (attackPlan.failed)
 		return false;
 	this.totalNumber++;
@@ -782,7 +782,7 @@ PETRA.AttackManager.prototype.Deserialize = function(gameState, data)
 		this.upcomingAttacks[key] = [];
 		for (let dataAttack of data.upcomingAttacks[key])
 		{
-			let attack = new PETRA.AttackPlan(gameState, this.Config, dataAttack.properties.name);
+			let attack = new PETRA.AttackPlan(gameState, this.HQ, this.Config, dataAttack.properties.name);
 			attack.Deserialize(gameState, dataAttack);
 			attack.init(gameState);
 			this.upcomingAttacks[key].push(attack);
@@ -795,7 +795,7 @@ PETRA.AttackManager.prototype.Deserialize = function(gameState, data)
 		this.startedAttacks[key] = [];
 		for (let dataAttack of data.startedAttacks[key])
 		{
-			let attack = new PETRA.AttackPlan(gameState, this.Config, dataAttack.properties.name);
+			let attack = new PETRA.AttackPlan(gameState, this.HQ, this.Config, dataAttack.properties.name);
 			attack.Deserialize(gameState, dataAttack);
 			attack.init(gameState);
 			this.startedAttacks[key].push(attack);

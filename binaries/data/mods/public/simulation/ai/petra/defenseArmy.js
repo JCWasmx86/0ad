@@ -7,9 +7,10 @@
  * "capturing": army set to capture a gaia building or recover capture points to one of its own structures
  *            It must contain only one foe (the building to capture) and never be merged
  */
-PETRA.DefenseArmy = function(gameState, foeEntities, type)
+PETRA.DefenseArmy = function(gameState, HQ, foeEntities, type)
 {
 	this.ID = gameState.ai.uniqueIDs.armies++;
+	this.HQ = HQ;
 	this.type = type || "default";
 
 	this.Config = gameState.ai.Config;
@@ -162,7 +163,7 @@ PETRA.DefenseArmy.prototype.removeOwn = function(gameState, id, Entity)
 	// Remove from tranport plan if not yet on Board
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
 	{
-		let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
+		let plan =  this.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
 		if (plan && plan.state == "boarding" && ent.position())
 			plan.removeUnit(gameState, ent);
 	}
@@ -177,7 +178,7 @@ PETRA.DefenseArmy.prototype.removeOwn = function(gameState, id, Entity)
 		{
 			if (gameState.ai.Config.debug > 0)
 				warn("ent from army still in transport plan: plan " + planID + " canceled");
-			let plan = gameState.ai.HQ.navalManager.getPlan(planID);
+			let plan =  this.HQ.navalManager.getPlan(planID);
 			if (plan && !plan.canceled)
 				plan.cancelTransport(gameState);
 		}
@@ -209,7 +210,7 @@ PETRA.DefenseArmy.prototype.clear = function(gameState)
 		if (!ent || !ent.position())
 			continue;
 		let pos = ent.position();
-		let territoryOwner = gameState.ai.HQ.territoryMap.getOwner(pos);
+		let territoryOwner =  this.HQ.territoryMap.getOwner(pos);
 		if (territoryOwner === PlayerID)
 		{
 			posOwn[0] += pos[0];
@@ -245,7 +246,7 @@ PETRA.DefenseArmy.prototype.clear = function(gameState)
 		for (let struct of gameState.getAllyStructures().values())
 		{
 			let pos = struct.position();
-			if (!pos || !gameState.isPlayerMutualAlly(gameState.ai.HQ.territoryMap.getOwner(pos)))
+			if (!pos || !gameState.isPlayerMutualAlly( this.HQ.territoryMap.getOwner(pos)))
 				continue;
 			if (PETRA.getLandAccess(gameState, struct) !== armyAccess)
 				continue;
@@ -273,10 +274,10 @@ PETRA.DefenseArmy.prototype.clear = function(gameState)
 			                       ent.getMetadata(PlayerID, "transporter") !== undefined)
 				continue;
 			if (ent.healthLevel() < this.Config.garrisonHealthLevel.low &&
-			    gameState.ai.HQ.defenseManager.garrisonAttackedUnit(gameState, ent))
+			     this.HQ.defenseManager.garrisonAttackedUnit(gameState, ent))
 				continue;
 
-			if (destination && !gameState.isPlayerMutualAlly(gameState.ai.HQ.territoryMap.getOwner(ent.position())))
+			if (destination && !gameState.isPlayerMutualAlly( this.HQ.territoryMap.getOwner(ent.position())))
 				ent.moveToRange(destination[0], destination[1], radius, radius + 5);
 			else
 				ent.stopMoving();
@@ -361,7 +362,7 @@ PETRA.DefenseArmy.prototype.assignUnit = function(gameState, entID)
 		ent.attack(idFoe, PETRA.allowCapture(gameState, ent, foeEnt), queued);
 	}
 	else
-		gameState.ai.HQ.navalManager.requireTransport(gameState, ent, ownIndex, foeIndex, foePosition);
+		 this.HQ.navalManager.requireTransport(gameState, ent, ownIndex, foeIndex, foePosition);
 	return true;
 };
 
@@ -410,7 +411,7 @@ PETRA.DefenseArmy.prototype.merge = function(gameState, otherArmy)
 PETRA.DefenseArmy.prototype.needsDefenders = function(gameState)
 {
 	let defenseRatio;
-	let territoryOwner = gameState.ai.HQ.territoryMap.getOwner(this.foePosition);
+	let territoryOwner =  this.HQ.territoryMap.getOwner(this.foePosition);
 	if (territoryOwner == PlayerID)
 		defenseRatio = this.Config.Defense.defenseRatio.own;
 	else if (gameState.isPlayerAlly(territoryOwner))

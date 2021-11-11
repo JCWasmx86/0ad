@@ -378,7 +378,7 @@ PETRA.NavalManager.prototype.requireTransport = function(gameState, ent, startIn
 		return true;
 	}
 
-	let plan = new PETRA.TransportPlan(gameState, [ent], startIndex, endIndex, endPos);
+	let plan = new PETRA.TransportPlan(gameState, this.HQ, [ent], startIndex, endIndex, endPos);
 	if (plan.failed)
 	{
 		if (this.Config.debug > 1)
@@ -395,7 +395,7 @@ PETRA.NavalManager.prototype.splitTransport = function(gameState, plan)
 {
 	if (this.Config.debug > 1)
 		API3.warn(">>>> split of transport plan started <<<<");
-	let newplan = new PETRA.TransportPlan(gameState, [], plan.startIndex, plan.endIndex, plan.endPos);
+	let newplan = new PETRA.TransportPlan(gameState, this.HQ, [], plan.startIndex, plan.endIndex, plan.endPos);
 	if (newplan.failed)
 	{
 		if (this.Config.debug > 1)
@@ -439,7 +439,7 @@ PETRA.NavalManager.prototype.createTransportIfNeeded = function(gameState, fromP
 		for (let entId of ship.garrisoned())
 			units.push(gameState.getEntityById(entId));
 		// TODO check that the garrisoned units have not another purpose
-		let plan = new PETRA.TransportPlan(gameState, units, fromAccess, toAccess, toPos, ship);
+		let plan = new PETRA.TransportPlan(gameState, this.HQ, units, fromAccess, toAccess, toPos, ship);
 		if (plan.failed)
 			continue;
 		plan.init(gameState);
@@ -882,7 +882,7 @@ PETRA.NavalManager.prototype.Deserialize = function(gameState, data)
 	for (let i in data.transports)
 	{
 		let dataPlan = data.transports[i];
-		let plan = new PETRA.TransportPlan(gameState, [], dataPlan.startIndex, dataPlan.endIndex, dataPlan.endPos);
+		let plan = new PETRA.TransportPlan(gameState, this.HQ, [], dataPlan.startIndex, dataPlan.endIndex, dataPlan.endPos);
 		plan.Deserialize(dataPlan);
 		plan.init(gameState);
 		this.transportPlans.push(plan);

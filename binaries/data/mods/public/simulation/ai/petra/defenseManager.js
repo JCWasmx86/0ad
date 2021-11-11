@@ -75,7 +75,7 @@ PETRA.DefenseManager.prototype.makeIntoArmy = function(gameState, entityID, type
 				return;
 	}
 
-	this.armies.push(new PETRA.DefenseArmy(gameState, [entityID], type));
+	this.armies.push(new PETRA.DefenseArmy(gameState, this.HQ, [entityID], type));
 };
 
 PETRA.DefenseManager.prototype.getArmy = function(partOfArmy)
@@ -948,7 +948,7 @@ PETRA.DefenseManager.prototype.Deserialize = function(gameState, data)
 	this.armies = [];
 	for (let dataArmy of data.armies)
 	{
-		let army = new PETRA.DefenseArmy(gameState, []);
+		let army = new PETRA.DefenseArmy(gameState, this.HQ, []);
 		army.Deserialize(dataArmy);
 		this.armies.push(army);
 	}

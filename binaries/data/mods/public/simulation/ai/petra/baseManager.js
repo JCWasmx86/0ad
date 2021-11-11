@@ -10,7 +10,7 @@
  *  -updating whatever needs updating, keeping track of stuffs (rebuilding needs…)
  */
 
-PETRA.BaseManager = function(gameState, basesManager)
+PETRA.BaseManager = function(gameState, basesManager, HQ)
 {
 	this.Config = basesManager.Config;
 	this.ID = gameState.ai.uniqueIDs.bases++;
@@ -33,6 +33,8 @@ PETRA.BaseManager = function(gameState, basesManager)
 	this.territoryIndices = [];
 
 	this.timeNextIdleCheck = 0;
+
+	this.HQ = HQ;
 };
 
 PETRA.BaseManager.prototype.init = function(gameState, state, HQ)
@@ -254,7 +256,7 @@ PETRA.BaseManager.prototype.findBestDropsiteAndLocation = function(gameState, re
 		"quality": 0,
 		"pos": [0, 0]
 	};
-	for (const templateName of gameState.ai.HQ.buildManager.findStructuresByFilter(gameState, API3.Filters.isDropsite(resource)))
+	for (const templateName of this.HQ.buildManager.findStructuresByFilter(gameState, API3.Filters.isDropsite(resource)))
 	{
 		const dp = this.findBestDropsiteLocation(gameState, resource, templateName);
 		if (dp.quality < bestResult.quality)
@@ -300,7 +302,7 @@ PETRA.BaseManager.prototype.findBestDropsiteLocation = function(gameState, resou
 	let bestVal = 0;
 	let radius = Math.ceil(template.obstructionRadius().max / obstructions.cellSize);
 
-	let territoryMap = gameState.ai.HQ.territoryMap;
+	let territoryMap = this.HQ.territoryMap;
 	let width = territoryMap.width;
 	let cellSize = territoryMap.cellSize;
 
@@ -341,7 +343,7 @@ PETRA.BaseManager.prototype.findBestDropsiteLocation = function(gameState, resou
 		if (total <= bestVal)
 			continue;
 
-		if (gameState.ai.HQ.isDangerousLocation(gameState, pos, halfSize))
+		if (this.HQ.isDangerousLocation(gameState, pos, halfSize))
 			continue;
 		bestVal = total;
 		bestIdx = i;
@@ -383,7 +385,7 @@ PETRA.BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 			const prox = ["nearby"];
 			if (gameState.currentPhase() < 2)
 				prox.push("medium");
-			if (gameState.ai.HQ.canBuild(gameState, "structures/{civ}/field"))	// let's see if we need to add new farms.
+			if (this.HQ.canBuild(gameState, "structures/{civ}/field"))	// let's see if we need to add new farms.
 			{
 				const count = this.getResourceLevel(gameState, type, prox);  // animals are not accounted
 				let numFarms = gameState.getOwnStructures().filter(API3.Filters.byClass("Field")).length;  // including foundations
@@ -395,31 +397,31 @@ PETRA.BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					if (count < 600)
 					{
 						queues.field.addPlan(new PETRA.ConstructionPlan(gameState, "structures/{civ}/field", { "favoredBase": this.ID }));
-						gameState.ai.HQ.needFarm = true;
+						this.HQ.needFarm = true;
 					}
 				}
-				else if (!gameState.ai.HQ.maxFields || numFarms + numQueue < gameState.ai.HQ.maxFields)
+				else if (!this.HQ.maxFields || numFarms + numQueue < this.HQ.maxFields)
 				{
 					let numFound = gameState.getOwnFoundations().filter(API3.Filters.byClass("Field")).length;
 					let goal = this.Config.Economy.provisionFields;
-					if (gameState.ai.HQ.saveResources || gameState.ai.HQ.saveSpace || count > 300 || numFarms > 5)
+					if (this.HQ.saveResources || this.HQ.saveSpace || count > 300 || numFarms > 5)
 						goal = Math.max(goal-1, 1);
 					if (numFound + numQueue < goal)
 						queues.field.addPlan(new PETRA.ConstructionPlan(gameState, "structures/{civ}/field", { "favoredBase": this.ID }));
 				}
-				else if (gameState.ai.HQ.needCorral && !gameState.getOwnEntitiesByClass("Corral", true).hasEntities() &&
-				         !queues.corral.hasQueuedUnits() && gameState.ai.HQ.canBuild(gameState, "structures/{civ}/corral"))
+				else if (this.HQ.needCorral && !gameState.getOwnEntitiesByClass("Corral", true).hasEntities() &&
+				         !queues.corral.hasQueuedUnits() && this.HQ.canBuild(gameState, "structures/{civ}/corral"))
 					queues.corral.addPlan(new PETRA.ConstructionPlan(gameState, "structures/{civ}/corral", { "favoredBase": this.ID }));
 				continue;
 			}
 			if (!gameState.getOwnEntitiesByClass("Corral", true).hasEntities() &&
-			    !queues.corral.hasQueuedUnits() && gameState.ai.HQ.canBuild(gameState, "structures/{civ}/corral"))
+			    !queues.corral.hasQueuedUnits() && this.HQ.canBuild(gameState, "structures/{civ}/corral"))
 			{
 				const count = this.getResourceLevel(gameState, type, prox);  // animals are not accounted
 				if (count < 900)
 				{
 					queues.corral.addPlan(new PETRA.ConstructionPlan(gameState, "structures/{civ}/corral", { "favoredBase": this.ID }));
-					gameState.ai.HQ.needCorral = true;
+					this.HQ.needCorral = true;
 				}
 			}
 			continue;
@@ -450,15 +452,15 @@ PETRA.BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 			if (ratio > 0.15)
 			{
 				const newDP = this.findBestDropsiteAndLocation(gameState, type);
-				if (newDP.quality > 50 && gameState.ai.HQ.canBuild(gameState, newDP.templateName))
+				if (newDP.quality > 50 && this.HQ.canBuild(gameState, newDP.templateName))
 					queues.dropsites.addPlan(new PETRA.ConstructionPlan(gameState, newDP.templateName, { "base": this.ID, "type": type }, newDP.pos));
 				else if (!gameState.getOwnFoundations().filter(API3.Filters.byClass("CivCentre")).hasEntities() && !queues.civilCentre.hasQueuedUnits())
 				{
 					// No good dropsite, try to build a new base if no base already planned,
 					// and if not possible, be less strict on dropsite quality.
-					if ((!gameState.ai.HQ.canExpand || !gameState.ai.HQ.buildNewBase(gameState, queues, type)) &&
+					if ((!this.HQ.canExpand || !this.HQ.buildNewBase(gameState, queues, type)) &&
 					    newDP.quality > Math.min(25, 50*0.15/ratio) &&
-					    gameState.ai.HQ.canBuild(gameState, newDP.templateName))
+					    this.HQ.canBuild(gameState, newDP.templateName))
 						queues.dropsites.addPlan(new PETRA.ConstructionPlan(gameState, newDP.templateName, { "base": this.ID, "type": type }, newDP.pos));
 				}
 			}
@@ -532,7 +534,7 @@ PETRA.BaseManager.prototype.setWorkersIdleByPriority = function(gameState)
 	this.timeNextIdleCheck = gameState.ai.elapsedTime + 8;
 	// change resource only towards one which is more needed, and if changing will not change this order
 	let nb = 1;    // no more than 1 change per turn (otherwise we should update the rates)
-	let mostNeeded = gameState.ai.HQ.pickMostNeededResources(gameState);
+	let mostNeeded = this.HQ.pickMostNeededResources(gameState);
 	let sumWanted = 0;
 	let sumCurrent = 0;
 	for (let need of mostNeeded)
@@ -550,7 +552,7 @@ PETRA.BaseManager.prototype.setWorkersIdleByPriority = function(gameState)
 		for (let j = 0; j < i; ++j)
 		{
 			let moreNeed = mostNeeded[j];
-			let lastFailed = gameState.ai.HQ.lastFailedGather[moreNeed.type];
+			let lastFailed = this.HQ.lastFailedGather[moreNeed.type];
 			if (lastFailed && gameState.ai.elapsedTime - lastFailed < 20)
 				continue;
 			// Ensure that the most wanted resource is not exhausted
@@ -632,12 +634,12 @@ PETRA.BaseManager.prototype.reassignIdleWorkers = function(gameState, idleWorker
 				ent.repair(this.anchor);
 			else if (ent.isGatherer())
 			{
-				let mostNeeded = gameState.ai.HQ.pickMostNeededResources(gameState);
+				let mostNeeded = this.HQ.pickMostNeededResources(gameState);
 				for (let needed of mostNeeded)
 				{
 					if (!ent.canGather(needed.type))
 						continue;
-					let lastFailed = gameState.ai.HQ.lastFailedGather[needed.type];
+					let lastFailed = this.HQ.lastFailedGather[needed.type];
 					if (lastFailed && gameState.ai.elapsedTime - lastFailed < 20)
 						continue;
 					if (needed.type != "food" && this.basesManager.isResourceExhausted(needed.type))
@@ -779,7 +781,7 @@ PETRA.BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 		if (target.hasClass("Field"))
 			continue; // we do not build fields
 
-		if (gameState.ai.HQ.isNearInvadingArmy(target.position()))
+		if (this.HQ.isNearInvadingArmy(target.position()))
 			if (!target.hasClasses(["CivCentre", "Wall"]) &&
 			    (!target.hasClass("Wonder") || !gameState.getVictoryConditions().has("wonder")))
 				continue;
@@ -869,7 +871,7 @@ PETRA.BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 	{
 		// Don't repair if we're still under attack, unless it's a vital (civcentre or wall) building
 		// that's being destroyed.
-		if (gameState.ai.HQ.isNearInvadingArmy(target.position()))
+		if (this.HQ.isNearInvadingArmy(target.position()))
 		{
 			if (target.healthLevel() > 0.5 ||
 			    !target.hasClasses(["CivCentre", "Wall"]) &&
@@ -967,7 +969,7 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 				bestBase.assignEntity(gameState, ent);
 			}
 		}
-		else if (gameState.ai.HQ.canBuildUnits)
+		else if (this.HQ.canBuildUnits)
 		{
 			this.assignToFoundations(gameState);
 			if (gameState.ai.elapsedTime > this.timeNextIdleCheck)
@@ -1038,7 +1040,7 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 
 	if (this.constructing)
 	{
-		let owner = gameState.ai.HQ.territoryMap.getOwner(this.anchor.position());
+		let owner = this.HQ.territoryMap.getOwner(this.anchor.position());
 		if(owner != 0 && !gameState.isPlayerAlly(owner))
 		{
 			// we're in enemy territory. If we're too close from the enemy, destroy us.
@@ -1055,11 +1057,11 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 			}
 		}
 	}
-	else if (this.neededDefenders && gameState.ai.HQ.trainEmergencyUnits(gameState, [this.anchor.position()]))
+	else if (this.neededDefenders && this.HQ.trainEmergencyUnits(gameState, [this.anchor.position()]))
 		--this.neededDefenders;
 
 	if (gameState.ai.elapsedTime > this.timeNextIdleCheck &&
-	   (gameState.currentPhase() > 1 || gameState.ai.HQ.phasing == 2))
+	   (gameState.currentPhase() > 1 || this.HQ.phasing == 2))
 		this.setWorkersIdleByPriority(gameState);
 
 	this.assignRolelessUnits(gameState);
