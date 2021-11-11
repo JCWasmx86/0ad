@@ -1,7 +1,7 @@
 /**
  * Attack Manager
  */
-PETRA.AttackManager = function(Config)
+PETRA.AttackManager = function(Config, HQ)
 {
 	this.Config = Config;
 
@@ -17,6 +17,7 @@ PETRA.AttackManager = function(Config)
 	this.rushSize = [];
 	this.currentEnemyPlayer = undefined; // enemy player we are currently targeting
 	this.defeated = {};
+	this.HQ = HQ;
 };
 
 /** More initialisation for stuff that needs the gameState */
@@ -189,7 +190,7 @@ PETRA.AttackManager.prototype.assignBombers = function(gameState)
 			if (struct.hasClass("Field"))
 			{
 				if (!struct.resourceSupplyNumGatherers() ||
-				    !gameState.isPlayerEnemy(gameState.ai.HQ.territoryMap.getOwner(structPos)))
+				    !gameState.isPlayerEnemy(this.HQ.territoryMap.getOwner(structPos)))
 					continue;
 			}
 			let dist = API3.VectorDistance(entPos, structPos);
@@ -198,12 +199,12 @@ PETRA.AttackManager.prototype.assignBombers = function(gameState)
 				let safety = struct.footprintRadius() + 30;
 				x = structPos[0] + (entPos[0] - structPos[0]) * safety / dist;
 				z = structPos[1] + (entPos[1] - structPos[1]) * safety / dist;
-				let owner = gameState.ai.HQ.territoryMap.getOwner([x, z]);
+				let owner = this.HQ.territoryMap.getOwner([x, z]);
 				if (owner != 0 && gameState.isPlayerEnemy(owner))
 					continue;
 				x = structPos[0] + (entPos[0] - structPos[0]) * range / dist;
 				z = structPos[1] + (entPos[1] - structPos[1]) * range / dist;
-				if (gameState.ai.HQ.territoryMap.getOwner([x, z]) != PlayerID ||
+				if (this.HQ.territoryMap.getOwner([x, z]) != PlayerID ||
 				    gameState.ai.accessibility.getAccessValue([x, z]) != access)
 					continue;
 			}
@@ -342,7 +343,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		(this.startedAttacks.Attack.length + this.startedAttacks.HugeAttack.length == 0 || gameState.getPopulationMax() - gameState.getPopulation() > 12))
 	{
 		if (barracksNb >= 1 && (gameState.currentPhase() > 1 || gameState.isResearching(gameState.getPhaseName(2))) ||
-			!gameState.ai.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
+			!this.HQ.hasPotentialBase())	// if we have no base ... nothing else to do than attack
 		{
 			let type = this.attackNumber < 2 || this.startedAttacks.HugeAttack.length > 0 ? "Attack" : "HugeAttack";
 			let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, type);
@@ -360,10 +361,10 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		}
 	}
 
-	if (unexecutedAttacks.Raid === 0 && gameState.ai.HQ.defenseManager.targetList.length)
+	if (unexecutedAttacks.Raid === 0 && this.HQ.defenseManager.targetList.length)
 	{
 		let target;
-		for (let targetId of gameState.ai.HQ.defenseManager.targetList)
+		for (let targetId of this.HQ.defenseManager.targetList)
 		{
 			target = gameState.getEntityById(targetId);
 			if (!target)
@@ -598,7 +599,7 @@ PETRA.AttackManager.prototype.getRelicEnemyPlayer = function(gameState, attack)
 	for (let i = 0; i < gameState.sharedScript.playersData.length; ++i)
 	{
 		if (!gameState.isPlayerEnemy(i) || this.defeated[i] ||
-		    i == 0 && !gameState.ai.HQ.victoryManager.tryCaptureGaiaRelic)
+		    i == 0 && !this.HQ.victoryManager.tryCaptureGaiaRelic)
 			continue;
 
 		let relicsCount = allRelics.filter(relic => relic.owner() == i).length;
@@ -612,7 +613,7 @@ PETRA.AttackManager.prototype.getRelicEnemyPlayer = function(gameState, attack)
 		if (attack.targetPlayer === undefined)
 			this.currentEnemyPlayer = enemyPlayer;
 		if (enemyPlayer == 0)
-			gameState.ai.HQ.victoryManager.resetCaptureGaiaRelic(gameState);
+			this.HQ.victoryManager.resetCaptureGaiaRelic(gameState);
 	}
 	return enemyPlayer;
 };
@@ -695,7 +696,7 @@ PETRA.AttackManager.prototype.switchDefenseToAttack = function(gameState, target
 	this.startedAttacks[attackType].push(attackPlan);
 
 	let targetAccess = PETRA.getLandAccess(gameState, target);
-	for (let army of gameState.ai.HQ.defenseManager.armies)
+	for (let army of this.HQ.defenseManager.armies)
 	{
 		if (data.range)
 		{

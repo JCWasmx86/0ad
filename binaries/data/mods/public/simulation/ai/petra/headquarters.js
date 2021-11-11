@@ -34,16 +34,16 @@ PETRA.HQ = function(Config)
 	this.extraTowers = Math.round(Math.min(this.Config.difficulty, 3) * this.Config.personality.defensive);
 	this.extraFortresses = Math.round(Math.max(Math.min(this.Config.difficulty - 1, 2), 0) * this.Config.personality.defensive);
 
-	this.basesManager = new PETRA.BasesManager(this.Config);
-	this.attackManager = new PETRA.AttackManager(this.Config);
+	this.basesManager = new PETRA.BasesManager(this.Config, this);
+	this.attackManager = new PETRA.AttackManager(this.Config, this);
 	this.buildManager = new PETRA.BuildManager();
-	this.defenseManager = new PETRA.DefenseManager(this.Config);
-	this.tradeManager = new PETRA.TradeManager(this.Config);
-	this.navalManager = new PETRA.NavalManager(this.Config);
-	this.researchManager = new PETRA.ResearchManager(this.Config);
-	this.diplomacyManager = new PETRA.DiplomacyManager(this.Config);
-	this.garrisonManager = new PETRA.GarrisonManager(this.Config);
-	this.victoryManager = new PETRA.VictoryManager(this.Config);
+	this.defenseManager = new PETRA.DefenseManager(this.Config, this);
+	this.tradeManager = new PETRA.TradeManager(this.Config, this);
+	this.navalManager = new PETRA.NavalManager(this.Config, this);
+	this.researchManager = new PETRA.ResearchManager(this.Config, this);
+	this.diplomacyManager = new PETRA.DiplomacyManager(this.Config, this);
+	this.garrisonManager = new PETRA.GarrisonManager(this.Config, this);
+	this.victoryManager = new PETRA.VictoryManager(this.Config, this);
 
 	this.capturableTargets = new Map();
 	this.capturableTargetsTime = 0;
@@ -2361,15 +2361,15 @@ PETRA.HQ.prototype.Deserialize = function(gameState, data)
 		this[key] = data.properties[key];
 
 
-	this.basesManager = new PETRA.BasesManager(this.Config);
+	this.basesManager = new PETRA.BasesManager(this.Config, this);
 	this.basesManager.init(gameState);
 	this.basesManager.Deserialize(gameState, data.basesManager);
 
-	this.navalManager = new PETRA.NavalManager(this.Config);
+	this.navalManager = new PETRA.NavalManager(this.Config, this);
 	this.navalManager.init(gameState, true);
 	this.navalManager.Deserialize(gameState, data.navalManager);
 
-	this.attackManager = new PETRA.AttackManager(this.Config);
+	this.attackManager = new PETRA.AttackManager(this.Config, this);
 	this.attackManager.Deserialize(gameState, data.attackManager);
 	this.attackManager.init(gameState);
 	this.attackManager.Deserialize(gameState, data.attackManager);
@@ -2377,22 +2377,22 @@ PETRA.HQ.prototype.Deserialize = function(gameState, data)
 	this.buildManager = new PETRA.BuildManager();
 	this.buildManager.Deserialize(data.buildManager);
 
-	this.defenseManager = new PETRA.DefenseManager(this.Config);
+	this.defenseManager = new PETRA.DefenseManager(this.Config, this);
 	this.defenseManager.Deserialize(gameState, data.defenseManager);
 
-	this.tradeManager = new PETRA.TradeManager(this.Config);
+	this.tradeManager = new PETRA.TradeManager(this.Config, this);
 	this.tradeManager.init(gameState);
 	this.tradeManager.Deserialize(gameState, data.tradeManager);
 
-	this.researchManager = new PETRA.ResearchManager(this.Config);
+	this.researchManager = new PETRA.ResearchManager(this.Config, this);
 	this.researchManager.Deserialize(data.researchManager);
 
-	this.diplomacyManager = new PETRA.DiplomacyManager(this.Config);
+	this.diplomacyManager = new PETRA.DiplomacyManager(this.Config, this);
 	this.diplomacyManager.Deserialize(data.diplomacyManager);
 
-	this.garrisonManager = new PETRA.GarrisonManager(this.Config);
+	this.garrisonManager = new PETRA.GarrisonManager(this.Config, this);
 	this.garrisonManager.Deserialize(data.garrisonManager);
 
-	this.victoryManager = new PETRA.VictoryManager(this.Config);
+	this.victoryManager = new PETRA.VictoryManager(this.Config, this);
 	this.victoryManager.Deserialize(data.victoryManager);
 };

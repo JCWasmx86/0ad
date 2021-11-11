@@ -1,4 +1,4 @@
-PETRA.DefenseManager = function(Config)
+PETRA.DefenseManager = function(Config, HQ)
 {
 	// Array of "army" Objects.
 	this.armies = [];
@@ -12,13 +12,14 @@ PETRA.DefenseManager = function(Config)
 	this.attackingArmies = {};
 	this.attackingUnits = {};
 	this.attackedAllies = {};
+	this.HQ = HQ;
 };
 
 PETRA.DefenseManager.prototype.update = function(gameState, events)
 {
 	Engine.ProfileStart("Defense Manager");
 
-	this.territoryMap = gameState.ai.HQ.territoryMap;
+	this.territoryMap = this.HQ.territoryMap;
 
 	this.checkEvents(gameState, events);
 
@@ -157,7 +158,7 @@ PETRA.DefenseManager.prototype.isDangerous = function(gameState, entity)
 		if (building.foundationProgress() == 0 ||
 		    API3.SquareVectorDistance(building.position(), entity.position()) > dist2Min)
 			continue;
-		if (!this.territoryMap.isBlinking(building.position()) || gameState.ai.HQ.isDefendable(building))
+		if (!this.territoryMap.isBlinking(building.position()) || this.HQ.isDefendable(building))
 			return true;
 	}
 
@@ -250,7 +251,7 @@ PETRA.DefenseManager.prototype.checkEnemyUnits = function(gameState)
 			this.makeIntoArmy(gameState, ent.id());
 	}
 
-	if (i != 0 || this.armies.length > 1 || !gameState.ai.HQ.hasActiveBase())
+	if (i != 0 || this.armies.length > 1 || !this.HQ.hasActiveBase())
 		return;
 	// Look for possible gaia buildings inside our territory (may happen when enemy resign or after structure decay)
 	// and attack it only if useful (and capturable) or dangereous.
@@ -410,6 +411,7 @@ PETRA.DefenseManager.prototype.assignDefenders = function(gameState)
 	if (!armiesNeeding.length)
 		return;
 
+	var self = this; // Horrible hack
 	// Let's get our potential units.
 	let potentialDefenders = [];
 	gameState.getOwnUnits().forEach(function(ent) {
@@ -424,7 +426,7 @@ PETRA.DefenseManager.prototype.assignDefenders = function(gameState)
 		if (ent.getMetadata(PlayerID, "transport") !== undefined ||
 		    ent.getMetadata(PlayerID, "transporter") !== undefined)
 			return;
-		if (gameState.ai.HQ.victoryManager.criticalEnts.has(ent.id()))
+		if (self.HQ.victoryManager.criticalEnts.has(ent.id()))
 			return;
 		if (ent.getMetadata(PlayerID, "plan") !== undefined && ent.getMetadata(PlayerID, "plan") != -1)
 		{
@@ -496,7 +498,7 @@ PETRA.DefenseManager.prototype.assignDefenders = function(gameState)
 	let armiesPos = [];
 	for (let a = 0; a < armiesNeeding.length; ++a)
 		armiesPos.push(armiesNeeding[a].army.foePosition);
-	gameState.ai.HQ.trainEmergencyUnits(gameState, armiesPos);
+	this.HQ.trainEmergencyUnits(gameState, armiesPos);
 };
 
 PETRA.DefenseManager.prototype.abortArmy = function(gameState, army)
@@ -531,7 +533,7 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 			let ent = gameState.getEntityById(evt.entity);
 			// One of our cc has been captured.
 			if (ent && ent.hasClass("CivCentre"))
-				gameState.ai.HQ.attackManager.switchDefenseToAttack(gameState, ent, { "range": 150 });
+				this.HQ.attackManager.switchDefenseToAttack(gameState, ent, { "range": 150 });
 		}
 	}
 
@@ -586,9 +588,9 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 		// Same thing for a building in an isolated base (not connected to a base with anchor).
 		if (target.hasClass("Structure"))
 		{
-			let base = gameState.ai.HQ.getBaseByID(target.getMetadata(PlayerID, "base"));
-			if (this.territoryMap.isBlinking(target.position()) && !gameState.ai.HQ.isDefendable(target) ||
-			    !base || gameState.ai.HQ.baseManagers().every(b => !b.anchor || b.accessIndex != base.accessIndex))
+			let base = this.HQ.getBaseByID(target.getMetadata(PlayerID, "base"));
+			if (this.territoryMap.isBlinking(target.position()) && !this.HQ.isDefendable(target) ||
+			    !base || this.HQ.baseManagers().every(b => !b.anchor || b.accessIndex != base.accessIndex))
 			{
 				let capture = target.capturePoints();
 				if (!capture)
@@ -605,7 +607,7 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 		let plan = target.getMetadata(PlayerID, "plan");
 		if (plan !== undefined && plan >= 0)
 		{
-			let attack = gameState.ai.HQ.attackManager.getPlan(plan);
+			let attack = this.HQ.attackManager.getPlan(plan);
 			if (attack && attack.state != "unexecuted")
 				continue;
 		}
@@ -689,10 +691,10 @@ PETRA.DefenseManager.prototype.checkEvents = function(gameState, events)
 				if (unitAIStateOrder == "REPAIR" && currentTarget.hasDefensiveFire())
 					continue;
 				if (unitAIStateOrder == "COMBAT" && !PETRA.isSiegeUnit(currentTarget) &&
-				    gameState.ai.HQ.capturableTargets.has(orderData[0].target))
+				    this.HQ.capturableTargets.has(orderData[0].target))
 				{
 					// Take the nearest unit also attacking this structure to help us.
-					let capturableTarget = gameState.ai.HQ.capturableTargets.get(orderData[0].target);
+					let capturableTarget = this.HQ.capturableTargets.get(orderData[0].target);
 					let minDist;
 					let minEnt;
 					let pos = attacker.position();
@@ -737,7 +739,7 @@ PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target,
 	if (target.hitpoints() < target.garrisonEjectHealth() * target.maxHitpoints())
 		return false;
 	let minGarrison = data.min || target.garrisonMax();
-	if (gameState.ai.HQ.garrisonManager.numberOfGarrisonedSlots(target) >= minGarrison)
+	if (this.HQ.garrisonManager.numberOfGarrisonedSlots(target) >= minGarrison)
 		return false;
 	if (data.attacker)
 	{
@@ -750,10 +752,10 @@ PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target,
 			return false;
 	}
 	let access = PETRA.getLandAccess(gameState, target);
-	let garrisonManager = gameState.ai.HQ.garrisonManager;
+	let garrisonManager = this.HQ.garrisonManager;
 	let garrisonArrowClasses = target.getGarrisonArrowClasses();
 	let typeGarrison = data.type || "protection";
-	let allowMelee = gameState.ai.HQ.garrisonManager.allowMelee(target);
+	let allowMelee = this.HQ.garrisonManager.allowMelee(target);
 	if (allowMelee === undefined)
 	{
 		// Should be kept in sync with garrisonManager to avoid garrisoning-ungarrisoning some units.
@@ -793,7 +795,7 @@ PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target,
 			break;
 		if (ent.getMetadata(PlayerID, "plan") !== undefined && ent.getMetadata(PlayerID, "plan") >= 0)
 		{
-			let attackPlan = gameState.ai.HQ.attackManager.getPlan(ent.getMetadata(PlayerID, "plan"));
+			let attackPlan = this.HQ.attackManager.getPlan(ent.getMetadata(PlayerID, "plan"));
 			if (attackPlan)
 				attackPlan.removeUnit(ent, true);
 		}
@@ -812,7 +814,7 @@ PETRA.DefenseManager.prototype.garrisonSiegeUnit = function(gameState, unit)
 	let distmin = Math.min();
 	let nearest;
 	let unitAccess = PETRA.getLandAccess(gameState, unit);
-	let garrisonManager = gameState.ai.HQ.garrisonManager;
+	let garrisonManager = this.HQ.garrisonManager;
 	for (let ent of gameState.getAllyStructures().values())
 	{
 		if (!ent.isGarrisonHolder())
@@ -846,7 +848,7 @@ PETRA.DefenseManager.prototype.garrisonAttackedUnit = function(gameState, unit, 
 	let distmin = Math.min();
 	let nearest;
 	let unitAccess = PETRA.getLandAccess(gameState, unit);
-	let garrisonManager = gameState.ai.HQ.garrisonManager;
+	let garrisonManager = this.HQ.garrisonManager;
 	for (let ent of gameState.getAllyStructures().values())
 	{
 		if (!ent.isGarrisonHolder())
@@ -915,7 +917,7 @@ PETRA.DefenseManager.prototype.switchToAttack = function(gameState, army)
 				continue;
 			if (API3.SquareVectorDistance(targetPos, ent.position()) > 14400)
 				continue;
-			gameState.ai.HQ.attackManager.switchDefenseToAttack(gameState, target, { "armyID": army.ID, "uniqueTarget": true });
+			this.HQ.attackManager.switchDefenseToAttack(gameState, target, { "armyID": army.ID, "uniqueTarget": true });
 			return;
 		}
 	}

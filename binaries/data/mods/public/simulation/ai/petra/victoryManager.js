@@ -5,7 +5,7 @@
  *   in wonder, train military guards.
  */
 
-PETRA.VictoryManager = function(Config)
+PETRA.VictoryManager = function(Config, HQ)
 {
 	this.Config = Config;
 	this.criticalEnts = new Map();
@@ -16,6 +16,7 @@ PETRA.VictoryManager = function(Config)
 	this.tryCaptureGaiaRelicLapseTime = -1;
 	// Gaia relics which we are targeting currently and have not captured yet
 	this.targetedGaiaRelics = new Map();
+	this.HQ = HQ;
 };
 
 /**
@@ -72,8 +73,8 @@ PETRA.VictoryManager.prototype.checkEvents = function(gameState, events)
 				continue;
 
 			// Let's get a few units from other bases to build the wonder.
-			let base = gameState.ai.HQ.getBaseByID(ent.getMetadata(PlayerID, "base"));
-			let builders = gameState.ai.HQ.bulkPickWorkers(gameState, base, 10);
+			let base = this.HQ.getBaseByID(ent.getMetadata(PlayerID, "base"));
+			let builders = this.HQ.bulkPickWorkers(gameState, base, 10);
 			if (builders)
 				for (let worker of builders.values())
 				{
@@ -113,14 +114,14 @@ PETRA.VictoryManager.prototype.checkEvents = function(gameState, events)
 
 				if (plan >= 0)
 				{
-					let attackPlan = gameState.ai.HQ.attackManager.getPlan(plan);
+					let attackPlan = this.HQ.attackManager.getPlan(plan);
 					if (attackPlan)
 						attackPlan.removeUnit(target, true);
 				}
 
 				if (target.getMetadata(PlayerID, "PartOfArmy"))
 				{
-					let army = gameState.ai.HQ.defenseManager.getArmy(target.getMetadata(PlayerID, "PartOfArmy"));
+					let army = this.HQ.defenseManager.getArmy(target.getMetadata(PlayerID, "PartOfArmy"));
 					if (army)
 						army.removeOwn(gameState, target.id());
 				}
@@ -131,7 +132,7 @@ PETRA.VictoryManager.prototype.checkEvents = function(gameState, events)
 			else if (target.healthLevel() < this.Config.garrisonHealthLevel.low && !hero.garrisonEmergency)
 			{
 				// the hero is severely wounded, try to retreat/garrison quicker
-				gameState.ai.HQ.garrisonManager.cancelGarrison(target);
+				this.HQ.garrisonManager.cancelGarrison(target);
 				this.pickCriticalEntRetreatLocation(gameState, target, true);
 				hero.garrisonEmergency = true;
 			}
@@ -332,7 +333,7 @@ PETRA.VictoryManager.prototype.removeCriticalEnt = function(gameState, criticalE
  */
 PETRA.VictoryManager.prototype.manageCriticalEntHealers = function(gameState, queues)
 {
-	if (gameState.ai.HQ.saveResources || queues.healer.hasQueuedUnits() ||
+	if (this.HQ.saveResources || queues.healer.hasQueuedUnits() ||
 	    !gameState.getOwnEntitiesByClass("Temple", true).hasEntities() ||
 	    this.guardEnts.size > Math.min(gameState.getPopulationMax() / 10, gameState.getPopulation() / 4))
 		return;
@@ -412,7 +413,7 @@ PETRA.VictoryManager.prototype.manageCriticalEntGuards = function(gameState)
 			if (data.guardsAssigned >= militaryGuardsPerCriticalEnt || numWorkers <= minWorkers + deltaWorkers * data.guardsAssigned)
 				break;
 
-			for (let entity of gameState.ai.HQ.attackManager.outOfPlan.values())
+			for (let entity of this.HQ.attackManager.outOfPlan.values())
 			{
 				if (!this.tryAssignMilitaryGuard(gameState, entity, criticalEnt, checkForSameAccess))
 					continue;
@@ -457,7 +458,7 @@ PETRA.VictoryManager.prototype.tryAssignMilitaryGuard = function(gameState, guar
 
 PETRA.VictoryManager.prototype.pickCriticalEntRetreatLocation = function(gameState, criticalEnt, emergency)
 {
-	gameState.ai.HQ.defenseManager.garrisonAttackedUnit(gameState, criticalEnt, emergency);
+	this.HQ.defenseManager.garrisonAttackedUnit(gameState, criticalEnt, emergency);
 	let plan = criticalEnt.getMetadata(PlayerID, "plan");
 
 	if (plan == -2 || plan == -3)
@@ -555,7 +556,7 @@ PETRA.VictoryManager.prototype.assignGuardToCriticalEnt = function(gameState, gu
 			guardEnt.setMetadata(PlayerID, "base", criticalEnt.getMetadata(PlayerID, "base"));
 	}
 	else
-		gameState.ai.HQ.navalManager.requireTransport(gameState, guardEnt, guardEntAccess, criticalEntAccess, criticalEnt.position());
+		this.HQ.navalManager.requireTransport(gameState, guardEnt, guardEntAccess, criticalEntAccess, criticalEnt.position());
 
 	this.guardEnts.set(guardEnt.id(), guardEntAccess == criticalEntAccess);
 	return true;
@@ -584,7 +585,7 @@ PETRA.VictoryManager.prototype.update = function(gameState, events, queues)
 	this.manageCriticalEntGuards(gameState);
 
 	if (gameState.getVictoryConditions().has("wonder"))
-		gameState.ai.HQ.buildWonder(gameState, queues, true);
+		this.HQ.buildWonder(gameState, queues, true);
 
 	if (gameState.getVictoryConditions().has("regicide"))
 	{
@@ -620,7 +621,7 @@ PETRA.VictoryManager.prototype.update = function(gameState, events, queues)
 			let relicPosition = relic.position();
 			if (!relicPosition || this.targetedGaiaRelics.has(relic.id()))
 				continue;
-			let territoryOwner = gameState.ai.HQ.territoryMap.getOwner(relicPosition);
+			let territoryOwner = this.HQ.territoryMap.getOwner(relicPosition);
 			if (territoryOwner == PlayerID)
 			{
 				this.targetedGaiaRelics.set(relic.id(), []);
@@ -655,7 +656,7 @@ PETRA.VictoryManager.prototype.captureGaiaRelic = function(gameState, relic)
 	let plans = this.targetedGaiaRelics.get(relic.id());
 	for (let plan of plans)
 	{
-		let attack = gameState.ai.HQ.attackManager.getPlan(plan);
+		let attack = this.HQ.attackManager.getPlan(plan);
 		if (!attack)
 			continue;
 		for (let ent of attack.unitCollection.values())
@@ -678,7 +679,7 @@ PETRA.VictoryManager.prototype.captureGaiaRelic = function(gameState, relic)
 			return false;
 		if (plan !== undefined && plan >= 0)
 		{
-			let attack = gameState.ai.HQ.attackManager.getPlan(plan);
+			let attack = this.HQ.attackManager.getPlan(plan);
 			if (attack && (attack.state != "unexecuted" || attack.type == "Raid"))
 				return false;
 		}
@@ -696,7 +697,7 @@ PETRA.VictoryManager.prototype.captureGaiaRelic = function(gameState, relic)
 	}
 	if (!expedition.length || !plans.length && capture < sumCapturePoints / 100)
 		return;
-	let attack = gameState.ai.HQ.attackManager.raidTargetEntity(gameState, relic);
+	let attack = this.HQ.attackManager.raidTargetEntity(gameState, relic);
 	if (!attack)
 		return;
 	let plan = attack.name;
@@ -716,7 +717,7 @@ PETRA.VictoryManager.prototype.abortCaptureGaiaRelic = function(gameState, relic
 {
 	for (let plan of this.targetedGaiaRelics.get(relicId))
 	{
-		let attack = gameState.ai.HQ.attackManager.getPlan(plan);
+		let attack = this.HQ.attackManager.getPlan(plan);
 		if (attack)
 			attack.Abort(gameState);
 	}

@@ -1,9 +1,10 @@
 /**
  * Manage the research
  */
-PETRA.ResearchManager = function(Config)
+PETRA.ResearchManager = function(Config, HQ)
 {
 	this.Config = Config;
+	this.HQ = HQ;
 };
 
 /**
@@ -23,12 +24,12 @@ PETRA.ResearchManager.prototype.checkPhase = function(gameState, queues)
 		return;
 
 	let petraRequirements =
-		currentPhaseIndex == 1 && gameState.ai.HQ.getAccountedPopulation(gameState) >= this.Config.Economy.popPhase2 ||
-		currentPhaseIndex == 2 && gameState.ai.HQ.getAccountedWorkers(gameState) > this.Config.Economy.workPhase3 ||
-		currentPhaseIndex >= 3 && gameState.ai.HQ.getAccountedWorkers(gameState) > this.Config.Economy.workPhase4;
+		currentPhaseIndex == 1 && this.HQ.getAccountedPopulation(gameState) >= this.Config.Economy.popPhase2 ||
+		currentPhaseIndex == 2 && this.HQ.getAccountedWorkers(gameState) > this.Config.Economy.workPhase3 ||
+		currentPhaseIndex >= 3 && this.HQ.getAccountedWorkers(gameState) > this.Config.Economy.workPhase4;
 	if (petraRequirements && gameState.hasResearchers(nextPhaseName, true))
 	{
-		gameState.ai.HQ.phasing = currentPhaseIndex + 1;
+		this.HQ.phasing = currentPhaseIndex + 1;
 		// Reset the queue priority in case it was changed during a previous phase update
 		gameState.ai.queueManager.changePriority("majorTech", gameState.ai.Config.priorities.majorTech);
 		queues.majorTech.addPlan(new PETRA.ResearchPlan(gameState, nextPhaseName, true));
@@ -101,7 +102,7 @@ PETRA.ResearchManager.prototype.researchWantedTechs = function(gameState, techs)
 		}
 		for (let i in template.modifications)
 		{
-			if (gameState.ai.HQ.navalMap && template.modifications[i].value === "ResourceGatherer/Rates/food.fish")
+			if (this.HQ.navalMap && template.modifications[i].value === "ResourceGatherer/Rates/food.fish")
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };
 			else if (template.modifications[i].value === "ResourceGatherer/Rates/food.fruit")
 				return { "name": tech[0], "increasePriority": this.CostSum(template.cost) < 400 };

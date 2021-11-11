@@ -6,11 +6,12 @@
  * Futhermore garrison units have a metadata garrisonType describing its reason (protection, transport, ...)
  */
 
-PETRA.GarrisonManager = function(Config)
+PETRA.GarrisonManager = function(Config, HQ)
 {
 	this.Config = Config;
 	this.holders = new Map();
 	this.decayingStructures = new Map();
+	this.HQ = HQ;
 };
 
 PETRA.GarrisonManager.prototype.update = function(gameState, events)
@@ -194,7 +195,7 @@ PETRA.GarrisonManager.prototype.update = function(gameState, events)
 		if (!ent || ent.owner() !== PlayerID)
 			this.decayingStructures.delete(id);
 		else if (this.numberOfGarrisonedSlots(ent) < gmin)
-			gameState.ai.HQ.defenseManager.garrisonUnitsInside(gameState, ent, { "min": gmin, "type": "decay" });
+			this.HQ.defenseManager.garrisonUnitsInside(gameState, ent, { "min": gmin, "type": "decay" });
 	}
 };
 

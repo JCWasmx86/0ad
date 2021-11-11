@@ -20,7 +20,7 @@
  * sent through AIInterface. It is expected that the other player will change their diplomacy stance to the stance
  * that we suggested within a period of time, or else the request will be deleted from this.sentDiplomacyRequests.
  */
-PETRA.DiplomacyManager = function(Config)
+PETRA.DiplomacyManager = function(Config, HQ)
 {
 	this.Config = Config;
 	this.nextTributeUpdate = 90;
@@ -32,6 +32,7 @@ PETRA.DiplomacyManager = function(Config)
 	this.receivedDiplomacyRequests = new Map();
 	this.sentDiplomacyRequests = new Map();
 	this.sentDiplomacyRequestLapseTime = 120 + randFloat(10, 100);
+	this.HQ = HQ;
 };
 
 /**
@@ -71,7 +72,7 @@ PETRA.DiplomacyManager.prototype.tributes = function(gameState)
 	let mostNeeded;
 	for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
 	{
-		if (i === PlayerID || !gameState.isPlayerAlly(i) || gameState.ai.HQ.attackManager.defeated[i])
+		if (i === PlayerID || !gameState.isPlayerAlly(i) || this.HQ.attackManager.defeated[i])
 			continue;
 		let donor = gameState.getAlliedVictory() || gameState.getEntities(i).length < gameState.getOwnEntities().length;
 		let allyResources = gameState.sharedScript.playersData[i].resourceCounts;
@@ -97,7 +98,7 @@ PETRA.DiplomacyManager.prototype.tributes = function(gameState)
 				if (this.nextTributeRequest.has(res) && gameState.ai.elapsedTime < this.nextTributeRequest.get(res))
 					continue;
 				if (!mostNeeded)
-					mostNeeded = gameState.ai.HQ.pickMostNeededResources(gameState, resTribCodes);
+					mostNeeded = this.HQ.pickMostNeededResources(gameState, resTribCodes);
 				for (let k = 0; k < mostNeeded.length; ++k)
 				{
 					if (mostNeeded[k].type == res && mostNeeded[k].wanted > 0)
@@ -169,7 +170,7 @@ PETRA.DiplomacyManager.prototype.checkEvents = function(gameState, events)
 	{
 		let target = gameState.getEntityById(evt.target);
 		if (!target || !target.position() ||
-			gameState.ai.HQ.territoryMap.getOwner(target.position()) !== PlayerID ||
+			this.HQ.territoryMap.getOwner(target.position()) !== PlayerID ||
 			!gameState.isPlayerEnemy(target.owner()))
 			continue;
 		let attacker = gameState.getEntityById(evt.attacker);
@@ -307,7 +308,7 @@ PETRA.DiplomacyManager.prototype.lastManStandingCheck = function(gameState)
 	// count the amount of entities remaining players have
 	for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
 	{
-		if (i === PlayerID || gameState.ai.HQ.attackManager.defeated[i])
+		if (i === PlayerID || this.HQ.attackManager.defeated[i])
 			continue;
 
 		turnFactor = gameState.getEntities(i).length;
@@ -376,7 +377,7 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 
 	// For any given diplomacy request be likely to permanently decline
 	if (!request && gameState.getPlayerCiv() !== gameState.getPlayerCiv(player) && randBool(0.6) ||
-	    !moreEnemiesThanAllies || gameState.ai.HQ.attackManager.currentEnemyPlayer === player)
+	    !moreEnemiesThanAllies || this.HQ.attackManager.currentEnemyPlayer === player)
 	{
 		this.receivedDiplomacyRequests.set(player, { "requestType": requestType, "status": "declinedRequest" });
 		response = "decline";
@@ -408,7 +409,7 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 		let resTribCodes = Resources.GetTributableCodes();
 		if (resTribCodes.length)
 		{
-			requiredTribute = gameState.ai.HQ.pickMostNeededResources(gameState, resTribCodes)[0];
+			requiredTribute = this.HQ.pickMostNeededResources(gameState, resTribCodes)[0];
 			response = "acceptWithTribute";
 			requiredTribute.wanted = Math.max(1000, gameState.getOwnUnits().length * (requestType === "ally" ? 10 : 5));
 			this.receivedDiplomacyRequests.set(player, {
@@ -432,7 +433,7 @@ PETRA.DiplomacyManager.prototype.handleDiplomacyRequest = function(gameState, pl
 PETRA.DiplomacyManager.prototype.changePlayerDiplomacy = function(gameState, player, newDiplomaticStance)
 {
 	if (gameState.isPlayerEnemy(player) && (newDiplomaticStance === "ally" || newDiplomaticStance === "neutral"))
-		gameState.ai.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, player);
+		this.HQ.attackManager.cancelAttacksAgainstPlayer(gameState, player);
 	Engine.PostCommand(PlayerID, { "type": "diplomacy", "player": player, "to": newDiplomaticStance });
 	if (this.Config.debug > 1)
 		API3.warn("diplomacy stance with player " + player + " is now " + newDiplomaticStance);
@@ -474,15 +475,15 @@ PETRA.DiplomacyManager.prototype.sendDiplomacyRequest = function(gameState)
 	{
 		let mutualEnemies = 0;
 		let request = this.receivedDiplomacyRequests.get(i); // Do not send to players we have already rejected before
-		if (i === PlayerID || gameState.isPlayerMutualAlly(i) || gameState.ai.HQ.attackManager.defeated[i] ||
-		    gameState.ai.HQ.attackManager.currentEnemyPlayer === i ||
+		if (i === PlayerID || gameState.isPlayerMutualAlly(i) || this.HQ.attackManager.defeated[i] ||
+		    this.HQ.attackManager.currentEnemyPlayer === i ||
 		    this.sentDiplomacyRequests.get(i) !== undefined || request && request.status === "declinedRequest")
 			continue;
 
 		for (let j = 1; j < gameState.sharedScript.playersData.length; ++j)
 		{
 			if (gameState.sharedScript.playersData[i].isEnemy[j] && gameState.isPlayerEnemy(j) &&
-			    !gameState.ai.HQ.attackManager.defeated[j])
+			    !this.HQ.attackManager.defeated[j])
 				++mutualEnemies;
 
 			if (mutualEnemies < max)
@@ -511,7 +512,7 @@ PETRA.DiplomacyManager.prototype.sendDiplomacyRequest = function(gameState)
 PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState)
 {
 	for (let [player, data] of this.sentDiplomacyRequests)
-		if (gameState.ai.elapsedTime > data.timeSent + 60 && !gameState.ai.HQ.saveResources &&
+		if (gameState.ai.elapsedTime > data.timeSent + 60 && !this.HQ.saveResources &&
 		    gameState.getPopulation() > 70)
 		{
 			PETRA.chatNewRequestDiplomacy(gameState, player, data.requestType, "requestExpired");
@@ -523,7 +524,7 @@ PETRA.DiplomacyManager.prototype.update = function(gameState, events)
 {
 	this.checkEvents(gameState, events);
 
-	if (Resources.GetTributableCodes().length && !gameState.ai.HQ.saveResources && gameState.ai.elapsedTime > this.nextTributeUpdate)
+	if (Resources.GetTributableCodes().length && !this.HQ.saveResources && gameState.ai.elapsedTime > this.nextTributeUpdate)
 		this.tributes(gameState);
 
 	if (this.waitingToBetray && gameState.ai.elapsedTime > this.betrayLapseTime)

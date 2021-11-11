@@ -424,7 +424,7 @@ PETRA.HQ.prototype.configFirstBase = function(gameState)
 		for (let land of startingLand)
 		{
 			for (let sea of gameState.ai.accessibility.regionLinks[land])
-				if (gameState.ai.HQ.navalRegions[sea])
+				if (this.navalRegions[sea])
 					this.navalManager.updateFishingBoats(sea, num);
 		}
 		this.maxFields = 1;

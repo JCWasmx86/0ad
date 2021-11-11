@@ -7,7 +7,7 @@
  * -Scouting, ultimately.
  * Also deals with handling docks, making sure we have access and stuffs like that.
  */
-PETRA.NavalManager = function(Config)
+PETRA.NavalManager = function(Config, HQ)
 {
 	this.Config = Config;
 
@@ -29,6 +29,8 @@ PETRA.NavalManager = function(Config)
 
 	// shore-line regions where we can load and unload units
 	this.landingZones = {};
+
+	this.HQ = HQ;
 };
 
 /** More initialisation for stuff that needs the gameState */
@@ -61,7 +63,7 @@ PETRA.NavalManager.prototype.init = function(gameState, deserializing)
 
 	for (let i = 0; i < gameState.ai.accessibility.regionSize.length; ++i)
 	{
-		if (!gameState.ai.HQ.navalRegions[i])
+		if (!this.HQ.navalRegions[i])
 		{
 			// push dummies
 			this.seaShips.push(undefined);
@@ -215,7 +217,7 @@ PETRA.NavalManager.prototype.canFishSafely = function(gameState, fish)
 		return true;
 	const ntry = 2;
 	const around = [[-0.7, 0.7], [0, 1], [0.7, 0.7], [1, 0], [0.7, -0.7], [0, -1], [-0.7, -0.7], [-1, 0]];
-	let territoryMap = gameState.ai.HQ.territoryMap;
+	let territoryMap = this.HQ.territoryMap;
 	let width = territoryMap.width;
 	let radius = 120 / territoryMap.cellSize / ntry;
 	let pos = territoryMap.gamePosToMapPos(fish.position());
@@ -607,7 +609,7 @@ PETRA.NavalManager.prototype.moveApart = function(gameState)
 		}
 	}
 
-	for (let ship of gameState.ai.HQ.tradeManager.traders.filter(API3.Filters.byClass("Ship")).values())
+	for (let ship of this.HQ.tradeManager.traders.filter(API3.Filters.byClass("Ship")).values())
 	{
 		let shipPosition = ship.position();
 		if (!shipPosition)
@@ -684,7 +686,7 @@ PETRA.NavalManager.prototype.moveApart = function(gameState)
 				blockingShip.moveToRange(shipPosition[0], shipPosition[1], 30, 35);
 		}
 
-		for (let blockingShip of gameState.ai.HQ.tradeManager.traders.filter(API3.Filters.byClass("Ship")).values())
+		for (let blockingShip of this.HQ.tradeManager.traders.filter(API3.Filters.byClass("Ship")).values())
 		{
 			if (blockingShip.getMetadata(PlayerID, "sea") != sea)
 				continue;
@@ -708,17 +710,17 @@ PETRA.NavalManager.prototype.moveApart = function(gameState)
 
 PETRA.NavalManager.prototype.buildNavalStructures = function(gameState, queues)
 {
-	if (!gameState.ai.HQ.navalMap || !gameState.ai.HQ.hasPotentialBase())
+	if (!this.HQ.navalMap || !this.HQ.hasPotentialBase())
 		return;
 
-	if (gameState.ai.HQ.getAccountedPopulation(gameState) > this.Config.Economy.popForDock)
+	if (this.HQ.getAccountedPopulation(gameState) > this.Config.Economy.popForDock)
 	{
 		if (queues.dock.countQueuedUnitsWithClass("Dock") === 0 &&
 			!gameState.getOwnStructures().filter(API3.Filters.and(API3.Filters.byClass("Dock"), API3.Filters.isFoundation())).hasEntities() &&
-			gameState.ai.HQ.canBuild(gameState, "structures/{civ}/dock"))
+			this.HQ.canBuild(gameState, "structures/{civ}/dock"))
 		{
 			let dockStarted = false;
-			for (const base of gameState.ai.HQ.baseManagers())
+			for (const base of this.HQ.baseManagers())
 			{
 				if (dockStarted)
 					break;
@@ -727,7 +729,7 @@ PETRA.NavalManager.prototype.buildNavalStructures = function(gameState, queues)
 				let remaining = this.getUnconnectedSeas(gameState, base.accessIndex);
 				for (let sea of remaining)
 				{
-					if (!gameState.ai.HQ.navalRegions[sea])
+					if (!this.HQ.navalRegions[sea])
 						continue;
 					let wantedLand = {};
 					wantedLand[base.accessIndex] = true;
@@ -739,7 +741,7 @@ PETRA.NavalManager.prototype.buildNavalStructures = function(gameState, queues)
 		}
 	}
 
-	if (gameState.currentPhase() < 2 || gameState.ai.HQ.getAccountedPopulation(gameState) < this.Config.Economy.popPhase2 + 15 ||
+	if (gameState.currentPhase() < 2 || this.HQ.getAccountedPopulation(gameState) < this.Config.Economy.popPhase2 + 15 ||
 	    queues.militaryBuilding.hasQueuedUnits())
 		return;
 	if (!this.docks.filter(API3.Filters.byClass("Dock")).hasEntities() ||
@@ -747,17 +749,17 @@ PETRA.NavalManager.prototype.buildNavalStructures = function(gameState, queues)
 		return;
 	// Use in priority resources to build a Market.
 	if (!gameState.getOwnEntitiesByClass("Market", true).hasEntities() &&
-	    gameState.ai.HQ.canBuild(gameState, "structures/{civ}/market"))
+	    this.HQ.canBuild(gameState, "structures/{civ}/market"))
 		return;
 	let template;
-	if (gameState.ai.HQ.canBuild(gameState, "structures/{civ}/super_dock"))
+	if (this.HQ.canBuild(gameState, "structures/{civ}/super_dock"))
 		template = "structures/{civ}/super_dock";
-	else if (gameState.ai.HQ.canBuild(gameState, "structures/{civ}/shipyard"))
+	else if (this.HQ.canBuild(gameState, "structures/{civ}/shipyard"))
 		template = "structures/{civ}/shipyard";
 	else
 		return;
 	let wantedLand = {};
-	for (const base of gameState.ai.HQ.baseManagers())
+	for (const base of this.HQ.baseManagers())
 		if (base.anchor)
 			wantedLand[base.accessIndex] = true;
 	let sea = this.docks.toEntityArray()[0].getMetadata(PlayerID, "sea");

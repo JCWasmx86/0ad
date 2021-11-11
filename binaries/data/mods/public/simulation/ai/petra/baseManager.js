@@ -35,13 +35,13 @@ PETRA.BaseManager = function(gameState, basesManager)
 	this.timeNextIdleCheck = 0;
 };
 
-PETRA.BaseManager.prototype.init = function(gameState, state)
+PETRA.BaseManager.prototype.init = function(gameState, state, HQ)
 {
 	if (state == "unconstructed")
 		this.constructing = true;
 	else if (state != "captured")
 		this.neededDefenders = 0;
-	this.workerObject = new PETRA.Worker(this);
+	this.workerObject = new PETRA.Worker(this, HQ);
 	// entitycollections
 	this.units = gameState.getOwnUnits().filter(API3.Filters.byMetadata(PlayerID, "base", this.ID));
 	this.workers = this.units.filter(API3.Filters.byMetadata(PlayerID, "role", "worker"));

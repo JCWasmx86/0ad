@@ -4,7 +4,7 @@
  * Only one base is run every turn.
  */
 
-PETRA.BasesManager = function(Config)
+PETRA.BasesManager = function(Config, HQ)
 {
 	this.Config = Config;
 
@@ -17,6 +17,7 @@ PETRA.BasesManager = function(Config)
 	this.noBase = undefined;
 
 	this.baseManagers = [];
+	this.HQ = HQ;
 };
 
 PETRA.BasesManager.prototype.init = function(gameState)
@@ -25,7 +26,7 @@ PETRA.BasesManager.prototype.init = function(gameState)
 	this.basesMap = new API3.Map(gameState.sharedScript, "territory");
 
 	this.noBase = new PETRA.BaseManager(gameState, this);
-	this.noBase.init(gameState);
+	this.noBase.init(gameState, undefined, this.HQ);
 	this.noBase.accessIndex = 0;
 
 	for (const cc of gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).values())
@@ -110,7 +111,7 @@ PETRA.BasesManager.prototype.createBase = function(gameState, ent, type)
 	if (!newbase)
 	{
 		newbase = new PETRA.BaseManager(gameState, this);
-		newbase.init(gameState, type);
+		newbase.init(gameState, type, this.HQ);
 		this.baseManagers.push(newbase);
 	}
 	else
@@ -319,7 +320,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 	}
 
 	if (addBase)
-		gameState.ai.HQ.handleNewBase(gameState);
+		this.HQ.handleNewBase(gameState);
 };
 
 /**
@@ -653,11 +654,11 @@ PETRA.BasesManager.prototype.addTerritoryIndexToBase = function(gameState, terri
 	if (this.baseAtIndex(territoryIndex) != 0)
 		return false;
 	let landPassable = false;
-	const ind = API3.getMapIndices(territoryIndex, gameState.ai.HQ.territoryMap, passabilityMap);
+	const ind = API3.getMapIndices(territoryIndex, this.HQ.territoryMap, passabilityMap);
 	let access;
 	for (const k of ind)
 	{
-		if (!gameState.ai.HQ.landRegions[gameState.ai.accessibility.landPassMap[k]])
+		if (!this.HQ.landRegions[gameState.ai.accessibility.landPassMap[k]])
 			continue;
 		landPassable = true;
 		access = gameState.ai.accessibility.landPassMap[k];
@@ -667,7 +668,7 @@ PETRA.BasesManager.prototype.addTerritoryIndexToBase = function(gameState, terri
 		return false;
 	let distmin = Math.min();
 	let baseID;
-	const pos = [gameState.ai.HQ.territoryMap.cellSize * (territoryIndex % gameState.ai.HQ.territoryMap.width + 0.5), gameState.ai.HQ.territoryMap.cellSize * (Math.floor(territoryIndex / gameState.ai.HQ.territoryMap.width) + 0.5)];
+	const pos = [this.HQ.territoryMap.cellSize * (territoryIndex % this.HQ.territoryMap.width + 0.5), this.HQ.territoryMap.cellSize * (Math.floor(territoryIndex / this.HQ.territoryMap.width) + 0.5)];
 	for (const base of this.baseManagers)
 	{
 		if (!base.anchor || !base.anchor.position())
@@ -775,7 +776,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 
 	this.noBase = new PETRA.BaseManager(gameState, this);
 	this.noBase.Deserialize(gameState, data.noBase);
-	this.noBase.init(gameState);
+	this.noBase.init(gameState, undefined, this.HQ);
 	this.noBase.Deserialize(gameState, data.noBase);
 
 	this.baseManagers = [];
@@ -784,7 +785,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 		// The first call to deserialize set the ID base needed by entitycollections.
 		const newbase = new PETRA.BaseManager(gameState, this);
 		newbase.Deserialize(gameState, basedata);
-		newbase.init(gameState);
+		newbase.init(gameState, undefined, this.HQ);
 		newbase.Deserialize(gameState, basedata);
 		this.baseManagers.push(newbase);
 	}
