@@ -1,34 +1,3 @@
-PETRA.AttackPlan.PREPARATION_FAILED = 0;
-PETRA.AttackPlan.PREPARATION_KEEP_GOING = 1;
-PETRA.AttackPlan.PREPARATION_START = 2;
-
-PETRA.AttackPlan.PRIORITY_DEFAULT = 70;
-PETRA.AttackPlan.PRIORITY_HUGE_ATTACK = 90;
-PETRA.AttackPlan.PRIORITY_RAID = 150;
-PETRA.AttackPlan.PRIORITY_RUSH = 250;
-
-/**
- * Not yet tested
- */
-PETRA.AttackPlan.SIEGE_NOT_TESTED = 0;
-/**
- * Not yet any siege trainer
- */
-PETRA.AttackPlan.SIEGE_NO_TRAINER = 1; // Doesn't seem to be used.
-/**
- * Siege added in build orders
- */
-PETRA.AttackPlan.SIEGE_ADDED = 2;
-
-PETRA.AttackPlan.STATE_UNEXECUTED = "unexecuted";
-PETRA.AttackPlan.STATE_COMPLETING = "completing";
-PETRA.AttackPlan.STATE_ARRIVED = "arrived";
-
-PETRA.AttackPlan.TYPE_DEFAULT = "Attack";
-PETRA.AttackPlan.TYPE_HUGE_ATTACK = "HugeAttack";
-PETRA.AttackPlan.TYPE_RAID = "Raid";
-PETRA.AttackPlan.TYPE_RUSH = "Rush";
-
 /**
  * This is an attack plan:
  * It deals with everything in an attack, from picking a target to picking a path to it
@@ -256,6 +225,37 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 
 	return true;
 };
+
+PETRA.AttackPlan.PREPARATION_FAILED = 0;
+PETRA.AttackPlan.PREPARATION_KEEP_GOING = 1;
+PETRA.AttackPlan.PREPARATION_START = 2;
+
+PETRA.AttackPlan.PRIORITY_DEFAULT = 70;
+PETRA.AttackPlan.PRIORITY_HUGE_ATTACK = 90;
+PETRA.AttackPlan.PRIORITY_RAID = 150;
+PETRA.AttackPlan.PRIORITY_RUSH = 250;
+
+/**
+ * Not yet tested
+ */
+PETRA.AttackPlan.SIEGE_NOT_TESTED = 0;
+/**
+ * Not yet any siege trainer
+ */
+PETRA.AttackPlan.SIEGE_NO_TRAINER = 1; // Doesn't seem to be used.
+/**
+ * Siege added in build orders
+ */
+PETRA.AttackPlan.SIEGE_ADDED = 2;
+
+PETRA.AttackPlan.STATE_UNEXECUTED = "unexecuted";
+PETRA.AttackPlan.STATE_COMPLETING = "completing";
+PETRA.AttackPlan.STATE_ARRIVED = "arrived";
+
+PETRA.AttackPlan.TYPE_DEFAULT = "Attack";
+PETRA.AttackPlan.TYPE_HUGE_ATTACK = "HugeAttack";
+PETRA.AttackPlan.TYPE_RAID = "Raid";
+PETRA.AttackPlan.TYPE_RUSH = "Rush";
 
 PETRA.AttackPlan.prototype.init = function(gameState)
 {

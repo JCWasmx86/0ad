@@ -1,21 +1,4 @@
 /**
-* New base with an anchor
-*/
-PETRA.BaseManager.STATE_WITH_ANCHOR = 0;
-/**
- * New base with a foundation anchor
- */
-PETRA.BaseManager.STATE_UNCONSTRUCTED = 1;
-/**
- * Captured base with an anchor
- */
-PETRA.BaseManager.STATE_CAPTURED = 2;
-/**
- * Anchorless base, currently with dock
- */
-PETRA.BaseManager.STATE_ANCHORLESS = 3;
-
-/**
  * Base Manager
  * Handles lower level economic stuffs.
  * Some tasks:
@@ -50,6 +33,23 @@ PETRA.BaseManager = function(gameState, basesManager)
 
 	this.timeNextIdleCheck = 0;
 };
+
+/**
+ * New base with an anchor
+ */
+PETRA.BaseManager.STATE_WITH_ANCHOR = 0;
+/**
+ * New base with a foundation anchor
+ */
+PETRA.BaseManager.STATE_UNCONSTRUCTED = 1;
+/**
+ * Captured base with an anchor
+ */
+PETRA.BaseManager.STATE_CAPTURED = 2;
+/**
+ * Anchorless base, currently with dock
+ */
+PETRA.BaseManager.STATE_ANCHORLESS = 3;
 
 PETRA.BaseManager.prototype.init = function(gameState, state)
 {
