@@ -30,7 +30,7 @@ PETRA.BasesManager.prototype.init = function(gameState)
 
 	for (const cc of gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).values())
 		if (cc.foundationProgress() === undefined)
-			this.createBase(gameState, cc, PETRA.BaseManager.STATE_INVALID);
+			this.createBase(gameState, cc, PETRA.BaseManager.STATE_WITH_ANCHOR);
 		else
 			this.createBase(gameState, cc, PETRA.BaseManager.STATE_UNCONSTRUCTED);
 };

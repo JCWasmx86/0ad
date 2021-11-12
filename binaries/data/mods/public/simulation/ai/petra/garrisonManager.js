@@ -1,3 +1,10 @@
+PETRA.GarrisonManager.TYPE_NONE = undefined;
+PETRA.GarrisonManager.TYPE_FORCE = "force";
+PETRA.GarrisonManager.TYPE_TRADE = "trade";
+PETRA.GarrisonManager.TYPE_PROTECTION = "protection";
+PETRA.GarrisonManager.TYPE_DECAY = "decay";
+PETRA.GarrisonManager.TYPE_EMERGENCY = "emergency";
+
 /**
  * Manage the garrisonHolders
  * When a unit is ordered to garrison, it must be done through this.garrison() function so that
@@ -5,20 +12,12 @@
  * in the process of being garrisoned. To have all garrisoned units, we must add those in holder.garrisoned().
  * Futhermore garrison units have a metadata garrisonType describing its reason (protection, transport, ...)
  */
-
 PETRA.GarrisonManager = function(Config)
 {
 	this.Config = Config;
 	this.holders = new Map();
 	this.decayingStructures = new Map();
 };
-
-PETRA.GarrisonManager.TYPE_INVALID = undefined;
-PETRA.GarrisonManager.TYPE_FORCE = "force";
-PETRA.GarrisonManager.TYPE_TRADE = "trade";
-PETRA.GarrisonManager.TYPE_PROTECTION = "protection";
-PETRA.GarrisonManager.TYPE_DECAY = "decay";
-PETRA.GarrisonManager.TYPE_EMERGENCY = "emergency";
 
 PETRA.GarrisonManager.prototype.update = function(gameState, events)
 {

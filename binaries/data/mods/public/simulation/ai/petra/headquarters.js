@@ -201,7 +201,7 @@ PETRA.HQ.prototype.checkEvents = function(gameState, events)
 			else if (ent.getMetadata(PlayerID, "garrisonType"))
 			{
 				// we were supposed to be autogarrisoned, but this has failed (may-be full)
-				ent.setMetadata(PlayerID, "garrisonType", PETRA.GarrisonManager.TYPE_INVALID);
+				ent.setMetadata(PlayerID, "garrisonType", PETRA.GarrisonManager.TYPE_NONE);
 			}
 
 			// Check if this unit is no more needed in its attack plan
