@@ -163,7 +163,7 @@ PETRA.DefenseArmy.prototype.removeOwn = function(gameState, id, Entity)
 	// Remove from tranport plan if not yet on Board
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
 	{
-		let plan =  this.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
+		let plan = this.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
 		if (plan && plan.state == "boarding" && ent.position())
 			plan.removeUnit(gameState, ent);
 	}
@@ -178,7 +178,7 @@ PETRA.DefenseArmy.prototype.removeOwn = function(gameState, id, Entity)
 		{
 			if (gameState.ai.Config.debug > 0)
 				warn("ent from army still in transport plan: plan " + planID + " canceled");
-			let plan =  this.HQ.navalManager.getPlan(planID);
+			let plan = this.HQ.navalManager.getPlan(planID);
 			if (plan && !plan.canceled)
 				plan.cancelTransport(gameState);
 		}
@@ -210,7 +210,7 @@ PETRA.DefenseArmy.prototype.clear = function(gameState)
 		if (!ent || !ent.position())
 			continue;
 		let pos = ent.position();
-		let territoryOwner =  this.HQ.territoryMap.getOwner(pos);
+		let territoryOwner = this.HQ.territoryMap.getOwner(pos);
 		if (territoryOwner === PlayerID)
 		{
 			posOwn[0] += pos[0];
@@ -274,7 +274,7 @@ PETRA.DefenseArmy.prototype.clear = function(gameState)
 			                       ent.getMetadata(PlayerID, "transporter") !== undefined)
 				continue;
 			if (ent.healthLevel() < this.Config.garrisonHealthLevel.low &&
-			     this.HQ.defenseManager.garrisonAttackedUnit(gameState, ent))
+			 this.HQ.defenseManager.garrisonAttackedUnit(gameState, ent))
 				continue;
 
 			if (destination && !gameState.isPlayerMutualAlly( this.HQ.territoryMap.getOwner(ent.position())))
@@ -411,7 +411,7 @@ PETRA.DefenseArmy.prototype.merge = function(gameState, otherArmy)
 PETRA.DefenseArmy.prototype.needsDefenders = function(gameState)
 {
 	let defenseRatio;
-	let territoryOwner =  this.HQ.territoryMap.getOwner(this.foePosition);
+	let territoryOwner = this.HQ.territoryMap.getOwner(this.foePosition);
 	if (territoryOwner == PlayerID)
 		defenseRatio = this.Config.Defense.defenseRatio.own;
 	else if (gameState.isPlayerAlly(territoryOwner))

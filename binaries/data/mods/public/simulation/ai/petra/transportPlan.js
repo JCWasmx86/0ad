@@ -48,7 +48,7 @@ PETRA.TransportPlan = function(gameState, HQ, units, startIndex, endIndex, endPo
 	}
 	else
 	{
-		this.sea =  this.HQ.getSeaBetweenIndices(gameState, startIndex, endIndex);
+		this.sea = this.HQ.getSeaBetweenIndices(gameState, startIndex, endIndex);
 		if (!this.sea)
 		{
 			this.failed = true;
@@ -78,8 +78,8 @@ PETRA.TransportPlan = function(gameState, HQ, units, startIndex, endIndex, endPo
 PETRA.TransportPlan.prototype.init = function(gameState)
 {
 	this.units = gameState.getOwnUnits().filter(API3.Filters.byMetadata(PlayerID, "transport", this.ID));
-	this.ships =  this.HQ.navalManager.ships.filter(API3.Filters.byMetadata(PlayerID, "transporter", this.ID));
-	this.transportShips =  this.HQ.navalManager.transportShips.filter(API3.Filters.byMetadata(PlayerID, "transporter", this.ID));
+	this.ships = this.HQ.navalManager.ships.filter(API3.Filters.byMetadata(PlayerID, "transporter", this.ID));
+	this.transportShips = this.HQ.navalManager.transportShips.filter(API3.Filters.byMetadata(PlayerID, "transporter", this.ID));
 
 	this.units.registerUpdates();
 	this.ships.registerUpdates();
@@ -251,10 +251,10 @@ PETRA.TransportPlan.prototype.releaseAll = function()
 PETRA.TransportPlan.prototype.cancelTransport = function(gameState)
 {
 	let ent = this.units.toEntityArray()[0];
-	let base =  this.HQ.getBaseByID(ent.getMetadata(PlayerID, "base"));
+	let base = this.HQ.getBaseByID(ent.getMetadata(PlayerID, "base"));
 	if (!base.anchor || !base.anchor.position())
 	{
-		for (const newbase of  this.HQ.baseManagers())
+		for (const newbase of this.HQ.baseManagers())
 		{
 			if (!newbase.anchor || !newbase.anchor.position())
 				continue;
@@ -463,7 +463,7 @@ PETRA.TransportPlan.prototype.getBoardingPos = function(gameState, ship, landInd
 	let cell = gameState.getPassabilityMap().cellSize;
 	let alliedDocks = gameState.getAllyStructures().filter(API3.Filters.and(
 		API3.Filters.byClass("Dock"), API3.Filters.byMetadata(PlayerID, "sea", seaIndex))).toEntityArray();
-	for (let i of  this.HQ.navalManager.landingZones[landIndex][seaIndex])
+	for (let i of this.HQ.navalManager.landingZones[landIndex][seaIndex])
 	{
 		let pos = [i%width+0.5, Math.floor(i/width)+0.5];
 		pos = [cell*pos[0], cell*pos[1]];
@@ -472,7 +472,7 @@ PETRA.TransportPlan.prototype.getBoardingPos = function(gameState, ship, landInd
 			dist += API3.VectorDistance(pos, destination);
 		if (avoidEnnemy)
 		{
-			let territoryOwner =  this.HQ.territoryMap.getOwner(pos);
+			let territoryOwner = this.HQ.territoryMap.getOwner(pos);
 			if (territoryOwner != 0 && !gameState.isPlayerAlly(territoryOwner))
 				dist += 100000000;
 		}
@@ -684,13 +684,13 @@ PETRA.TransportPlan.prototype.resetUnit = function(gameState, ent)
 	// if from an army or attack, remove it
 	if (ent.getMetadata(PlayerID, "plan") !== undefined && ent.getMetadata(PlayerID, "plan") >= 0)
 	{
-		let attackPlan =  this.HQ.attackManager.getPlan(ent.getMetadata(PlayerID, "plan"));
+		let attackPlan = this.HQ.attackManager.getPlan(ent.getMetadata(PlayerID, "plan"));
 		if (attackPlan)
 			attackPlan.removeUnit(ent, true);
 	}
 	if (ent.getMetadata(PlayerID, "PartOfArmy"))
 	{
-		let army =  this.HQ.defenseManager.getArmy(ent.getMetadata(PlayerID, "PartOfArmy"));
+		let army = this.HQ.defenseManager.getArmy(ent.getMetadata(PlayerID, "PartOfArmy"));
 		if (army)
 			army.removeOwn(gameState, ent.id());
 	}

@@ -33,7 +33,7 @@ PETRA.AttackPlan = function(gameState, HQ, Config, uniqueID, type, data)
 	let rallyPoint;
 	let rallyAccess;
 	let allAccesses = {};
-	for (const base of  this.HQ.baseManagers())
+	for (const base of this.HQ.baseManagers())
 	{
 		if (!base.anchor || !base.anchor.position())
 			continue;
@@ -83,7 +83,7 @@ PETRA.AttackPlan = function(gameState, HQ, Config, uniqueID, type, data)
 			}
 			else if (!this.overseas)
 			{
-				let sea =  this.HQ.getSeaBetweenIndices(gameState, rallyAccess, access);
+				let sea = this.HQ.getSeaBetweenIndices(gameState, rallyAccess, access);
 				if (!sea)
 				{
 					if (this.target)
@@ -216,7 +216,7 @@ PETRA.AttackPlan = function(gameState, HQ, Config, uniqueID, type, data)
 
 	// each array is [ratio, [associated classes], associated EntityColl, associated unitStat, name ]
 	this.buildOrders = [];
-	this.canBuildUnits =  this.HQ.canBuildUnits;
+	this.canBuildUnits = this.HQ.canBuildUnits;
 	this.siegeState = 0;	// 0 = not yet tested, 1 = not yet any siege trainer, 2 = siege added in build orders
 
 	// some variables used during the attack
@@ -448,7 +448,7 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 
 	if (this.type != "Raid" || !this.forced)    // Forced Raids have special purposes (as relic capture)
 		this.assignUnits(gameState);
-	if (this.type != "Raid" &&  this.HQ.attackManager.getAttackInPreparation("Raid") !== undefined)
+	if (this.type != "Raid" && this.HQ.attackManager.getAttackInPreparation("Raid") !== undefined)
 		this.reassignFastUnit(gameState);    // reassign some fast units (if any) to fasten raid preparations
 
 	// Fasten the end game.
@@ -458,7 +458,7 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 		let hasEnemies = false;
 		for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
 		{
-			if (!gameState.isPlayerEnemy(i) ||  this.HQ.attackManager.defeated[i])
+			if (!gameState.isPlayerEnemy(i) || this.HQ.attackManager.defeated[i])
 				continue;
 			hasEnemies = true;
 			totEnemies += gameState.getEnemyUnits(i).length;
@@ -481,7 +481,7 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 		{
 			if (this.Config.debug > 1)
 			{
-				let am =  this.HQ.attackManager;
+				let am = this.HQ.attackManager;
 				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks.Raid.length +
 					  " rush " + am.upcomingAttacks.Rush.length +
 					  " attack " + am.upcomingAttacks.Attack.length +
@@ -541,7 +541,7 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 	}
 
 	// Remove those units which were in a temporary bombing attack
-	for (let unitIds of  this.HQ.attackManager.bombingAttacks.values())
+	for (let unitIds of this.HQ.attackManager.bombingAttacks.values())
 	{
 		for (let entId of unitIds.values())
 		{
@@ -635,7 +635,7 @@ PETRA.AttackPlan.prototype.trainMoreUnits = function(gameState)
 
 		if (queue.length() <= 5)
 		{
-			let template =  this.HQ.findBestTrainableUnit(gameState, firstOrder[1], firstOrder[3].interests);
+			let template = this.HQ.findBestTrainableUnit(gameState, firstOrder[1], firstOrder[3].interests);
 			// HACK (TODO replace) : if we have no trainable template... Then we'll simply remove the buildOrder,
 			// effectively removing the unit from the plan.
 			if (template === undefined)
@@ -711,7 +711,7 @@ PETRA.AttackPlan.prototype.assignUnits = function(gameState)
 		added = true;
 	}
 	// Add units previously in a plan, but which left it because needed for defense or attack finished.
-	for (let ent of  this.HQ.attackManager.outOfPlan.values())
+	for (let ent of this.HQ.attackManager.outOfPlan.values())
 	{
 		if (!this.isAvailableUnit(gameState, ent))
 			continue;
@@ -776,7 +776,7 @@ PETRA.AttackPlan.prototype.reassignFastUnit = function(gameState)
 			continue;
 		if (!ent.hasClasses(["FastMoving", "CitizenSoldier"]))
 			continue;
-		let raid =  this.HQ.attackManager.getAttackInPreparation("Raid");
+		let raid = this.HQ.attackManager.getAttackInPreparation("Raid");
 		ent.setMetadata(PlayerID, "plan", raid.name);
 		this.unitCollection.updateEnt(ent);
 		raid.unitCollection.updateEnt(ent);
@@ -788,7 +788,7 @@ PETRA.AttackPlan.prototype.chooseTarget = function(gameState)
 {
 	if (this.targetPlayer === undefined)
 	{
-		this.targetPlayer =  this.HQ.attackManager.getEnemyPlayer(gameState, this);
+		this.targetPlayer = this.HQ.attackManager.getEnemyPlayer(gameState, this);
 		if (this.targetPlayer === undefined)
 			return false;
 	}
@@ -800,7 +800,7 @@ PETRA.AttackPlan.prototype.chooseTarget = function(gameState)
 			return false;
 
 		// may-be all our previous enemey target (if not recomputed here) have been destroyed ?
-		this.targetPlayer =  this.HQ.attackManager.getEnemyPlayer(gameState, this);
+		this.targetPlayer = this.HQ.attackManager.getEnemyPlayer(gameState, this);
 		if (this.targetPlayer !== undefined)
 			this.target = this.getNearestTarget(gameState, this.rallyPoint);
 		if (!this.target)
@@ -817,7 +817,7 @@ PETRA.AttackPlan.prototype.chooseTarget = function(gameState)
 		let rallySame;
 		let distminDiff = Math.min();
 		let rallyDiff;
-		for (const base of  this.HQ.baseManagers())
+		for (const base of this.HQ.baseManagers())
 		{
 			let anchor = base.anchor;
 			if (!anchor || !anchor.position())
@@ -849,7 +849,7 @@ PETRA.AttackPlan.prototype.chooseTarget = function(gameState)
 		{
 			rallyIndex = gameState.ai.accessibility.getAccessValue(rallyDiff);
 			this.rallyPoint = rallyDiff;
-			let sea =  this.HQ.getSeaBetweenIndices(gameState, rallyIndex, targetIndex);
+			let sea = this.HQ.getSeaBetweenIndices(gameState, rallyIndex, targetIndex);
 			if (sea)
 			{
 				this.overseas = sea;
@@ -908,7 +908,7 @@ PETRA.AttackPlan.prototype.getNearestTarget = function(gameState, position, same
 	for (let ent of targets.values())
 	{
 		if (this.targetPlayer == 0 && gameState.getVictoryConditions().has("capture_the_relic") &&
-		   (!ent.hasClass("Relic") ||  this.HQ.victoryManager.targetedGaiaRelics.has(ent.id())))
+		   (!ent.hasClass("Relic") || this.HQ.victoryManager.targetedGaiaRelics.has(ent.id())))
 			continue;
 		// Do not bother with some pointless targets
 		if (!this.isValidTarget(ent))
@@ -1045,7 +1045,7 @@ PETRA.AttackPlan.prototype.rushTargetFinder = function(gameState, playerEnemy)
 PETRA.AttackPlan.prototype.raidTargetFinder = function(gameState)
 {
 	let targets = new API3.EntityCollection(gameState.sharedScript);
-	for (let targetId of  this.HQ.defenseManager.targetList)
+	for (let targetId of this.HQ.defenseManager.targetList)
 	{
 		let target = gameState.getEntityById(targetId);
 		if (target && target.position())
@@ -1200,7 +1200,7 @@ PETRA.AttackPlan.prototype.setRallyPoint = function(gameState)
 
 		if (i === 0)
 			this.rallyPoint = this.path[0];
-		else if (i > 1 &&  this.HQ.isDangerousLocation(gameState, this.path[i-1], 20))
+		else if (i > 1 && this.HQ.isDangerousLocation(gameState, this.path[i-1], 20))
 		{
 			this.rallyPoint = this.path[i-2];
 			this.path.splice(0, i-2);
@@ -1253,7 +1253,7 @@ PETRA.AttackPlan.prototype.StartAttack = function(gameState)
 	}
 	else
 	{
-		this.overseas =  this.HQ.getSeaBetweenIndices(gameState, rallyAccess, targetAccess);
+		this.overseas = this.HQ.getSeaBetweenIndices(gameState, rallyAccess, targetAccess);
 		if (!this.overseas)
 			return false;
 		this.state = "transporting";
@@ -1918,7 +1918,7 @@ PETRA.AttackPlan.prototype.UpdateTarget = function(gameState)
 	// Then update the target if needed:
 	if (this.targetPlayer === undefined || !gameState.isPlayerEnemy(this.targetPlayer))
 	{
-		this.targetPlayer =  this.HQ.attackManager.getEnemyPlayer(gameState, this);
+		this.targetPlayer = this.HQ.attackManager.getEnemyPlayer(gameState, this);
 		if (this.targetPlayer === undefined)
 			return false;
 
@@ -1940,7 +1940,7 @@ PETRA.AttackPlan.prototype.UpdateTarget = function(gameState)
 				return false;
 
 			// Check if we could help any current attack
-			let attackManager =  this.HQ.attackManager;
+			let attackManager = this.HQ.attackManager;
 			for (let attackType in attackManager.startedAttacks)
 			{
 				for (let attack of attackManager.startedAttacks[attackType])
@@ -1966,7 +1966,7 @@ PETRA.AttackPlan.prototype.UpdateTarget = function(gameState)
 			// If not, let's look for another enemy
 			if (!this.target)
 			{
-				this.targetPlayer =  this.HQ.attackManager.getEnemyPlayer(gameState, this);
+				this.targetPlayer = this.HQ.attackManager.getEnemyPlayer(gameState, this);
 				if (this.targetPlayer !== undefined)
 					this.target = this.getNearestTarget(gameState, this.position, accessIndex);
 				if (!this.target)
@@ -2002,7 +2002,7 @@ PETRA.AttackPlan.prototype.Abort = function(gameState)
 				dist = API3.SquareVectorDistance(this.position, rallyPoint);
 			}
 			// Then check if we have a nearer base (in case this attack has captured one)
-			for (const base of  this.HQ.baseManagers())
+			for (const base of this.HQ.baseManagers())
 			{
 				if (!base.anchor || !base.anchor.position())
 					continue;
@@ -2069,7 +2069,7 @@ PETRA.AttackPlan.prototype.checkEvents = function(gameState, events)
 	{
 		if (this.targetPlayer !== evt.playerId)
 			continue;
-		this.targetPlayer =  this.HQ.attackManager.getEnemyPlayer(gameState, this);
+		this.targetPlayer = this.HQ.attackManager.getEnemyPlayer(gameState, this);
 		this.target = undefined;
 	}
 
@@ -2084,7 +2084,7 @@ PETRA.AttackPlan.prototype.checkEvents = function(gameState, events)
 		if (!gameState.isPlayerEnemy(ent.owner()))
 			continue;
 		let access = PETRA.getLandAccess(gameState, ent);
-		for (const base of  this.HQ.baseManagers())
+		for (const base of this.HQ.baseManagers())
 		{
 			if (!base.anchor || !base.anchor.position())
 				continue;

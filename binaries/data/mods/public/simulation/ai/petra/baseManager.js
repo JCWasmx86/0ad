@@ -460,7 +460,7 @@ PETRA.BaseManager.prototype.checkResourceLevels = function(gameState, queues)
 					// and if not possible, be less strict on dropsite quality.
 					if ((!this.HQ.canExpand || !this.HQ.buildNewBase(gameState, queues, type)) &&
 					    newDP.quality > Math.min(25, 50*0.15/ratio) &&
-					    this.HQ.canBuild(gameState, newDP.templateName))
+					 this.HQ.canBuild(gameState, newDP.templateName))
 						queues.dropsites.addPlan(new PETRA.ConstructionPlan(gameState, newDP.templateName, { "base": this.ID, "type": type }, newDP.pos));
 				}
 			}

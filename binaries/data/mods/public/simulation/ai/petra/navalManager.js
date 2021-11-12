@@ -749,7 +749,7 @@ PETRA.NavalManager.prototype.buildNavalStructures = function(gameState, queues)
 		return;
 	// Use in priority resources to build a Market.
 	if (!gameState.getOwnEntitiesByClass("Market", true).hasEntities() &&
-	    this.HQ.canBuild(gameState, "structures/{civ}/market"))
+		this.HQ.canBuild(gameState, "structures/{civ}/market"))
 		return;
 	let template;
 	if (this.HQ.canBuild(gameState, "structures/{civ}/super_dock"))
