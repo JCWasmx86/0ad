@@ -511,14 +511,14 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 			if (this.Config.debug > 1)
 			{
 				let am = gameState.ai.HQ.attackManager;
-				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks[PETRA.AttackManager.TYPE_RAID].length +
-					  " rush " + am.upcomingAttacks[PETRA.AttackManager.TYPE_RUSH].length +
-					  " attack " + am.upcomingAttacks[PETRA.AttackManager.TYPE_DEFAULT].length +
-					  " huge " + am.upcomingAttacks[PETRA.AttackManager.TYPE_HUGE_ATTACK].length);
-				API3.warn(" attacks started: raid " + am.startedAttacks[PETRA.AttackManager.TYPE_RAID].length +
-					  " rush " + am.startedAttacks[PETRA.AttackManager.TYPE_RUSH].length +
-					  " attack " + am.startedAttacks[PETRA.AttackManager.TYPE_DEFAULT].length +
-					  " huge " + am.startedAttacks[PETRA.AttackManager.TYPE_HUGE_ATTACK].length);
+				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_RAID].length +
+					  " rush " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_RUSH].length +
+					  " attack " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length +
+					  " huge " + am.upcomingAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length);
+				API3.warn(" attacks started: raid " + am.startedAttacks[PETRA.AttackPlan.TYPE_RAID].length +
+					  " rush " + am.startedAttacks[PETRA.AttackPlan.TYPE_RUSH].length +
+					  " attack " + am.startedAttacks[PETRA.AttackPlan.TYPE_DEFAULT].length +
+					  " huge " + am.startedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length);
 			}
 			return PETRA.AttackPlan.PREPARATION_FAILED;
 		}
