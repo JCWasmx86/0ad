@@ -9,8 +9,10 @@ PETRA.AttackManager = function(Config)
 	this.attackNumber = 0;
 	this.rushNumber = 0;
 	this.raidNumber = 0;
-	this.upcomingAttacks = { "Rush": [], "Raid": [], "Attack": [], "HugeAttack": [] };
-	this.startedAttacks = { "Rush": [], "Raid": [], "Attack": [], "HugeAttack": [] };
+	this.upcomingAttacks = { [PETRA.AttackPlan.TYPE_RUSH]: [],
+	  [PETRA.AttackPlan.TYPE_RAID]: [], [PETRA.AttackPlan.TYPE_DEFAULT]: [], [PETRA.AttackPlan.TYPE_HUGE_ATTACK]: [] };
+	this.startedAttacks = { [PETRA.AttackPlan.TYPE_RUSH]: [],
+		[PETRA.AttackPlan.TYPE_RAID]: [], [PETRA.AttackPlan.TYPE_DEFAULT]: [], [PETRA.AttackPlan.TYPE_HUGE_ATTACK]: [] };
 	this.bombingAttacks = new Map();// Temporary attacks for siege units while waiting their current attack to start
 	this.debugTime = 0;
 	this.maxRushes = 0;
@@ -252,7 +254,8 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 	}
 
 	this.checkEvents(gameState, events);
-	const unexecutedAttacks = { "Rush": 0, "Raid": 0, "Attack": 0, "HugeAttack": 0 };
+	const unexecutedAttacks = { [PETRA.AttackPlan.TYPE_RUSH]: 0,
+		[PETRA.AttackPlan.TYPE_RAID]: 0, [PETRA.AttackPlan.TYPE_DEFAULT]: 0, [PETRA.AttackPlan.TYPE_HUGE_ATTACK]: 0 };
 	for (let attackType in this.upcomingAttacks)
 	{
 		for (let i = 0; i < this.upcomingAttacks[attackType].length; ++i)
