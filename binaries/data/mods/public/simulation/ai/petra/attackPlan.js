@@ -511,14 +511,14 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 			if (this.Config.debug > 1)
 			{
 				let am = gameState.ai.HQ.attackManager;
-				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks.Raid.length +
-					  " rush " + am.upcomingAttacks.Rush.length +
-					  " attack " + am.upcomingAttacks.Attack.length +
-					  " huge " + am.upcomingAttacks.HugeAttack.length);
-				API3.warn(" attacks started: raid " + am.startedAttacks.Raid.length +
-					  " rush " + am.startedAttacks.Rush.length +
-					  " attack " + am.startedAttacks.Attack.length +
-					  " huge " + am.startedAttacks.HugeAttack.length);
+				API3.warn(" attacks upcoming: raid " + am.upcomingAttacks[PETRA.AttackManager.TYPE_RAID].length +
+					  " rush " + am.upcomingAttacks[PETRA.AttackManager.TYPE_RUSH].length +
+					  " attack " + am.upcomingAttacks[PETRA.AttackManager.TYPE_DEFAULT].length +
+					  " huge " + am.upcomingAttacks[PETRA.AttackManager.TYPE_HUGE_ATTACK].length);
+				API3.warn(" attacks started: raid " + am.startedAttacks[PETRA.AttackManager.TYPE_RAID].length +
+					  " rush " + am.startedAttacks[PETRA.AttackManager.TYPE_RUSH].length +
+					  " attack " + am.startedAttacks[PETRA.AttackManager.TYPE_DEFAULT].length +
+					  " huge " + am.startedAttacks[PETRA.AttackManager.TYPE_HUGE_ATTACK].length);
 			}
 			return PETRA.AttackPlan.PREPARATION_FAILED;
 		}
@@ -537,7 +537,8 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 		if (this.canBuildUnits)
 		{
 			// We still have time left to recruit units and do stuffs.
-			if (this.siegeState == PETRA.AttackPlan.SIEGE_NOT_TESTED || PETRA.AttackPlan.SIEGE_NO_TRAINER && gameState.ai.playedTurn % 5 == 0)
+			if (this.siegeState == PETRA.AttackPlan.SIEGE_NOT_TESTED ||
+				this.siegeState == PETRA.AttackPlan.SIEGE_NO_TRAINER && gameState.ai.playedTurn % 5 == 0)
 				this.addSiegeUnits(gameState);
 			this.trainMoreUnits(gameState);
 			// may happen if we have no more training facilities and build orders are canceled

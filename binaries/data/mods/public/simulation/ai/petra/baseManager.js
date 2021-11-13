@@ -9,6 +9,7 @@
  *  -managing dropsite use in the base
  *  -updating whatever needs updating, keeping track of stuffs (rebuilding needs…)
  */
+
 PETRA.BaseManager = function(gameState, basesManager)
 {
 	this.Config = basesManager.Config;
@@ -37,19 +38,19 @@ PETRA.BaseManager = function(gameState, basesManager)
 /**
  * New base with an anchor
  */
-PETRA.BaseManager.STATE_WITH_ANCHOR = 0;
+PETRA.BaseManager.STATE_WITH_ANCHOR = undefined;
 /**
  * New base with a foundation anchor
  */
-PETRA.BaseManager.STATE_UNCONSTRUCTED = 1;
+PETRA.BaseManager.STATE_UNCONSTRUCTED = "unconstructed";
 /**
  * Captured base with an anchor
  */
-PETRA.BaseManager.STATE_CAPTURED = 2;
+PETRA.BaseManager.STATE_CAPTURED = "captured";
 /**
  * Anchorless base, currently with dock
  */
-PETRA.BaseManager.STATE_ANCHORLESS = 3;
+PETRA.BaseManager.STATE_ANCHORLESS = "anchorless";
 
 PETRA.BaseManager.prototype.init = function(gameState, state)
 {

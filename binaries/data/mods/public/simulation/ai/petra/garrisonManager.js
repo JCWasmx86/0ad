@@ -5,6 +5,7 @@
  * in the process of being garrisoned. To have all garrisoned units, we must add those in holder.garrisoned().
  * Futhermore garrison units have a metadata garrisonType describing its reason (protection, transport, ...)
  */
+
 PETRA.GarrisonManager = function(Config)
 {
 	this.Config = Config;
