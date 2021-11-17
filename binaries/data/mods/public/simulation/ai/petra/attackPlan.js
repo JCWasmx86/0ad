@@ -102,7 +102,7 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 	this.maxCompletingTime = 0;
 
 	// priority of the queues we'll create.
-	let priority = PETRA.AttackPlan.PRIORITY_DEFAULT;
+	let priority = 70;
 
 	// unitStat priority is relative. If all are 0, the only relevant criteria is "currentsize/targetsize".
 	// if not, this is a "bonus". The higher the priority, the faster this unit will get built.
@@ -115,7 +115,7 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 	// neededShips is the minimal number of ships which should be available for transport
 	if (type == PETRA.AttackPlan.TYPE_RUSH)
 	{
-		priority = PETRA.AttackPlan.PRIORITY_RUSH;
+		priority = 250;
 		this.unitStat.Infantry = { "priority": 1, "minSize": 10, "targetSize": 20, "batchSize": 2, "classes": ["Infantry"],
 			"interests": [["strength", 1], ["costsResource", 0.5, "stone"], ["costsResource", 0.6, "metal"]] };
 		this.unitStat.FastMoving = { "priority": 1, "minSize": 2, "targetSize": 4, "batchSize": 2, "classes": ["FastMoving+CitizenSoldier"],
@@ -126,14 +126,14 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 	}
 	else if (type == PETRA.AttackPlan.TYPE_RAID)
 	{
-		priority = PETRA.AttackPlan.PRIORITY_RAID;
+		priority = 150;
 		this.unitStat.FastMoving = { "priority": 1, "minSize": 3, "targetSize": 4, "batchSize": 2, "classes": ["FastMoving+CitizenSoldier"],
 			"interests": [ ["strength", 1] ] };
 		this.neededShips = 1;
 	}
 	else if (type == PETRA.AttackPlan.TYPE_HUGE_ATTACK)
 	{
-		priority = PETRA.AttackPlan.PRIORITY_HUGE_ATTACK;
+		priority = 90;
 		// basically we want a mix of citizen soldiers so our barracks have a purpose, and champion units.
 		this.unitStat.RangedInfantry = { "priority": 0.7, "minSize": 5, "targetSize": 20, "batchSize": 5, "classes": ["Infantry+Ranged+CitizenSoldier"],
 			"interests": [["strength", 3]] };
@@ -157,7 +157,7 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 	}
 	else
 	{
-		priority = PETRA.AttackPlan.PRIORITY_DEFAULT;
+		priority = 70;
 		this.unitStat.RangedInfantry = { "priority": 1, "minSize": 6, "targetSize": 16, "batchSize": 3, "classes": ["Infantry+Ranged"],
 			"interests": [["canGather", 1], ["strength", 1.6], ["costsResource", 0.3, "stone"], ["costsResource", 0.3, "metal"]] };
 		this.unitStat.MeleeInfantry = { "priority": 1, "minSize": 6, "targetSize": 16, "batchSize": 3, "classes": ["Infantry+Melee"],
@@ -229,11 +229,6 @@ PETRA.AttackPlan = function(gameState, Config, uniqueID, type, data)
 PETRA.AttackPlan.PREPARATION_FAILED = 0;
 PETRA.AttackPlan.PREPARATION_KEEP_GOING = 1;
 PETRA.AttackPlan.PREPARATION_START = 2;
-
-PETRA.AttackPlan.PRIORITY_DEFAULT = 70;
-PETRA.AttackPlan.PRIORITY_HUGE_ATTACK = 90;
-PETRA.AttackPlan.PRIORITY_RAID = 150;
-PETRA.AttackPlan.PRIORITY_RUSH = 250;
 
 /**
  * Not yet tested

@@ -38,7 +38,7 @@ PETRA.BaseManager = function(gameState, basesManager)
 /**
  * New base with an anchor
  */
-PETRA.BaseManager.STATE_WITH_ANCHOR = undefined;
+PETRA.BaseManager.STATE_WITH_ANCHOR = "anchored";
 /**
  * New base with a foundation anchor
  */
