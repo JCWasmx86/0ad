@@ -66,7 +66,7 @@ PETRA.BasesManager.prototype.postinit = function(gameState)
  * Otherwise create a new one.
  * TODO when buildings, criteria should depend on distance
  */
-PETRA.BasesManager.prototype.createBase = function(gameState, ent, type)
+PETRA.BasesManager.prototype.createBase = function(gameState, ent, type = PETRA.BaseManager.STATE_WITH_ANCHOR)
 {
 	const access = PETRA.getLandAccess(gameState, ent);
 	let newbase;

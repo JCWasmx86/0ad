@@ -13,7 +13,6 @@ PETRA.GarrisonManager = function(Config)
 	this.decayingStructures = new Map();
 };
 
-PETRA.GarrisonManager.TYPE_NONE = undefined;
 PETRA.GarrisonManager.TYPE_FORCE = "force";
 PETRA.GarrisonManager.TYPE_TRADE = "trade";
 PETRA.GarrisonManager.TYPE_PROTECTION = "protection";
