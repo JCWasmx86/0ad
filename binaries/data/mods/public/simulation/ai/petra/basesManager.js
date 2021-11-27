@@ -25,7 +25,7 @@ PETRA.BasesManager.prototype.init = function(gameState)
 	this.basesMap = new API3.Map(gameState.sharedScript, "territory");
 
 	this.noBase = new PETRA.BaseManager(gameState, this);
-	this.noBase.init(gameState);
+	this.noBase.init(gameState, PETRA.BaseManager.STATE_WITH_ANCHOR);
 	this.noBase.accessIndex = 0;
 
 	for (const cc of gameState.getOwnStructures().filter(API3.Filters.byClass("CivCentre")).values())
@@ -771,7 +771,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 
 	this.noBase = new PETRA.BaseManager(gameState, this);
 	this.noBase.Deserialize(gameState, data.noBase);
-	this.noBase.init(gameState);
+	this.noBase.init(gameState, PETRA.BaseManager.STATE_WITH_ANCHOR);
 	this.noBase.Deserialize(gameState, data.noBase);
 
 	this.baseManagers = [];
@@ -780,7 +780,7 @@ PETRA.BasesManager.prototype.Deserialize = function(gameState, data)
 		// The first call to deserialize set the ID base needed by entitycollections.
 		const newbase = new PETRA.BaseManager(gameState, this);
 		newbase.Deserialize(gameState, basedata);
-		newbase.init(gameState);
+		newbase.init(gameState, PETRA.BaseManager.STATE_WITH_ANCHOR);
 		newbase.Deserialize(gameState, basedata);
 		this.baseManagers.push(newbase);
 	}
