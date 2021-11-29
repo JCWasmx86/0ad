@@ -35,6 +35,7 @@ PETRA.DiplomacyManager = function(Config)
 	this.waitsForResponses = false;
 	this.responseCounter = -1;
 	this.callForAidCounter = 0;
+	this.askedForResources = false;
 };
 
 /**
@@ -524,6 +525,10 @@ PETRA.DiplomacyManager.prototype.checkSentDiplomacyRequests = function(gameState
 
 PETRA.DiplomacyManager.prototype.callForAid = function(gameState)
 {
+	// It doesn't make that much sense to ask for resources
+	// and call for aid
+	if (this.askForResources)
+		return;
 	for (const ally of gameState.getAllies())
 		PETRA.chatEmergency(gameState, ally, "help");
 };
@@ -532,6 +537,7 @@ PETRA.DiplomacyManager.prototype.askForResources = function(gameState)
 {
 	for (const ally of gameState.getAllies())
 		PETRA.chatEmergency(gameState, ally, "resources");
+	this.askedForResources = true;
 };
 
 PETRA.DiplomacyManager.prototype.canSendNeutralityRequests = function(gameState)
@@ -649,6 +655,8 @@ PETRA.DiplomacyManager.prototype.exitEmergency = function()
 {
 	this.waitsForResponses = false;
 	this.responseCounter = -1;
+	this.callForAidCounter = 0;
+	this.askedForResources = false;
 };
 
 PETRA.DiplomacyManager.prototype.update = function(gameState, events)
@@ -691,7 +699,9 @@ PETRA.DiplomacyManager.prototype.Serialize = function()
 		"sentDiplomacyRequests": this.sentDiplomacyRequests,
 		"sentDiplomacyRequestLapseTime": this.sentDiplomacyRequestLapseTime,
 		"waitsForResponses": this.waitsForResponses,
-		"responseCounter": this.responseCounter
+		"responseCounter": this.responseCounter,
+		"callForAidCounter": this.callForAidCounter,
+		"askedForResources": this.askedForResources
 	};
 };
 

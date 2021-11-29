@@ -51,7 +51,7 @@ PETRA.EmergencyManager = function(Config)
 	this.lastPoint = [-1, -1];
 	// Counter for checking whether to return to normal, if defensive+!cooperative
 	this.backToNormalCounter = 0;
-
+	// Used by the aggressive AI to find the nearest enemy
 	this.nearestEnemy = undefined;
 	this.emergencyPeakPopulation = 0;
 };
@@ -81,6 +81,7 @@ PETRA.EmergencyManager.prototype.resetToNormal = function(gameState)
 	this.marchCounter = 0;
 	this.lastPoint = [-1, -1];
 	this.backToNormalCounter = 0;
+	this.nearestEnemy = undefined;
 	this.emergencyPeakPopulation = 0;
 	// All other fields didn't change.
 };
@@ -120,6 +121,8 @@ PETRA.EmergencyManager.prototype.handleEmergency = function(gameState)
 		this.collectTroops(gameState);
 		this.collectedTroops = true;
 		this.emergencyPeakPopulation = this.countMovableEntities(gameState);
+		// Doesn't work. The flare won't show up
+		Engine.PostCommand(PlayerID, { "type": "map-flare", "target": { "x": this.musterPosition[0], "z": this.musterPosition[1] } });
 	}
 	// Force these people to go to the position, where all others
 	// will be to avoid having minor skirmishes that may lead to heavy
@@ -200,7 +203,7 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 							gameState.ai.HQ.diplomacyManager.askForResources(gameState);
 						this.backToNormalCounter++;
 					}
-					else if (this.hasAvailableTerritoryRoot(gameState))
+					else if (this.hasAvailableTerritoryRoot(gameState) || this.enoughResourcesForReturing(gameState))
 					{
 						gameState.emergencyState[PlayerID] = false;
 						this.resetToNormal(gameState);
@@ -223,6 +226,12 @@ PETRA.EmergencyManager.prototype.executeActions = function(gameState)
 	}
 	else
 		this.aggressiveActions(gameState);
+};
+
+PETRA.EmergencyManager.prototype.enoughResourcesForReturing = function(gameState)
+{
+	const availableResources = gameState.ai.queueManager.getAvailableResources(gameState);
+	return !Resources.GetTributableCodes().find(r => availableResources[r] < 500);
 };
 
 PETRA.EmergencyManager.prototype.generateDeviation = function(max)
@@ -479,16 +488,21 @@ PETRA.EmergencyManager.prototype.getSpecialBuildingPosition = function(entities,
 	var roots = gameState.getOwnStructures().filter(ent => {
 		return ent && ent.get("TerritoryInfluence") !== undefined && ent.get("TerritoryInfluence").Root;
 	});
-	// The optimal solution would be probably getting the average distance from each
-	// entity to this building, but this would require a lot of calculation
-	if (roots.length)
-		building = roots[0];
-	if (!this.validEntity(building))
-	{
-		this.musterPosition = this.getAveragePositionOfMovableEntities(gameState);
-		return;
+	var averagePosition = this.getAveragePositionOfMovableEntities(gameState);
+	if (roots.length) {
+		var min_distance = Infinity;
+		for(let i = 0; i < roots.length(); i++) {
+			const root = roots[i];
+			const distance = API3.VectorDistance(root.position(), averagePosition);
+			if(distance < min_distance) {
+				building = root;
+				min_distance = distance;
+			}
+		}
+		this.musterPosition = building.position();
+	} else {
+		this.musterPosition = averagePosition;
 	}
-	this.musterPosition = building.position();
 };
 
 PETRA.EmergencyManager.prototype.Serialize = function()
