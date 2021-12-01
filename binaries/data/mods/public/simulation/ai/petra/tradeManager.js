@@ -67,7 +67,7 @@ PETRA.TradeManager.prototype.trainMoreTraders = function(gameState, queues)
 		gameState.ai.HQ.navalManager.seaTransportShips[this.tradeRoute.sea].forEach(function(ship) {
 			if (already || !ship.hasClass("Trader"))
 				return;
-			if (ship.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_SWITCH_TO_TRADER)
+			if (ship.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_SWITCH_TO_TRADER)
 			{
 				already = true;
 				return;

@@ -126,7 +126,7 @@ PETRA.TransportPlan.prototype.assignUnitToShip = function(gameState, ent)
 		ent.setMetadata(PlayerID, "onBoard", ship.id());
 		if (this.debug > 1)
 		{
-			if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_ATTACK)
+			if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_ATTACK)
 				Engine.PostCommand(PlayerID, { "type": "set-shading-color", "entities": [ent.id()], "rgb": [2, 0, 0] });
 			else
 				Engine.PostCommand(PlayerID, { "type": "set-shading-color", "entities": [ent.id()], "rgb": [0, 2, 0] });
@@ -232,7 +232,7 @@ PETRA.TransportPlan.prototype.releaseShip = function(ship)
 		ship.setStance(defaultStance);
 
 	ship.setMetadata(PlayerID, "transporter", undefined);
-	if (ship.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_SWITCH_TO_TRADER)
+	if (ship.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_SWITCH_TO_TRADER)
 		ship.setMetadata(PlayerID, "role", PETRA.Worker.ROLE_TRADER);
 };
 

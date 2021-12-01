@@ -158,7 +158,7 @@ PETRA.QueueManager.prototype.printQueues = function(gameState)
 {
 	let numWorkers = 0;
 	gameState.getOwnUnits().forEach(ent => {
-		if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_WORKER && ent.getMetadata(PlayerID, "plan") === undefined)
+		if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_WORKER && ent.getMetadata(PlayerID, "plan") === undefined)
 			numWorkers++;
 	});
 	API3.warn("---------- QUEUES ------------ with pop " + gameState.getPopulation() + " and workers " + numWorkers);

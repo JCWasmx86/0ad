@@ -701,13 +701,13 @@ PETRA.BaseManager.prototype.pickBuilders = function(gameState, workers, number)
 	availableWorkers.sort((a, b) => {
 		let vala = 0;
 		let valb = 0;
-		if (a.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_BUILDER)
+		if (a.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_BUILDER)
 			vala = 100;
-		if (b.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_BUILDER)
+		if (b.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_BUILDER)
 			valb = 100;
-		if (a.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_IDLE)
+		if (a.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_IDLE)
 			vala = -50;
-		if (b.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_IDLE)
+		if (b.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_IDLE)
 			valb = -50;
 		if (a.getMetadata(PlayerID, "plan") === undefined)
 			vala = -20;
@@ -849,7 +849,7 @@ PETRA.BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 		if (assigned >= targetNB || builderTot >= maxTotalBuilders)
 			continue;
 		let nonBuilderWorkers = workers.filter(function(ent) {
-			if (ent.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_BUILDER)
+			if (ent.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_BUILDER)
 				return false;
 			if (!ent.position())
 				return false;
@@ -932,7 +932,7 @@ PETRA.BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 		if (assigned >= targetNB || builderTot >= maxTotalBuilders)
 			continue;
 		let nonBuilderWorkers = workers.filter(function(ent) {
-			if (ent.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_BUILDER)
+			if (ent.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_BUILDER)
 				return false;
 			if (!ent.position())
 				return false;

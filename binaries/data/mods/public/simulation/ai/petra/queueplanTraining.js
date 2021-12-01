@@ -79,7 +79,7 @@ PETRA.TrainingPlan.prototype.start = function(gameState)
 		let wantedIndex;
 		if (this.metadata && this.metadata.index)
 			wantedIndex = this.metadata.index;
-		const workerUnit = this.metadata && this.metadata.role && this.metadata.role == PETRA.Worker.ROLE_WORKER;
+		const workerUnit = this.metadata && this.metadata.role && this.metadata.role === PETRA.Worker.ROLE_WORKER;
 		let supportUnit = this.template.hasClass("Support");
 		this.trainers.sort(function(a, b) {
 			// Prefer training buildings with short queues

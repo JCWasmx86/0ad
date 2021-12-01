@@ -171,7 +171,7 @@ PETRA.AttackManager.prototype.assignBombers = function(gameState)
 		if (ent.getMetadata(PlayerID, "plan") !== undefined && ent.getMetadata(PlayerID, "plan") != -1)
 		{
 			let subrole = ent.getMetadata(PlayerID, "subrole");
-			if (subrole && (subrole == PETRA.Worker.SUBROLE_COMPLETING || subrole == PETRA.Worker.SUBROLE_WALKING || subrole == PETRA.Worker.SUBROLE_ATTACKING))
+			if (subrole && (subrole === PETRA.Worker.SUBROLE_COMPLETING || subrole === PETRA.Worker.SUBROLE_WALKING || subrole === PETRA.Worker.SUBROLE_ATTACKING))
 				continue;
 		}
 		let alreadyBombing = false;

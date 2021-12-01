@@ -2038,7 +2038,7 @@ PETRA.AttackPlan.prototype.Abort = function(gameState)
 
 		for (let ent of this.unitCollection.values())
 		{
-			if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_ATTACK)
+			if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_ATTACK)
 				ent.stopMoving();
 			if (rallyPoint)
 				ent.moveToRange(rallyPoint[0], rallyPoint[1], 0, 15);
@@ -2054,7 +2054,7 @@ PETRA.AttackPlan.prototype.Abort = function(gameState)
 
 PETRA.AttackPlan.prototype.removeUnit = function(ent, update)
 {
-	if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_ATTACK)
+	if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_ATTACK)
 	{
 		if (ent.hasClass("CitizenSoldier"))
 			ent.setMetadata(PlayerID, "role", PETRA.Worker.ROLE_WORKER);

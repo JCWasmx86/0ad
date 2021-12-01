@@ -378,7 +378,7 @@ PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 	let numberOfWorkers = 0;   // all workers
 	let numberOfSupports = 0;  // only support workers (i.e. non fighting)
 	gameState.getOwnUnits().forEach(ent => {
-		if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_WORKER && ent.getMetadata(PlayerID, "plan") === undefined)
+		if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_WORKER && ent.getMetadata(PlayerID, "plan") === undefined)
 		{
 			++numberOfWorkers;
 			if (ent.hasClass("Support"))
@@ -390,7 +390,7 @@ PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 		for (let item of ent.trainingQueue())
 		{
 			numberInTraining += item.count;
-			if (item.metadata && item.metadata.role && item.metadata.role == PETRA.Worker.ROLE_WORKER &&
+			if (item.metadata && item.metadata.role && item.metadata.role === PETRA.Worker.ROLE_WORKER &&
 			    item.metadata.plan === undefined)
 			{
 				numberOfWorkers += item.count;

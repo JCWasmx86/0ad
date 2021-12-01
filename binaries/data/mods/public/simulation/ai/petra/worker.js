@@ -37,7 +37,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
 	{
 		// Except if builder with their foundation destroyed, in which case cancel the transport if not yet on board
-		if (subrole == PETRA.Worker.SUBROLE_BUILDER && ent.getMetadata(PlayerID, "target-foundation") !== undefined)
+		if (subrole === PETRA.Worker.SUBROLE_BUILDER && ent.getMetadata(PlayerID, "target-foundation") !== undefined)
 		{
 			let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
 			let target = gameState.getEntityById(ent.getMetadata(PlayerID, "target-foundation"));
@@ -45,7 +45,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 				plan.removeUnit(gameState, ent);
 		}
 		// and gatherer if there are no more dropsite accessible in the base the ent is going to
-		if (subrole == PETRA.Worker.SUBROLE_GATHERER || subrole == PETRA.Worker.SUBROLE_HUNTER)
+		if (subrole === PETRA.Worker.SUBROLE_GATHERER || subrole === PETRA.Worker.SUBROLE_HUNTER)
 		{
 			let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
 			if (plan.state == PETRA.TransportPlan.BOARDING && ent.position())
@@ -101,7 +101,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 	this.ent = ent;
 
 	let unitAIState = ent.unitAIState();
-	if ((subrole == PETRA.Worker.SUBROLE_HUNTER || subrole == PETRA.Worker.SUBROLE_GATHERER) &&
+	if ((subrole === PETRA.Worker.SUBROLE_HUNTER || subrole === PETRA.Worker.SUBROLE_GATHERER) &&
 	    (unitAIState == "INDIVIDUAL.GATHER.GATHERING" || unitAIState == "INDIVIDUAL.GATHER.APPROACHING" ||
 	     unitAIState == "INDIVIDUAL.COMBAT.APPROACHING"))
 	{
@@ -174,7 +174,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 	// Also, if we are attacking, do not capture
 	if (unitAIStateOrder == "COMBAT")
 	{
-		if (subrole == PETRA.Worker.SUBROLE_FISHER)
+		if (subrole === PETRA.Worker.SUBROLE_FISHER)
 			this.startFishing(gameState);
 		else if (unitAIState == "INDIVIDUAL.COMBAT.APPROACHING" && ent.unitAIOrderData().length &&
 			!ent.getMetadata(PlayerID, "PartOfArmy"))
@@ -211,7 +211,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 	// If we're gathering, we'll check that we haven't run idle.
 	// And we'll also check that we're gathering a resource we want to gather.
 
-	if (subrole == PETRA.Worker.SUBROLE_GATHERER)
+	if (subrole === PETRA.Worker.SUBROLE_GATHERER)
 	{
 		if (ent.isIdle())
 		{
@@ -308,7 +308,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 			}
 		}
 	}
-	else if (subrole == PETRA.Worker.SUBROLE_BUILDER)
+	else if (subrole === PETRA.Worker.SUBROLE_BUILDER)
 	{
 		if (unitAIStateOrder == "REPAIR")
 		{
@@ -366,7 +366,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 				gameState.ai.HQ.navalManager.requireTransport(gameState, ent, this.entAccess, goalAccess, target.position());
 		}
 	}
-	else if (subrole == PETRA.Worker.SUBROLE_HUNTER)
+	else if (subrole === PETRA.Worker.SUBROLE_HUNTER)
 	{
 		let lastHuntSearch = ent.getMetadata(PlayerID, "lastHuntSearch");
 		if (ent.isIdle() && (!lastHuntSearch || gameState.ai.elapsedTime - lastHuntSearch > 20))
@@ -413,7 +413,7 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 			}
 		}
 	}
-	else if (subrole == PETRA.Worker.SUBROLE_FISHER)
+	else if (subrole === PETRA.Worker.SUBROLE_FISHER)
 	{
 		if (ent.isIdle())
 			this.startFishing(gameState);
@@ -943,7 +943,7 @@ PETRA.Worker.prototype.startFishing = function(gameState)
 		this.ent.setMetadata(PlayerID, "target-foundation", undefined);
 		return true;
 	}
-	if (this.ent.getMetadata(PlayerID, "subrole") == PETRA.Worker.SUBROLE_FISHER)
+	if (this.ent.getMetadata(PlayerID, "subrole") === PETRA.Worker.SUBROLE_FISHER)
 		this.ent.setMetadata(PlayerID, "subrole", PETRA.Worker.SUBROLE_IDLE);
 	return false;
 };

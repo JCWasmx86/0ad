@@ -275,7 +275,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 				continue;
 
 			// Assign it immediately to something useful to do.
-			if (ent.getMetadata(PlayerID, "role") == PETRA.Worker.ROLE_WORKER)
+			if (ent.getMetadata(PlayerID, "role") === PETRA.Worker.ROLE_WORKER)
 			{
 				let base;
 				if (ent.getMetadata(PlayerID, "base") === undefined)
