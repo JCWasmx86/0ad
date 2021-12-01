@@ -1,3 +1,4 @@
+// These integers must be sequential
 PETRA.DIFFICULTY_SANDBOX = 0;
 PETRA.DIFFICULTY_VERY_EASY = 1;
 PETRA.DIFFICULTY_EASY = 2;
@@ -5,9 +6,9 @@ PETRA.DIFFICULTY_MEDIUM = 3;
 PETRA.DIFFICULTY_HARD = 4;
 PETRA.DIFFICULTY_VERY_HARD = 5;
 
-PETRA.Config = function(difficulty, behavior)
+PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 {
-	this.difficulty = difficulty ?? PETRA.DIFFICULTY_MEDIUM;
+	this.difficulty = difficulty;
 
 	// for instance "balanced", "aggressive" or "defensive"
 	this.behavior = behavior || "random";

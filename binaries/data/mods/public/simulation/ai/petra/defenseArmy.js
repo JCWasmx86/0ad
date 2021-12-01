@@ -163,7 +163,7 @@ PETRA.DefenseArmy.prototype.removeOwn = function(gameState, id, Entity)
 	if (ent.getMetadata(PlayerID, "transport") !== undefined)
 	{
 		let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
-		if (plan && plan.state == PETRA.TransportPlan.BOARDING && ent.position())
+		if (plan && plan.state === PETRA.TransportPlan.BOARDING && ent.position())
 			plan.removeUnit(gameState, ent);
 	}
 

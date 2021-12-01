@@ -285,7 +285,7 @@ PETRA.NavalManager.prototype.checkEvents = function(gameState, queues, events)
 		let shipId = evt.entityObj.id();
 		if (this.Config.debug > 1)
 			API3.warn("one ship " + shipId + " from plan " + plan.ID + " destroyed during " + plan.state);
-		if (plan.state == PETRA.TransportPlan.BOARDING)
+		if (plan.state === PETRA.TransportPlan.BOARDING)
 		{
 			// just reset the units onBoard metadata and wait for a new ship to be assigned to this plan
 			plan.units.forEach(ent => {
@@ -295,7 +295,7 @@ PETRA.NavalManager.prototype.checkEvents = function(gameState, queues, events)
 			});
 			plan.needTransportShips = !plan.transportShips.hasEntities();
 		}
-		else if (plan.state == PETRA.TransportPlan.SAILING)
+		else if (plan.state === PETRA.TransportPlan.SAILING)
 		{
 			let endIndex = plan.endIndex;
 			for (let ent of plan.units.values())
@@ -361,7 +361,7 @@ PETRA.NavalManager.prototype.requireTransport = function(gameState, ent, startIn
 	let plans = [];
 	for (let plan of this.transportPlans)
 	{
-		if (plan.startIndex != startIndex || plan.endIndex != endIndex || plan.state != PETRA.TransportPlan.BOARDING)
+		if (plan.startIndex != startIndex || plan.endIndex != endIndex || plan.state !== PETRA.TransportPlan.BOARDING)
 			continue;
 		// Limit the number of siege units per transport to avoid problems when ungarrisoning
 		if (PETRA.isSiegeUnit(ent) && plan.units.filter(unit => PETRA.isSiegeUnit(unit)).length > 3)

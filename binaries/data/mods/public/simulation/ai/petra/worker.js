@@ -41,14 +41,14 @@ PETRA.Worker.prototype.update = function(gameState, ent)
 		{
 			let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
 			let target = gameState.getEntityById(ent.getMetadata(PlayerID, "target-foundation"));
-			if (!target && plan && plan.state == PETRA.TransportPlan.BOARDING && ent.position())
+			if (!target && plan && plan.state === PETRA.TransportPlan.BOARDING && ent.position())
 				plan.removeUnit(gameState, ent);
 		}
 		// and gatherer if there are no more dropsite accessible in the base the ent is going to
 		if (subrole === PETRA.Worker.SUBROLE_GATHERER || subrole === PETRA.Worker.SUBROLE_HUNTER)
 		{
 			let plan = gameState.ai.HQ.navalManager.getPlan(ent.getMetadata(PlayerID, "transport"));
-			if (plan.state == PETRA.TransportPlan.BOARDING && ent.position())
+			if (plan.state === PETRA.TransportPlan.BOARDING && ent.position())
 			{
 				let hasDropsite = false;
 				let gatherType = ent.getMetadata(PlayerID, "gather-type") || "food";

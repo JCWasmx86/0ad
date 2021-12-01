@@ -286,9 +286,9 @@ PETRA.TransportPlan.prototype.cancelTransport = function(gameState)
  */
 PETRA.TransportPlan.prototype.update = function(gameState)
 {
-	if (this.state == PETRA.TransportPlan.BOARDING)
+	if (this.state === PETRA.TransportPlan.BOARDING)
 		this.onBoarding(gameState);
-	else if (this.state == PETRA.TransportPlan.SAILING)
+	else if (this.state === PETRA.TransportPlan.SAILING)
 		this.onSailing(gameState);
 
 	return this.units.length;
