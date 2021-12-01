@@ -280,20 +280,20 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 
 			let updateStep = attack.updatePreparation(gameState);
 			// now we're gonna check if the preparation time is over
-			if (updateStep == PETRA.AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused())
+			if (updateStep === PETRA.AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused())
 			{
 				// just chillin'
-				if (attack.state == PETRA.AttackPlan.STATE_UNEXECUTED)
+				if (attack.state === PETRA.AttackPlan.STATE_UNEXECUTED)
 					++unexecutedAttacks[attackType];
 			}
-			else if (updateStep == PETRA.AttackPlan.PREPARATION_FAILED)
+			else if (updateStep === PETRA.AttackPlan.PREPARATION_FAILED)
 			{
 				if (this.Config.debug > 1)
 					API3.warn("Attack Manager: " + attack.getType() + " plan " + attack.getName() + " aborted.");
 				attack.Abort(gameState);
 				this.upcomingAttacks[attackType].splice(i--, 1);
 			}
-			else if (updateStep == PETRA.AttackPlan.PREPARATION_START)
+			else if (updateStep === PETRA.AttackPlan.PREPARATION_START)
 			{
 				if (attack.StartAttack(gameState))
 				{
@@ -481,7 +481,7 @@ PETRA.AttackManager.prototype.getEnemyPlayer = function(gameState, attack)
 	for (let i in this.defeated)
 		veto[i] = true;
 	// No rush if enemy too well defended (i.e. iberians)
-	if (attack.type == PETRA.AttackPlan.TYPE_RUSH)
+	if (attack.type === PETRA.AttackPlan.TYPE_RUSH)
 	{
 		for (let i = 1; i < gameState.sharedScript.playersData.length; ++i)
 		{
@@ -500,7 +500,7 @@ PETRA.AttackManager.prototype.getEnemyPlayer = function(gameState, attack)
 
 	// then if not a huge attack, continue attacking our previous target as long as it has some entities,
 	// otherwise target the most accessible one
-	if (attack.type != PETRA.AttackPlan.TYPE_HUGE_ATTACK)
+	if (attack.type !== PETRA.AttackPlan.TYPE_HUGE_ATTACK)
 	{
 		if (attack.targetPlayer === undefined && this.currentEnemyPlayer !== undefined &&
 			!this.defeated[this.currentEnemyPlayer] &&
@@ -523,7 +523,7 @@ PETRA.AttackManager.prototype.getEnemyPlayer = function(gameState, attack)
 					continue;
 				if (!gameState.isPlayerEnemy(enemycc.owner()))
 					continue;
-				if (access != PETRA.getLandAccess(gameState, enemycc))
+				if (access !== PETRA.getLandAccess(gameState, enemycc))
 					continue;
 				let dist = API3.SquareVectorDistance(ourPos, enemycc.position());
 				if (distmin && dist > distmin)

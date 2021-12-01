@@ -74,9 +74,9 @@ PETRA.BasesManager.prototype.createBase = function(gameState, ent, type = PETRA.
 	{
 		if (base.accessIndex != access)
 			continue;
-		if (type != PETRA.BaseManager.STATE_ANCHORLESS && base.anchor)
+		if (type !== PETRA.BaseManager.STATE_ANCHORLESS && base.anchor)
 			continue;
-		if (type != PETRA.BaseManager.STATE_ANCHORLESS)
+		if (type !== PETRA.BaseManager.STATE_ANCHORLESS)
 		{
 			// TODO we keep the first one, we should rather use the nearest if buildings
 			// and possibly also cut on distance
@@ -112,7 +112,7 @@ PETRA.BasesManager.prototype.createBase = function(gameState, ent, type = PETRA.
 	else
 		newbase.reset(type);
 
-	if (type != PETRA.BaseManager.STATE_ANCHORLESS)
+	if (type !== PETRA.BaseManager.STATE_ANCHORLESS)
 		newbase.setAnchor(gameState, ent);
 	else
 		newbase.setAnchorlessEntity(gameState, ent);

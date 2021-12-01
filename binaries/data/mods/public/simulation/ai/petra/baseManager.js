@@ -54,9 +54,9 @@ PETRA.BaseManager.STATE_ANCHORLESS = "anchorless";
 
 PETRA.BaseManager.prototype.init = function(gameState, state)
 {
-	if (state == PETRA.BaseManager.STATE_UNCONSTRUCTED)
+	if (state === PETRA.BaseManager.STATE_UNCONSTRUCTED)
 		this.constructing = true;
-	else if (state != PETRA.BaseManager.STATE_CAPTURED)
+	else if (state !== PETRA.BaseManager.STATE_CAPTURED)
 		this.neededDefenders = 0;
 	this.workerObject = new PETRA.Worker(this);
 	// entitycollections
@@ -83,12 +83,12 @@ PETRA.BaseManager.prototype.init = function(gameState, state)
 
 PETRA.BaseManager.prototype.reset = function(gameState, state)
 {
-	if (state == PETRA.BaseManager.STATE_UNCONSTRUCTED)
+	if (state === PETRA.BaseManager.STATE_UNCONSTRUCTED)
 		this.constructing = true;
 	else
 		this.constructing = false;
 
-	if (state != PETRA.BaseManager.STATE_CAPTURED || this.Config.difficulty < 3)
+	if (state !== PETRA.BaseManager.STATE_CAPTURED || this.Config.difficulty < 3)
 		this.neededDefenders = 0;
 	else
 		this.neededDefenders = 3 + 2 * (this.Config.difficulty - 3);
@@ -139,7 +139,7 @@ PETRA.BaseManager.prototype.setAnchorlessEntity = function(gameState, ent)
 			API3.warn("Error: Petra base " + this.ID + " has been assigned " + ent.templateName() + " as origin.");
 		this.accessIndex = PETRA.getLandAccess(gameState, ent);
 	}
-	else if (this.accessIndex != PETRA.getLandAccess(gameState, ent))
+	else if (this.accessIndex !== PETRA.getLandAccess(gameState, ent))
 		API3.warn(" Error: Petra base " + this.ID + " with access " + this.accessIndex +
 		          " has been assigned " + ent.templateName() + " with access" + PETRA.getLandAccess(gameState, ent));
 

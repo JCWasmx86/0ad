@@ -767,7 +767,7 @@ PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target,
 			return false;
 		if (!ent.hasClasses(garrisonArrowClasses))
 			return false;
-		if (typeGarrison != PETRA.GarrisonManager.TYPE_DECAY && !allowMelee && ent.attackTypes().indexOf("Melee") != -1)
+		if (typeGarrison !== PETRA.GarrisonManager.TYPE_DECAY && !allowMelee && ent.attackTypes().indexOf("Melee") != -1)
 			return false;
 		if (ent.getMetadata(PlayerID, "transport") !== undefined)
 			return false;
@@ -778,7 +778,7 @@ PETRA.DefenseManager.prototype.garrisonUnitsInside = function(gameState, target,
 		{
 			let subrole = ent.getMetadata(PlayerID, "subrole");
 			// When structure decaying (usually because we've just captured it in enemy territory), also allow units from an attack plan.
-			if (typeGarrison != PETRA.GarrisonManager.TYPE_DECAY && subrole && (subrole == "completing" || subrole == "walking" || subrole == "attacking"))
+			if (typeGarrison !== PETRA.GarrisonManager.TYPE_DECAY && subrole && (subrole == "completing" || subrole == "walking" || subrole == "attacking"))
 				return false;
 		}
 		if (PETRA.getLandAccess(gameState, ent) != access)
