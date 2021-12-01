@@ -41,7 +41,7 @@ PETRA.TradeManager.prototype.trainMoreTraders = function(gameState, queues)
 	gameState.getOwnTrainingFacilities().forEach(function(ent) {
 		for (let item of ent.trainingQueue())
 		{
-			if (!item.metadata || !item.metadata.role || item.metadata.role != PETRA.Worker.ROLE_TRADER)
+			if (!item.metadata || !item.metadata.role || item.metadata.role !== PETRA.Worker.ROLE_TRADER)
 				continue;
 			numTraders += item.count;
 			if (item.metadata.sea !== undefined)

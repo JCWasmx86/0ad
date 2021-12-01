@@ -766,7 +766,7 @@ PETRA.AttackPlan.prototype.assignUnits = function(gameState)
 		}
 		if (num++ < keep || numbase[baseID] < 5)
 			continue;
-		if (this.type !== PETRA.AttackPlan.TYPE_RUSH && ent.getMetadata(PlayerID, "subrole") != PETRA.Worker.SUBROLE_IDLE)
+		if (this.type !== PETRA.AttackPlan.TYPE_RUSH && ent.getMetadata(PlayerID, "subrole") !== PETRA.Worker.SUBROLE_IDLE)
 			continue;
 		ent.setMetadata(PlayerID, "plan", plan);
 		this.unitCollection.updateEnt(ent);

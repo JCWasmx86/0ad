@@ -613,7 +613,7 @@ PETRA.NavalManager.prototype.moveApart = function(gameState)
 		if (!shipPosition)
 			continue;
 		let role = ship.getMetadata(PlayerID, "role");
-		if (role == undefined || role != PETRA.Worker.ROLE_TRADER)	// already accounted before
+		if (role == undefined || role !== PETRA.Worker.ROLE_TRADER)	// already accounted before
 			continue;
 
 		let unitAIState = ship.unitAIState();
@@ -691,7 +691,7 @@ PETRA.NavalManager.prototype.moveApart = function(gameState)
 			if (blockedIds.indexOf(blockingShip.id()) != -1 || !blockingShip.position())
 				continue;
 			let role = blockingShip.getMetadata(PlayerID, "role");
-			if (role == undefined || role != PETRA.Worker.ROLE_TRADER)	// already accounted before
+			if (role == undefined || role !== PETRA.Worker.ROLE_TRADER)	// already accounted before
 				continue;
 			let distSquare = API3.SquareVectorDistance(shipPosition, blockingShip.position());
 			let unitAIState = blockingShip.unitAIState();

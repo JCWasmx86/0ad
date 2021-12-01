@@ -2159,7 +2159,7 @@ PETRA.HQ.prototype.getAccountedWorkers = function(gameState)
 		{
 			for (let item of ent.trainingQueue())
 			{
-				if (!item.metadata || !item.metadata.role || item.metadata.role != PETRA.Worker.ROLE_WORKER)
+				if (!item.metadata || !item.metadata.role || item.metadata.role !== PETRA.Worker.ROLE_WORKER)
 					continue;
 				workers += item.count;
 			}

@@ -363,7 +363,7 @@ PETRA.VictoryManager.prototype.manageCriticalEntGuards = function(gameState)
 			{
 				let guardEnt = gameState.getEntityById(guardId);
 				if (!guardEnt || !guardEnt.hasClass("CitizenSoldier") ||
-				    guardEnt.getMetadata(PlayerID, "role") != PETRA.Worker.ROLE_CRITICAL_ENT_GUARD)
+				    guardEnt.getMetadata(PlayerID, "role") !== PETRA.Worker.ROLE_CRITICAL_ENT_GUARD)
 					continue;
 
 				guardEnt.removeGuard();
