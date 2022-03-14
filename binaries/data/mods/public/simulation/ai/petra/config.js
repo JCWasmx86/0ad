@@ -174,7 +174,7 @@ PETRA.Config = function(difficulty = PETRA.DIFFICULTY_MEDIUM, behavior)
 		"Player/sharedLos",
 		"Market/InternationalBonus",
 		"Player/sharedDropsites"
-	};
+	];
 	// In the emergency mode, the range around the position
 	// of all units in which no enemy should be to consider it
 	// free from enemies.
