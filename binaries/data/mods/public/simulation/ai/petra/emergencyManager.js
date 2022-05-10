@@ -49,6 +49,7 @@ PETRA.EmergencyManager.prototype.emergencyUpdate = function(gameState)
 	const nRoots = this.rootCount(gameState);
 	const factors = this.Config.emergencyValues;
 
+	// JCWASMX86_TODO: Be configurable?
 	if ((pop > this.referencePopulation * 1.2 &&
 		nStructures > this.referenceStructureCount * 1.2) ||
 		nRoots > this.numRoots)
