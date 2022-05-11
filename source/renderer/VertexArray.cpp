@@ -65,7 +65,7 @@ size_t GetAttributeSize(const Renderer::Backend::Format format)
 } // anonymous namespace
 
 VertexArray::VertexArray(
-	const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic)
+	const Renderer::Backend::IBuffer::Type type, const bool dynamic)
 	: m_Type(type), m_Dynamic(dynamic)
 {
 	m_NumberOfVertices = 0;
@@ -225,7 +225,7 @@ static size_t RoundStride(size_t stride)
 
 // Re-layout by assigning offsets on a first-come first-serve basis,
 // then round up to a reasonable stride.
-// Backing store is also created here, VBOs are created on upload.
+// Backing store is also created here, backend buffers are created on upload.
 void VertexArray::Layout()
 {
 	Free();
@@ -245,11 +245,11 @@ void VertexArray::Layout()
 
 		m_Stride += attrSize;
 
-		if (m_Type == Renderer::Backend::GL::CBuffer::Type::VERTEX)
+		if (m_Type == Renderer::Backend::IBuffer::Type::VERTEX)
 			m_Stride = Align<4>(m_Stride);
 	}
 
-	if (m_Type == Renderer::Backend::GL::CBuffer::Type::VERTEX)
+	if (m_Type == Renderer::Backend::IBuffer::Type::VERTEX)
 		m_Stride = RoundStride(m_Stride);
 
 	if (m_Stride)
@@ -262,7 +262,7 @@ void VertexArray::PrepareForRendering()
 }
 
 // (Re-)Upload the attributes.
-// Create the VBO if necessary.
+// Create the backend buffer if necessary.
 void VertexArray::Upload()
 {
 	ENSURE(m_BackingStore);
@@ -275,30 +275,15 @@ void VertexArray::Upload()
 
 	if (!m_VB)
 	{
-		LOGERROR("Failed to allocate VBO for vertex array");
+		LOGERROR("Failed to allocate backend buffer for vertex array");
 		return;
 	}
 
 	m_VB->m_Owner->UpdateChunkVertices(m_VB.Get(), m_BackingStore);
 }
 
-
-// Bind this array, returns the base address for calls to glVertexPointer etc.
-u8* VertexArray::Bind(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
-{
-	if (!m_VB)
-		return nullptr;
-
-	UploadIfNeeded(deviceCommandContext);
-	m_VB->m_Owner->Bind(deviceCommandContext);
-	u8* base = nullptr;
-	base += m_VB->m_Index * m_Stride;
-	return base;
-}
-
 void VertexArray::UploadIfNeeded(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	m_VB->m_Owner->UploadIfNeeded(deviceCommandContext);
 }
@@ -314,7 +299,7 @@ void VertexArray::FreeBackingStore()
 }
 
 VertexIndexArray::VertexIndexArray(const bool dynamic) :
-	VertexArray(Renderer::Backend::GL::CBuffer::Type::INDEX, dynamic)
+	VertexArray(Renderer::Backend::IBuffer::Type::INDEX, dynamic)
 {
 	m_Attr.format = Renderer::Backend::Format::R16_UINT;
 	AddAttribute(&m_Attr);

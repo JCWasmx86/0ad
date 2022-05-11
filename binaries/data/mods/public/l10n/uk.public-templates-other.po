@@ -8,20 +8,20 @@
 # 009ee41e4c490a944b98e20dd0cc29dd_e31b370
 # Dmytro Ryl'kov
 # Halyna Bondar
-# Oleg Adept
+# Олег Вормов
 # Victor Butko
 # Victor Ptah
 # Viktor Hrechaninov
 # Yaroslav Yenkala
 # 85c91c3444bcf82d63b07801f727e341
-# Андрій Бандура
+# Andrii Bandura
 # Микола Франчук
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-02-28 08:09+0000\n"
-"PO-Revision-Date: 2022-02-28 10:18+0000\n"
-"Last-Translator: Transifex Bot\n"
+"POT-Creation-Date: 2022-04-10 20:43+0000\n"
+"PO-Revision-Date: 2014-06-19 17:54+0000\n"
+"Last-Translator: Apheidas of Arcadia, 2022\n"
 "Language-Team: Ukrainian (http://www.transifex.com/wildfire-games/0ad/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -641,13 +641,9 @@ msgstr "Інжир"
 msgid "Grapes"
 msgstr "Виноград"
 
-#: simulation/templates/gaia/fruit/olive.xml:7
-msgid "Olive"
-msgstr "Маслина"
-
 #: simulation/templates/gaia/ruins/column_doric.xml:8
-msgid "Ancient Ruins"
-msgstr "Стародавні руїни"
+msgid "Doric Column"
+msgstr "Дорійська колона"
 
 #: simulation/templates/gaia/ruins/metal_statue_isis.xml:9
 msgid "Isis Cult Image"
@@ -667,8 +663,8 @@ msgid "Celtic Standing Stone"
 msgstr "Кельтський стоячий камінь"
 
 #: simulation/templates/gaia/ruins/stone_statues_egyptian.xml:8
-msgid "Ptolemaic Egyptian Statues"
-msgstr "Птолемеївські єгипетські статуї"
+msgid "Egyptian Statue"
+msgstr ""
 
 #: simulation/templates/gaia/ruins/stone_statues_kushite.xml:8
 msgid "Kushite Statue"
@@ -693,8 +689,8 @@ msgid "Ammon-Ra Ram Statue"
 msgstr "Статуя барана Амон-Ра"
 
 #: simulation/templates/gaia/ruins/stone_statues_roman.xml:8
-msgid "Roman Statues"
-msgstr "Римські статуї"
+msgid "Roman Statue"
+msgstr ""
 
 #: simulation/templates/gaia/ruins/unfinished_greek_temple.xml:8
 msgid "Unfinished Greek Temple"
@@ -925,6 +921,10 @@ msgstr "Дуб фрайнетто"
 msgid "Large Oak"
 msgstr "Великий дуб"
 
+#: simulation/templates/gaia/tree/olive.xml:7
+msgid "Olive"
+msgstr "Маслина"
+
 #: simulation/templates/gaia/tree/palm_areca.xml:4
 msgid "Areca Palm"
 msgstr "Діпсіс жовтуватий"
@@ -995,7 +995,7 @@ msgstr "Кедр"
 msgid "Rainforest Tree"
 msgstr "Дерево дощового лісу"
 
-#: simulation/templates/mixins/builder.xml:39
+#: simulation/templates/mixins/builder.xml:40
 msgid "Builder"
 msgstr "Будівельник"
 
@@ -1014,6 +1014,14 @@ msgstr "Святилище"
 #: simulation/templates/mixins/trading_post.xml:8
 msgid "Trading Post"
 msgstr "Торгівельний пост"
+
+#: simulation/templates/obstructors/placement.xml:10
+msgid "Obstructor"
+msgstr ""
+
+#: simulation/templates/obstructors/placement.xml:12
+msgid "Placement obstructor to prevent construction but not movement"
+msgstr ""
 
 #: simulation/templates/skirmish/structures/default_house_10.xml:5
 msgid ""
@@ -1044,7 +1052,7 @@ msgstr "Лінія бою"
 msgid "Requires at least 4 Soldiers or Siege engines."
 msgstr "Потребує принаймні не менш 4 солдатів або облогових знарядь."
 
-#: simulation/templates/special/formations/box.xml:11
+#: simulation/templates/special/formations/box.xml:12
 msgid "Box"
 msgstr "Квадрат"
 
@@ -1084,7 +1092,7 @@ msgstr "Тільки для піхотних гоплітів, потребує 
 msgid "Phalanx"
 msgstr "Фаланга"
 
-#: simulation/templates/special/formations/scatter.xml:7
+#: simulation/templates/special/formations/scatter.xml:8
 msgid "Scatter"
 msgstr "Розсипний стрій"
 
@@ -1104,7 +1112,7 @@ msgstr "Тільки для піхотних пікенерів , потребу
 msgid "Syntagma"
 msgstr "Синтагма"
 
-#: simulation/templates/special/formations/testudo.xml:69
+#: simulation/templates/special/formations/testudo.xml:70
 msgid "Testudo"
 msgstr "Черепаха"
 

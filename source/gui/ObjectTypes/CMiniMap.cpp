@@ -35,7 +35,6 @@
 #include "gui/GUIMatrix.h"
 #include "lib/bits.h"
 #include "lib/external_libraries/libsdl.h"
-#include "lib/ogl.h"
 #include "lib/timer.h"
 #include "maths/MathUtil.h"
 #include "ps/CLogger.h"
@@ -96,8 +95,8 @@ void CropPointsByCircle(const std::array<CVector3D, 4>& points, const CVector3D&
 }
 
 void DrawTexture(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader, float angle, float x, float y, float x2, float y2, float mapScale)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	float angle, float x, float y, float x2, float y2, float mapScale)
 {
 	// Rotate the texture coordinates (0,0)-(coordMax,coordMax) around their center point (m,m)
 	// Scale square maps to fit in circular minimap area
@@ -105,7 +104,8 @@ void DrawTexture(
 	const float c = cos(angle) * mapScale;
 	const float m = 0.5f;
 
-	float quadTex[] = {
+	float quadTex[] =
+	{
 		m*(-c + s + 1.f), m*(-c + -s + 1.f),
 		m*(c + s + 1.f), m*(-c + s + 1.f),
 		m*(c + -s + 1.f), m*(c + s + 1.f),
@@ -114,7 +114,8 @@ void DrawTexture(
 		m*(-c + -s + 1.f), m*(c + -s + 1.f),
 		m*(-c + s + 1.f), m*(-c + -s + 1.f)
 	};
-	float quadVerts[] = {
+	float quadVerts[] =
+	{
 		x, y, 0.0f,
 		x2, y, 0.0f,
 		x2, y2, 0.0f,
@@ -124,11 +125,15 @@ void DrawTexture(
 		x, y, 0.0f
 	};
 
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadTex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, quadVerts);
-	shader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVerts);
+	deviceCommandContext->SetVertexBufferData(1, quadTex);
 
 	deviceCommandContext->Draw(0, 6);
 }
@@ -409,13 +414,10 @@ void CMiniMap::Draw(CCanvas2D& canvas)
 	CMiniMapTexture& miniMapTexture = g_Game->GetView()->GetMiniMapTexture();
 	if (miniMapTexture.GetTexture())
 	{
-		Renderer::Backend::GL::CShaderProgram* shader;
-		CShaderTechniquePtr tech;
-
 		CShaderDefines baseDefines;
 		baseDefines.Add(str_MINIMAP_BASE, str_1);
 
-		tech = g_Renderer.GetShaderManager().LoadEffect(str_minimap, baseDefines);
+		CShaderTechniquePtr tech = g_Renderer.GetShaderManager().LoadEffect(str_minimap, baseDefines);
 		Renderer::Backend::GraphicsPipelineStateDesc pipelineStateDesc =
 			tech->GetGraphicsPipelineStateDesc();
 		pipelineStateDesc.blendState.enabled = true;
@@ -425,23 +427,29 @@ void CMiniMap::Draw(CCanvas2D& canvas)
 			Renderer::Backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
 		pipelineStateDesc.blendState.colorBlendOp = pipelineStateDesc.blendState.alphaBlendOp =
 			Renderer::Backend::BlendOp::ADD;
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext =
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext =
 			g_Renderer.GetDeviceCommandContext();
 		deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 		deviceCommandContext->BeginPass();
-		shader = tech->GetShader();
 
-		shader->BindTexture(str_baseTex, miniMapTexture.GetTexture());
+		Renderer::Backend::IShaderProgram* shader = tech->GetShader();
+
+		deviceCommandContext->SetTexture(
+			shader->GetBindingSlot(str_baseTex), miniMapTexture.GetTexture());
+
 		const CMatrix3D baseTransform = GetDefaultGuiMatrix();
 		CMatrix3D baseTextureTransform;
 		baseTextureTransform.SetIdentity();
-		shader->Uniform(str_transform, baseTransform);
-		shader->Uniform(str_textureTransform, baseTextureTransform);
+
+		deviceCommandContext->SetUniform(
+			shader->GetBindingSlot(str_transform), baseTransform.AsFloatArray());
+		deviceCommandContext->SetUniform(
+			shader->GetBindingSlot(str_textureTransform), baseTextureTransform.AsFloatArray());
 
 		const float x = m_CachedActualSize.left, y = m_CachedActualSize.bottom;
 		const float x2 = m_CachedActualSize.right, y2 = m_CachedActualSize.top;
 		const float angle = GetAngle();
-		DrawTexture(deviceCommandContext, shader, angle, x, y, x2, y2, m_MapScale);
+		DrawTexture(deviceCommandContext, angle, x, y, x2, y2, m_MapScale);
 
 		deviceCommandContext->EndPass();
 	}

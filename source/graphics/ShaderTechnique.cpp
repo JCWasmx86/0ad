@@ -29,7 +29,10 @@ CShaderPass::CShaderPass(
 	m_PipelineStateDesc.shaderProgram = m_Shader->GetBackendShaderProgram();
 }
 
-CShaderTechnique::CShaderTechnique() = default;
+CShaderTechnique::CShaderTechnique(const VfsPath& path, const CShaderDefines& defines)
+	: m_Path(path), m_Defines(defines)
+{
+}
 
 void CShaderTechnique::SetPasses(std::vector<CShaderPass>&& passes)
 {
@@ -41,7 +44,7 @@ int CShaderTechnique::GetNumPasses() const
 	return m_Passes.size();
 }
 
-Renderer::Backend::GL::CShaderProgram* CShaderTechnique::GetShader(int pass) const
+Renderer::Backend::IShaderProgram* CShaderTechnique::GetShader(int pass) const
 {
 	ENSURE(0 <= pass && pass < (int)m_Passes.size());
 	return m_Passes[pass].GetShader();

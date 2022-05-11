@@ -22,8 +22,8 @@
 #include "graphics/RenderableObject.h"
 #include "maths/Vector2D.h"
 #include "maths/Vector3D.h"
-#include "renderer/backend/gl/DeviceCommandContext.h"
-#include "renderer/backend/gl/ShaderProgram.h"
+#include "renderer/backend/IDeviceCommandContext.h"
+#include "renderer/backend/IShaderProgram.h"
 #include "renderer/VertexBufferManager.h"
 
 #include <vector>
@@ -49,31 +49,29 @@ public:
 	void RenderPriorities(CTextRenderer& textRenderer);
 
 	void RenderWaterSurface(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		Renderer::Backend::GL::CShaderProgram* shader, const bool bindWaterData);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+		const bool bindWaterData);
 	void RenderWaterShore(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		Renderer::Backend::GL::CShaderProgram* shader);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext);
 
 	CPatch* GetPatch() { return m_Patch; }
 
 	const CBoundingBoxAligned& GetWaterBounds() const { return m_WaterBounds; }
 
 	static void RenderBases(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 		const std::vector<CPatchRData*>& patches, const CShaderDefines& context, ShadowMap* shadow);
 	static void RenderBlends(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 		const std::vector<CPatchRData*>& patches, const CShaderDefines& context, ShadowMap* shadow);
 	static void RenderStreams(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		const std::vector<CPatchRData*>& patches, Renderer::Backend::GL::CShaderProgram* shader,
-		const bool bindPositionAsTexCoord);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+		const std::vector<CPatchRData*>& patches, const bool bindPositionAsTexCoord);
 	static void RenderSides(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		const std::vector<CPatchRData*>& patches, Renderer::Backend::GL::CShaderProgram* shader);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+		const std::vector<CPatchRData*>& patches);
 
-	static void PrepareShader(Renderer::Backend::GL::CShaderProgram* shader, ShadowMap* shadow);
+	static void PrepareShader(ShadowMap* shadow);
 
 private:
 	friend struct SBlendStackItem;

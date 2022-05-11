@@ -23,7 +23,6 @@
 #include "graphics/LightEnv.h"
 #include "graphics/ShaderManager.h"
 #include "lib/bits.h"
-#include "lib/ogl.h"
 #include "maths/MathUtil.h"
 #include "ps/ConfigDB.h"
 #include "ps/CLogger.h"
@@ -32,12 +31,10 @@
 #include "ps/Game.h"
 #include "ps/VideoMode.h"
 #include "ps/World.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/Renderer.h"
 #include "renderer/RenderingOptions.h"
 #include "tools/atlas/GameInterface/GameLoop.h"
-
-#if !CONFIG2_GLES
 
 CPostprocManager::CPostprocManager()
 	: m_IsInitialized(false), m_PostProcEffect(L"default"), m_WhichBuffer(true),
@@ -52,8 +49,11 @@ CPostprocManager::~CPostprocManager()
 
 bool CPostprocManager::IsEnabled() const
 {
-	return g_RenderingOptions.GetPostProc() &&
-		g_VideoMode.GetBackend() != CVideoMode::Backend::GL_ARB;
+	return
+		g_RenderingOptions.GetPostProc() &&
+		g_VideoMode.GetBackend() != CVideoMode::Backend::GL_ARB &&
+		g_VideoMode.GetBackendDevice()->IsTextureFormatSupported(
+			Renderer::Backend::Format::D24_S8);
 }
 
 void CPostprocManager::Cleanup()
@@ -122,7 +122,7 @@ void CPostprocManager::RecreateBuffers()
 {
 	Cleanup();
 
-	Renderer::Backend::GL::CDevice* backendDevice = g_VideoMode.GetBackendDevice();
+	Renderer::Backend::IDevice* backendDevice = g_VideoMode.GetBackendDevice();
 
 	#define GEN_BUFFER_RGBA(name, w, h) \
 		name = backendDevice->CreateTexture2D( \
@@ -186,9 +186,9 @@ void CPostprocManager::RecreateBuffers()
 
 
 void CPostprocManager::ApplyBlurDownscale2x(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CFramebuffer* framebuffer,
-	Renderer::Backend::GL::CTexture* inTex, int inWidth, int inHeight)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IFramebuffer* framebuffer,
+	Renderer::Backend::ITexture* inTex, int inWidth, int inHeight)
 {
 	deviceCommandContext->SetFramebuffer(framebuffer);
 
@@ -200,14 +200,16 @@ void CPostprocManager::ApplyBlurDownscale2x(
 	deviceCommandContext->SetGraphicsPipelineState(
 		tech->GetGraphicsPipelineStateDesc());
 	deviceCommandContext->BeginPass();
-	Renderer::Backend::GL::CShaderProgram* shader = tech->GetShader();
+	Renderer::Backend::IShaderProgram* shader = tech->GetShader();
 
-	shader->BindTexture(str_renderedTex, inTex);
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_renderedTex), inTex);
 
 	const SViewPort oldVp = g_Renderer.GetViewport();
 	const SViewPort vp = { 0, 0, inWidth / 2, inHeight / 2 };
 	g_Renderer.SetViewport(vp);
 
+	// TODO: remove the fullscreen quad drawing duplication.
 	float quadVerts[] =
 	{
 		1.0f, 1.0f,
@@ -228,11 +230,17 @@ void CPostprocManager::ApplyBlurDownscale2x(
 		1.0f, 0.0f,
 		1.0f, 1.0f
 	};
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadTex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32_SFLOAT, 0, quadVerts);
-	shader->AssertPointersBound();
+
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVerts);
+	deviceCommandContext->SetVertexBufferData(1, quadTex);
+
 	deviceCommandContext->Draw(0, 6);
 
 	g_Renderer.SetViewport(oldVp);
@@ -241,11 +249,11 @@ void CPostprocManager::ApplyBlurDownscale2x(
 }
 
 void CPostprocManager::ApplyBlurGauss(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CTexture* inTex,
-	Renderer::Backend::GL::CTexture* tempTex,
-	Renderer::Backend::GL::CFramebuffer* tempFramebuffer,
-	Renderer::Backend::GL::CFramebuffer* outFramebuffer,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::ITexture* inTex,
+	Renderer::Backend::ITexture* tempTex,
+	Renderer::Backend::IFramebuffer* tempFramebuffer,
+	Renderer::Backend::IFramebuffer* outFramebuffer,
 	int inWidth, int inHeight)
 {
 	deviceCommandContext->SetFramebuffer(tempFramebuffer);
@@ -258,9 +266,11 @@ void CPostprocManager::ApplyBlurGauss(
 	deviceCommandContext->SetGraphicsPipelineState(
 		tech->GetGraphicsPipelineStateDesc());
 	deviceCommandContext->BeginPass();
-	Renderer::Backend::GL::CShaderProgram* shader = tech->GetShader();
-	shader->BindTexture(str_renderedTex, inTex);
-	shader->Uniform(str_texSize, inWidth, inHeight, 0.0f, 0.0f);
+	Renderer::Backend::IShaderProgram* shader = tech->GetShader();
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_renderedTex), inTex);
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_texSize), inWidth, inHeight);
 
 	const SViewPort oldVp = g_Renderer.GetViewport();
 	const SViewPort vp = { 0, 0, inWidth, inHeight };
@@ -286,11 +296,17 @@ void CPostprocManager::ApplyBlurGauss(
 		1.0f, 0.0f,
 		1.0f, 1.0f
 	};
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadTex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32_SFLOAT, 0, quadVerts);
-	shader->AssertPointersBound();
+
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVerts);
+	deviceCommandContext->SetVertexBufferData(1, quadTex);
+
 	deviceCommandContext->Draw(0, 6);
 
 	g_Renderer.SetViewport(oldVp);
@@ -310,16 +326,23 @@ void CPostprocManager::ApplyBlurGauss(
 	shader = tech->GetShader();
 
 	// Our input texture to the shader is the output of the horizontal pass.
-	shader->BindTexture(str_renderedTex, tempTex);
-	shader->Uniform(str_texSize, inWidth, inHeight, 0.0f, 0.0f);
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_renderedTex), tempTex);
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_texSize), inWidth, inHeight);
 
 	g_Renderer.SetViewport(vp);
 
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadTex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32_SFLOAT, 0, quadVerts);
-	shader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVerts);
+	deviceCommandContext->SetVertexBufferData(1, quadTex);
+
 	deviceCommandContext->Draw(0, 6);
 
 	g_Renderer.SetViewport(oldVp);
@@ -328,10 +351,10 @@ void CPostprocManager::ApplyBlurGauss(
 }
 
 void CPostprocManager::ApplyBlur(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	uint32_t width = m_Width, height = m_Height;
-	Renderer::Backend::GL::CTexture* previousTexture =
+	Renderer::Backend::ITexture* previousTexture =
 		(m_WhichBuffer ? m_ColorTex1 : m_ColorTex2).get();
 
 	for (BlurScale& scale : m_BlurScales)
@@ -347,7 +370,7 @@ void CPostprocManager::ApplyBlur(
 
 
 void CPostprocManager::CaptureRenderOutput(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	ENSURE(m_IsInitialized);
 
@@ -363,7 +386,7 @@ void CPostprocManager::CaptureRenderOutput(
 
 
 void CPostprocManager::ReleaseRenderOutput(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	ENSURE(m_IsInitialized);
 
@@ -379,7 +402,7 @@ void CPostprocManager::ReleaseRenderOutput(
 }
 
 void CPostprocManager::ApplyEffect(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderTechniquePtr& shaderTech, int pass)
 {
 	// select the other FBO for rendering
@@ -389,33 +412,35 @@ void CPostprocManager::ApplyEffect(
 	deviceCommandContext->SetGraphicsPipelineState(
 		shaderTech->GetGraphicsPipelineStateDesc(pass));
 	deviceCommandContext->BeginPass();
-	Renderer::Backend::GL::CShaderProgram* shader = shaderTech->GetShader(pass);
+	Renderer::Backend::IShaderProgram* shader = shaderTech->GetShader(pass);
 
 	// Use the textures from the current FBO as input to the shader.
 	// We also bind a bunch of other textures and parameters, but since
 	// this only happens once per frame the overhead is negligible.
-	if (m_WhichBuffer)
-		shader->BindTexture(str_renderedTex, m_ColorTex1.get());
-	else
-		shader->BindTexture(str_renderedTex, m_ColorTex2.get());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_renderedTex),
+		m_WhichBuffer ? m_ColorTex1.get() : m_ColorTex2.get());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_depthTex), m_DepthTex.get());
 
-	shader->BindTexture(str_depthTex, m_DepthTex.get());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_blurTex2), m_BlurScales[0].steps[0].texture.get());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_blurTex4), m_BlurScales[1].steps[0].texture.get());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_blurTex8), m_BlurScales[2].steps[0].texture.get());
 
-	shader->BindTexture(str_blurTex2, m_BlurScales[0].steps[0].texture.get());
-	shader->BindTexture(str_blurTex4, m_BlurScales[1].steps[0].texture.get());
-	shader->BindTexture(str_blurTex8, m_BlurScales[2].steps[0].texture.get());
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_width), m_Width);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_height), m_Height);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_zNear), m_NearPlane);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_zFar), m_FarPlane);
 
-	shader->Uniform(str_width, m_Width);
-	shader->Uniform(str_height, m_Height);
-	shader->Uniform(str_zNear, m_NearPlane);
-	shader->Uniform(str_zFar, m_FarPlane);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_sharpness), m_Sharpness);
 
-	shader->Uniform(str_sharpness, m_Sharpness);
-
-	shader->Uniform(str_brightness, g_LightEnv.m_Brightness);
-	shader->Uniform(str_hdr, g_LightEnv.m_Contrast);
-	shader->Uniform(str_saturation, g_LightEnv.m_Saturation);
-	shader->Uniform(str_bloom, g_LightEnv.m_Bloom);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_brightness), g_LightEnv.m_Brightness);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_hdr), g_LightEnv.m_Contrast);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_saturation), g_LightEnv.m_Saturation);
+	deviceCommandContext->SetUniform(shader->GetBindingSlot(str_bloom), g_LightEnv.m_Bloom);
 
 	float quadVerts[] =
 	{
@@ -437,11 +462,17 @@ void CPostprocManager::ApplyEffect(
 		1.0f, 0.0f,
 		1.0f, 1.0f
 	};
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadTex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32_SFLOAT, 0, quadVerts);
-	shader->AssertPointersBound();
+
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVerts);
+	deviceCommandContext->SetVertexBufferData(1, quadTex);
+
 	deviceCommandContext->Draw(0, 6);
 
 	deviceCommandContext->EndPass();
@@ -450,7 +481,7 @@ void CPostprocManager::ApplyEffect(
 }
 
 void CPostprocManager::ApplyPostproc(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	ENSURE(m_IsInitialized);
 
@@ -555,7 +586,7 @@ void CPostprocManager::UpdateAntiAliasingTechnique()
 		// We don't want to enable MSAA in Atlas, because it uses wxWidgets and its canvas.
 		if (g_AtlasGameLoop && g_AtlasGameLoop->running)
 			return;
-		if (!g_VideoMode.GetBackendDevice()->GetCapabilities().multisampling && !m_AllowedSampleCounts.empty())
+		if (!g_VideoMode.GetBackendDevice()->GetCapabilities().multisampling || m_AllowedSampleCounts.empty())
 		{
 			LOGWARNING("MSAA is unsupported.");
 			return;
@@ -565,7 +596,7 @@ void CPostprocManager::UpdateAntiAliasingTechnique()
 		if (std::find(std::begin(m_AllowedSampleCounts), std::end(m_AllowedSampleCounts), m_MultisampleCount) ==
 		        std::end(m_AllowedSampleCounts))
 		{
-			m_MultisampleCount = 4;
+			m_MultisampleCount = std::min(4u, g_VideoMode.GetBackendDevice()->GetCapabilities().maxSampleCount);
 			LOGWARNING("Wrong MSAA sample count: %s.", m_AAName.EscapeToPrintableASCII().c_str());
 		}
 		m_UsingMultisampleBuffer = true;
@@ -604,10 +635,10 @@ void CPostprocManager::SetDepthBufferClipPlanes(float nearPlane, float farPlane)
 
 void CPostprocManager::CreateMultisampleBuffer()
 {
-	Renderer::Backend::GL::CDevice* backendDevice = g_VideoMode.GetBackendDevice();
+	Renderer::Backend::IDevice* backendDevice = g_VideoMode.GetBackendDevice();
 
 	m_MultisampleColorTex = backendDevice->CreateTexture("PostProcColorMS",
-		Renderer::Backend::GL::CTexture::Type::TEXTURE_2D_MULTISAMPLE,
+		Renderer::Backend::ITexture::Type::TEXTURE_2D_MULTISAMPLE,
 		Renderer::Backend::Format::R8G8B8A8_UNORM, m_Width, m_Height,
 		Renderer::Backend::Sampler::MakeDefaultSampler(
 			Renderer::Backend::Sampler::Filter::LINEAR,
@@ -615,7 +646,7 @@ void CPostprocManager::CreateMultisampleBuffer()
 
 	// Allocate the Depth/Stencil texture.
 	m_MultisampleDepthTex = backendDevice->CreateTexture("PostProcDepthMS",
-		Renderer::Backend::GL::CTexture::Type::TEXTURE_2D_MULTISAMPLE,
+		Renderer::Backend::ITexture::Type::TEXTURE_2D_MULTISAMPLE,
 		Renderer::Backend::Format::D24_S8, m_Width, m_Height,
 		Renderer::Backend::Sampler::MakeDefaultSampler(
 			Renderer::Backend::Sampler::Filter::LINEAR,
@@ -649,7 +680,7 @@ bool CPostprocManager::IsMultisampleEnabled() const
 }
 
 void CPostprocManager::ResolveMultisampleFramebuffer(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (!m_UsingMultisampleBuffer)
 		return;
@@ -659,120 +690,3 @@ void CPostprocManager::ResolveMultisampleFramebuffer(
 		m_PingFramebuffer.get(), m_MultisampleFramebuffer.get());
 	deviceCommandContext->SetFramebuffer(m_PingFramebuffer.get());
 }
-
-#else
-
-#warning TODO: implement PostprocManager for GLES
-
-void ApplyBlurDownscale2x(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext),
-	Renderer::Backend::GL::CFramebuffer* UNUSED(framebuffer),
-	Renderer::Backend::GL::CTexture* UNUSED(inTex),
-	int UNUSED(inWidth), int UNUSED(inHeight))
-{
-}
-
-void CPostprocManager::ApplyBlurGauss(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext),
-	Renderer::Backend::GL::CTexture* UNUSED(inTex),
-	Renderer::Backend::GL::CTexture* UNUSED(tempTex),
-	Renderer::Backend::GL::CFramebuffer* UNUSED(tempFramebuffer),
-	Renderer::Backend::GL::CFramebuffer* UNUSED(outFramebuffer),
-	int UNUSED(inWidth), int UNUSED(inHeight))
-{
-}
-
-void CPostprocManager::ApplyEffect(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext),
-	const CShaderTechniquePtr& UNUSED(shaderTech), int UNUSED(pass))
-{
-}
-
-CPostprocManager::CPostprocManager()
-{
-}
-
-CPostprocManager::~CPostprocManager()
-{
-}
-
-bool CPostprocManager::IsEnabled() const
-{
-	return false;
-}
-
-void CPostprocManager::Initialize()
-{
-}
-
-void CPostprocManager::Resize()
-{
-}
-
-void CPostprocManager::Cleanup()
-{
-}
-
-void CPostprocManager::RecreateBuffers()
-{
-}
-
-std::vector<CStrW> CPostprocManager::GetPostEffects()
-{
-	return std::vector<CStrW>();
-}
-
-void CPostprocManager::SetPostEffect(const CStrW& UNUSED(name))
-{
-}
-
-void CPostprocManager::SetDepthBufferClipPlanes(float UNUSED(nearPlane), float UNUSED(farPlane))
-{
-}
-
-void CPostprocManager::UpdateAntiAliasingTechnique()
-{
-}
-
-void CPostprocManager::UpdateSharpeningTechnique()
-{
-}
-
-void CPostprocManager::UpdateSharpnessFactor()
-{
-}
-
-void CPostprocManager::CaptureRenderOutput(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext))
-{
-}
-
-void CPostprocManager::ApplyPostproc(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext))
-{
-}
-
-void CPostprocManager::ReleaseRenderOutput(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext))
-{
-}
-
-void CPostprocManager::CreateMultisampleBuffer()
-{
-}
-
-void CPostprocManager::DestroyMultisampleBuffer()
-{
-}
-
-bool CPostprocManager::IsMultisampleEnabled() const
-{
-	return false;
-}
-
-void CPostprocManager::ResolveMultisampleFramebuffer(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext))
-{
-}
-
-#endif

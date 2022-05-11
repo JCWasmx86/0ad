@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:53+0000\n"
-"Last-Translator: Mielanjel Iraeta <pospolos@gmail.com>, 2017-2021\n"
+"Last-Translator: Osoitz <oelkoro@gmail.com>, 2015,2019-2020,2022\n"
 "Language-Team: Basque (http://www.transifex.com/wildfire-games/0ad/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +49,6 @@ msgstr "Agogea"
 #: simulation/data/technologies/health_regen_units.jsonrequirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.jsonrequirementsTooltip
 #: simulation/data/technologies/immortals.jsonrequirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/long_walls.jsonrequirementsTooltip
 #: simulation/data/technologies/nisean_horses.jsonrequirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.jsonrequirementsTooltip
@@ -122,6 +121,7 @@ msgstr "Punteria trebatzea"
 #: simulation/data/technologies/heal_rate.jsonrequirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.jsonrequirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.jsonrequirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/pop_house_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.jsonrequirementsTooltip
@@ -207,7 +207,7 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr ""
 
 #: simulation/data/technologies/art_of_war.jsontooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
+msgid "All Citizen-Soldiers −25% required promotion experience."
 msgstr ""
 
 #: simulation/data/technologies/attack_soldiers_will.jsondescription
@@ -346,15 +346,23 @@ msgstr ""
 
 #: simulation/data/technologies/civbonuses/han_population.jsongenericName
 msgid "Federated States"
-msgstr ""
+msgstr "Estatu federatuak"
+
+#: simulation/data/technologies/civbonuses/han_population.jsontooltip
+#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
+#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
+msgid "+10% maximum population limit."
+msgstr "%10+ gehieneko biztanleria muga."
 
 #: simulation/data/technologies/civbonuses/han_walls.jsondescription
-msgid "Han built massive walls, the great wall."
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/han_walls.jsongenericName
 msgid "Great Wall"
-msgstr ""
+msgstr "Harresi handia"
 
 #: simulation/data/technologies/civbonuses/han_walls.jsontooltip
 msgid "City Walls +50% health."
@@ -369,7 +377,7 @@ msgid "Resource-Rich Economy"
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsontooltip
-msgid "Storehouse technologies -100% research time."
+msgid "Storehouse technologies −100% research time."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/maur_elephants.jsondescription
@@ -405,11 +413,6 @@ msgstr "Enperadoreen Enperadore"
 #: simulation/data/technologies/civbonuses/maur_population.jsonspecificName.maur
 msgid "Chakravarti Samrāt"
 msgstr "Chakravarti Samrāt"
-
-#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
-#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
-msgid "+10% maximum population limit."
-msgstr "%10+ gehieneko biztanleria muga."
 
 #: simulation/data/technologies/civbonuses/maur_walls.jsondescription
 msgid ""
@@ -456,7 +459,7 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr "Etxeak eta Egitura Ekonomikoak -40%"
 
 #: simulation/data/technologies/civil_engineering_01.jsongenericName
-msgid "Civil Engineering - Level 1"
+msgid "Civil Engineering − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.jsonspecificName.han
@@ -465,19 +468,19 @@ msgid "Gōngchéng"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.jsontooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
+msgid "All structures −15% build time, +10% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.jsongenericName
-msgid "Civil Engineering - Level 2"
+msgid "Civil Engineering − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.jsontooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
+msgid "All structures −25% build time, +20% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.jsongenericName
-msgid "Civil Service - Level 1"
+msgid "Civil Service − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.jsonspecificName.han
@@ -488,12 +491,12 @@ msgstr ""
 #: simulation/data/technologies/civil_service_01.jsontooltip
 #: simulation/data/technologies/civil_service_02.jsontooltip
 msgid ""
-"Technologies at all buildings, except the Forge, -15% cost and -15% research"
+"Technologies at all buildings, except the Forge, −15% cost and −15% research"
 " time."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_02.jsongenericName
-msgid "Civil Service - Level 2"
+msgid "Civil Service − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/colonization.jsondescription
@@ -981,17 +984,19 @@ msgstr "Infanteriak %10- trebatze denboran."
 
 #: simulation/data/technologies/iphicratean_reforms.jsondescription
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan "
-"Mercenary Archers (Toxotes Kretikos)."
-msgstr "Trirreme atenastarrek itsasgizonak (Epibates Athenaikos) eta Kretar arkulari mertzenarioak (Toxotes Kretikos) trebatu ditzakete."
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos) and Cretan Mercenary Archers (Toxotes Kretikos)."
+msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.jsongenericName
 msgid "Iphicratean Reforms"
 msgstr "Ifikratesen erreformak"
 
 #: simulation/data/technologies/iphicratean_reforms.jsontooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
-msgstr "Trirreme atenastarrek itsasgizonak eta Kretar arkulari mertzenarioak trebatu ditzakete ."
+msgid ""
+"Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary"
+" Archers."
+msgstr ""
 
 #: simulation/data/technologies/long_walls.jsondescription
 msgid ""
@@ -1109,7 +1114,7 @@ msgstr "Herri zaratatsu batetik benetako metropoli batera aurreratzen du, teknol
 
 #: simulation/data/technologies/phase_city_generic.jsonspecificName.han
 msgid "Jùn"
-msgstr ""
+msgstr "Jùn"
 
 #: simulation/data/technologies/phase_city_generic.jsontooltip
 msgid ""
@@ -1164,7 +1169,7 @@ msgstr "Aurreratu herrixka txiki batetik herri zaratatsu batera, azkar zabaltzek
 
 #: simulation/data/technologies/phase_town_generic.jsonspecificName.han
 msgid "Xìan"
-msgstr ""
+msgstr "Xìan"
 
 #: simulation/data/technologies/phase_town_generic.jsontooltip
 msgid ""
@@ -1179,7 +1184,7 @@ msgstr "Herrixka aroa"
 
 #: simulation/data/technologies/poison_arrows.jsongenericName
 msgid "Poison Arrows"
-msgstr ""
+msgstr "Gezi pozoituak"
 
 #: simulation/data/technologies/poison_arrows.jsontooltip
 msgid "Ranged Soldiers +20% attack damage."
@@ -1352,7 +1357,7 @@ msgstr "Setio makinak %40- muntatze eta desmuntatze denboran."
 
 #: simulation/data/technologies/silk_road.jsongenericName
 msgid "Silk Road"
-msgstr ""
+msgstr "Zetaren bidea"
 
 #: simulation/data/technologies/silk_road.jsontooltip
 msgid "Traders +20% international trade bonus."

@@ -20,9 +20,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:53+0000\n"
-"Last-Translator: 柳离枝 <xingzuo88@qq.com>, 2022\n"
+"Last-Translator: Wolfson Liu <wolfsonliu@foxmail.com>, 2022\n"
 "Language-Team: Chinese (http://www.transifex.com/wildfire-games/0ad/language/zh/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +58,6 @@ msgstr "斯巴达教育"
 #: simulation/data/technologies/health_regen_units.jsonrequirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.jsonrequirementsTooltip
 #: simulation/data/technologies/immortals.jsonrequirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/long_walls.jsonrequirementsTooltip
 #: simulation/data/technologies/nisean_horses.jsonrequirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.jsonrequirementsTooltip
@@ -131,6 +130,7 @@ msgstr "射术训练"
 #: simulation/data/technologies/heal_rate.jsonrequirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.jsonrequirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.jsonrequirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/pop_house_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.jsonrequirementsTooltip
@@ -216,8 +216,8 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr "孙子兵法"
 
 #: simulation/data/technologies/art_of_war.jsontooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
-msgstr "民兵升级经验花费 -25% ."
+msgid "All Citizen-Soldiers −25% required promotion experience."
+msgstr "所有民兵 -25% 需要的升级经验值。"
 
 #: simulation/data/technologies/attack_soldiers_will.jsondescription
 msgid ""
@@ -357,9 +357,17 @@ msgstr "归于一统，汉朝人口约 4000 万，为古代的人口大国。"
 msgid "Federated States"
 msgstr "封建制度"
 
+#: simulation/data/technologies/civbonuses/han_population.jsontooltip
+#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
+#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
+msgid "+10% maximum population limit."
+msgstr "人口上限 +10% ."
+
 #: simulation/data/technologies/civbonuses/han_walls.jsondescription
-msgid "Han built massive walls, the great wall."
-msgstr "汉朝继续修筑长城，抵御北方少数民族的袭扰。"
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
+msgstr "汉朝用夯土建造了巨大的城墙。这些是有数米厚并且绵延数公里的巨大的防御工事。"
 
 #: simulation/data/technologies/civbonuses/han_walls.jsongenericName
 msgid "Great Wall"
@@ -371,15 +379,15 @@ msgstr "城墙生命值 + 50% ."
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsondescription
 msgid "The Macedonian economy relied greatly on their vast natural resources."
-msgstr ""
+msgstr "马其顿的经济很大程度上依赖于期丰富的自然资源。"
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsongenericName
 msgid "Resource-Rich Economy"
-msgstr ""
+msgstr "丰富资源经济"
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsontooltip
-msgid "Storehouse technologies -100% research time."
-msgstr ""
+msgid "Storehouse technologies −100% research time."
+msgstr "仓库科技 -100% 研发时间"
 
 #: simulation/data/technologies/civbonuses/maur_elephants.jsondescription
 msgid ""
@@ -414,11 +422,6 @@ msgstr "万王之王"
 #: simulation/data/technologies/civbonuses/maur_population.jsonspecificName.maur
 msgid "Chakravarti Samrāt"
 msgstr "转轮王"
-
-#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
-#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
-msgid "+10% maximum population limit."
-msgstr "人口上限 +10% ."
 
 #: simulation/data/technologies/civbonuses/maur_walls.jsondescription
 msgid ""
@@ -465,8 +468,8 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr "民居和经济设施的木材成本和生命值 −40％."
 
 #: simulation/data/technologies/civil_engineering_01.jsongenericName
-msgid "Civil Engineering - Level 1"
-msgstr "一级土木"
+msgid "Civil Engineering − Level 1"
+msgstr "土木工程 - 等级 1"
 
 #: simulation/data/technologies/civil_engineering_01.jsonspecificName.han
 #: simulation/data/technologies/civil_engineering_02.jsonspecificName.han
@@ -474,20 +477,20 @@ msgid "Gōngchéng"
 msgstr "工程"
 
 #: simulation/data/technologies/civil_engineering_01.jsontooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
-msgstr "所有建筑的建造时间 -15% 、生命值 +10% 、花费 -5% ."
+msgid "All structures −15% build time, +10% health and −5% cost."
+msgstr "所有建筑 -15% 建造時间、+10% 生命值和 -5% 成本。"
 
 #: simulation/data/technologies/civil_engineering_02.jsongenericName
-msgid "Civil Engineering - Level 2"
-msgstr "二级土木"
+msgid "Civil Engineering − Level 2"
+msgstr "土木工程 - 等级 2"
 
 #: simulation/data/technologies/civil_engineering_02.jsontooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
-msgstr "所有建筑的建造时间 -25% 、生命值 +20% 、花费 -5% ."
+msgid "All structures −25% build time, +20% health and −5% cost."
+msgstr "所有建筑 -25% 建造時间、+20% 生命值和 -5% 成本。"
 
 #: simulation/data/technologies/civil_service_01.jsongenericName
-msgid "Civil Service - Level 1"
-msgstr "一级公务"
+msgid "Civil Service − Level 1"
+msgstr "行政事务 - 等级 1"
 
 #: simulation/data/technologies/civil_service_01.jsonspecificName.han
 #: simulation/data/technologies/civil_service_02.jsonspecificName.han
@@ -497,13 +500,13 @@ msgstr "官僚"
 #: simulation/data/technologies/civil_service_01.jsontooltip
 #: simulation/data/technologies/civil_service_02.jsontooltip
 msgid ""
-"Technologies at all buildings, except the Forge, -15% cost and -15% research"
+"Technologies at all buildings, except the Forge, −15% cost and −15% research"
 " time."
-msgstr "除了铁匠铺，所有建筑的花费 -15% 、科研时间 -15% ."
+msgstr "除锻造厂外，所有建筑的科技 -15% 成本并 -15% 研发时间。"
 
 #: simulation/data/technologies/civil_service_02.jsongenericName
-msgid "Civil Service - Level 2"
-msgstr "二级公务"
+msgid "Civil Service − Level 2"
+msgstr "行政事务 - 等级 2"
 
 #: simulation/data/technologies/colonization.jsondescription
 msgid ""
@@ -990,17 +993,19 @@ msgstr "步兵训练时间 -10% ."
 
 #: simulation/data/technologies/iphicratean_reforms.jsondescription
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan "
-"Mercenary Archers (Toxotes Kretikos)."
-msgstr "雅典的三列桨战船可以训练海军剑士及克里特弓箭手。"
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos) and Cretan Mercenary Archers (Toxotes Kretikos)."
+msgstr "雅典的体育场、码头和三列桨帆船可以训练陆战队（Epibates Athenaikos）和克里特岛雇佣弓箭手（Toxotes Kretikos）"
 
 #: simulation/data/technologies/iphicratean_reforms.jsongenericName
 msgid "Iphicratean Reforms"
 msgstr "伊菲克拉特斯改革"
 
 #: simulation/data/technologies/iphicratean_reforms.jsontooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
-msgstr "雅典的三列桨战船可以训练海军剑士及克里特弓箭手。"
+msgid ""
+"Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary"
+" Archers."
+msgstr "雅典的体育场、码头和三列桨战船可以训练陆战队员及克里特岛雇佣弓箭手。"
 
 #: simulation/data/technologies/long_walls.jsondescription
 msgid ""

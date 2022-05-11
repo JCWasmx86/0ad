@@ -37,7 +37,7 @@
 #include "ps/scripting/JSInterface_Debug.h"
 #include "ps/UserReport.h"
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "scriptinterface/FunctionWrapper.h"
 #include "scriptinterface/JSON.h"
 #include "scriptinterface/Object.h"
@@ -51,16 +51,11 @@
 #include <fstream>
 #endif
 
-#if SDL_VERSION_ATLEAST(2, 0, 8)
-#include <SDL_vulkan.h>
-#endif
-
 #include <sstream>
 #include <string>
 
 static void ReportSDL(const ScriptRequest& rq, JS::HandleValue settings);
 static void ReportFreeType(const ScriptRequest& rq, JS::HandleValue settings);
-static void ReportVulkan(const ScriptRequest& rq, JS::HandleValue settings);
 
 void SetDisableAudio(bool disabled)
 {
@@ -142,9 +137,11 @@ void RunHardwareDetection()
 
 	ReportFreeType(rq, settings);
 
-	ReportVulkan(rq, settings);
+	JS::RootedValue backendDeviceSettings(rq.cx);
+	Script::CreateObject(rq, &backendDeviceSettings);
 
-	g_VideoMode.GetBackendDevice()->Report(rq, settings);
+	g_VideoMode.GetBackendDevice()->Report(rq, backendDeviceSettings);
+	Script::SetProperty(rq, settings, "renderer_backend", backendDeviceSettings);
 
 	Script::SetProperty(rq, settings, "video_desktop_xres", g_VideoMode.GetDesktopXRes());
 	Script::SetProperty(rq, settings, "video_desktop_yres", g_VideoMode.GetDesktopYRes());
@@ -198,7 +195,7 @@ void RunHardwareDetection()
 	Script::SetProperty(rq, settings, "timer_resolution", timer_Resolution());
 
 	// The version should be increased for every meaningful change.
-	const int reportVersion = 17;
+	const int reportVersion = 19;
 
 	// Send the same data to the reporting system
 	g_UserReporter.SubmitReport(
@@ -250,25 +247,3 @@ static void ReportFreeType(const ScriptRequest& rq, JS::HandleValue settings)
 	Script::SetProperty(rq, settings, "freetype", FTSupport);
 }
 
-static void ReportVulkan(const ScriptRequest& rq, JS::HandleValue settings)
-{
-	std::string vulkanSupport = "unsupported";
-	// According to http://wiki.libsdl.org/SDL_Vulkan_LoadLibrary the following
-	// functionality is supported since SDL 2.0.8.
-#if SDL_VERSION_ATLEAST(2, 0, 8)
-	if (!SDL_Vulkan_LoadLibrary(nullptr))
-	{
-		void* vkGetInstanceProcAddr = SDL_Vulkan_GetVkGetInstanceProcAddr();
-		if (vkGetInstanceProcAddr)
-			vulkanSupport = "supported";
-		else
-			vulkanSupport = "noprocaddr";
-		SDL_Vulkan_UnloadLibrary();
-	}
-	else
-	{
-		vulkanSupport = "cantload";
-	}
-#endif
-	Script::SetProperty(rq, settings, "vulkan", vulkanSupport);
-}

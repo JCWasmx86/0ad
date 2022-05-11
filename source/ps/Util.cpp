@@ -34,7 +34,7 @@
 #include "ps/GameSetup/GameSetup.h"
 #include "ps/Pyrogenesis.h"
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 
 #if CONFIG2_AUDIO
 #include "soundmanager/SoundManager.h"
@@ -144,7 +144,10 @@ const wchar_t* ErrorString(int err)
 	// TODO: load from language file
 }
 
-
+CStr GetStatusAsString(Status status)
+{
+	return utf8_from_wstring(ErrorString(status));
+}
 
 // write the specified texture to disk.
 // note: <t> cannot be made const because the image may have to be

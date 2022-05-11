@@ -23,8 +23,8 @@
 #define INCLUDED_SKYMANAGER
 
 #include "graphics/Texture.h"
-#include "renderer/backend/gl/DeviceCommandContext.h"
-#include "renderer/backend/gl/Texture.h"
+#include "renderer/backend/IDeviceCommandContext.h"
+#include "renderer/backend/ITexture.h"
 #include "renderer/VertexArray.h"
 
 #include <memory>
@@ -42,7 +42,7 @@ public:
 	 * Render the sky.
 	 */
 	void RenderSky(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext);
 
 	/**
 	 * Return the currently selected sky set name.
@@ -52,10 +52,7 @@ public:
 		return m_SkySet;
 	}
 
-	Renderer::Backend::GL::CTexture* GetSkyCube()
-	{
-		return m_SkyCubeMap.get();
-	}
+	Renderer::Backend::ITexture* GetSkyCube();
 
 	/**
 	 * Set the sky set name.
@@ -82,7 +79,7 @@ public:
 	 * Load all sky textures from files and upload to GPU.
 	 */
 	void LoadAndUploadSkyTexturesIfNeeded(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext);
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext);
 
 private:
 	void CreateSkyCube();
@@ -105,8 +102,7 @@ private:
 
 	// Sky textures
 	CTexturePtr m_SkyTexture[NUMBER_OF_TEXTURES];
-
-	std::unique_ptr<Renderer::Backend::GL::CTexture> m_SkyCubeMap;
+	CTexturePtr m_SkyTextureCube;
 
 	VertexArray m_VertexArray;
 	VertexArray::Attribute m_AttributePosition;

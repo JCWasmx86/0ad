@@ -16,41 +16,41 @@
  */
 
 /*
- * encapsulation of VBOs with batching and sharing
+ * Encapsulation of backend buffers with batching and sharing.
  */
 
 #ifndef INCLUDED_VERTEXBUFFER
 #define INCLUDED_VERTEXBUFFER
 
-#include "renderer/backend/gl/Buffer.h"
-#include "renderer/backend/gl/DeviceCommandContext.h"
+#include "renderer/backend/IBuffer.h"
+#include "renderer/backend/IDeviceCommandContext.h"
 
 #include <memory>
 #include <vector>
 
 /**
- * CVertexBuffer: encapsulation of ARB_vertex_buffer_object, also supplying
+ * CVertexBuffer: encapsulation of backend buffers, also supplying
  * some additional functionality for sharing buffers between multiple objects.
  *
  * The class can be used in two modes, depending on the usage parameter:
  *
- * GL_STATIC_DRAW: Call Allocate() with backingStore = NULL. Then call
+ * Static buffer: Call Allocate() with backingStore = nullptr. Then call
  * UpdateChunkVertices() with any pointer - the data will be immediately copied
- * to the VBO. This should be used for vertex data that rarely changes.
+ * to the buffer. This should be used for vertex data that rarely changes.
  *
- * GL_DYNAMIC_DRAW, GL_STREAM_DRAW: Call Allocate() with backingStore pointing
+ * Dynamic buffer: Call Allocate() with backingStore pointing
  * at some memory that will remain valid for the lifetime of the CVertexBuffer.
  * This should be used for vertex data that may change every frame.
  * Rendering is expected to occur in two phases:
  *   - "Prepare" phase:
- *       If this chunk is going to be used for rendering during the next Bind phase,
+ *       If this chunk is going to be used for rendering during the next rendering phase,
  *       you must call PrepareForRendering().
- *       If the vertex data in backingStore has been modified since the last Bind phase,
+ *       If the vertex data in backingStore has been modified since the last uploading phase,
  *       you must call UpdateChunkVertices().
- *   - "Bind" phase:
- *       Bind() can be called (multiple times). The vertex data will be uploaded
+ *   - "Upload" phase:
+ *       UploadedIfNeeded() can be called (multiple times). The vertex data will be uploaded
  *       to the GPU if necessary.
- * It is okay to have multiple prepare/bind cycles per frame (though slightly less
+ * It is okay to have multiple prepare/upload cycles per frame (though slightly less
  * efficient), but they must occur sequentially.
  */
 class CVertexBuffer
@@ -59,29 +59,30 @@ class CVertexBuffer
 
 public:
 
-	/// VBChunk: describes a portion of this vertex buffer
+	// VBChunk: describes a portion of this vertex buffer
 	struct VBChunk
 	{
-		/// Owning (parent) vertex buffer
+		// Owning (parent) vertex buffer
 		CVertexBuffer* m_Owner;
-		/// Start index of this chunk in owner
+		// Start index of this chunk in owner
 		size_t m_Index;
-		/// Number of vertices used by chunk
+		// Number of vertices used by chunk
 		size_t m_Count;
-		/// If UseStreaming() is true, points at the data for this chunk
+		// If UseStreaming() is true, points at the data for this chunk
 		void* m_BackingStore;
 
-		/// If true, the VBO is not consistent with the chunk's backing store
-		/// (and will need to be re-uploaded before rendering with this chunk)
+		// If true, the backend buffer is not consistent with the chunk's
+		// backing store (and will need to be re-uploaded before rendering with
+		// this chunk).
 		bool m_Dirty;
 
-		/// If true, we have been told this chunk is going to be used for
-		/// rendering in the next bind phase and will need to be uploaded
+		// If true, we have been told this chunk is going to be used for
+		// rendering in the next uploading phase and will need to be uploaded
 		bool m_Needed;
 
 	private:
 		// Only CVertexBuffer can construct/delete these
-		// (Other people should use g_VBMan.Allocate, g_VBMan.Release)
+		// (Other people should use g_VBMan.AllocateChunk)
 		friend class CVertexBuffer;
 		VBChunk() {}
 		~VBChunk() {}
@@ -91,24 +92,16 @@ public:
 	// constructor, destructor
 	CVertexBuffer(
 		const char* name, const size_t vertexSize,
-		const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic);
+		const Renderer::Backend::IBuffer::Type type, const bool dynamic);
 	CVertexBuffer(
 		const char* name, const size_t vertexSize,
-		const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic,
+		const Renderer::Backend::IBuffer::Type type, const bool dynamic,
 		const size_t maximumBufferSize);
 	~CVertexBuffer();
 
-	/// Bind to this buffer; return pointer to address required as parameter
-	/// to glVertexPointer ( + etc) calls
-	u8* Bind(Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext);
+	void UploadIfNeeded(Renderer::Backend::IDeviceCommandContext* deviceCommandContext);
 
-	void UploadIfNeeded(Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext);
-
-	/// Unbind any currently-bound buffer, so glVertexPointer etc calls will not attempt to use it
-	static void Unbind(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext);
-
-	/// Make the vertex data available for the next call to Bind()
+	/// Make the vertex data available for the next usage.
 	void PrepareForRendering(VBChunk* chunk);
 
 	/// Update vertex data for given chunk. Transfers the provided data to the actual OpenGL vertex buffer.
@@ -120,7 +113,7 @@ public:
 
 	/// Returns true if this vertex buffer is compatible with the specified vertex type and intended usage.
 	bool CompatibleVertexType(
-		const size_t vertexSize, const Renderer::Backend::GL::CBuffer::Type type,
+		const size_t vertexSize, const Renderer::Backend::IBuffer::Type type,
 		const bool dynamic) const;
 
 	void DumpStatus() const;
@@ -137,7 +130,7 @@ public:
 	 */
 	static bool UseStreaming(const bool dynamic);
 
-	Renderer::Backend::GL::CBuffer* GetBuffer() { return m_Buffer.get(); }
+	Renderer::Backend::IBuffer* GetBuffer() { return m_Buffer.get(); }
 
 private:
 	friend class CVertexBufferManager;		// allow allocate only via CVertexBufferManager
@@ -146,7 +139,7 @@ private:
 	/// and with the given type - return null if no free chunks available
 	VBChunk* Allocate(
 		const size_t vertexSize, const size_t numberOfVertices,
-		const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic,
+		const Renderer::Backend::IBuffer::Type type, const bool dynamic,
 		void* backingStore);
 	/// Return given chunk to this buffer
 	void Release(VBChunk* chunk);
@@ -162,7 +155,7 @@ private:
 	/// Available free vertices - total of all free vertices in the free list
 	size_t m_FreeVertices;
 
-	std::unique_ptr<Renderer::Backend::GL::CBuffer> m_Buffer;
+	std::unique_ptr<Renderer::Backend::IBuffer> m_Buffer;
 
 	bool m_HasNeededChunks;
 };

@@ -38,7 +38,7 @@
 #include "ps/Game.h"
 #include "ps/World.h"
 #include "ps/XML/Xeromyces.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/Renderer.h"
 #include "renderer/RenderingOptions.h"
 #include "renderer/SceneRenderer.h"
@@ -71,8 +71,7 @@ unsigned int ScaleColor(unsigned int color, float x)
 }
 
 void DrawTexture(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	const float quadUVs[] =
 	{
@@ -95,11 +94,15 @@ void DrawTexture(
 		-1.0f, -1.0f, 0.0f
 	};
 
-	shader->TexCoordPointer(
-		GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, 0, quadUVs);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, quadVertices);
-	shader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, 0, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT, 0, 0, 1);
+
+	deviceCommandContext->SetVertexBufferData(0, quadVertices);
+	deviceCommandContext->SetVertexBufferData(1, quadUVs);
 
 	deviceCommandContext->Draw(0, 6);
 }
@@ -143,7 +146,7 @@ inline void AddEntity(const MinimapUnitVertex& v,
 
 CMiniMapTexture::CMiniMapTexture(CSimulation2& simulation)
 	: m_Simulation(simulation), m_IndexArray(false),
-	m_VertexArray(Renderer::Backend::GL::CBuffer::Type::VERTEX, true)
+	m_VertexArray(Renderer::Backend::IBuffer::Type::VERTEX, true)
 {
 	// Register Relax NG validator.
 	CXeromyces::AddValidator(g_VFS, "pathfinder", "simulation/data/pathfinder.rng");
@@ -207,7 +210,7 @@ void CMiniMapTexture::Update(const float UNUSED(deltaRealTime))
 	}
 }
 
-void CMiniMapTexture::Render(Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+void CMiniMapTexture::Render(Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	const CTerrain* terrain = g_Game->GetWorld()->GetTerrain();
 	if (!terrain)
@@ -223,7 +226,7 @@ void CMiniMapTexture::Render(Renderer::Backend::GL::CDeviceCommandContext* devic
 }
 
 void CMiniMapTexture::CreateTextures(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext, const CTerrain* terrain)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext, const CTerrain* terrain)
 {
 	DestroyTextures();
 
@@ -235,7 +238,7 @@ void CMiniMapTexture::CreateTextures(
 			Renderer::Backend::Sampler::Filter::LINEAR,
 			Renderer::Backend::Sampler::AddressMode::CLAMP_TO_EDGE);
 
-	Renderer::Backend::GL::CDevice* backendDevice = deviceCommandContext->GetDevice();
+	Renderer::Backend::IDevice* backendDevice = deviceCommandContext->GetDevice();
 
 	// Create terrain texture
 	m_TerrainTexture = backendDevice->CreateTexture2D("MiniMapTerrainTexture",
@@ -269,7 +272,7 @@ void CMiniMapTexture::DestroyTextures()
 }
 
 void CMiniMapTexture::RebuildTerrainTexture(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CTerrain* terrain)
 {
 	const u32 x = 0;
@@ -335,7 +338,7 @@ void CMiniMapTexture::RebuildTerrainTexture(
 }
 
 void CMiniMapTexture::RenderFinalTexture(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	// only update 2x / second
 	// (note: since units only move a few pixels per second on the minimap,
@@ -363,7 +366,7 @@ void CMiniMapTexture::RenderFinalTexture(
 	const float invTileMapSize = 1.0f / static_cast<float>(TERRAIN_TILE_SIZE * m_MapSize);
 	const float texCoordMax = m_TerrainTexture ? static_cast<float>(m_MapSize - 1) / m_TerrainTexture->GetWidth() : 1.0f;
 
-	Renderer::Backend::GL::CShaderProgram* shader;
+	Renderer::Backend::IShaderProgram* shader = nullptr;
 	CShaderTechniquePtr tech;
 
 	CShaderDefines baseDefines;
@@ -377,7 +380,10 @@ void CMiniMapTexture::RenderFinalTexture(
 	shader = tech->GetShader();
 
 	if (m_TerrainTexture)
-		shader->BindTexture(str_baseTex, m_TerrainTexture.get());
+	{
+		deviceCommandContext->SetTexture(
+			shader->GetBindingSlot(str_baseTex), m_TerrainTexture.get());
+	}
 
 	CMatrix3D baseTransform;
 	baseTransform.SetIdentity();
@@ -387,11 +393,13 @@ void CMiniMapTexture::RenderFinalTexture(
 	CMatrix3D terrainTransform;
 	terrainTransform.SetIdentity();
 	terrainTransform.Scale(texCoordMax, texCoordMax, 1.0f);
-	shader->Uniform(str_transform, baseTransform);
-	shader->Uniform(str_textureTransform, terrainTransform);
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), baseTransform.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_textureTransform), terrainTransform.AsFloatArray());
 
 	if (m_TerrainTexture)
-		DrawTexture(deviceCommandContext, shader);
+		DrawTexture(deviceCommandContext);
 	deviceCommandContext->EndPass();
 
 	pipelineStateDesc.blendState.enabled = true;
@@ -411,11 +419,15 @@ void CMiniMapTexture::RenderFinalTexture(
 	// Draw territory boundaries
 	CTerritoryTexture& territoryTexture = g_Game->GetView()->GetTerritoryTexture();
 
-	shader->BindTexture(str_baseTex, territoryTexture.GetTexture());
-	shader->Uniform(str_transform, baseTransform);
-	shader->Uniform(str_textureTransform, territoryTexture.GetMinimapTextureMatrix());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_baseTex), territoryTexture.GetTexture());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), baseTransform.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_textureTransform),
+		territoryTexture.GetMinimapTextureMatrix().AsFloatArray());
 
-	DrawTexture(deviceCommandContext, shader);
+	DrawTexture(deviceCommandContext);
 	deviceCommandContext->EndPass();
 
 	pipelineStateDesc.blendState.enabled = false;
@@ -424,11 +436,15 @@ void CMiniMapTexture::RenderFinalTexture(
 	deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 	deviceCommandContext->BeginPass();
 
-	shader->BindTexture(str_baseTex, losTexture.GetTexture());
-	shader->Uniform(str_transform, baseTransform);
-	shader->Uniform(str_textureTransform, losTexture.GetMinimapTextureMatrix());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_baseTex), losTexture.GetTexture());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), baseTransform.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_textureTransform),
+		losTexture.GetMinimapTextureMatrix().AsFloatArray());
 
-	DrawTexture(deviceCommandContext, shader);
+	DrawTexture(deviceCommandContext);
 
 	deviceCommandContext->EndPass();
 
@@ -439,7 +455,8 @@ void CMiniMapTexture::RenderFinalTexture(
 		tech->GetGraphicsPipelineStateDesc());
 	deviceCommandContext->BeginPass();
 	shader = tech->GetShader();
-	shader->Uniform(str_transform, baseTransform);
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), baseTransform.AsFloatArray());
 
 	CMatrix3D unitMatrix;
 	unitMatrix.SetIdentity();
@@ -448,7 +465,8 @@ void CMiniMapTexture::RenderFinalTexture(
 	unitMatrix.Scale(unitScale * 2.0f, unitScale * 2.0f, 1.0f);
 	// Offset the coordinates to [-1, 1].
 	unitMatrix.Translate(CVector3D(-1.0f, -1.0f, 0.0f));
-	shader->Uniform(str_transform, unitMatrix);
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), unitMatrix.AsFloatArray());
 
 	if (doUpdate)
 	{
@@ -561,26 +579,30 @@ void CMiniMapTexture::RenderFinalTexture(
 
 	if (m_EntitiesDrawn > 0)
 	{
-		Renderer::Backend::GL::CDeviceCommandContext::Rect scissorRect;
+		Renderer::Backend::IDeviceCommandContext::Rect scissorRect;
 		scissorRect.x = scissorRect.y = 1;
 		scissorRect.width = scissorRect.height = FINAL_TEXTURE_SIZE - 2;
 		deviceCommandContext->SetScissors(1, &scissorRect);
 
+		m_VertexArray.UploadIfNeeded(deviceCommandContext);
 		m_IndexArray.UploadIfNeeded(deviceCommandContext);
-		u8* base = m_VertexArray.Bind(deviceCommandContext);
-		const GLsizei stride = (GLsizei)m_VertexArray.GetStride();
 
-		shader->VertexPointer(
-			m_AttributePos.format, stride, base + m_AttributePos.offset);
-		shader->ColorPointer(
-			m_AttributeColor.format, stride, base + m_AttributeColor.offset);
-		shader->AssertPointersBound();
+		const uint32_t stride = m_VertexArray.GetStride();
+		const uint32_t firstVertexOffset = m_VertexArray.GetOffset() * stride;
 
+		deviceCommandContext->SetVertexAttributeFormat(
+			Renderer::Backend::VertexAttributeStream::POSITION,
+			m_AttributePos.format, firstVertexOffset + m_AttributePos.offset, stride, 0);
+		deviceCommandContext->SetVertexAttributeFormat(
+			Renderer::Backend::VertexAttributeStream::COLOR,
+			m_AttributeColor.format, firstVertexOffset + m_AttributeColor.offset, stride, 0);
+
+		deviceCommandContext->SetVertexBuffer(0, m_VertexArray.GetBuffer());
 		deviceCommandContext->SetIndexBuffer(m_IndexArray.GetBuffer());
+
 		deviceCommandContext->DrawIndexed(m_IndexArray.GetOffset(), m_EntitiesDrawn * 6, 0);
 
 		g_Renderer.GetStats().m_DrawCalls++;
-		CVertexBuffer::Unbind(deviceCommandContext);
 
 		deviceCommandContext->SetScissors(0, nullptr);
 	}

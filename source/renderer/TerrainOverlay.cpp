@@ -24,13 +24,13 @@
 #include "graphics/ShaderProgram.h"
 #include "graphics/Terrain.h"
 #include "lib/bits.h"
-#include "lib/ogl.h"
 #include "maths/MathUtil.h"
 #include "ps/CStrInternStatic.h"
 #include "ps/Game.h"
 #include "ps/Profile.h"
 #include "ps/World.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
+#include "renderer/backend/IDeviceCommandContext.h"
 #include "renderer/Renderer.h"
 #include "renderer/SceneRenderer.h"
 #include "renderer/TerrainRenderer.h"
@@ -65,7 +65,7 @@ ITerrainOverlay::~ITerrainOverlay()
 
 
 void ITerrainOverlay::RenderOverlaysBeforeWater(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (g_TerrainOverlayList.empty())
 		return;
@@ -78,7 +78,7 @@ void ITerrainOverlay::RenderOverlaysBeforeWater(
 }
 
 void ITerrainOverlay::RenderOverlaysAfterWater(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext, int cullGroup)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext, int cullGroup)
 {
 	if (g_TerrainOverlayList.empty())
 		return;
@@ -115,15 +115,11 @@ void TerrainOverlay::GetTileExtents(
 }
 
 void TerrainOverlay::RenderBeforeWater(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (!m_Terrain)
 		return; // should never happen, but let's play it safe
 
-#if CONFIG2_GLES
-	UNUSED2(deviceCommandContext);
-#warning TODO: implement TerrainOverlay::RenderOverlays for GLES
-#else
 	StartRender();
 
 	ssize_t min_i, min_j, max_i, max_j;
@@ -141,32 +137,22 @@ void TerrainOverlay::RenderBeforeWater(
 			ProcessTile(deviceCommandContext, m_i, m_j);
 
 	EndRender();
-#endif
 }
 
 void TerrainOverlay::RenderTile(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CColor& color, bool drawHidden)
 {
 	RenderTile(deviceCommandContext, color, drawHidden, m_i, m_j);
 }
 
 void TerrainOverlay::RenderTile(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CColor& color, bool drawHidden, ssize_t i, ssize_t j)
 {
 	// TODO: unnecessary computation calls has been removed but we should use
 	// a vertex buffer or a vertex shader with a texture.
 	// Not sure if it's possible on old OpenGL.
-
-#if CONFIG2_GLES
-	UNUSED2(deviceCommandContext);
-	UNUSED2(color);
-	UNUSED2(drawHidden);
-	UNUSED2(i);
-	UNUSED2(j);
-	#warning TODO: implement TerrainOverlay::RenderTile for GLES
-#else
 
 	CVector3D pos[2][2];
 	for (int di = 0; di < 2; ++di)
@@ -224,41 +210,37 @@ void TerrainOverlay::RenderTile(
 	deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 	deviceCommandContext->BeginPass();
 
-	Renderer::Backend::GL::CShaderProgram* overlayShader = overlayTech->GetShader();
+	Renderer::Backend::IShaderProgram* overlayShader = overlayTech->GetShader();
 
-	overlayShader->Uniform(str_transform, g_Renderer.GetSceneRenderer().GetViewCamera().GetViewProjection());
-	overlayShader->Uniform(str_color, color);
+	const CMatrix3D transform =
+		g_Renderer.GetSceneRenderer().GetViewCamera().GetViewProjection();
+	deviceCommandContext->SetUniform(
+		overlayShader->GetBindingSlot(str_transform), transform.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		overlayShader->GetBindingSlot(str_color), color.AsFloatArray());
 
-	overlayShader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, vertices.data());
-	overlayShader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, 0, 0);
+
+	deviceCommandContext->SetVertexBufferData(0, vertices.data());
 
 	deviceCommandContext->Draw(0, vertices.size() / 3);
 
 	deviceCommandContext->EndPass();
-#endif
 }
 
 void TerrainOverlay::RenderTileOutline(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CColor& color, bool drawHidden)
 {
 	RenderTileOutline(deviceCommandContext, color, drawHidden, m_i, m_j);
 }
 
 void TerrainOverlay::RenderTileOutline(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CColor& color, bool drawHidden, ssize_t i, ssize_t j)
 {
-#if CONFIG2_GLES
-	UNUSED2(deviceCommandContext);
-	UNUSED2(color);
-	UNUSED2(drawHidden);
-	UNUSED2(i);
-	UNUSED2(j);
-	#warning TODO: implement TerrainOverlay::RenderTileOutline for GLES
-#else
-
 	std::vector<float> vertices;
 #define ADD(i, j) \
 	m_Terrain->CalcPosition(i, j, position); \
@@ -293,19 +275,24 @@ void TerrainOverlay::RenderTileOutline(
 	deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 	deviceCommandContext->BeginPass();
 
-	Renderer::Backend::GL::CShaderProgram* overlayShader = overlayTech->GetShader();
+	Renderer::Backend::IShaderProgram* overlayShader = overlayTech->GetShader();
 
-	overlayShader->Uniform(str_transform, g_Renderer.GetSceneRenderer().GetViewCamera().GetViewProjection());
-	overlayShader->Uniform(str_color, color);
+	const CMatrix3D transform =
+		g_Renderer.GetSceneRenderer().GetViewCamera().GetViewProjection();
+	deviceCommandContext->SetUniform(
+		overlayShader->GetBindingSlot(str_transform), transform.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		overlayShader->GetBindingSlot(str_color), color.AsFloatArray());
 
-	overlayShader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, vertices.data());
-	overlayShader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT, 0, 0, 0);
+
+	deviceCommandContext->SetVertexBufferData(0, vertices.data());
 
 	deviceCommandContext->Draw(0, vertices.size() / 3);
 
 	deviceCommandContext->EndPass();
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -318,7 +305,7 @@ TerrainTextureOverlay::TerrainTextureOverlay(float texelsPerTile, int priority) 
 TerrainTextureOverlay::~TerrainTextureOverlay() = default;
 
 void TerrainTextureOverlay::RenderAfterWater(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext, int cullGroup)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext, int cullGroup)
 {
 	CTerrain* terrain = g_Game->GetWorld()->GetTerrain();
 

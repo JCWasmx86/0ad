@@ -1,5 +1,5 @@
 # Translation template for 0 A.D. — Empires Ascendant.
-# Copyright (C) 2021 Wildfire Games
+# Copyright (C) 2022 Wildfire Games
 # This file is distributed under the same license as the 0 A.D. — Empires Ascendant
 # project.
 # Translators:
@@ -27,7 +27,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2021-08-30 07:08+0000\n"
+"POT-Creation-Date: 2022-03-21 08:21+0000\n"
 "PO-Revision-Date: 2014-06-19 17:48+0000\n"
 "Last-Translator: Yuan Chang <daan0014119@gmail.com>, 2021-2022\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wildfire-games/0ad/language/zh_TW/)\n"
@@ -37,46 +37,46 @@ msgstr ""
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: gui/gamesettings/attributes/PlayerName.js:113
+#: gui/gamesettings/attributes/PlayerName.js:133
 #, javascript-format
 msgid "%(playerName)s %(romanNumber)s"
 msgstr "%(playerName)s %(romanNumber)s"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:57
+#: gui/gamesettings/attributes/TeamPlacement.js:55
 msgctxt "team placement"
 msgid "Circle"
 msgstr "圓環"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:58
+#: gui/gamesettings/attributes/TeamPlacement.js:56
 msgid ""
 "Allied players are grouped and placed with opposing players on one circle "
 "spanning the map."
 msgstr "所有玩家在地圖上將會被放置成一個圓圈，而同盟玩家將會被安排在附近。"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:62
+#: gui/gamesettings/attributes/TeamPlacement.js:60
 msgctxt "team placement"
 msgid "Line"
 msgstr "直線"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:63
+#: gui/gamesettings/attributes/TeamPlacement.js:61
 msgid "Allied players are placed in a linear pattern."
 msgstr "同盟玩家在地圖上被放置呈一直線。"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:67
+#: gui/gamesettings/attributes/TeamPlacement.js:65
 msgctxt "team placement"
 msgid "Random Group"
 msgstr "隨機分隊"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:68
+#: gui/gamesettings/attributes/TeamPlacement.js:66
 msgid "Allied players are grouped, but otherwise placed randomly on the map."
 msgstr "同盟玩家在地圖上會被安排在附近，而其他玩家則被隨機放置。"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:72
+#: gui/gamesettings/attributes/TeamPlacement.js:70
 msgctxt "team placement"
 msgid "Stronghold"
 msgstr "要塞"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:73
+#: gui/gamesettings/attributes/TeamPlacement.js:71
 msgid "Allied players are grouped in one random place of the map."
 msgstr "同盟玩家會被安排在附近，但在地圖上的位置是隨機的。"
 
@@ -90,7 +90,7 @@ msgstr "確定"
 
 #: gui/gamesetup/Pages/AIConfigPage/AIDescription.js:30
 msgid "AI will be disabled for this player."
-msgstr "此玩家的 AI 將被停用 。"
+msgstr "此玩家的 AI 將被停用。"
 
 #: gui/gamesetup/Pages/AIConfigPage/Controls/AIBehavior.js:29
 msgid "AI Behavior"
@@ -162,16 +162,16 @@ msgstr "AI：%(ai)s"
 msgid "Unassigned"
 msgstr "未指派"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:71
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:90
 msgid "Choose the civilization for this player."
 msgstr "為此玩家選擇文明。"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:74
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:93
 msgctxt "civilization"
 msgid "Random"
 msgstr "隨機"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:80
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:99
 msgid "Picks one civilization at random when the game starts."
 msgstr "遊戲開始時隨機挑選一個文明。"
 
@@ -231,7 +231,7 @@ msgstr "作弊秘技"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Cheats.js:38
 msgid "Toggle the usability of cheats."
-msgstr "允許/禁用 作弊祕技。"
+msgstr "切換使用作弊祕技。"
 
 #. Translation: Make sure to differentiate between the revealed map and
 #. explored map
@@ -322,7 +322,7 @@ msgid "Do not add treasures to the map."
 msgstr "地圖上不出現寶藏"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:25
-msgid "World population"
+msgid "World Population"
 msgstr "世界人口"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:28
@@ -600,11 +600,11 @@ msgstr[0] "%(minutes)s 分鐘"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:38
 msgid "Wonder Duration"
-msgstr "奇觀持續時間"
+msgstr "世界奇觀持續時間"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/WonderDuration.js:41
 msgid "Minutes until the player has achieved Wonder Victory"
-msgstr "玩家獲得奇觀勝利前的倒數分鐘數"
+msgstr "玩家獲得世界奇觀勝利前的分鐘數"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/CancelButton.js:36
 msgid "Back"
@@ -907,7 +907,7 @@ msgstr "伺服器名稱："
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):112
 msgid "Server Password:"
-msgstr "伺服器密碼:"
+msgstr "伺服器密碼："
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):128
 msgid "Use STUN to work around firewalls"
@@ -1745,7 +1745,7 @@ msgid ""
 " Livy, describing the aftermath of the Battle of Cannae, where Hannibal "
 "inflicted the greatest defeat on the Romans in all their history (“History "
 "of Rome”, XXII. 51)"
-msgstr "「有些人被發現活著躺在那裡，大腿和肌腱被割破，露出脖子和喉嚨，並命令征服者吸乾殘餘的血液。其他人的頭埋在地下挖的洞裡。 這些坑顯然是他們自己挖的。」\n— 李維，描述坎尼戰役的後果，漢尼拔在羅馬人的歷史上造成了最大的失敗（《羅馬史》，第二十二章，51）"
+msgstr "「有些人被發現活著躺在那裡，大腿和肌腱被割破，露出脖子和喉嚨，並命令征服者吸乾殘餘的血液。其他人的頭埋在地下挖的洞裡。這些坑顯然是他們自己挖的。」\n— 李維，描述坎尼戰役的後果，漢尼拔在羅馬人的歷史上造成了最大的失敗（《羅馬史》，第二十二章，51）"
 
 #: gui/text/quotes.txt:115
 msgid ""
@@ -1969,7 +1969,7 @@ msgid ""
 " and he volunteered to pay fifty.” \\n— Plutarch, who mentions later that "
 "Caesar got his money back and had his captors crucified (“Parallel Lives”, "
 "“Caesar”, sec. 2)"
-msgstr "「當海盜向他索要二十個人才的贖金時，凱撒大笑起來。 他說，他們不知道被他們抓獲的是誰，他自願支付了五十。」\n— 普魯塔克，後來提到凱撒收回了他的錢並把綁架者釘在了十字架上（《希臘羅馬名人傳》，《凱撒》，第 2 節）"
+msgstr "「當海盜向他索要二十個人才的贖金時，凱撒大笑起來。他說，他們不知道被他們抓獲的是誰，他自願支付了五十。」\n— 普魯塔克，後來提到凱撒收回了他的錢並把綁架者釘在了十字架上（《希臘羅馬名人傳》，《凱撒》，第 2 節）"
 
 #: gui/text/quotes.txt:147
 msgid ""
@@ -2044,7 +2044,7 @@ msgid ""
 "all cities, nations, and authorities must, like men, meet their doom.” \\n— "
 "Polybius, eyewitness to the destruction of Carthage (“Histories”, XXXVIII. "
 "22)"
-msgstr "「西庇阿\\[埃米利安努斯]，當他看著這座城市\\[迦太基]完全滅亡和徹底毀滅的最後陣痛時，據說他為他的敵人流下了眼淚並公開哭泣。 並意識到所有城市、國家和當局都必須像人一樣，迎接他們的厄運。」\n— 波利比烏斯，迦太基毀滅的目擊者（《歷史》，第三十八章，22）"
+msgstr "「西庇阿\\[埃米利安努斯]，當他看著這座城市\\[迦太基]完全滅亡和徹底毀滅的最後陣痛時，據說他為他的敵人流下了眼淚並公開哭泣。並意識到所有城市、國家和當局都必須像人一樣，迎接他們的厄運。」\n— 波利比烏斯，迦太基毀滅的目擊者（《歷史》，第三十八章，22）"
 
 #: gui/text/quotes.txt:155
 msgid ""
@@ -2244,7 +2244,7 @@ msgid ""
 "Tiberius Gracchus, advocating for land reform to the benefit of homeless and"
 " unemployed veterans whose lands had often been bought up while they were on"
 " campaign. (Plutarch, “Parallel Lives”, “Tiberius Gracchus”, 9.4–5)"
-msgstr "「義大利的野獸有待退縮的洞穴，但為她的事業灑血的勇敢的退伍軍人只剩下空氣和光線。 他們與妻子和孩子無家可歸。」\n— 提貝里烏斯．格拉古，提倡土地改革，以使無家可歸和失業的老兵受益，他們的土地在戰役期間經常被收買（普魯塔克，《希臘羅馬名人傳》，《提貝里烏斯．格拉古》，9.4–5）"
+msgstr "「義大利的野獸有待退縮的洞穴，但為她的事業灑血的勇敢的退伍軍人只剩下空氣和光線。他們與妻子和孩子無家可歸。」\n— 提貝里烏斯．格拉古，提倡土地改革，以使無家可歸和失業的老兵受益，他們的土地在戰役期間經常被收買（普魯塔克，《希臘羅馬名人傳》，《提貝里烏斯．格拉古》，9.4–5）"
 
 #: gui/text/quotes.txt:182
 msgid ""
@@ -2375,4 +2375,4 @@ msgstr "「我的男人變成了女人，而我的女人變成了男人！」\n�
 msgid ""
 "“For a thinking man is where Wisdom is at home.” \\n— Zoroaster, founder of "
 "the Zoroastrian religion (“Ahunuvaiti Gatha”, yasna 30.9)"
-msgstr "「因為有思想的人就是智慧之所在。」\n— 瑣羅亞斯德，祆教信仰的創始者（《波斯古經》，亞斯納 30.9）"
+msgstr "「對於有思想的人就是智慧之所在。」\n— 瑣羅亞斯德，祆教信仰的創始者（《波斯古經》，亞斯納 30.9）"

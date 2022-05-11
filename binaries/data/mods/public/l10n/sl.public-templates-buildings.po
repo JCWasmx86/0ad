@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-10 20:43+0000\n"
 "PO-Revision-Date: 2014-06-19 17:54+0000\n"
 "Last-Translator: Pier Paolo Pasolini <pppasolini.boa@gmail.com>, 2018\n"
 "Language-Team: Slovenian (http://www.transifex.com/wildfire-games/0ad/language/sl/)\n"
@@ -440,7 +440,7 @@ msgid "Namel"
 msgstr "Namel"
 
 #: simulation/templates/structures/cart/embassy.xml:19
-msgid "Train Mercenaries and research Mercenary technologies."
+msgid "Train Mercenaries."
 msgstr ""
 
 #: simulation/templates/structures/cart/embassy_celtic.xml:17
@@ -448,7 +448,7 @@ msgid "Celtic Embassy"
 msgstr "Keltska ambasada"
 
 #: simulation/templates/structures/cart/embassy_celtic.xml:18
-msgid "Train Celtic Mercenaries and research Mercenary technologies."
+msgid "Train Celtic Mercenaries."
 msgstr ""
 
 #: simulation/templates/structures/cart/embassy_iberian.xml:10
@@ -456,7 +456,7 @@ msgid "Iberian Embassy"
 msgstr "Iberska ambasada."
 
 #: simulation/templates/structures/cart/embassy_iberian.xml:11
-msgid "Train Iberian Mercenaries and research Mercenary technologies."
+msgid "Train Iberian Mercenaries."
 msgstr ""
 
 #: simulation/templates/structures/cart/embassy_italic.xml:17
@@ -464,7 +464,7 @@ msgid "Italic Embassy"
 msgstr ""
 
 #: simulation/templates/structures/cart/embassy_italic.xml:18
-msgid "Train Italic Mercenaries and research Mercenary technologies."
+msgid "Train Italic Mercenaries."
 msgstr ""
 
 #: simulation/templates/structures/cart/farmstead.xml:8
@@ -563,18 +563,18 @@ msgstr "Koča"
 msgid "Longhouse"
 msgstr "Dolga hiša"
 
-#: simulation/templates/structures/column_doric.xml:11
-#: simulation/templates/structures/column_doric_fallen.xml:11
-#: simulation/templates/structures/column_doric_fallen_b.xml:11
+#: simulation/templates/structures/column_doric.xml:12
+#: simulation/templates/structures/column_doric_fallen.xml:12
+#: simulation/templates/structures/column_doric_fallen_b.xml:12
 msgid "Column"
 msgstr "Steber"
 
-#: simulation/templates/structures/column_doric.xml:12
+#: simulation/templates/structures/column_doric.xml:13
 msgid "Doric Column"
 msgstr "Dorski steber"
 
-#: simulation/templates/structures/column_doric_fallen.xml:12
-#: simulation/templates/structures/column_doric_fallen_b.xml:12
+#: simulation/templates/structures/column_doric_fallen.xml:13
+#: simulation/templates/structures/column_doric_fallen_b.xml:13
 msgid "Fallen Doric Column"
 msgstr "Zrušen dorski steber"
 
@@ -640,19 +640,19 @@ msgstr ""
 msgid "Wheat Field"
 msgstr "Pšenično polje"
 
-#: simulation/templates/structures/han/academy.xml:28
+#: simulation/templates/structures/han/academy.xml:27
 msgid "Imperial Academy"
 msgstr ""
 
-#: simulation/templates/structures/han/academy.xml:29
+#: simulation/templates/structures/han/academy.xml:28
 msgid "Dìguó Xuéyuàn"
 msgstr ""
 
-#: simulation/templates/structures/han/academy.xml:31
+#: simulation/templates/structures/han/academy.xml:30
 msgid "Train Champions and research their technologies."
 msgstr ""
 
-#: simulation/templates/structures/han/academy.xml:32
+#: simulation/templates/structures/han/academy.xml:31
 msgid "Academy"
 msgstr ""
 
@@ -760,22 +760,22 @@ msgstr ""
 msgid "Jíshì"
 msgstr ""
 
-#: simulation/templates/structures/han/ministry.xml:37
+#: simulation/templates/structures/han/ministry.xml:36
 msgid "Imperial Ministry"
 msgstr ""
 
-#: simulation/templates/structures/han/ministry.xml:38
+#: simulation/templates/structures/han/ministry.xml:37
 msgid "Guān Shǔ"
 msgstr ""
 
-#: simulation/templates/structures/han/ministry.xml:40
+#: simulation/templates/structures/han/ministry.xml:39
 msgid "ImperialMinistry"
 msgstr ""
 
-#: simulation/templates/structures/han/ministry.xml:41
+#: simulation/templates/structures/han/ministry.xml:40
 msgid ""
-"Train the Nine Ministers. Research a powerful suite of Administrative "
-"technologies."
+"Train the Nine Ministers. Territory root. Research a powerful suite of "
+"Administrative technologies."
 msgstr ""
 
 #: simulation/templates/structures/han/outpost.xml:5
@@ -786,7 +786,7 @@ msgstr ""
 #: simulation/templates/structures/han/palisades_long.xml:4
 #: simulation/templates/structures/han/palisades_medium.xml:4
 #: simulation/templates/structures/han/palisades_short.xml:4
-#: simulation/templates/structures/han/wallset_palisade.xml:4
+#: simulation/templates/structures/han/wallset_palisade.xml:5
 msgid "Bamboo Stockade"
 msgstr ""
 
@@ -1697,11 +1697,11 @@ msgstr ""
 msgid "Hieron tou Apollōnos Pythiou"
 msgstr ""
 
-#: simulation/templates/structures/sele_colonnade.xml:11
+#: simulation/templates/structures/sele_colonnade.xml:12
 msgid "Colonnade"
 msgstr ""
 
-#: simulation/templates/structures/sele_colonnade.xml:12
+#: simulation/templates/structures/sele_colonnade.xml:13
 msgid "Corinthian Colonnade"
 msgstr ""
 
@@ -1740,6 +1740,14 @@ msgstr ""
 
 #: simulation/templates/structures/spart/gerousia.xml:24
 msgid "Train Heroes."
+msgstr ""
+
+#: simulation/templates/structures/spart/persian_stoa.xml:9
+msgid "\\\"Persian\\\" Stoa"
+msgstr ""
+
+#: simulation/templates/structures/spart/persian_stoa.xml:10
+msgid "Stoa Persikē"
 msgstr ""
 
 #: simulation/templates/structures/spart/syssiton.xml:23
@@ -1921,7 +1929,7 @@ msgstr "Stoa"
 #: simulation/templates/structures/cart/apartment.xml:26
 #: simulation/templates/structures/gaul/tavern.xml:22
 #: simulation/templates/structures/han/laozigate.xml:34
-#: simulation/templates/structures/han/ministry.xml:40
+#: simulation/templates/structures/han/ministry.xml:39
 #: simulation/templates/structures/iber/monument.xml:34
 #: simulation/templates/structures/maur/elephant_stable.xml:8
 #: simulation/templates/template_structure_civic_stoa.xml:30
@@ -1956,7 +1964,7 @@ msgstr "Oporišče"
 msgid "Build in own or neutral territory."
 msgstr ""
 
-#: simulation/templates/structures/han/wallset_palisade.xml:6
+#: simulation/templates/structures/han/wallset_palisade.xml:7
 #: simulation/templates/structures/wallset_palisade.xml:4
 #: simulation/templates/structures/wallset_palisade.xml:6
 #: simulation/templates/template_structure_defensive_palisade.xml:13
@@ -1964,7 +1972,7 @@ msgstr ""
 msgid "Palisade"
 msgstr "Palisada"
 
-#: simulation/templates/structures/han/wallset_palisade.xml:5
+#: simulation/templates/structures/han/wallset_palisade.xml:6
 #: simulation/templates/structures/wallset_palisade.xml:5
 #: simulation/templates/template_structure_defensive_palisade.xml:15
 msgid "Wall off an area. Build in own or neutral territory."
@@ -2121,7 +2129,7 @@ msgid ""
 msgstr ""
 
 #: simulation/templates/structures/gaul/assembly.xml:31
-#: simulation/templates/structures/han/academy.xml:32
+#: simulation/templates/structures/han/academy.xml:31
 #: simulation/templates/structures/han/civil_centre_court.xml:19
 #: simulation/templates/structures/kush/pyramid_large.xml:29
 #: simulation/templates/structures/kush/temple_amun.xml:31

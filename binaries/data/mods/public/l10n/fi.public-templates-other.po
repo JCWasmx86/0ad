@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-02-28 08:09+0000\n"
+"POT-Creation-Date: 2022-04-10 20:43+0000\n"
 "PO-Revision-Date: 2014-06-19 17:54+0000\n"
-"Last-Translator: Oi Suomi On! <oisuomion@protonmail.com>, 2022\n"
+"Last-Translator: Matti Tuhola, 2021-2022\n"
 "Language-Team: Finnish (http://www.transifex.com/wildfire-games/0ad/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -635,13 +635,9 @@ msgstr "Viikuna"
 msgid "Grapes"
 msgstr "Rypäleet"
 
-#: simulation/templates/gaia/fruit/olive.xml:7
-msgid "Olive"
-msgstr "Oliivi"
-
 #: simulation/templates/gaia/ruins/column_doric.xml:8
-msgid "Ancient Ruins"
-msgstr "Muinaiset rauniot"
+msgid "Doric Column"
+msgstr "Doorilainen pylväs"
 
 #: simulation/templates/gaia/ruins/metal_statue_isis.xml:9
 msgid "Isis Cult Image"
@@ -661,8 +657,8 @@ msgid "Celtic Standing Stone"
 msgstr "Kelttiläinen kivipaasi"
 
 #: simulation/templates/gaia/ruins/stone_statues_egyptian.xml:8
-msgid "Ptolemaic Egyptian Statues"
-msgstr "Ptolemaiolaisen Egyptin patsaat"
+msgid "Egyptian Statue"
+msgstr "Egyptiläinen patsas"
 
 #: simulation/templates/gaia/ruins/stone_statues_kushite.xml:8
 msgid "Kushite Statue"
@@ -687,8 +683,8 @@ msgid "Ammon-Ra Ram Statue"
 msgstr "Ammon-Ra:n pässipatsas"
 
 #: simulation/templates/gaia/ruins/stone_statues_roman.xml:8
-msgid "Roman Statues"
-msgstr "Rooman patsaat"
+msgid "Roman Statue"
+msgstr "Roomalainen patsas"
 
 #: simulation/templates/gaia/ruins/unfinished_greek_temple.xml:8
 msgid "Unfinished Greek Temple"
@@ -919,6 +915,10 @@ msgstr "Unkarin tammi"
 msgid "Large Oak"
 msgstr "Iso tammi"
 
+#: simulation/templates/gaia/tree/olive.xml:7
+msgid "Olive"
+msgstr "Oliivi"
+
 #: simulation/templates/gaia/tree/palm_areca.xml:4
 msgid "Areca Palm"
 msgstr "Betelpalmu"
@@ -989,7 +989,7 @@ msgstr "Toona"
 msgid "Rainforest Tree"
 msgstr "Sademetsän puu"
 
-#: simulation/templates/mixins/builder.xml:39
+#: simulation/templates/mixins/builder.xml:40
 msgid "Builder"
 msgstr "Rakentaja"
 
@@ -1008,6 +1008,14 @@ msgstr "Pyhäkkö"
 #: simulation/templates/mixins/trading_post.xml:8
 msgid "Trading Post"
 msgstr "Kauppapaikka"
+
+#: simulation/templates/obstructors/placement.xml:10
+msgid "Obstructor"
+msgstr "Este"
+
+#: simulation/templates/obstructors/placement.xml:12
+msgid "Placement obstructor to prevent construction but not movement"
+msgstr "Sijoituseste, joka estää rakentamisen, mutta ei liikkumista"
 
 #: simulation/templates/skirmish/structures/default_house_10.xml:5
 msgid ""
@@ -1038,7 +1046,7 @@ msgstr "Taistelulinja"
 msgid "Requires at least 4 Soldiers or Siege engines."
 msgstr "Vaatii vähintään 4 sotilasta tai piirityskonetta."
 
-#: simulation/templates/special/formations/box.xml:11
+#: simulation/templates/special/formations/box.xml:12
 msgid "Box"
 msgstr "Laatikko"
 
@@ -1078,7 +1086,7 @@ msgstr "Vain jalkaväkihopliitteja, vähintään 10 vaaditaan."
 msgid "Phalanx"
 msgstr "Falangi"
 
-#: simulation/templates/special/formations/scatter.xml:7
+#: simulation/templates/special/formations/scatter.xml:8
 msgid "Scatter"
 msgstr "Hajaantua"
 
@@ -1098,7 +1106,7 @@ msgstr "Vain jalkaväen peitsimiehiä, vähintään 16 vaaditaan."
 msgid "Syntagma"
 msgstr "Syntagma"
 
-#: simulation/templates/special/formations/testudo.xml:69
+#: simulation/templates/special/formations/testudo.xml:70
 msgid "Testudo"
 msgstr "Testudo"
 

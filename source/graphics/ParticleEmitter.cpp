@@ -33,7 +33,7 @@ CParticleEmitter::CParticleEmitter(const CParticleEmitterTypePtr& type) :
 	m_Type(type), m_Active(true), m_NextParticleIdx(0), m_EmissionRoundingError(0.f),
 	m_LastUpdateTime(type->m_Manager.GetCurrentTime()),
 	m_IndexArray(false),
-	m_VertexArray(Renderer::Backend::GL::CBuffer::Type::VERTEX, true),
+	m_VertexArray(Renderer::Backend::IBuffer::Type::VERTEX, true),
 	m_LastFrameNumber(-1)
 {
 	// If we should start with particles fully emitted, pretend that we
@@ -175,51 +175,59 @@ void CParticleEmitter::PrepareForRendering()
 }
 
 void CParticleEmitter::Bind(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IShaderProgram* shader)
 {
 	m_Type->m_Texture->UploadBackendTextureIfNeeded(deviceCommandContext);
 
 	CLOSTexture& los = g_Renderer.GetSceneRenderer().GetScene().GetLOSTexture();
-	shader->BindTexture(str_losTex, los.GetTextureSmooth());
-	shader->Uniform(str_losTransform, los.GetTextureMatrix()[0], los.GetTextureMatrix()[12], 0.f, 0.f);
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_losTex), los.GetTextureSmooth());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_losTransform),
+		los.GetTextureMatrix()[0], los.GetTextureMatrix()[12]);
 
 	const CLightEnv& lightEnv = g_Renderer.GetSceneRenderer().GetLightEnv();
-	shader->Uniform(str_sunColor, lightEnv.m_SunColor);
-	shader->Uniform(str_fogColor, lightEnv.m_FogColor);
-	shader->Uniform(str_fogParams, lightEnv.m_FogFactor, lightEnv.m_FogMax, 0.f, 0.f);
 
-	shader->BindTexture(str_baseTex, m_Type->m_Texture->GetBackendTexture());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_sunColor), lightEnv.m_SunColor.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_fogColor), lightEnv.m_FogColor.AsFloatArray());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_fogParams), lightEnv.m_FogFactor, lightEnv.m_FogMax);
+
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_baseTex), m_Type->m_Texture->GetBackendTexture());
 }
 
 void CParticleEmitter::RenderArray(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (m_Particles.empty())
 		return;
 
+	m_VertexArray.UploadIfNeeded(deviceCommandContext);
 	m_IndexArray.UploadIfNeeded(deviceCommandContext);
-	u8* base = m_VertexArray.Bind(deviceCommandContext);
 
-	GLsizei stride = (GLsizei)m_VertexArray.GetStride();
+	const uint32_t stride = m_VertexArray.GetStride();
+	const uint32_t firstVertexOffset = m_VertexArray.GetOffset() * stride;
 
-	shader->VertexPointer(
-		m_AttributePos.format, stride, base + m_AttributePos.offset);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		m_AttributePos.format, firstVertexOffset + m_AttributePos.offset, stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::COLOR,
+		m_AttributeColor.format, firstVertexOffset + m_AttributeColor.offset, stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		m_AttributeUV.format, firstVertexOffset + m_AttributeUV.offset, stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV1,
+		m_AttributeAxis.format, firstVertexOffset + m_AttributeAxis.offset, stride, 0);
 
-	// Pass the sin/cos axis components as texcoords for no particular reason
-	// other than that they fit. (Maybe this should be glVertexAttrib* instead?)
-	shader->TexCoordPointer(
-		GL_TEXTURE0, m_AttributeUV.format, stride, base + m_AttributeUV.offset);
-	shader->TexCoordPointer(
-		GL_TEXTURE1, m_AttributeAxis.format, stride, base + m_AttributeAxis.offset);
-
-	shader->ColorPointer(
-		m_AttributeColor.format, stride, base + m_AttributeColor.offset);
-
-	shader->AssertPointersBound();
-
+	deviceCommandContext->SetVertexBuffer(0, m_VertexArray.GetBuffer());
 	deviceCommandContext->SetIndexBuffer(m_IndexArray.GetBuffer());
+
 	deviceCommandContext->DrawIndexed(m_IndexArray.GetOffset(), m_Particles.size() * 6, 0);
 
 	g_Renderer.GetStats().m_DrawCalls++;

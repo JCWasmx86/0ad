@@ -23,7 +23,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-07 08:09+0000\n"
+"POT-Creation-Date: 2022-05-02 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:51+0000\n"
 "Last-Translator: Yuan Chang <daan0014119@gmail.com>, 2021-2022\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wildfire-games/0ad/language/zh_TW/)\n"
@@ -52,7 +52,7 @@ msgstr "%(hotkeyName)s的快捷鍵未指定"
 #: gui/common/color.js:196
 #, javascript-format
 msgid "Press %(hotkey)s to autocomplete player names."
-msgstr "按 %(hotkey)s 以自動完成玩家名稱。"
+msgstr "按 %(hotkey)s 自動完成玩家名稱。"
 
 #: gui/common/color.js:198
 msgctxt "hotkey"
@@ -61,7 +61,7 @@ msgstr "Tab"
 
 #: gui/common/functions_global_object.js:53
 msgid "Loading Aborted"
-msgstr "已中止載入"
+msgstr "載入已中止"
 
 #: gui/common/functions_utility.js:42
 msgid "Gaia"
@@ -70,35 +70,35 @@ msgstr "大地之母"
 #: gui/common/functions_utility.js:280
 #, javascript-format
 msgid "Build: %(buildDate)s (%(revision)s)"
-msgstr "組建： %(buildDate)s (%(revision)s)"
+msgstr "組建：%(buildDate)s (%(revision)s)"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
 #: gui/common/gamedescription.js:68
 #, javascript-format
 msgid "%(playerName)s (%(civ)s, %(AIdescription)s)"
-msgstr "%(playerName)s (%(civ)s，%(AIdescription)s)"
+msgstr "%(playerName)s（%(civ)s，%(AIdescription)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
 #: gui/common/gamedescription.js:71
 #, javascript-format
 msgid "%(playerName)s (%(civ)s, %(AIdescription)s, %(state)s)"
-msgstr "%(playerName)s (%(civ)s，%(AIdescription)s，%(state)s)"
+msgstr "%(playerName)s（%(civ)s，%(AIdescription)s，%(state)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
 #: gui/common/gamedescription.js:77
 #, javascript-format
 msgid "%(playerName)s (%(AIdescription)s)"
-msgstr "%(playerName)s (%(AIdescription)s)"
+msgstr "%(playerName)s（%(AIdescription)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
 #: gui/common/gamedescription.js:80
 #, javascript-format
 msgid "%(playerName)s (%(AIdescription)s, %(state)s)"
-msgstr "%(playerName)s (%(AIdescription)s，%(state)s)"
+msgstr "%(playerName)s（%(AIdescription)s，%(state)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
@@ -119,14 +119,14 @@ msgstr "%(playerName)s（離線，%(state)s）"
 #: gui/common/gamedescription.js:100
 #, javascript-format
 msgid "%(playerName)s (%(civ)s)"
-msgstr "%(playerName)s (%(civ)s)"
+msgstr "%(playerName)s（%(civ)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
 #: gui/common/gamedescription.js:103
 #, javascript-format
 msgid "%(playerName)s (%(civ)s, %(state)s)"
-msgstr "%(playerName)s (%(civ)s, %(state)s)"
+msgstr "%(playerName)s（%(civ)s，%(state)s）"
 
 #. Translation: Describe a player in a selected game, f.e. in the replay- or
 #. savegame menu
@@ -140,7 +140,7 @@ msgstr "%(playerName)s"
 #: gui/common/gamedescription.js:110
 #, javascript-format
 msgid "%(playerName)s (%(state)s)"
-msgstr "%(playerName)s (%(state)s)"
+msgstr "%(playerName)s（%(state)s）"
 
 #: gui/common/gamedescription.js:130
 msgid "Unknown Civilization"
@@ -221,7 +221,7 @@ msgstr "易受攻擊的英雄"
 
 #: gui/common/gamedescription.js:245
 msgid "Heroes cannot be garrisoned and they are vulnerable to raids."
-msgstr "英雄不能進駐，他們容易被襲擊。 "
+msgstr "英雄不能駐守，他們更容易被襲擊。"
 
 #: gui/common/gamedescription.js:251
 msgid "Locked Teams"
@@ -269,7 +269,7 @@ msgstr "已停用"
 
 #: gui/common/gamedescription.js:278
 msgid "For the first minute, other players will stay neutral."
-msgstr "在第一分鐘內，其他玩家將會保持中立。"
+msgstr "開始的一分鐘內，其他玩家將會保持中立。"
 
 #: gui/common/gamedescription.js:279
 #, javascript-format
@@ -284,7 +284,7 @@ msgstr "隨機地圖"
 
 #: gui/common/gamedescription.js:289
 msgid "Randomly select a map from the list."
-msgstr "從清單裡隨機選地圖"
+msgstr "從清單裡隨機選地圖。"
 
 #: gui/common/gamedescription.js:294
 msgid "Map Name"
@@ -305,11 +305,11 @@ msgstr "地圖大小"
 #: gui/common/gamedescription.js:324
 msgctxt "biome"
 msgid "Random Biome"
-msgstr "隨機的生物聚落"
+msgstr "隨機生物聚落"
 
 #: gui/common/gamedescription.js:325
 msgid "Randomly select a biome from the list."
-msgstr "從清單裡隨機選生物聚落"
+msgstr "從清單裡隨機選擇生物聚落。"
 
 #: gui/common/gamedescription.js:340
 msgid "Nomad Mode"
@@ -495,7 +495,7 @@ msgstr "安全大廳認證失敗。請從大廳加入。"
 
 #: gui/common/network.js:76
 msgid "Error: Server failed to allocate a unique client identifier."
-msgstr "錯誤：伺服器無法分配一個唯一的客戶端標識符。"
+msgstr "錯誤：伺服器無法分配一個唯一的客戶端識別碼。"
 
 #: gui/common/network.js:77
 msgid "Error: Client commands were ready for an unexpected game turn."
@@ -520,7 +520,7 @@ msgstr "找不到 STUN 目標。"
 #: gui/common/network.js:84
 #, javascript-format
 msgid "\\[Invalid value %(id)s]"
-msgstr "\\[無效的值 %(id)s]"
+msgstr "\\[無效數值 %(id)s]"
 
 #: gui/common/network.js:98
 msgid "Lost connection to the server."
@@ -532,7 +532,7 @@ msgstr "連線至伺服器失敗。"
 
 #: gui/common/network.js:101
 msgid "Disconnected"
-msgstr "已中斷連線"
+msgstr "已離線"
 
 #: gui/common/network.js:109
 msgid "Only the host can kick clients!"
@@ -601,7 +601,7 @@ msgstr "平衡的"
 #: gui/common/settings.js:156
 msgctxt "aiBehavior"
 msgid "Defensive"
-msgstr "防禦"
+msgstr "保守的"
 
 #: gui/common/settings.js:160
 msgctxt "aiBehavior"
@@ -611,7 +611,7 @@ msgstr "積極的"
 #: gui/common/settings.js:173
 msgctxt "map"
 msgid "Skirmish"
-msgstr "小規模戰鬥"
+msgstr "遭遇戰"
 
 #: gui/common/settings.js:174
 msgid ""
@@ -740,7 +740,7 @@ msgstr "%(captureLabel)s %(current)s / %(max)s"
 
 #: gui/common/tooltips.js:179
 msgid "Capture points:"
-msgstr "占領值： "
+msgstr "占領值："
 
 #: gui/common/tooltips.js:190
 #, javascript-format
@@ -756,7 +756,7 @@ msgstr "%(label)s\n%(details)s"
 
 #: gui/common/tooltips.js:211
 msgid "Resistance:"
-msgstr "抵抗："
+msgstr "抗性："
 
 #: gui/common/tooltips.js:222
 msgid "Damage:"
@@ -944,7 +944,7 @@ msgstr "%(attackType)s"
 #, javascript-format
 msgid ""
 "%(attackLabel)s: %(effects)s, %(range)s, %(rate)s%(statusEffects)s%(splash)s"
-msgstr "%(attackLabel)s: %(effects)s, %(range)s, %(rate)s%(statusEffects)s%(splash)s"
+msgstr "%(attackLabel)s：%(effects)s，%(range)s，%(rate)s%(statusEffects)s%(splash)s"
 
 #: gui/common/tooltips.js:477
 msgid "Attack:"
@@ -1043,7 +1043,7 @@ msgstr "%(label)s：%(value)s"
 
 #: gui/common/tooltips.js:616
 msgid "Projectile Limit"
-msgstr "砲彈限制"
+msgstr "彈藥限制"
 
 #: gui/common/tooltips.js:621
 msgctxt "projectiles"
@@ -1053,7 +1053,7 @@ msgstr "預設"
 #: gui/common/tooltips.js:626
 msgctxt "projectiles"
 msgid "Per Unit"
-msgstr "每單位"
+msgstr "每個單位"
 
 #: gui/common/tooltips.js:636
 msgid "Number of repairers:"
@@ -1163,12 +1163,12 @@ msgstr "%(resourceIcon)s %(minimum)s 到 %(resourceIcon)s %(maximum)s"
 #: gui/common/tooltips.js:941
 #, javascript-format
 msgid "Walls:  %(costs)s"
-msgstr "城牆： %(costs)s"
+msgstr "城牆：%(costs)s"
 
 #: gui/common/tooltips.js:942
 #, javascript-format
 msgid "Towers:  %(costs)s"
-msgstr "塔樓： %(costs)s"
+msgstr "塔樓：%(costs)s"
 
 #. Translation: Label in tooltip showing cost of a unit, structure or
 #. technology.
@@ -1351,7 +1351,7 @@ msgstr "音樂總監"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[10].Subtitle
 msgid "Frame drum, darbuka, riq, toms"
-msgstr "框架鼓、darbuka、riq、toms"
+msgstr "框鼓、達不卡鼓、中東鈴鼓、筒鼓"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[11].Subtitle
 msgid "Guitar"
@@ -1383,7 +1383,7 @@ msgstr "中提琴、小提琴"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[1].Subtitle
 msgid "Additional music, percussion, djembe, sampling"
-msgstr "額外的音樂、打擊樂、非洲鼓、樣本"
+msgstr "額外的音樂、打擊樂、非洲鼓、收錄"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[2].Subtitle
 msgid "Additional music"
@@ -1399,7 +1399,7 @@ msgstr "大提琴"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[5].Subtitle
 msgid "Celtic harp"
-msgstr "塞爾特豎琴"
+msgstr "凱爾特豎琴"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[6].Subtitle
 msgid "Didgeridoo"
@@ -1444,7 +1444,7 @@ msgstr "波斯人"
 
 #: gui/credits/texts/audio.jsonContent[3].Title
 msgid "Voices"
-msgstr "聲音"
+msgstr "語音"
 
 #: gui/credits/texts/audio.jsonTitle
 msgid "Audio"
@@ -1453,7 +1453,7 @@ msgstr "音訊"
 #: gui/credits/texts/balancing.jsonContent[0].Subtitle
 #: gui/credits/texts/history.jsonContent[0].Subtitle
 msgid "Head"
-msgstr "前端"
+msgstr "領導"
 
 #: gui/credits/texts/balancing.jsonTitle
 msgid "Balancing"
@@ -1475,7 +1475,7 @@ msgstr "Pledgie 宣傳 2"
 msgid ""
 "Indiegogo 2013 campaign\n"
 "More than 1000 donators (!), including:"
-msgstr "Indiegogo 2013 活動\n多於 1000 筆捐款 (!)，包含了："
+msgstr "Indiegogo 2013 活動\n超過 1000 名捐贈者 (!)，包含了："
 
 #: gui/credits/texts/donators.jsonTitle
 msgid "Donors"
@@ -1483,7 +1483,7 @@ msgstr "捐贈者"
 
 #: gui/credits/texts/history.jsonTitle
 msgid "History References"
-msgstr "歷史參考資料"
+msgstr "歷史參考"
 
 #: gui/credits/texts/maps.jsonContent[0].Title
 msgid "Map Making"
@@ -1794,7 +1794,7 @@ msgstr "設定鏡頭跳躍 4"
 #: gui/hotkeys/spec/camera.jsonmapped_hotkeys.camera.camera.lastattackfocus.desc
 msgctxt "hotkey metadata"
 msgid "Focus the camera on the position of the last attack notification."
-msgstr "將鏡頭聚焦在最近一次攻擊通知的位置。 "
+msgstr "將鏡頭聚焦在最近一次攻擊通知的位置。"
 
 #: gui/hotkeys/spec/camera.jsonmapped_hotkeys.camera.camera.lastattackfocus.name
 msgctxt "hotkey metadata"
@@ -2089,7 +2089,7 @@ msgctxt "hotkey metadata"
 msgid ""
 "Custom hotkey to trigger exit-to-desktop. The native hotkeys (Alt+F4 / Cmd+Q"
 " / etc.) are always active."
-msgstr "自訂快捷鍵來觸發「退回桌面」，本機熱鍵（Alt+F4 / Cmd+Q / 等等）始終處於有效狀態。 "
+msgstr "自訂快捷鍵來觸發「退回桌面」，本機熱鍵（Alt+F4 / Cmd+Q / 等等）始終處於有效狀態。"
 
 #: gui/hotkeys/spec/engine.jsonmapped_hotkeys.general.exit.name
 msgctxt "hotkey metadata"
@@ -2432,22 +2432,22 @@ msgstr "離開塔樓"
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.massbarter.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to barter bunch of resources."
-msgstr "批量資源交換的指示鍵。"
+msgstr "批次資源交換的指示鍵。"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.massbarter.name
 msgctxt "hotkey metadata"
 msgid "Mass barter"
-msgstr "批量交換"
+msgstr "批次交換"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.masstribute.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to tribute bunch of resources."
-msgstr "批量資源進貢的指示鍵。"
+msgstr "批次資源進貢的指示鍵。"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.masstribute.name
 msgctxt "hotkey metadata"
 msgid "Mass tribute"
-msgstr "批量進貢"
+msgstr "批次進貢"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.move.desc
 msgctxt "hotkey metadata"
@@ -3077,305 +3077,305 @@ msgctxt "hotkey metadata"
 msgid "Cancel selection"
 msgstr "取消選取"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.desc
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0 to the current selection."
-msgstr "增加控制隊伍 0 到當前選擇中。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.name
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0"
-msgstr "增加控制隊伍 0"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.1.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1 to the current selection."
-msgstr "增加控制隊伍 1 到當前選擇中。"
+msgstr "增加編隊 1 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.1.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1"
-msgstr "增加控制隊伍 1"
+msgstr "增加編隊 1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.desc
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10 to the current selection."
+msgstr "增加編隊 10 到當前選擇中。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.name
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10"
+msgstr "增加編隊 10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.2.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 2 to the current selection."
-msgstr "增加控制隊伍 2 到當前選擇中。"
+msgstr "增加編隊 2 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.2.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 2"
-msgstr "增加控制隊伍 2"
+msgstr "增加編隊 2"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.3.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 3 to the current selection."
-msgstr "增加控制隊伍 3 到當前選擇中。"
+msgstr "增加編隊 3 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.3.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 3"
-msgstr "增加控制隊伍 3"
+msgstr "增加編隊 3"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.4.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 4 to the current selection."
-msgstr "增加控制隊伍 4 到當前選擇中。"
+msgstr "增加編隊 4 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.4.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 4"
-msgstr "增加控制隊伍 4"
+msgstr "增加編隊 4"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.5.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 5 to the current selection."
-msgstr "增加控制隊伍 5 到當前選擇中。"
+msgstr "增加編隊 5 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.5.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 5"
-msgstr "增加控制隊伍 5"
+msgstr "增加編隊 5"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.6.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 6 to the current selection."
-msgstr "增加控制隊伍 6 到當前選擇中。"
+msgstr "增加編隊 6 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.6.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 6"
-msgstr "增加控制隊伍 6"
+msgstr "增加編隊 6"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.7.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 7 to the current selection."
-msgstr "增加控制隊伍 7 到當前選擇中。"
+msgstr "增加編隊 7 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.7.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 7"
-msgstr "增加控制隊伍 7"
+msgstr "增加編隊 7"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.8.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 8 to the current selection."
-msgstr "增加控制隊伍 8 到當前選擇中。"
+msgstr "增加編隊 8 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.8.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 8"
-msgstr "增加控制隊伍 8"
+msgstr "增加編隊 8"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.9.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 9 to the current selection."
-msgstr "增加控制隊伍 9 到當前選擇中。"
+msgstr "增加編隊 9 到當前選擇中。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.9.name
 msgctxt "hotkey metadata"
 msgid "Add Control Group 9"
-msgstr "增加控制隊伍 9"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.desc
-msgctxt "hotkey metadata"
-msgid "Save current selection as Control Group 0."
-msgstr "儲存當前選擇成為控制隊伍 0。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.name
-msgctxt "hotkey metadata"
-msgid "Set Control Group 0"
-msgstr "設定控制隊伍 0"
+msgstr "增加編隊 9"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.1.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 1."
-msgstr "儲存當前選擇成為控制隊伍 1。"
+msgstr "儲存當前選擇成為編隊 1。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.1.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 1"
-msgstr "設定控制隊伍 1"
+msgstr "設定編隊 1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.desc
+msgctxt "hotkey metadata"
+msgid "Save current selection as Control Group 10."
+msgstr "儲存當前選擇成為編隊 10。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.name
+msgctxt "hotkey metadata"
+msgid "Set Control Group 10"
+msgstr "設定編隊 10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.2.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 2."
-msgstr "儲存當前選擇成為控制隊伍 2。"
+msgstr "儲存當前選擇成為編隊 2。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.2.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 2"
-msgstr "設定控制隊伍 2"
+msgstr "設定編隊 2"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.3.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 3."
-msgstr "儲存當前選擇成為控制隊伍 3。"
+msgstr "儲存當前選擇成為編隊 3。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.3.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 3"
-msgstr "設定控制隊伍 3"
+msgstr "設定編隊 3"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.4.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 4."
-msgstr "儲存當前選擇成為控制隊伍 4。"
+msgstr "儲存當前選擇成為編隊 4。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.4.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 4"
-msgstr "設定控制隊伍 4"
+msgstr "設定編隊 4"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.5.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 5."
-msgstr "儲存當前選擇成為控制隊伍 5。"
+msgstr "儲存當前選擇成為編隊 5。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.5.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 5"
-msgstr "設定控制隊伍 5"
+msgstr "設定編隊 5"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.6.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 6."
-msgstr "儲存當前選擇成為控制隊伍 6。"
+msgstr "儲存當前選擇成為編隊 6。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.6.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 6"
-msgstr "設定控制隊伍 6"
+msgstr "設定編隊 6"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.7.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 7."
-msgstr "儲存當前選擇成為控制隊伍 7。"
+msgstr "儲存當前選擇成為編隊 7。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.7.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 7"
-msgstr "設定控制隊伍 7"
+msgstr "設定編隊 7"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.8.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 8."
-msgstr "儲存當前選擇成為控制隊伍 8。"
+msgstr "儲存當前選擇成為編隊 8。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.8.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 8"
-msgstr "設定控制隊伍 8"
+msgstr "設定編隊 8"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.9.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 9."
-msgstr "儲存當前選擇成為控制隊伍 9。"
+msgstr "儲存當前選擇成為編隊 9。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.9.name
 msgctxt "hotkey metadata"
 msgid "Set Control Group 9"
-msgstr "設定控制隊伍 9"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.desc
-msgctxt "hotkey metadata"
-msgid "Change the current selection to Control Group 0."
-msgstr "更換當前選擇成為控制隊伍 0。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.name
-msgctxt "hotkey metadata"
-msgid "Select Control Group 0"
-msgstr "選擇控制隊伍 0"
+msgstr "設定編隊 9"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.1.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 1."
-msgstr "更換當前選擇成為控制隊伍 1。"
+msgstr "更換當前選擇成為編隊 1。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.1.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 1"
-msgstr "選擇控制隊伍 1"
+msgstr "選擇編隊 1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.desc
+msgctxt "hotkey metadata"
+msgid "Change the current selection to Control Group 10."
+msgstr "更換當前選擇成為編隊 10。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.name
+msgctxt "hotkey metadata"
+msgid "Select Control Group 10"
+msgstr "選擇編隊 10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.2.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 2."
-msgstr "更換當前選擇成為控制隊伍 2。"
+msgstr "更換當前選擇成為編隊 2。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.2.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 2"
-msgstr "選擇控制隊伍 2"
+msgstr "選擇編隊 2"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.3.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 3."
-msgstr "更換當前選擇成為控制隊伍 3。"
+msgstr "更換當前選擇成為編隊 3。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.3.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 3"
-msgstr "選擇控制隊伍 3"
+msgstr "選擇編隊 3"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.4.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 4."
-msgstr "更換當前選擇成為控制隊伍 4。"
+msgstr "更換當前選擇成為編隊 4。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.4.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 4"
-msgstr "選擇控制隊伍 4"
+msgstr "選擇編隊 4"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.5.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 5."
-msgstr "更換當前選擇成為控制隊伍 5。"
+msgstr "更換當前選擇成為編隊 5。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.5.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 5"
-msgstr "選擇控制隊伍 5"
+msgstr "選擇編隊 5"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.6.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 6."
-msgstr "更換當前選擇成為控制隊伍 6。"
+msgstr "更換當前選擇成為編隊 6。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.6.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 6"
-msgstr "選擇控制隊伍 6"
+msgstr "選擇編隊 6"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.7.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 7."
-msgstr "更換當前選擇成為控制隊伍 7。"
+msgstr "更換當前選擇成為編隊 7。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.7.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 7"
-msgstr "選擇控制隊伍 7"
+msgstr "選擇編隊 7"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.8.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 8."
-msgstr "更換當前選擇成為控制隊伍 8。"
+msgstr "更換當前選擇成為編隊 8。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.8.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 8"
-msgstr "選擇控制隊伍 8"
+msgstr "選擇編隊 8"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.9.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 9."
-msgstr "更換當前選擇成為控制隊伍 9。"
+msgstr "更換當前選擇成為編隊 9。"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.9.name
 msgctxt "hotkey metadata"
 msgid "Select Control Group 9"
-msgstr "選擇控制隊伍 9"
+msgstr "選擇編隊 9"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.idlebuilder.desc
 msgctxt "hotkey metadata"
@@ -3504,7 +3504,7 @@ msgstr "「%(label)s」"
 
 #: gui/loadgame/SavegameDeleter.js:53
 msgid "Saved game will be permanently deleted, are you sure?"
-msgstr "儲存的遊戲將永遠刪除，您是否確定？"
+msgstr "儲存的遊戲將永遠刪除，您確定嗎？"
 
 #: gui/loadgame/SavegameDeleter.js:54
 msgid "DELETE"
@@ -3538,7 +3538,7 @@ msgstr "載入"
 msgid ""
 "This savegame needs 0 A.D. version %(requiredVersion)s, while you are "
 "running version %(currentVersion)s."
-msgstr "這個存檔需要0 A.D. 版本 %(requiredVersion)s ，然而您執行的是 %(currentVersion)s 。"
+msgstr "這個存檔需要0 A.D. 版本 %(requiredVersion)s，然而您執行的是 %(currentVersion)s。"
 
 #: gui/loadgame/SavegameLoader.js:44
 msgid "This savegame needs an older version of 0 A.D."
@@ -3620,7 +3620,7 @@ msgstr "勝利："
 #: gui/replaymenu/replay_menu.xml:(heading):71
 msgctxt "replay"
 msgid "Date / Time"
-msgstr "日期／時間"
+msgstr "日期 / 時間"
 
 #: gui/loadgame/load.xml:(heading):31
 msgctxt "replay"
@@ -3650,7 +3650,7 @@ msgstr "語言："
 #. refers to the code that identifies those settings, such as ‘en_US’.
 #: gui/locale/locale.xml:(caption):31
 msgid "Locale:"
-msgstr "所在區域："
+msgstr "地區："
 
 #: gui/locale/locale.xml:(caption):41
 msgid "Advanced"
@@ -3981,35 +3981,35 @@ msgstr "實體的命名"
 
 #: gui/options/options.json[0].options[9].list[0].label
 msgid "Specific names first"
-msgstr "特殊名稱在前"
+msgstr "特定名稱在前"
 
 #: gui/options/options.json[0].options[9].list[0].tooltip
 msgid "Display specific names before generic names."
-msgstr "顯示特殊名稱在一般名稱之前。"
+msgstr "顯示特定名稱在通用名稱之前。"
 
 #: gui/options/options.json[0].options[9].list[1].label
 msgid "Generic names first"
-msgstr "一般名稱在前"
+msgstr "通用名稱在前"
 
 #: gui/options/options.json[0].options[9].list[1].tooltip
 msgid "Display generic names before specific names."
-msgstr "顯示一般名稱在特殊名稱之前。"
+msgstr "顯示通用名稱在特定名稱之前。"
 
 #: gui/options/options.json[0].options[9].list[2].label
 msgid "Only specific names"
-msgstr "僅特殊名稱"
+msgstr "僅特定名稱"
 
 #: gui/options/options.json[0].options[9].list[2].tooltip
 msgid "Display only specific names for entities."
-msgstr "只顯示實體的特殊名稱。"
+msgstr "只顯示實體的特定名稱。"
 
 #: gui/options/options.json[0].options[9].list[3].label
 msgid "Only generic names"
-msgstr "僅一般名稱"
+msgstr "僅通用名稱"
 
 #: gui/options/options.json[0].options[9].list[3].tooltip
 msgid "Display only generic names for entities."
-msgstr "只顯示實體的一般名稱。"
+msgstr "只顯示實體的通用名稱。"
 
 #: gui/options/options.json[0].options[9].tooltip
 msgid "How to show entity names."
@@ -4026,6 +4026,15 @@ msgstr "視窗模式"
 #: gui/options/options.json[1].options[0].tooltip
 msgid "Start 0 A.D. in a window."
 msgstr "以視窗模式啟動 0 A.D. "
+
+#: gui/options/options.json[1].options[10].label
+msgid "Mouse drag"
+msgstr "滑鼠拖曳"
+
+#: gui/options/options.json[1].options[10].tooltip
+msgid ""
+"Number of pixels the mouse can move before the action is considered a drag."
+msgstr "在被認為是拖曳行為之前，滑鼠能移動的像素數量。"
 
 #: gui/options/options.json[1].options[1].label
 #: gui/options/options.json[2].options[1].label
@@ -4872,7 +4881,7 @@ msgstr "此選項能讓新建築與附近的建築對齊。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[21].label
 msgid "Control group membership"
-msgstr "控制隊伍成員"
+msgstr "編隊成員"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[21].list[0].label
 msgid "Single"
@@ -4883,7 +4892,7 @@ msgid ""
 "When adding a Unit or Structure to a control group, they are removed from "
 "other control groups. Use this choice if you want control groups to refer to"
 " distinct armies."
-msgstr "當加入一個單位或建築進入一個控制群組時，他們會從其他群組中移出。如果您希望控制群組引用獨立的軍隊，請使用此選項。"
+msgstr "當加入一個單位或建築進入一個編隊時，他們會從其他編隊中移出。如果您希望編隊引用獨立的軍隊，請使用此選項。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[21].list[1].label
 msgid "Multiple"
@@ -4894,11 +4903,11 @@ msgid ""
 "Units and Structures can be part of multiple control groups. This is useful "
 "to keep control groups for distinct armies and a control group for the "
 "entire army simultaneously."
-msgstr "單位和建築可以是多個控制群組的一部分。實用於同時讓控制群組代表獨立軍隊，和一個控制群組代表整個軍隊。"
+msgstr "單位和建築可以是多個編隊的一部分。實用於同時讓編隊代表獨立軍隊，和一個編隊代表整個軍隊。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[21].tooltip
 msgid "Decide whether units can be part of multiple control groups."
-msgstr "確定單位是否可以屬於多個控制群組。"
+msgstr "決定單位是否可以屬於多個編隊。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[22].label
 msgid "Formation control"
@@ -4928,11 +4937,11 @@ msgstr "確定是否對所有指令啟用陣型，還是僅對「步行」和「
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[23].label
 msgid "Battalion-style formations"
-msgstr "營式編隊"
+msgstr "營式陣型"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[23].tooltip
 msgid "Whether formations are selected as a whole."
-msgstr "任何編隊都會整個被選取。"
+msgstr "任何陣型都會整個被選取。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[2].label
 msgid "Scroll batch increment ratio"
@@ -4941,7 +4950,7 @@ msgstr "批次滾動增加速率"
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[2].tooltip
 msgid ""
 "Number of times you have to scroll to increase/decrease the batchsize by 1."
-msgstr "您必須捲動以將批次生產大小增加／減少 1 的次數。"
+msgstr "您必須捲動以將批次生產大小增加 / 減少 1 的次數。"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[3].label
 msgid "Flare display duration"
@@ -5118,11 +5127,11 @@ msgstr "開啟 0 A.D. 遊戲手冊。"
 
 #: gui/pregame/MainMenuItems.js:14
 msgid "Tutorial"
-msgstr "新手教程"
+msgstr "教程"
 
 #: gui/pregame/MainMenuItems.js:15
-msgid "Start the economic tutorial."
-msgstr "開始一個經濟的教學課程。"
+msgid "Start the introductory tutorial."
+msgstr "開始入門教程。"
 
 #: gui/pregame/MainMenuItems.js:36
 #: gui/reference/common/Buttons/StructreeButton.js:21
@@ -5250,7 +5259,7 @@ msgstr "%(hotkey)s：啟動多人遊戲大廳來參加或主辦公開可見的�
 
 #: gui/pregame/MainMenuItems.js:184
 msgid "Launch the multiplayer lobby. \\[DISABLED BY BUILD]"
-msgstr "啟動多人遊戲大廳。 \\[構建時被禁用]"
+msgstr "啟動多人遊戲大廳。\\[構建時被禁用]"
 
 #: gui/pregame/MainMenuItems.js:208
 msgid "Settings"
@@ -5351,8 +5360,8 @@ msgid "WILDFIRE GAMES"
 msgstr "WILDFIRE GAMES"
 
 #: gui/pregame/ProjectInformation.js:18
-msgid "Alpha XXVI: Z——"
-msgstr "Alpha XXVI: Z——"
+msgid "Alpha XXVI: Zhuangzi"
+msgstr "Alpha XXVI: Zhuangzi (莊子)"
 
 #: gui/pregame/ProjectInformation.js:19
 msgid ""
@@ -5662,7 +5671,7 @@ msgstr "您的版本：%(version)s"
 #: gui/replaymenu/replay_actions.js:97
 #, javascript-format
 msgid "Required version: %(version)s"
-msgstr "需要的版本：%(version)s"
+msgstr "需求版本：%(version)s"
 
 #: gui/replaymenu/replay_actions.js:100
 msgid "Incompatible replay"
@@ -5851,7 +5860,7 @@ msgstr "從頭建立重播快取。可能會比較慢！"
 #: gui/splashscreen/splashscreen.txt:2
 msgid ""
 "[font=\"sans-bold-20\"]  Thank you for installing 0 A.D. Empires Ascendant!"
-msgstr "[font=\"sans-bold-20\"]  感謝您安裝 0 A.D. 崛起的帝國！"
+msgstr "[font=\"sans-bold-20\"]  感謝您安裝 0 A.D. 帝國崛起！"
 
 #: gui/splashscreen/splashscreen.txt:3
 msgid "[font=\"sans-16\"]"
@@ -5867,7 +5876,7 @@ msgstr "[imgleft=\"constructionIcon\"]這款遊戲還在開發中。您可能會
 msgid ""
 "[imgleft=\"iconLag\"]The game can have performance problems, especially with"
 " large maps and a great number of units."
-msgstr "[imgleft=\"iconLag\"]  遊戲過程可能會有效能上的問題，尤其是遇上大型地圖以及大量單位的時候。"
+msgstr "[imgleft=\"iconLag\"]遊戲過程可能會有效能上的問題，尤其是遇上大型地圖以及大量單位的時候。"
 
 #: gui/splashscreen/splashscreen.txt:8
 msgid ""
@@ -5902,8 +5911,8 @@ msgid "Score"
 msgstr "分數"
 
 #: gui/summary/layout.js:15 gui/summary/layout.js:33 gui/summary/layout.js:71
-#: gui/summary/layout.js:111 gui/summary/layout.js:162
-#: gui/summary/layout.js:194 gui/summary/summary.xml:(caption):70
+#: gui/summary/layout.js:110 gui/summary/layout.js:161
+#: gui/summary/layout.js:193 gui/summary/summary.xml:(caption):70
 msgid "Player name"
 msgstr "玩家名稱"
 
@@ -5927,7 +5936,7 @@ msgstr "探索分數"
 msgid "Structures"
 msgstr "建築"
 
-#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:112
+#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:111
 msgid "Total"
 msgstr "總計"
 
@@ -5968,7 +5977,7 @@ msgstr "建築物統計 (%(constructed)s / %(destroyed)s / %(captured)s / %(lost
 
 #: gui/summary/layout.js:69
 msgid "Units"
-msgstr "單位數"
+msgstr "單位"
 
 #: gui/summary/layout.js:73
 msgid "Infantry"
@@ -6004,121 +6013,121 @@ msgstr "貿易商人"
 
 #: gui/summary/layout.js:84
 #, javascript-format
-msgid "Unit Statistics (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
-msgstr "單位統計 (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
+msgid "Unit Statistics (%(trained)s / %(killed)s / %(lost)s)"
+msgstr "單位統計（%(trained)s / %(killed)s / %(lost)s）"
 
-#: gui/summary/layout.js:109
+#: gui/summary/layout.js:108
 msgid "Resources"
 msgstr "資源"
 
-#: gui/summary/layout.js:121
+#: gui/summary/layout.js:120
 msgid "Tributes"
 msgstr "進貢"
 
-#: gui/summary/layout.js:122
+#: gui/summary/layout.js:121
 #, javascript-format
 msgid ""
 "Tributes \n"
 "(%(sent)s / %(received)s)"
 msgstr "進貢 \n(%(sent)s / %(received)s)"
 
-#: gui/summary/layout.js:130
+#: gui/summary/layout.js:129
 msgid "Treasures collected"
 msgstr "收集的寶藏"
 
-#: gui/summary/layout.js:131
+#: gui/summary/layout.js:130
 msgid "Loot"
 msgstr "戰利品"
 
-#: gui/summary/layout.js:132
+#: gui/summary/layout.js:131
 msgid "Livestock bred"
 msgstr "飼養家畜"
 
-#: gui/summary/layout.js:136
+#: gui/summary/layout.js:135
 #, javascript-format
 msgid "Resource Statistics (%(gathered)s / %(used)s)"
 msgstr "資源統計 (%(gathered)s / %(used)s)"
 
-#: gui/summary/layout.js:160
+#: gui/summary/layout.js:159
 msgid "Market"
 msgstr "市集"
 
-#: gui/summary/layout.js:163
+#: gui/summary/layout.js:162
 msgid "Trade income"
 msgstr "貿易收入"
 
-#: gui/summary/layout.js:164
+#: gui/summary/layout.js:163
 msgid "Barter efficiency"
 msgstr "貿易效率"
 
 #. Translation: use %(resourceWithinSentence)s if needed
-#: gui/summary/layout.js:170
+#: gui/summary/layout.js:169
 #, javascript-format
 msgid "%(resourceFirstWord)s exchanged"
 msgstr "%(resourceFirstWord)s 已交換"
 
-#: gui/summary/layout.js:192
+#: gui/summary/layout.js:191
 msgid "Miscellaneous"
 msgstr "雜項"
 
-#: gui/summary/layout.js:195
+#: gui/summary/layout.js:194
 msgid "Kill / Death ratio"
 msgstr "擊殺 / 被殺比例"
 
-#: gui/summary/layout.js:196 gui/summary/summary.js:99
+#: gui/summary/layout.js:195 gui/summary/summary.js:99
 msgid "Population"
 msgstr "人口"
 
-#: gui/summary/layout.js:197
+#: gui/summary/layout.js:196
 msgid "Map control (peak)"
 msgstr "地圖控制（揭露）"
 
-#: gui/summary/layout.js:198
+#: gui/summary/layout.js:197
 msgid "Map control (finish)"
 msgstr "地圖控制（完成）"
 
-#: gui/summary/layout.js:199
+#: gui/summary/layout.js:198
 msgid "Map exploration"
 msgstr "地圖探索"
 
-#: gui/summary/layout.js:200
+#: gui/summary/layout.js:199
 msgid "Vegetarian ratio"
 msgstr "素食比例"
 
-#: gui/summary/layout.js:201
+#: gui/summary/layout.js:200
 msgid "Feminization"
 msgstr "女性化"
 
-#: gui/summary/layout.js:204
+#: gui/summary/layout.js:203
 msgid "Bribes"
 msgstr "賄賂"
 
-#: gui/summary/layout.js:205
+#: gui/summary/layout.js:204
 #, javascript-format
 msgid ""
 "Bribes\n"
 "(%(succeeded)s / %(failed)s)"
-msgstr "賄賂（%(succeeded)s/%(failed)s）"
+msgstr "賄賂\n(%(succeeded)s/%(failed)s)"
 
-#: gui/summary/layout.js:231
+#: gui/summary/layout.js:230
 msgid "Charts"
 msgstr "圖表"
 
-#: gui/summary/layout.js:378
+#: gui/summary/layout.js:377
 msgid "Team total"
 msgstr "隊伍總計"
 
 #: gui/summary/summary.js:30
 msgid "Trained"
-msgstr "訓練數"
+msgstr "已訓練"
 
 #: gui/summary/summary.js:35
 msgid "Constructed"
-msgstr "建造數"
+msgstr "已建造"
 
 #: gui/summary/summary.js:40
 msgid "Gathered"
-msgstr "採集數"
+msgstr "已採集"
 
 #: gui/summary/summary.js:44
 msgid "Count"
@@ -6126,11 +6135,11 @@ msgstr "計數"
 
 #: gui/summary/summary.js:49
 msgid "Sent"
-msgstr "送出"
+msgstr "已送出"
 
 #: gui/summary/summary.js:54
 msgid "Bought"
-msgstr "購買"
+msgstr "已購買"
 
 #: gui/summary/summary.js:59
 msgid "Income"
@@ -6142,7 +6151,7 @@ msgstr "占領數"
 
 #: gui/summary/summary.js:69
 msgid "Succeeded"
-msgstr "成功了"
+msgstr "已成功"
 
 #: gui/summary/summary.js:74
 msgid "Destroyed"
@@ -6162,7 +6171,7 @@ msgstr "使用數"
 
 #: gui/summary/summary.js:94
 msgid "Received"
-msgstr "收到"
+msgstr "已收到"
 
 #: gui/summary/summary.js:104
 msgid "Sold"
@@ -6174,7 +6183,7 @@ msgstr "支出"
 
 #: gui/summary/summary.js:114
 msgid "Failed"
-msgstr "失敗了"
+msgstr "已失敗"
 
 #: gui/summary/summary.js:201
 #, javascript-format
@@ -6194,7 +6203,7 @@ msgstr "、"
 
 #: gui/summary/summary.js:340
 msgid "Time elapsed"
-msgstr "時間消逝"
+msgstr "時間已過"
 
 #: gui/summary/summary.js:510
 msgid "Current Scores"
@@ -6336,7 +6345,7 @@ msgstr "單位駐紮在此建築時會獲得經驗值。"
 msgid ""
 "Build one early to train citizen soldiers while you phase up your "
 "settlement."
-msgstr "當你逐步升級你的殖民地時，儘早建造一個以訓練公民兵。 "
+msgstr "當你逐步升級你的殖民地時，儘早建造一個以訓練公民兵。"
 
 #: gui/text/tips/barracks.txt:5
 msgid "Build in a forward base to resupply your assault with fresh troops."
@@ -6350,7 +6359,7 @@ msgstr "生物群系"
 msgid ""
 "Biomes can be used on some random maps and determine which region of the "
 "world the map represents."
-msgstr "生物群系可用在一些隨機地圖，來決定地圖上的區域該怎麼呈現。 "
+msgstr "生物群系可用在一些隨機地圖，來決定地圖上的區域該怎麼呈現。"
 
 #: gui/text/tips/biomes.txt:3
 msgid ""
@@ -6364,15 +6373,15 @@ msgstr "戰犬"
 
 #: gui/text/tips/briton_war_dog.txt:2
 msgid "A dog that the Britons can train at the cavalry stable."
-msgstr "不列顛人可在騎兵馬廄訓練的狗。 "
+msgstr "不列顛人可在騎兵馬廄訓練的狗。"
 
 #: gui/text/tips/briton_war_dog.txt:3
 msgid "Has low health, but is fast and will fearlessly attack enemies."
-msgstr "生命值低，但速度快，會無所畏懼地攻擊敵人。 "
+msgstr "生命值低，但速度快，會無所畏懼地攻擊敵人。"
 
 #: gui/text/tips/briton_war_dog.txt:4
 msgid "Use them as support in your army or for quick raids."
-msgstr "將它們用作軍隊的支援單位或快速突襲。 "
+msgstr "將它們用作軍隊的支援單位或快速突襲。"
 
 #: gui/text/tips/carth_sacred_band.txt:1
 msgid "CARTHAGINIAN SACRED BAND"
@@ -6435,7 +6444,7 @@ msgstr "騎兵馬廄"
 #: gui/text/tips/cavalry_stable.txt:2
 msgid ""
 "Trains cavalry units and lets you research cavalry specific technologies."
-msgstr "訓練騎兵單位且讓您研發騎兵的特殊科技。 "
+msgstr "訓練騎兵單位且讓您研發騎兵的特殊科技。"
 
 #: gui/text/tips/cavalry_stable.txt:3
 msgid "Units gain experience while garrisoned inside the structure."
@@ -6443,7 +6452,7 @@ msgstr "當單位進駐建築物時，經驗值會增加。"
 
 #: gui/text/tips/celtic_war_barge.txt:1
 msgid "CELTIC WAR BARGE"
-msgstr "塞爾特戰船"
+msgstr "凱爾特戰駁船"
 
 #: gui/text/tips/celtic_war_barge.txt:2
 msgid "A medium trireme-class warship."
@@ -6477,7 +6486,7 @@ msgstr "當你的遠程步兵單位佔領了塔樓，他們有額外裝甲加成
 
 #: gui/text/tips/city_walls.txt:4
 msgid "Vulnerable to siege weapons like catapults, rams and war elephants."
-msgstr "容易被圍城武器破壞，像是投石機、衝撞車和戰象等。"
+msgstr "容易被攻城武器破壞，像是投石機、衝撞車和戰象等。"
 
 #: gui/text/tips/civic_centres.txt:1
 msgid "CIVIC CENTERS"
@@ -6532,13 +6541,13 @@ msgstr "堅固的瞭望塔，幫助你防禦據點。"
 #: gui/text/tips/defense_towers.txt:3
 msgid ""
 "They have a large vision range and will shoot arrows at the enemy in sight. "
-msgstr "他們有很大的視野範圍，會向視線內的敵人射箭。 "
+msgstr "他們有很大的視野範圍，會向視線內的敵人射箭。"
 
 #: gui/text/tips/defense_towers.txt:4
 msgid ""
 "You can garrison more infantry inside them to increase the number of arrows "
 "they shoot."
-msgstr "你可以在它們裡面駐紮更多的步兵，來增加射出的箭量。 "
+msgstr "你可以在它們裡面駐紮更多的步兵，來增加射出的箭量。"
 
 #: gui/text/tips/elephant_stable.txt:1
 msgid "ELEPHANT STABLE"
@@ -6555,13 +6564,13 @@ msgstr "大使館和僱傭兵營地 "
 
 #: gui/text/tips/embassies.txt:2
 msgid "Special structures allowing you to hire mercenaries for your army."
-msgstr "讓您為軍隊聘僱傭兵的特殊建築。 "
+msgstr "讓您為軍隊聘僱傭兵的特殊建築。"
 
 #: gui/text/tips/embassies.txt:3
 msgid ""
 "Mercenaries will not gather resources and cost only metal, but they are "
 "experienced and strong."
-msgstr "聘僱傭兵只要花費金屬，專職打戰不負責採集資源，但他們經驗豐富且強壯。 "
+msgstr "聘僱傭兵只要花費金屬，專職打戰不負責採集資源，但他們經驗豐富且強壯。"
 
 #: gui/text/tips/fishing.txt:1
 msgid "FISHING"
@@ -6604,7 +6613,7 @@ msgstr "陣型"
 #: gui/text/tips/formations.txt:2
 msgid ""
 "Arrange your soldiers in formations to keep them organized during battles."
-msgstr "將你的士兵們編成陣型，讓他們在戰鬥中能維持組織。 "
+msgstr "將你的士兵們編成陣型，讓他們在戰鬥中能維持組織。"
 
 #: gui/text/tips/formations.txt:3
 msgid ""
@@ -6620,7 +6629,7 @@ msgstr "堡壘"
 msgid ""
 "Usually the strongest structure of a civilization and the place where you "
 "can train Heroes."
-msgstr "通常是一個文明最堅固的建築，也是您可以訓練英雄的地方。 "
+msgstr "通常是一個文明最堅固的建築，也是您可以訓練英雄的地方。"
 
 #: gui/text/tips/fortress.txt:3
 msgid "Garrison soldiers inside to add more firepower to its defense."
@@ -6711,7 +6720,7 @@ msgstr "燈塔"
 msgid ""
 "Special Ptolemaic structures to increase your vision range when built on the"
 " shore."
-msgstr "托勒密的特殊建築，蓋在岸邊可增加您的視野範圍。 "
+msgstr "托勒密的特殊建築，蓋在岸邊可增加您的視野範圍。"
 
 #: gui/text/tips/map_flare.txt:1
 msgid "MAP FLARE"
@@ -6721,7 +6730,7 @@ msgstr "地圖信號彈"
 msgid ""
 "Use this feature to let your team know where on the map something important "
 "happens."
-msgstr "使用此功能讓您的團隊知道在地圖上哪裡有重要的事件發生。 "
+msgstr "使用此功能讓您的團隊知道在地圖上哪裡有重要的事件發生。"
 
 #: gui/text/tips/map_flare.txt:3
 msgid "They will see the flare on their minimap."
@@ -6738,13 +6747,13 @@ msgstr "庫施人獨有的特殊建築"
 #: gui/text/tips/meroe_pyramids.txt:3
 msgid ""
 "The small pyramids improve the gathering rate of the workers around them."
-msgstr "小金字塔提高周圍工人的採集速率。 "
+msgstr "小金字塔提高周圍工人的採集速率。"
 
 #: gui/text/tips/meroe_pyramids.txt:4
 msgid ""
 "The large pyramids increase the military capabilities of soldiers around "
 "them."
-msgstr "大金字塔提高周圍士兵的軍事能力。 "
+msgstr "大金字塔提高周圍士兵的軍事能力。"
 
 #: gui/text/tips/outposts.txt:1
 msgid "OUTPOSTS"
@@ -6847,7 +6856,7 @@ msgstr "資源計數器面板顯示您目前擁有的每種資源的數量。"
 msgid ""
 "The number below it shows you how many citizens are currently gathering "
 "them."
-msgstr "它下面的數字顯示了目前有多少公民正在收集它們。 "
+msgstr "它下面的數字顯示了目前有多少公民正在收集它們。"
 
 #: gui/text/tips/savanna_biome.txt:1
 msgid "SAVANNA BIOME"
@@ -6996,7 +7005,7 @@ msgstr "戲院"
 msgid ""
 "Special structures of the Hellenic civilizations to increase the size of "
 "your territory while you control it."
-msgstr "希臘系文明的特殊建築，可擴大你佔領的領土面積。 "
+msgstr "希臘系文明的特殊建築，可擴大你佔領的領土面積。"
 
 #: gui/text/tips/treasure.txt:1
 msgid "TREASURES"
@@ -7005,13 +7014,13 @@ msgstr "寶藏"
 #: gui/text/tips/treasure.txt:2
 msgid ""
 "Collectible chests and bare resources on land and shipwrecks on the shore."
-msgstr "陸上的藏寶箱、露出於地表的資源以及岸邊的沉船。 "
+msgstr "陸上的藏寶箱、露出於地表的資源以及岸邊的沉船。"
 
 #: gui/text/tips/treasure.txt:3
 msgid ""
 "Provide you with a resource boost, so keep an eye out for them as you "
 "explore."
-msgstr "讓您大為提升資源，所以當您探索世界時要留意它們。 "
+msgstr "讓您大為提升資源，所以當您探索世界時要留意它們。"
 
 #: gui/text/tips/triremes.txt:1
 msgid "TRIREME"
@@ -7076,7 +7085,7 @@ msgstr "從動物、漿果叢、魚或是田地中採收。"
 #: simulation/data/resources/food.jsonname
 msgctxt "firstWord"
 msgid "Food"
-msgstr "糧食"
+msgstr "食物"
 
 #. Translation: Word as used in the middle of a sentence (which may require
 #. using lowercase
@@ -7084,14 +7093,14 @@ msgstr "糧食"
 #: simulation/data/resources/food.jsonname
 msgctxt "withinSentence"
 msgid "Food"
-msgstr "糧食"
+msgstr "食物"
 
 #. Translation: Word as used at the beginning of a sentence or as a single-
 #. word sentence.
 #: simulation/data/resources/food.jsonsubtypes.fish
 msgctxt "firstWord"
 msgid "Fish"
-msgstr "魚場"
+msgstr "魚類"
 
 #. Translation: Word as used in the middle of a sentence (which may require
 #. using lowercase
@@ -7099,7 +7108,7 @@ msgstr "魚場"
 #: simulation/data/resources/food.jsonsubtypes.fish
 msgctxt "withinSentence"
 msgid "Fish"
-msgstr "魚場"
+msgstr "魚類"
 
 #. Translation: Word as used at the beginning of a sentence or as a single-
 #. word sentence.
@@ -7136,7 +7145,7 @@ msgstr "穀物"
 #: simulation/data/resources/food.jsonsubtypes.meat
 msgctxt "firstWord"
 msgid "Meat"
-msgstr "肉食"
+msgstr "肉類"
 
 #. Translation: Word as used in the middle of a sentence (which may require
 #. using lowercase
@@ -7144,7 +7153,7 @@ msgstr "肉食"
 #: simulation/data/resources/food.jsonsubtypes.meat
 msgctxt "withinSentence"
 msgid "Meat"
-msgstr "肉食"
+msgstr "肉類"
 
 #. Translation: Word as used at the beginning of a sentence or as a single-
 #. word sentence.
@@ -7257,7 +7266,7 @@ msgstr "從樹木或樹林砍下木材。"
 #: simulation/data/resources/wood.jsonname
 msgctxt "firstWord"
 msgid "Wood"
-msgstr "木材"
+msgstr "木頭"
 
 #. Translation: Word as used in the middle of a sentence (which may require
 #. using lowercase
@@ -7265,7 +7274,7 @@ msgstr "木材"
 #: simulation/data/resources/wood.jsonname
 msgctxt "withinSentence"
 msgid "Wood"
-msgstr "木材"
+msgstr "木頭"
 
 #. Translation: Word as used at the beginning of a sentence or as a single-
 #. word sentence.

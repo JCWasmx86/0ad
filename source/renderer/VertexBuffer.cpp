@@ -19,12 +19,11 @@
 
 #include "VertexBuffer.h"
 
-#include "lib/ogl.h"
 #include "lib/sysdep/cpu.h"
 #include "ps/CLogger.h"
 #include "ps/Errors.h"
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/Renderer.h"
 
 #include <algorithm>
@@ -39,27 +38,27 @@ constexpr std::size_t MAX_VB_SIZE_BYTES = 4 * 1024 * 1024;
 
 CVertexBuffer::CVertexBuffer(
 	const char* name, const size_t vertexSize,
-	const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic)
+	const Renderer::Backend::IBuffer::Type type, const bool dynamic)
 	: CVertexBuffer(name, vertexSize, type, dynamic, MAX_VB_SIZE_BYTES)
 {
 }
 
 CVertexBuffer::CVertexBuffer(
 	const char* name, const size_t vertexSize,
-	const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic,
+	const Renderer::Backend::IBuffer::Type type, const bool dynamic,
 	const size_t maximumBufferSize)
 	: m_VertexSize(vertexSize), m_HasNeededChunks(false)
 {
 	size_t size = maximumBufferSize;
 
-	if (type == Renderer::Backend::GL::CBuffer::Type::VERTEX)
+	if (type == Renderer::Backend::IBuffer::Type::VERTEX)
 	{
 		// We want to store 16-bit indices to any vertex in a buffer, so the
 		// buffer must never be bigger than vertexSize*64K bytes since we can
 		// address at most 64K of them with 16-bit indices
 		size = std::min(size, vertexSize * 65536);
 	}
-	else if (type == Renderer::Backend::GL::CBuffer::Type::INDEX)
+	else if (type == Renderer::Backend::IBuffer::Type::INDEX)
 	{
 		ENSURE(vertexSize == sizeof(u16));
 	}
@@ -90,7 +89,7 @@ CVertexBuffer::~CVertexBuffer()
 }
 
 bool CVertexBuffer::CompatibleVertexType(
-	const size_t vertexSize, const Renderer::Backend::GL::CBuffer::Type type,
+	const size_t vertexSize, const Renderer::Backend::IBuffer::Type type,
 	const bool dynamic) const
 {
 	ENSURE(m_Buffer);
@@ -103,7 +102,7 @@ bool CVertexBuffer::CompatibleVertexType(
 // if no free chunks available
 CVertexBuffer::VBChunk* CVertexBuffer::Allocate(
 	const size_t vertexSize, const size_t numberOfVertices,
-	const Renderer::Backend::GL::CBuffer::Type type, const bool dynamic,
+	const Renderer::Backend::IBuffer::Type type, const bool dynamic,
 	void* backingStore)
 {
 	// check this is the right kind of buffer
@@ -211,11 +210,11 @@ void CVertexBuffer::UpdateChunkVertices(VBChunk* chunk, void* data)
 	ENSURE(m_Buffer);
 	if (UseStreaming(m_Buffer->IsDynamic()))
 	{
-		// The VBO is now out of sync with the backing store
+		// The backend buffer is now out of sync with the backing store.
 		chunk->m_Dirty = true;
 
 		// Sanity check: Make sure the caller hasn't tried to reallocate
-		// their backing store
+		// their backing store.
 		ENSURE(data == chunk->m_BackingStore);
 	}
 	else
@@ -227,15 +226,15 @@ void CVertexBuffer::UpdateChunkVertices(VBChunk* chunk, void* data)
 }
 
 void CVertexBuffer::UploadIfNeeded(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (UseStreaming(m_Buffer->IsDynamic()))
 	{
 		if (!m_HasNeededChunks)
 			return;
 
-		// If any chunks are out of sync with the current VBO, and are
-		// needed for rendering this frame, we'll need to re-upload the VBO
+		// If any chunks are out of sync with the current backend buffer, and are
+		// needed for rendering this frame, we'll need to re-upload the backend buffer.
 		bool needUpload = false;
 		for (VBChunk* const& chunk : m_AllocList)
 		{
@@ -258,16 +257,16 @@ void CVertexBuffer::UploadIfNeeded(
 #endif
 
 				// Copy only the chunks we need. (This condition is helpful when
-				// the VBO contains data for every unit in the world, but only a
-				// handful are visible on screen and we don't need to bother copying
-				// the rest.)
+				// the backend buffer contains data for every unit in the world,
+				// but only a handful are visible on screen and we don't need to
+				// bother copying the rest.)
 				for (VBChunk* const& chunk : m_AllocList)
 					if (chunk->m_Needed)
 						std::memcpy(mappedData + chunk->m_Index * m_VertexSize, chunk->m_BackingStore, chunk->m_Count * m_VertexSize);
 			});
 
 			// Anything we just uploaded is clean; anything else is dirty
-			// since the rest of the VBO content is now undefined
+			// since the rest of the backend buffer content is now undefined
 			for (VBChunk* const& chunk : m_AllocList)
 			{
 				if (chunk->m_Needed)
@@ -288,25 +287,6 @@ void CVertexBuffer::UploadIfNeeded(
 
 		m_HasNeededChunks = false;
 	}
-}
-
-// Bind: bind to this buffer; return pointer to address required as parameter
-// to glVertexPointer ( + etc) calls
-u8* CVertexBuffer::Bind(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
-{
-	UploadIfNeeded(deviceCommandContext);
-	deviceCommandContext->BindBuffer(m_Buffer->GetType(), m_Buffer.get());
-	return nullptr;
-}
-
-void CVertexBuffer::Unbind(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
-{
-	deviceCommandContext->BindBuffer(
-		Renderer::Backend::GL::CBuffer::Type::VERTEX, nullptr);
-	deviceCommandContext->BindBuffer(
-		Renderer::Backend::GL::CBuffer::Type::INDEX, nullptr);
 }
 
 size_t CVertexBuffer::GetBytesReserved() const

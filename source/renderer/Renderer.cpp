@@ -27,7 +27,6 @@
 #include "graphics/TerrainTextureManager.h"
 #include "i18n/L10n.h"
 #include "lib/allocators/shared_ptr.h"
-#include "lib/ogl.h"
 #include "lib/tex/tex.h"
 #include "gui/GUIManager.h"
 #include "ps/CConsole.h"
@@ -51,7 +50,7 @@
 #include "graphics/TextureManager.h"
 #include "ps/Util.h"
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/DebugRenderer.h"
 #include "renderer/PostprocManager.h"
 #include "renderer/RenderingOptions.h"
@@ -243,7 +242,7 @@ class CRenderer::Internals
 {
 	NONCOPYABLE(Internals);
 public:
-	std::unique_ptr<Renderer::Backend::GL::CDeviceCommandContext> deviceCommandContext;
+	std::unique_ptr<Renderer::Backend::IDeviceCommandContext> deviceCommandContext;
 
 	/// true if CRenderer::Open has been called
 	bool IsOpen;
@@ -275,7 +274,7 @@ public:
 	Internals() :
 		IsOpen(false), ShadersDirty(true), profileTable(g_Renderer.m_Stats),
 		deviceCommandContext(g_VideoMode.GetBackendDevice()->CreateCommandContext()),
-		textureManager(g_VFS, false, false)
+		textureManager(g_VFS, false, g_VideoMode.GetBackendDevice())
 	{
 	}
 };
@@ -413,7 +412,7 @@ void CRenderer::RenderFrame(const bool needsPresent)
 	if (m_ShouldPreloadResourcesBeforeNextFrame)
 	{
 		m_ShouldPreloadResourcesBeforeNextFrame = false;
-		// We don't meed to render logger for the preload.
+		// We don't need to render logger for the preload.
 		RenderFrameImpl(true, false);
 	}
 
@@ -421,12 +420,13 @@ void CRenderer::RenderFrame(const bool needsPresent)
 	{
 		RenderBigScreenShot(needsPresent);
 	}
+	else if (m_ScreenShotType == ScreenShotType::DEFAULT)
+	{
+		RenderScreenShot(needsPresent);
+	}
 	else
 	{
-		if (m_ScreenShotType == ScreenShotType::DEFAULT)
-			RenderScreenShot();
-		else
-			RenderFrameImpl(true, true);
+		RenderFrameImpl(true, true);
 
 		m->deviceCommandContext->Flush();
 		if (needsPresent)
@@ -439,7 +439,6 @@ void CRenderer::RenderFrameImpl(const bool renderGUI, const bool renderLogger)
 	PROFILE3("render");
 
 	g_Profiler2.RecordGPUFrameStart();
-	ogl_WarnIfError();
 
 	g_TexMan.UploadResourcesIfNeeded(m->deviceCommandContext.get());
 
@@ -455,12 +454,9 @@ void CRenderer::RenderFrameImpl(const bool renderGUI, const bool renderLogger)
 	// start new frame
 	BeginFrame();
 
-	ogl_WarnIfError();
-
 	if (g_Game && g_Game->IsGameStarted())
 	{
 		g_Game->GetView()->Render();
-		ogl_WarnIfError();
 	}
 
 	m->deviceCommandContext->SetFramebuffer(
@@ -470,13 +466,11 @@ void CRenderer::RenderFrameImpl(const bool renderGUI, const bool renderLogger)
 	if (g_AtlasGameLoop && g_AtlasGameLoop->view)
 	{
 		g_AtlasGameLoop->view->DrawCinemaPathTool();
-		ogl_WarnIfError();
 	}
 
 	if (g_Game && g_Game->IsGameStarted())
 	{
 		g_Game->GetView()->GetCinema()->Render();
-		ogl_WarnIfError();
 	}
 
 	RenderFrame2D(renderGUI, renderLogger);
@@ -492,10 +486,7 @@ void CRenderer::RenderFrameImpl(const bool renderGUI, const bool renderLogger)
 	PROFILE2_ATTR("blend splats: %zu", stats.m_BlendSplats);
 	PROFILE2_ATTR("particles: %zu", stats.m_Particles);
 
-	ogl_WarnIfError();
-
 	g_Profiler2.RecordGPUFrameEnd();
-	ogl_WarnIfError();
 }
 
 void CRenderer::RenderFrame2D(const bool renderGUI, const bool renderLogger)
@@ -510,38 +501,33 @@ void CRenderer::RenderFrame2D(const bool renderGUI, const bool renderLogger)
 		// All GUI elements are drawn in Z order to render semi-transparent
 		// objects correctly.
 		g_GUI->Draw(canvas);
-		ogl_WarnIfError();
 	}
 
 	// If we're in Atlas game view, render special overlays (e.g. editor bandbox).
 	if (g_AtlasGameLoop && g_AtlasGameLoop->view)
 	{
 		g_AtlasGameLoop->view->DrawOverlays(canvas);
-		ogl_WarnIfError();
 	}
 
 	{
 		GPU_SCOPED_LABEL(m->deviceCommandContext.get(), "Render console");
 		g_Console->Render(canvas);
-		ogl_WarnIfError();
 	}
 
 	if (renderLogger)
 	{
 		GPU_SCOPED_LABEL(m->deviceCommandContext.get(), "Render logger");
 		g_Logger->Render(canvas);
-		ogl_WarnIfError();
 	}
 
 	{
 		GPU_SCOPED_LABEL(m->deviceCommandContext.get(), "Render profiler");
 		// Profile information
 		g_ProfileViewer.RenderProfile(canvas);
-		ogl_WarnIfError();
 	}
 }
 
-void CRenderer::RenderScreenShot()
+void CRenderer::RenderScreenShot(const bool needsPresent)
 {
 	m_ScreenShotType = ScreenShotType::NONE;
 
@@ -551,23 +537,25 @@ void CRenderer::RenderScreenShot()
 	VfsPath filename;
 	vfs::NextNumberedFilename(g_VFS, filenameFormat, g_NextScreenShotNumber, filename);
 
-	const size_t w = (size_t)g_xres, h = (size_t)g_yres;
+	const size_t width = static_cast<size_t>(g_xres), height = static_cast<size_t>(g_yres);
 	const size_t bpp = 24;
-	GLenum fmt = GL_RGB;
-	int flags = TEX_BOTTOM_UP;
 
 	// Hide log messages and re-render
 	RenderFrameImpl(true, false);
 
-	const size_t img_size = w * h * bpp / 8;
+	const size_t img_size = width * height * bpp / 8;
 	const size_t hdr_size = tex_hdr_size(filename);
 	std::shared_ptr<u8> buf;
 	AllocateAligned(buf, hdr_size + img_size, maxSectorSize);
-	GLvoid* img = buf.get() + hdr_size;
+	void* img = buf.get() + hdr_size;
 	Tex t;
-	if (t.wrap(w, h, bpp, flags, buf, hdr_size) < 0)
+	if (t.wrap(width, height, bpp, TEX_BOTTOM_UP, buf, hdr_size) < 0)
 		return;
-	glReadPixels(0, 0, (GLsizei)w, (GLsizei)h, fmt, GL_UNSIGNED_BYTE, img);
+
+	m->deviceCommandContext->ReadbackFramebufferSync(0, 0, width, height, img);
+	m->deviceCommandContext->Flush();
+	if (needsPresent)
+		g_VideoMode.GetBackendDevice()->Present();
 
 	if (tex_write(&t, filename) == INFO::OK)
 	{
@@ -590,7 +578,7 @@ void CRenderer::RenderBigScreenShot(const bool needsPresent)
 
 	// If the game hasn't started yet then use WriteScreenshot to generate the image.
 	if (!g_Game)
-		return RenderScreenShot();
+		return RenderScreenShot(needsPresent);
 
 	int tiles = 4, tileWidth = 256, tileHeight = 256;
 	CFG_GET_VAL("screenshot.tiles", tiles);
@@ -614,15 +602,6 @@ void CRenderer::RenderBigScreenShot(const bool needsPresent)
 
 	const int imageWidth = tileWidth * tiles, imageHeight = tileHeight * tiles;
 	const int bpp = 24;
-	// we want writing BMP to be as fast as possible,
-	// so read data from OpenGL in BMP format to obviate conversion.
-#if CONFIG2_GLES // GLES doesn't support BGR
-	const GLenum fmt = GL_RGB;
-	const int flags = TEX_BOTTOM_UP;
-#else
-	const GLenum fmt = GL_BGR;
-	const int flags = TEX_BOTTOM_UP | TEX_BGR;
-#endif
 
 	const size_t imageSize = imageWidth * imageHeight * bpp / 8;
 	const size_t tileSize = tileWidth * tileHeight * bpp / 8;
@@ -638,13 +617,11 @@ void CRenderer::RenderBigScreenShot(const bool needsPresent)
 
 	Tex t;
 	GLvoid* img = imageBuffer.get() + headerSize;
-	if (t.wrap(imageWidth, imageHeight, bpp, flags, imageBuffer, headerSize) < 0)
+	if (t.wrap(imageWidth, imageHeight, bpp, TEX_BOTTOM_UP, imageBuffer, headerSize) < 0)
 	{
 		free(tileData);
 		return;
 	}
-
-	ogl_WarnIfError();
 
 	CCamera oldCamera = *g_Game->GetView()->GetCamera();
 
@@ -672,18 +649,18 @@ void CRenderer::RenderBigScreenShot(const bool needsPresent)
 
 			RenderFrameImpl(false, false);
 
+			m->deviceCommandContext->ReadbackFramebufferSync(0, 0, tileWidth, tileHeight, tileData);
+			m->deviceCommandContext->Flush();
+			if (needsPresent)
+				g_VideoMode.GetBackendDevice()->Present();
+
 			// Copy the tile pixels into the main image
-			glReadPixels(0, 0, tileWidth, tileHeight, fmt, GL_UNSIGNED_BYTE, tileData);
 			for (int y = 0; y < tileHeight; ++y)
 			{
 				void* dest = static_cast<char*>(img) + ((tileY * tileHeight + y) * imageWidth + (tileX * tileWidth)) * bpp / 8;
 				void* src = static_cast<char*>(tileData) + y * tileWidth * bpp / 8;
 				memcpy(dest, src, tileWidth * bpp / 8);
 			}
-
-			m->deviceCommandContext->Flush();
-			if (needsPresent)
-				g_VideoMode.GetBackendDevice()->Present();
 		}
 	}
 
@@ -735,7 +712,7 @@ void CRenderer::EndFrame()
 void CRenderer::SetViewport(const SViewPort &vp)
 {
 	m_Viewport = vp;
-	Renderer::Backend::GL::CDeviceCommandContext::Rect viewportRect;
+	Renderer::Backend::IDeviceCommandContext::Rect viewportRect;
 	viewportRect.x = vp.m_X;
 	viewportRect.y = vp.m_Y;
 	viewportRect.width = vp.m_Width;
@@ -799,7 +776,7 @@ void CRenderer::MakeScreenShotOnNextFrame(ScreenShotType screenShotType)
 	m_ScreenShotType = screenShotType;
 }
 
-Renderer::Backend::GL::CDeviceCommandContext* CRenderer::GetDeviceCommandContext()
+Renderer::Backend::IDeviceCommandContext* CRenderer::GetDeviceCommandContext()
 {
 	return m->deviceCommandContext.get();
 }

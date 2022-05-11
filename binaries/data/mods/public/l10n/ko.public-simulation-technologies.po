@@ -4,7 +4,7 @@
 # project.
 # Translators:
 # 이민학
-# Junghee Lee
+# JungHee Lee
 # moolow
 # Gu Hong Min
 # Hong Won Gi
@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:53+0000\n"
-"Last-Translator: Junghee Lee <daemul72@gmail.com>, 2022\n"
+"Last-Translator: JungHee Lee <daemul72@gmail.com>, 2022\n"
 "Language-Team: Korean (http://www.transifex.com/wildfire-games/0ad/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +53,6 @@ msgstr "아고게"
 #: simulation/data/technologies/health_regen_units.jsonrequirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.jsonrequirementsTooltip
 #: simulation/data/technologies/immortals.jsonrequirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/long_walls.jsonrequirementsTooltip
 #: simulation/data/technologies/nisean_horses.jsonrequirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.jsonrequirementsTooltip
@@ -126,6 +125,7 @@ msgstr "궁수 훈련"
 #: simulation/data/technologies/heal_rate.jsonrequirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.jsonrequirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.jsonrequirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/pop_house_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.jsonrequirementsTooltip
@@ -148,7 +148,7 @@ msgstr "궁수의 원거리 공격 전개가 -20% 감소합니다."
 msgid ""
 "The Indian, Iranian, and Kushite peoples had a tradition of fine archery and"
 " a penchant for using massed archers in battle."
-msgstr "인도인, 이란인, 쿠쉬인은 전장에서 전통 궁술과 궁수의 일제 사격에 대한 전술이 있었습니다."
+msgstr "인도인, 이란인, 쿠시인은 훌륭한 궁술의 전통을 가지고 있었고 전투에서 대규모 궁수를 사용하는 경향이 있었습니다."
 
 #: simulation/data/technologies/archery_tradition.jsongenericName
 msgid "Archery Tradition"
@@ -185,7 +185,7 @@ msgid ""
 " Susa; Darius the Great and Xerxes also built the magnificent Persepolis; "
 "Cyrus the Great greatly improved Ecbatana and virtually 'rebuilt' the old "
 "Elamite capital of Susa."
-msgstr "페르시아는 1677마일에 달하는 훌륭한 왕의 길을 사르디스에서 수사까지 건설했습니다. 또한 다리우스 대왕과 크세르 크세스는 웅장한 페르세폴리스도 건설했습니다. 키루스 대왕은 엑바타나를 크게 개량해, 옛 엘람의 수도 수사를 실질적으로 '재건'했습니다."
+msgstr "페르시아인은 1677마일에 달하는 훌륭한 왕의 길을 사르디스에서 수사까지 건설했습니다. 또한 다리우스 대왕과 크세르 크세스는 웅장한 페르세폴리스도 건설했습니다. 키루스 대왕은 엑바타나를 크게 개량해, 옛 엘람의 수도 수사를 실질적으로 '재건'했습니다."
 
 #: simulation/data/technologies/architecture_pers.jsongenericName
 msgid "Persian Architecture"
@@ -211,8 +211,8 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr "손자병법"
 
 #: simulation/data/technologies/art_of_war.jsontooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
-msgstr "모든 시민 병사의 진급 경험치가 -25% 감소합니다."
+msgid "All Citizen-Soldiers −25% required promotion experience."
+msgstr "모든 시민 병사들은 필요한 진급 경험치가 −25% 감소합니다."
 
 #: simulation/data/technologies/attack_soldiers_will.jsondescription
 msgid ""
@@ -234,7 +234,7 @@ msgstr "다이너마이스"
 
 #: simulation/data/technologies/attack_soldiers_will.jsontooltip
 msgid "Soldiers, Siege Engines, and Ships +25% attack damage."
-msgstr "병사, 공성 무기, 선박 공격 피해량이  +25% 증가합니다."
+msgstr "병사, 공성 무기, 선박들의 공격 피해량이  +25% 증가합니다."
 
 #: simulation/data/technologies/barracks_batch_training.jsondescription
 msgid ""
@@ -320,7 +320,7 @@ msgstr "건축물의 건설 시간이 -20%, 내구력이 -20%, 점령 포인트�
 msgid ""
 "The Gauls were well-known for their effective cavalry. Celtic mercenaries "
 "were in demand throughout the Mediterranean."
-msgstr "갈리아족은 효과적인 기병으로 유명했습니다. 켈트족 용병들은 지중해 전역에 걸쳐 수요가 있었습니다."
+msgstr "갈리아인은 효과적인 기병으로 유명했습니다. 켈트족 용병들은 지중해 전역에 걸쳐 수요가 있었습니다."
 
 #: simulation/data/technologies/civbonuses/gaul_cavalry.jsongenericName
 msgid "Superior Cavalry"
@@ -352,9 +352,17 @@ msgstr "한 왕조는 중국을 한 황제 아래 통일함으로써 4천만 명
 msgid "Federated States"
 msgstr "연방 국가"
 
+#: simulation/data/technologies/civbonuses/han_population.jsontooltip
+#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
+#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
+msgid "+10% maximum population limit."
+msgstr "최대 인구수가 +10 증가합니다."
+
 #: simulation/data/technologies/civbonuses/han_walls.jsondescription
-msgid "Han built massive walls, the great wall."
-msgstr "한나라는 거대한 성벽, 만리장성을 쌓았습니다."
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
+msgstr "한은 흙으로 만든 거대한 성벽을 쌓았습니다. 이들은 두께가 수 미터이고 수 킬로미터에 달하는 거대한 요새였습니다."
 
 #: simulation/data/technologies/civbonuses/han_walls.jsongenericName
 msgid "Great Wall"
@@ -366,15 +374,15 @@ msgstr "도시 성벽의 내구력이 +50% 증가합니다."
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsondescription
 msgid "The Macedonian economy relied greatly on their vast natural resources."
-msgstr ""
+msgstr "마케도니아 경제는 방대한 천연 자원에 크게 의존했습니다."
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsongenericName
 msgid "Resource-Rich Economy"
-msgstr ""
+msgstr "자원이 풍부한 경제"
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsontooltip
-msgid "Storehouse technologies -100% research time."
-msgstr ""
+msgid "Storehouse technologies −100% research time."
+msgstr "창고 기술의 연구 시간이 -100% 감소합니다 ."
 
 #: simulation/data/technologies/civbonuses/maur_elephants.jsondescription
 msgid ""
@@ -400,7 +408,7 @@ msgid ""
 "commanded a standing army of 600,000 infantry, 9000 elephants, 8000 "
 "chariots, and 30,000 cavalry, making it arguably the largest army of its "
 "time."
-msgstr "마우리야 제국은 수십개의 독립 왕국이 일찍이 있었던 5백만 평방 킬로미터의 지역과 인구는 6천만명에 가까운 인구를 가지고 있었습니다. 마우리아 왕조의 통치자는 황제 속의 황제 칭호를 갖고 이끈 상비군은 6십만 보병, 9천마리의 코끼리, 8천대의 전차,  3만의 기병을 지휘하여 아마도 당대 최대 규모의 군대로 만들었습니다."
+msgstr "마우리아 제국은 5백만 평방 킬로미터에 걸쳐 인구 6천만 명에 가까운 이전에 독립한 수십 개의 왕국을 포함했습니다. 마우리아 섭정들은 황제의 칭호를 가지고 있었고 60만 명의 보병, 9,000 마리의 코끼리, 8,000대의 전차, 그리고 30,000명의 기병으로 구성된 상비군을 지휘했고, 확실히 그 시대의 가장 큰 군대가 되었습니다."
 
 #: simulation/data/technologies/civbonuses/maur_population.jsongenericName
 msgid "Emperor of Emperors"
@@ -409,11 +417,6 @@ msgstr "황제 중의 황제"
 #: simulation/data/technologies/civbonuses/maur_population.jsonspecificName.maur
 msgid "Chakravarti Samrāt"
 msgstr "차크라바르티 삼라트"
-
-#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
-#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
-msgid "+10% maximum population limit."
-msgstr "최대 인구수가 +10 증가합니다."
 
 #: simulation/data/technologies/civbonuses/maur_walls.jsondescription
 msgid ""
@@ -460,7 +463,7 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr "집 및 경제 건축물의 목재 비용과 내구력이 -40% 감소합니다."
 
 #: simulation/data/technologies/civil_engineering_01.jsongenericName
-msgid "Civil Engineering - Level 1"
+msgid "Civil Engineering − Level 1"
 msgstr "토목 공학 - 레벨 1"
 
 #: simulation/data/technologies/civil_engineering_01.jsonspecificName.han
@@ -469,20 +472,20 @@ msgid "Gōngchéng"
 msgstr "Gōngchéng"
 
 #: simulation/data/technologies/civil_engineering_01.jsontooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
-msgstr "모든 건축물의 건설 시간이 -15%, 비용이 -5% 감소하고 내구력이 +10% 증가합니다."
+msgid "All structures −15% build time, +10% health and −5% cost."
+msgstr "모든 건축물 건설 시간이 -15%, 비용이 -5% 감소하고, 내구력이 +10% 증가합니다."
 
 #: simulation/data/technologies/civil_engineering_02.jsongenericName
-msgid "Civil Engineering - Level 2"
+msgid "Civil Engineering − Level 2"
 msgstr "토목 공학 - 레벨 2"
 
 #: simulation/data/technologies/civil_engineering_02.jsontooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
-msgstr "모든 건축물의 건설 시간이 -25%, 비용이 -5% 감소하고 내구력이 +20% 증가합니다."
+msgid "All structures −25% build time, +20% health and −5% cost."
+msgstr "모든 건축물 건설 시간이 -25%, 비용이 -5% 감소하고, 내구력이 +20% 증가합니다."
 
 #: simulation/data/technologies/civil_service_01.jsongenericName
-msgid "Civil Service - Level 1"
-msgstr "시민 사업 - 레벨 1"
+msgid "Civil Service − Level 1"
+msgstr "행정 조직 - 레벨 1"
 
 #: simulation/data/technologies/civil_service_01.jsonspecificName.han
 #: simulation/data/technologies/civil_service_02.jsonspecificName.han
@@ -492,19 +495,19 @@ msgstr "Guānliáo"
 #: simulation/data/technologies/civil_service_01.jsontooltip
 #: simulation/data/technologies/civil_service_02.jsontooltip
 msgid ""
-"Technologies at all buildings, except the Forge, -15% cost and -15% research"
+"Technologies at all buildings, except the Forge, −15% cost and −15% research"
 " time."
-msgstr "대장간을 제외한 모든 건축물의 기술 비용이 -15%, 연구 시간이 -15% 감소합니다."
+msgstr "대장간을 제외한 모든 건물의 기술 비용이 -15%, 연구 시간이 -15% 감소합니다."
 
 #: simulation/data/technologies/civil_service_02.jsongenericName
-msgid "Civil Service - Level 2"
-msgstr "시민 사업 - 레벨 2"
+msgid "Civil Service − Level 2"
+msgstr "행정 조직 - 레벨 2"
 
 #: simulation/data/technologies/colonization.jsondescription
 msgid ""
 "Carthaginians established many trading centers as colonies and ultimately "
 "held dominion over 300 cities and towns in North Africa alone."
-msgstr "카르타고는 많은 교역소를 식민지로 설립하고 마침내는 북아프리카에만 3백곳 이상의 도시와 마을을 지배하기에 이르렀습니다."
+msgstr "카르타고인은 많은 교역소를 식민지로 설립하고 마침내는 북아프리카에만 3백곳 이상의 도시와 마을을 지배하기에 이르렀습니다."
 
 #: simulation/data/technologies/colonization.jsongenericName
 msgid "Colonization"
@@ -518,7 +521,7 @@ msgstr "시민 건축물의 건설 시간 및 자원 비용이 -25% 감소합니
 msgid ""
 "The Chinese had a tradition of fine archery and a penchant for using massed "
 "crossbowmen in battle."
-msgstr "중국인들은 훌륭한 궁술의 전통을 가지고 있었고 전투에서 대량의 석궁을 사용하는 경향이 있었습니다."
+msgstr "한족은 훌륭한 궁술의 전통을 가지고 있었고 전투에서 대량의 석궁을 사용하는 경향이 있었습니다."
 
 #: simulation/data/technologies/crossbow_training.jsongenericName
 msgid "Crossbow Training"
@@ -660,7 +663,7 @@ msgstr "일꾼의 곡물 수확률이 +20% 증가합니다."
 msgid ""
 "The Gauls invented an harvesting machine, making it much easier to harvest "
 "grain."
-msgstr "갈리아족은 곡식을 훨씬 쉽게 수확 할 수 있도록 수확기를 발명했습니다."
+msgstr "갈리아인은 곡식을 훨씬 쉽게 수확 할 수 있도록 수확기를 발명했습니다."
 
 #: simulation/data/technologies/gather_farming_harvester.jsongenericName
 msgid "Harvesting Machine"
@@ -985,17 +988,19 @@ msgstr "보병의 훈련 시간이 -10% 감소합니다."
 
 #: simulation/data/technologies/iphicratean_reforms.jsondescription
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan "
-"Mercenary Archers (Toxotes Kretikos)."
-msgstr "아테네의 3단노선은 해병(에피바테스 아테나이코스)과 크레탄 용병 궁수(톡쏘테스 크레티코스)를 훈련할 수 있습니다."
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos) and Cretan Mercenary Archers (Toxotes Kretikos)."
+msgstr "아테네의 연무장, 부두 및 3단노선은 해병(Epibates Athenaikos)과 크레타 용병 궁수(Toxotes Kretikos)를 훈련시킬 수 있습니다."
 
 #: simulation/data/technologies/iphicratean_reforms.jsongenericName
 msgid "Iphicratean Reforms"
 msgstr "이피크라테스의 개혁"
 
 #: simulation/data/technologies/iphicratean_reforms.jsontooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
-msgstr "아테네의 3단노선은 해병과 크레탄 용병 궁수를 양성할 수 있습니다."
+msgid ""
+"Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary"
+" Archers."
+msgstr "아테네의 연무장, 부두, 3단노선은 해병과 크레타 용병 궁수들을 훈련시킬 수 있습니다."
 
 #: simulation/data/technologies/long_walls.jsondescription
 msgid ""
@@ -1018,7 +1023,7 @@ msgid ""
 "The now-extinct Nisian breed of horse was one of the largest and robust "
 "horses of ancient times. They were highly sought after by the Seleucids and "
 "Persians as both rider and mount gained heavier armor as time progressed."
-msgstr "지금은 멸종된 니시안 품종의 말은 고대의 가장 크고 튼튼한 말들 중 하나였습니다. 시간이 지날수록 기수와 탈것이 더 무거운 갑옷을 입게 되면서 셀레우키드와 페르시아인들에게 많은 관심을 받았습니다."
+msgstr "지금은 멸종된 니시안 품종의 말은 고대의 가장 크고 튼튼한 말들 중 하나였습니다. 시간이 지날수록 기수와 탈것이 더 무거운 갑옷을 입게 되면서 셀레우코스인과 페르시아인들에게 많은 관심을 받았습니다."
 
 #: simulation/data/technologies/nisean_horses.jsongenericName
 msgid "Nisean War Horses"
@@ -1113,7 +1118,7 @@ msgstr "번화한 도시에서 현재 기술의 경이로움으로 가득찬 진
 
 #: simulation/data/technologies/phase_city_generic.jsonspecificName.han
 msgid "Jùn"
-msgstr "Jùn"
+msgstr "군"
 
 #: simulation/data/technologies/phase_city_generic.jsontooltip
 msgid ""
@@ -1168,7 +1173,7 @@ msgstr "작은 부락에서 번화한 소도시로 빠르게 확장할 준비가
 
 #: simulation/data/technologies/phase_town_generic.jsonspecificName.han
 msgid "Xìan"
-msgstr "Xìan"
+msgstr "현"
 
 #: simulation/data/technologies/phase_town_generic.jsontooltip
 msgid ""
@@ -1187,7 +1192,7 @@ msgstr "독 화살"
 
 #: simulation/data/technologies/poison_arrows.jsontooltip
 msgid "Ranged Soldiers +20% attack damage."
-msgstr "원거리 공격 병사의 공격 피해량이 +20% 증가합니다."
+msgstr "원거리 공격 병사들의 공격 피해량이 +20% 증가합니다."
 
 #: simulation/data/technologies/poison_blades.jsongenericName
 msgid "Poison Blades"
@@ -1195,7 +1200,7 @@ msgstr "독 날"
 
 #: simulation/data/technologies/poison_blades.jsontooltip
 msgid "Melee Soldiers +20% attack damage."
-msgstr "근거리 공격 병사의 공격 피해량이 +20% 증가합니다."
+msgstr "근거리 공격 병사들의 공격 피해량이 +20% 증가합니다."
 
 #: simulation/data/technologies/pop_house_01.jsondescription
 msgid ""
@@ -1340,7 +1345,7 @@ msgstr "갑철판"
 
 #: simulation/data/technologies/siege_health.jsontooltip
 msgid "Battering Rams and Siege Towers +25% health."
-msgstr "충차 및 정란의 내구력이 +25% 증가합니다."
+msgstr "충차 및 공성탑의 내구력이 +25% 증가합니다."
 
 #: simulation/data/technologies/siege_pack_unpack.jsondescription
 msgid "Military engineers are responsible for improvements in siege engines."
@@ -1488,7 +1493,7 @@ msgstr "병사들의 원거리 공격 피해량이 +20% 증가합니다."
 
 #: simulation/data/technologies/soldier_ranged_experience.jsontooltip
 msgid "Ranged Soldiers +25% promotion experience."
-msgstr "원거리 공격 병사의 진급 경험치가 +25% 증가합니다."
+msgstr "원거리 공격 병사들의 진급 경험치가 +25% 증가합니다."
 
 #: simulation/data/technologies/soldier_resistance_hack_01.jsondescription
 msgid "Body armor made from quilted wool, linen, cotton, or leather."

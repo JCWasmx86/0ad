@@ -283,7 +283,7 @@ void CPatchRData::BuildBlends()
 
 		m_VBBlends = g_VBMan.AllocateChunk(
 			sizeof(SBlendVertex), blendVertices.size(),
-			Renderer::Backend::GL::CBuffer::Type::VERTEX, false,
+			Renderer::Backend::IBuffer::Type::VERTEX, false,
 			nullptr, CVertexBufferManager::Group::TERRAIN);
 		m_VBBlends->m_Owner->UpdateChunkVertices(m_VBBlends.Get(), &blendVertices[0]);
 
@@ -293,7 +293,7 @@ void CPatchRData::BuildBlends()
 
 		m_VBBlendIndices = g_VBMan.AllocateChunk(
 			sizeof(u16), blendIndices.size(),
-			Renderer::Backend::GL::CBuffer::Type::INDEX, false,
+			Renderer::Backend::IBuffer::Type::INDEX, false,
 			nullptr, CVertexBufferManager::Group::TERRAIN);
 		m_VBBlendIndices->m_Owner->UpdateChunkVertices(m_VBBlendIndices.Get(), &blendIndices[0]);
 	}
@@ -497,7 +497,7 @@ void CPatchRData::BuildIndices()
 	// Construct vertex buffer
 	m_VBBaseIndices = g_VBMan.AllocateChunk(
 		sizeof(u16), indices.size(),
-		Renderer::Backend::GL::CBuffer::Type::INDEX, false, nullptr, CVertexBufferManager::Group::TERRAIN);
+		Renderer::Backend::IBuffer::Type::INDEX, false, nullptr, CVertexBufferManager::Group::TERRAIN);
 	m_VBBaseIndices->m_Owner->UpdateChunkVertices(m_VBBaseIndices.Get(), &indices[0]);
 }
 
@@ -543,7 +543,7 @@ void CPatchRData::BuildVertices()
 	{
 		m_VBBase = g_VBMan.AllocateChunk(
 			sizeof(SBaseVertex), vsize * vsize,
-			Renderer::Backend::GL::CBuffer::Type::VERTEX, false,
+			Renderer::Backend::IBuffer::Type::VERTEX, false,
 			nullptr, CVertexBufferManager::Group::TERRAIN);
 	}
 
@@ -637,7 +637,7 @@ void CPatchRData::BuildSides()
 	{
 		m_VBSides = g_VBMan.AllocateChunk(
 			sizeof(SSideVertex), sideVertices.size(),
-			Renderer::Backend::GL::CBuffer::Type::VERTEX, false,
+			Renderer::Backend::IBuffer::Type::VERTEX, false,
 			nullptr, CVertexBufferManager::Group::DEFAULT);
 	}
 	m_VBSides->m_Owner->UpdateChunkVertices(m_VBSides.Get(), &sideVertices[0]);
@@ -712,10 +712,10 @@ using VertexBufferBatches = PooledBatchMap<CVertexBuffer*, IndexBufferBatches>;
 using TextureBatches = PooledBatchMap<CTerrainTextureEntry*, VertexBufferBatches>;
 
 // Group batches by shaders.
-using ShaderTechniqueBatches = PooledBatchMap<CShaderTechniquePtr, TextureBatches>;
+using ShaderTechniqueBatches = PooledBatchMap<std::pair<CStrIntern, CShaderDefines>, TextureBatches>;
 
 void CPatchRData::RenderBases(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const std::vector<CPatchRData*>& patches, const CShaderDefines& context, ShadowMap* shadow)
 {
 	PROFILE3("render terrain bases");
@@ -740,15 +740,11 @@ void CPatchRData::RenderBases(
 				LOGERROR("Terrain renderer failed to load shader effect.\n");
 				continue;
 			}
-			CShaderDefines defines = context;
-			defines.SetMany(material.GetShaderDefines());
-			CShaderTechniquePtr techBase = g_Renderer.GetShaderManager().LoadEffect(
-				material.GetShaderEffect(), defines);
 
 			BatchElements& batch = PooledPairGet(
 				PooledMapGet(
 					PooledMapGet(
-						PooledMapGet(batches, techBase, arena),
+						PooledMapGet(batches, std::make_pair(material.GetShaderEffect(), material.GetShaderDefines()), arena),
 						splat.m_Texture, arena
 					),
 					patch->m_VBBase->m_Owner, arena
@@ -767,50 +763,76 @@ void CPatchRData::RenderBases(
 	// Render each batch
 	for (ShaderTechniqueBatches::iterator itTech = batches.begin(); itTech != batches.end(); ++itTech)
 	{
-		const CShaderTechniquePtr& techBase = itTech->first;
+		CShaderDefines defines = context;
+		defines.SetMany(itTech->first.second);
+		CShaderTechniquePtr techBase = g_Renderer.GetShaderManager().LoadEffect(
+			itTech->first.first, defines);
+
 		const int numPasses = techBase->GetNumPasses();
 		for (int pass = 0; pass < numPasses; ++pass)
 		{
 			deviceCommandContext->SetGraphicsPipelineState(
 				techBase->GetGraphicsPipelineStateDesc(pass));
 			deviceCommandContext->BeginPass();
-			Renderer::Backend::GL::CShaderProgram* shader = techBase->GetShader(pass);
-			TerrainRenderer::PrepareShader(shader, shadow);
+			Renderer::Backend::IShaderProgram* shader = techBase->GetShader(pass);
+			TerrainRenderer::PrepareShader(deviceCommandContext, shader, shadow);
+
+			const int32_t baseTexBindingSlot =
+				shader->GetBindingSlot(str_baseTex);
+			const int32_t textureTransformBindingSlot =
+				shader->GetBindingSlot(str_textureTransform);
 
 			TextureBatches& textureBatches = itTech->second;
 			for (TextureBatches::iterator itt = textureBatches.begin(); itt != textureBatches.end(); ++itt)
 			{
 				if (!itt->first->GetMaterial().GetSamplers().empty())
 				{
-					const CMaterial::SamplersVector& samplers = itt->first->GetMaterial().GetSamplers();
+					const CMaterial::SamplersVector& samplers =
+						itt->first->GetMaterial().GetSamplers();
 					for(const CMaterial::TextureSampler& samp : samplers)
 						samp.Sampler->UploadBackendTextureIfNeeded(deviceCommandContext);
 					for(const CMaterial::TextureSampler& samp : samplers)
-						shader->BindTexture(samp.Name, samp.Sampler->GetBackendTexture());
+					{
+						deviceCommandContext->SetTexture(
+							shader->GetBindingSlot(samp.Name),
+							samp.Sampler->GetBackendTexture());
+					}
 
-					itt->first->GetMaterial().GetStaticUniforms().BindUniforms(shader);
+					itt->first->GetMaterial().GetStaticUniforms().BindUniforms(
+						deviceCommandContext, shader);
 
 					float c = itt->first->GetTextureMatrix()[0];
 					float ms = itt->first->GetTextureMatrix()[8];
-					shader->Uniform(str_textureTransform, c, ms, -ms, 0.f);
+					deviceCommandContext->SetUniform(
+						textureTransformBindingSlot, c, ms);
 				}
 				else
 				{
-					shader->BindTexture(str_baseTex, g_Renderer.GetTextureManager().GetErrorTexture()->GetBackendTexture());
+					deviceCommandContext->SetTexture(
+						baseTexBindingSlot,
+						g_Renderer.GetTextureManager().GetErrorTexture()->GetBackendTexture());
 				}
 
 				for (VertexBufferBatches::iterator itv = itt->second.begin(); itv != itt->second.end(); ++itv)
 				{
-					GLsizei stride = sizeof(SBaseVertex);
-					SBaseVertex *base = (SBaseVertex *)itv->first->Bind(deviceCommandContext);
-					shader->VertexPointer(
-						Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position[0]);
-					shader->NormalPointer(
-						Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Normal[0]);
-					shader->TexCoordPointer(
-						GL_TEXTURE0, Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position[0]);
+					itv->first->UploadIfNeeded(deviceCommandContext);
 
-					shader->AssertPointersBound();
+					const uint32_t stride = sizeof(SBaseVertex);
+
+					deviceCommandContext->SetVertexAttributeFormat(
+						Renderer::Backend::VertexAttributeStream::POSITION,
+						Renderer::Backend::Format::R32G32B32_SFLOAT,
+						offsetof(SBaseVertex, m_Position), stride, 0);
+					deviceCommandContext->SetVertexAttributeFormat(
+						Renderer::Backend::VertexAttributeStream::NORMAL,
+						Renderer::Backend::Format::R32G32B32_SFLOAT,
+						offsetof(SBaseVertex, m_Normal), stride, 0);
+					deviceCommandContext->SetVertexAttributeFormat(
+						Renderer::Backend::VertexAttributeStream::UV0,
+						Renderer::Backend::Format::R32G32B32_SFLOAT,
+						offsetof(SBaseVertex, m_Position), stride, 0);
+
+					deviceCommandContext->SetVertexBuffer(0, itv->first->GetBuffer());
 
 					for (IndexBufferBatches::iterator it = itv->second.begin(); it != itv->second.end(); ++it)
 					{
@@ -830,8 +852,6 @@ void CPatchRData::RenderBases(
 			deviceCommandContext->EndPass();
 		}
 	}
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }
 
 /**
@@ -867,7 +887,7 @@ struct SBlendStackItem
 };
 
 void CPatchRData::RenderBlends(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const std::vector<CPatchRData*>& patches, const CShaderDefines& context, ShadowMap* shadow)
 {
 	PROFILE3("render terrain blends");
@@ -964,7 +984,7 @@ void CPatchRData::RenderBlends(
 	PROFILE_END("compute batches");
 
 	CVertexBuffer* lastVB = nullptr;
-	Renderer::Backend::GL::CShaderProgram* previousShader = nullptr;
+	Renderer::Backend::IShaderProgram* previousShader = nullptr;
 	for (BatchesStack::iterator itTechBegin = batches.begin(), itTechEnd = batches.begin(); itTechBegin != batches.end(); itTechBegin = itTechEnd)
 	{
 		while (itTechEnd != batches.end() && itTechEnd->m_ShaderTech == itTechBegin->m_ShaderTech)
@@ -986,10 +1006,17 @@ void CPatchRData::RenderBlends(
 			deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 			deviceCommandContext->BeginPass();
 
-			Renderer::Backend::GL::CShaderProgram* shader = techBase->GetShader(pass);
-			TerrainRenderer::PrepareShader(shader, shadow);
+			Renderer::Backend::IShaderProgram* shader = techBase->GetShader(pass);
+			TerrainRenderer::PrepareShader(deviceCommandContext, shader, shadow);
 
-			Renderer::Backend::GL::CTexture* lastBlendTex = nullptr;
+			Renderer::Backend::ITexture* lastBlendTex = nullptr;
+
+			const int32_t baseTexBindingSlot =
+				shader->GetBindingSlot(str_baseTex);
+			const int32_t blendTexBindingSlot =
+				shader->GetBindingSlot(str_blendTex);
+			const int32_t textureTransformBindingSlot =
+				shader->GetBindingSlot(str_textureTransform);
 
 			for (BatchesStack::iterator itt = itTechBegin; itt != itTechEnd; ++itt)
 			{
@@ -1002,24 +1029,31 @@ void CPatchRData::RenderBlends(
 					for (const CMaterial::TextureSampler& samp : samplers)
 						samp.Sampler->UploadBackendTextureIfNeeded(deviceCommandContext);
 					for (const CMaterial::TextureSampler& samp : samplers)
-						shader->BindTexture(samp.Name, samp.Sampler->GetBackendTexture());
+					{
+						deviceCommandContext->SetTexture(
+							shader->GetBindingSlot(samp.Name),
+							samp.Sampler->GetBackendTexture());
+					}
 
-					Renderer::Backend::GL::CTexture* currentBlendTex = itt->m_Texture->m_TerrainAlpha->second.m_CompositeAlphaMap.get();
+					Renderer::Backend::ITexture* currentBlendTex = itt->m_Texture->m_TerrainAlpha->second.m_CompositeAlphaMap.get();
 					if (currentBlendTex != lastBlendTex)
 					{
-						shader->BindTexture(str_blendTex, currentBlendTex);
+						deviceCommandContext->SetTexture(
+							blendTexBindingSlot, currentBlendTex);
 						lastBlendTex = currentBlendTex;
 					}
 
-					itt->m_Texture->GetMaterial().GetStaticUniforms().BindUniforms(shader);
+					itt->m_Texture->GetMaterial().GetStaticUniforms().BindUniforms(deviceCommandContext, shader);
 
 					float c = itt->m_Texture->GetTextureMatrix()[0];
 					float ms = itt->m_Texture->GetTextureMatrix()[8];
-					shader->Uniform(str_textureTransform, c, ms, -ms, 0.f);
+					deviceCommandContext->SetUniform(
+						textureTransformBindingSlot, c, ms);
 				}
 				else
 				{
-					shader->BindTexture(str_baseTex, g_Renderer.GetTextureManager().GetErrorTexture()->GetBackendTexture());
+					deviceCommandContext->SetTexture(
+						baseTexBindingSlot, g_Renderer.GetTextureManager().GetErrorTexture()->GetBackendTexture());
 				}
 
 				for (VertexBufferBatches::iterator itv = itt->m_Batches.begin(); itv != itt->m_Batches.end(); ++itv)
@@ -1029,20 +1063,30 @@ void CPatchRData::RenderBlends(
 					{
 						lastVB = itv->first;
 						previousShader = shader;
-						GLsizei stride = sizeof(SBlendVertex);
-						SBlendVertex *base = (SBlendVertex *)itv->first->Bind(deviceCommandContext);
 
-						shader->VertexPointer(
-							Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position[0]);
-						shader->NormalPointer(
-							Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Normal[0]);
-						shader->TexCoordPointer(
-							GL_TEXTURE0, Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position[0]);
-						shader->TexCoordPointer(
-							GL_TEXTURE1, Renderer::Backend::Format::R32G32_SFLOAT, stride, &base->m_AlphaUVs[0]);
+						itv->first->UploadIfNeeded(deviceCommandContext);
+
+						const uint32_t stride = sizeof(SBlendVertex);
+
+						deviceCommandContext->SetVertexAttributeFormat(
+							Renderer::Backend::VertexAttributeStream::POSITION,
+							Renderer::Backend::Format::R32G32B32_SFLOAT,
+							offsetof(SBlendVertex, m_Position), stride, 0);
+						deviceCommandContext->SetVertexAttributeFormat(
+							Renderer::Backend::VertexAttributeStream::NORMAL,
+							Renderer::Backend::Format::R32G32B32_SFLOAT,
+							offsetof(SBlendVertex, m_Normal), stride, 0);
+						deviceCommandContext->SetVertexAttributeFormat(
+							Renderer::Backend::VertexAttributeStream::UV0,
+							Renderer::Backend::Format::R32G32B32_SFLOAT,
+							offsetof(SBlendVertex, m_Position), stride, 0);
+						deviceCommandContext->SetVertexAttributeFormat(
+							Renderer::Backend::VertexAttributeStream::UV1,
+							Renderer::Backend::Format::R32G32_SFLOAT,
+							offsetof(SBlendVertex, m_AlphaUVs), stride, 0);
+
+						deviceCommandContext->SetVertexBuffer(0, itv->first->GetBuffer());
 					}
-
-					shader->AssertPointersBound();
 
 					for (IndexBufferBatches::iterator it = itv->second.begin(); it != itv->second.end(); ++it)
 					{
@@ -1063,14 +1107,11 @@ void CPatchRData::RenderBlends(
 			deviceCommandContext->EndPass();
 		}
 	}
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }
 
 void CPatchRData::RenderStreams(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	const std::vector<CPatchRData*>& patches, Renderer::Backend::GL::CShaderProgram* shader,
-	const bool bindPositionAsTexCoord)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	const std::vector<CPatchRData*>& patches, const bool bindPositionAsTexCoord)
 {
 	PROFILE3("render terrain streams");
 
@@ -1099,21 +1140,26 @@ void CPatchRData::RenderStreams(
 
  	PROFILE_END("compute batches");
 
+	const uint32_t stride = sizeof(SBaseVertex);
+
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT,
+		offsetof(SBaseVertex, m_Position), stride, 0);
+	if (bindPositionAsTexCoord)
+	{
+		deviceCommandContext->SetVertexAttributeFormat(
+			Renderer::Backend::VertexAttributeStream::UV0,
+			Renderer::Backend::Format::R32G32B32_SFLOAT,
+			offsetof(SBaseVertex, m_Position), stride, 0);
+	}
+
  	// Render each batch
 	for (const std::pair<CVertexBuffer* const, StreamIndexBufferBatches>& streamBatch : batches)
 	{
-		GLsizei stride = sizeof(SBaseVertex);
-		SBaseVertex *base = (SBaseVertex *)streamBatch.first->Bind(deviceCommandContext);
+		streamBatch.first->UploadIfNeeded(deviceCommandContext);
 
-		shader->VertexPointer(
-			Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position);
-		if (bindPositionAsTexCoord)
-		{
-			shader->TexCoordPointer(
-				GL_TEXTURE0, Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position);
-		}
-
-		shader->AssertPointersBound();
+		deviceCommandContext->SetVertexBuffer(0, streamBatch.first->GetBuffer());
 
 		for (const std::pair<CVertexBuffer* const, StreamBatchElements>& batchIndexBuffer : streamBatch.second)
 		{
@@ -1129,8 +1175,6 @@ void CPatchRData::RenderStreams(
 			g_Renderer.m_Stats.m_TerrainTris += std::accumulate(batch.first.begin(), batch.first.end(), 0) / 3;
 		}
 	}
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }
 
 void CPatchRData::RenderOutline()
@@ -1166,11 +1210,20 @@ void CPatchRData::RenderOutline()
 }
 
 void CPatchRData::RenderSides(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	const std::vector<CPatchRData*>& patches, Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	const std::vector<CPatchRData*>& patches)
 {
 	PROFILE3("render terrain sides");
 	GPU_SCOPED_LABEL(deviceCommandContext, "Render terrain sides");
+
+	if (patches.empty())
+		return;
+
+	const uint32_t stride = sizeof(SSideVertex);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT,
+		offsetof(SSideVertex, m_Position), stride, 0);
 
 	CVertexBuffer* lastVB = nullptr;
 	for (CPatchRData* patch : patches)
@@ -1181,15 +1234,10 @@ void CPatchRData::RenderSides(
 		if (lastVB != patch->m_VBSides->m_Owner)
 		{
 			lastVB = patch->m_VBSides->m_Owner;
-			SSideVertex *base = (SSideVertex*)patch->m_VBSides->m_Owner->Bind(deviceCommandContext);
+			patch->m_VBSides->m_Owner->UploadIfNeeded(deviceCommandContext);
 
-			// setup data pointers
-			GLsizei stride = sizeof(SSideVertex);
-			shader->VertexPointer(
-				Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base->m_Position);
+			deviceCommandContext->SetVertexBuffer(0, patch->m_VBSides->m_Owner->GetBuffer());
 		}
-
-		shader->AssertPointersBound();
 
 		deviceCommandContext->Draw(patch->m_VBSides->m_Index, (GLsizei)patch->m_VBSides->m_Count);
 
@@ -1197,8 +1245,6 @@ void CPatchRData::RenderSides(
 		g_Renderer.m_Stats.m_DrawCalls++;
 		g_Renderer.m_Stats.m_TerrainTris += patch->m_VBSides->m_Count / 3;
 	}
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }
 
 void CPatchRData::RenderPriorities(CTextRenderer& textRenderer)
@@ -1400,13 +1446,13 @@ void CPatchRData::BuildWater()
 	{
 		m_VBWater = g_VBMan.AllocateChunk(
 			sizeof(SWaterVertex), water_vertex_data.size(),
-			Renderer::Backend::GL::CBuffer::Type::VERTEX, false,
+			Renderer::Backend::IBuffer::Type::VERTEX, false,
 			nullptr, CVertexBufferManager::Group::WATER);
 		m_VBWater->m_Owner->UpdateChunkVertices(m_VBWater.Get(), &water_vertex_data[0]);
 
 		m_VBWaterIndices = g_VBMan.AllocateChunk(
 			sizeof(GLushort), water_indices.size(),
-			Renderer::Backend::GL::CBuffer::Type::INDEX, false,
+			Renderer::Backend::IBuffer::Type::INDEX, false,
 			nullptr, CVertexBufferManager::Group::WATER);
 		m_VBWaterIndices->m_Owner->UpdateChunkVertices(m_VBWaterIndices.Get(), &water_indices[0]);
 	}
@@ -1415,82 +1461,83 @@ void CPatchRData::BuildWater()
 	{
 		m_VBWaterShore = g_VBMan.AllocateChunk(
 			sizeof(SWaterVertex), water_vertex_data_shore.size(),
-			Renderer::Backend::GL::CBuffer::Type::VERTEX, false,
+			Renderer::Backend::IBuffer::Type::VERTEX, false,
 			nullptr, CVertexBufferManager::Group::WATER);
 		m_VBWaterShore->m_Owner->UpdateChunkVertices(m_VBWaterShore.Get(), &water_vertex_data_shore[0]);
 
 		// Construct indices buffer
 		m_VBWaterIndicesShore = g_VBMan.AllocateChunk(
 			sizeof(GLushort), water_indices_shore.size(),
-			Renderer::Backend::GL::CBuffer::Type::INDEX, false,
+			Renderer::Backend::IBuffer::Type::INDEX, false,
 			nullptr, CVertexBufferManager::Group::WATER);
 		m_VBWaterIndicesShore->m_Owner->UpdateChunkVertices(m_VBWaterIndicesShore.Get(), &water_indices_shore[0]);
 	}
 }
 
 void CPatchRData::RenderWaterSurface(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader, const bool bindWaterData)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	const bool bindWaterData)
 {
 	ASSERT(m_UpdateFlags == 0);
 
 	if (!m_VBWater)
 		return;
 
+	m_VBWater->m_Owner->UploadIfNeeded(deviceCommandContext);
 	m_VBWaterIndices->m_Owner->UploadIfNeeded(deviceCommandContext);
 
-	SWaterVertex* base = reinterpret_cast<SWaterVertex*>(m_VBWater->m_Owner->Bind(deviceCommandContext));
+	const uint32_t stride = sizeof(SWaterVertex);
+	const uint32_t firstVertexOffset = m_VBWater->m_Index * stride;
 
-	// Setup data pointers.
-	const GLsizei stride = sizeof(SWaterVertex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &base[m_VBWater->m_Index].m_Position);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT,
+		firstVertexOffset + offsetof(SWaterVertex, m_Position), stride, 0);
 	if (bindWaterData)
 	{
-		shader->VertexAttribPointer(
-			str_a_waterInfo, Renderer::Backend::Format::R32G32_SFLOAT, false, stride,
-			&base[m_VBWater->m_Index].m_WaterData);
+		deviceCommandContext->SetVertexAttributeFormat(
+			Renderer::Backend::VertexAttributeStream::UV1,
+			Renderer::Backend::Format::R32G32_SFLOAT,
+			firstVertexOffset + offsetof(SWaterVertex, m_WaterData), stride, 0);
 	}
 
-	shader->AssertPointersBound();
-
+	deviceCommandContext->SetVertexBuffer(0, m_VBWater->m_Owner->GetBuffer());
 	deviceCommandContext->SetIndexBuffer(m_VBWaterIndices->m_Owner->GetBuffer());
+
 	deviceCommandContext->DrawIndexed(m_VBWaterIndices->m_Index, m_VBWaterIndices->m_Count, 0);
 
 	g_Renderer.m_Stats.m_DrawCalls++;
 	g_Renderer.m_Stats.m_WaterTris += m_VBWaterIndices->m_Count / 3;
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }
 
 void CPatchRData::RenderWaterShore(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	ASSERT(m_UpdateFlags == 0);
 
 	if (!m_VBWaterShore)
 		return;
 
+	m_VBWaterShore->m_Owner->UploadIfNeeded(deviceCommandContext);
 	m_VBWaterIndicesShore->m_Owner->UploadIfNeeded(deviceCommandContext);
 
-	SWaterVertex* base = reinterpret_cast<SWaterVertex*>(m_VBWaterShore->m_Owner->Bind(deviceCommandContext));
+	const uint32_t stride = sizeof(SWaterVertex);
+	const uint32_t firstVertexOffset = m_VBWaterShore->m_Index * stride;
 
-	const GLsizei stride = sizeof(SWaterVertex);
-	shader->VertexPointer(
-		Renderer::Backend::Format::R32G32B32_SFLOAT, stride,
-		&base[m_VBWaterShore->m_Index].m_Position);
-	shader->VertexAttribPointer(
-		str_a_waterInfo, Renderer::Backend::Format::R32G32_SFLOAT, false, stride,
-		&base[m_VBWaterShore->m_Index].m_WaterData);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT,
+		firstVertexOffset + offsetof(SWaterVertex, m_Position), stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV1,
+		Renderer::Backend::Format::R32G32_SFLOAT,
+		firstVertexOffset + offsetof(SWaterVertex, m_WaterData), stride, 0);
 
-	shader->AssertPointersBound();
-
+	deviceCommandContext->SetVertexBuffer(0, m_VBWaterShore->m_Owner->GetBuffer());
 	deviceCommandContext->SetIndexBuffer(m_VBWaterIndicesShore->m_Owner->GetBuffer());
+
 	deviceCommandContext->DrawIndexed(m_VBWaterIndicesShore->m_Index, m_VBWaterIndicesShore->m_Count, 0);
 
 	g_Renderer.m_Stats.m_DrawCalls++;
 	g_Renderer.m_Stats.m_WaterTris += m_VBWaterIndicesShore->m_Count / 3;
-
-	CVertexBuffer::Unbind(deviceCommandContext);
 }

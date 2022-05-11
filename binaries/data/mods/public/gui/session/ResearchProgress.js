@@ -12,7 +12,7 @@ class ResearchProgress
 		 * Top coordinate of the research list.
 		 * Changes depending on the number of displayed counters.
 		 */
-		this.topOffset = 0;
+		this.topOffset = g_OverlayCounterManager.lastHeight;
 
 		let updater = this.updateResearchProgress.bind(this);
 		registerSimulationUpdateHandler(updater);
@@ -117,4 +117,4 @@ ResearchProgressButton.prototype.PortraitDirectory = "session/portraits/";
 ResearchProgressButton.prototype.CountdownFormat = markForTranslationWithContext("countdown format", "m:ss");
 
 // Translation: String displayed when the research is paused. E.g. by being garrisoned or when not the first item in the queue.
-ResearchProgressButton.prototype.PausedResearchString = markForTranslation("(This item is paused.)");
+ResearchProgressButton.prototype.PausedResearchString = markForTranslation("This item is paused.");

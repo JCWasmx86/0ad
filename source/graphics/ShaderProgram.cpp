@@ -20,7 +20,7 @@
 #include "ShaderProgram.h"
 
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 
 CShaderProgram::CShaderProgram(const CStr& name, const CShaderDefines& defines)
 	: m_Name(name), m_Defines(defines)
@@ -30,12 +30,14 @@ CShaderProgram::CShaderProgram(const CStr& name, const CShaderDefines& defines)
 // static
 CShaderProgramPtr CShaderProgram::Create(const CStr& name, const CShaderDefines& defines)
 {
-	return CShaderProgramPtr(new CShaderProgram(name, defines));
+	CShaderProgramPtr shaderProgram(new CShaderProgram(name, defines));
+	shaderProgram->Reload();
+	return shaderProgram->m_BackendShaderProgram ? shaderProgram : nullptr;
 }
 
 void CShaderProgram::Reload()
 {
-	std::unique_ptr<Renderer::Backend::GL::CShaderProgram> backendShaderProgram =
+	std::unique_ptr<Renderer::Backend::IShaderProgram> backendShaderProgram =
 		g_VideoMode.GetBackendDevice()->CreateShaderProgram(m_Name, m_Defines);
 	if (backendShaderProgram)
 		m_BackendShaderProgram = std::move(backendShaderProgram);

@@ -2,7 +2,7 @@
 <actor version="1">
   <castshadow/>
   <group>
-    <variant file="biped/base_swordsman_shield_relax_celt.xml">
+    <variant>
       <mesh>skeletal/new/m_armor_pants.dae</mesh>
       <props>
         <prop actor="props/units/helmets/celt_helmet_port.xml" attachpoint="helmet"/>

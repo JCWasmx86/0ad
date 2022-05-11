@@ -24,7 +24,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-25 07:09+0000\n"
 "PO-Revision-Date: 2014-06-19 17:52+0000\n"
 "Last-Translator: rollieoo, 2021-2022\n"
 "Language-Team: Dutch (http://www.transifex.com/wildfire-games/0ad/language/nl/)\n"
@@ -180,7 +180,7 @@ msgstr "Vruchtbare gronden omgeven door ruw terrein.\nOverblijfselen van recente
 
 #: maps/random/caledonian_meadows.jsonsettings.Name
 msgid "Caledonian Meadows"
-msgstr "Caledonische Weiden"
+msgstr "Caledonische weiden"
 
 #: maps/random/cantabrian_highlands.jsonsettings.Description
 msgid ""
@@ -240,7 +240,7 @@ msgstr "Iedere speler start op een eiland.\n\nDe Cycladen zijn een eilandengroep
 
 #: maps/random/cycladic_archipelago.jsonsettings.Name
 msgid "Cycladic Archipelago"
-msgstr "Cycladische Archipel"
+msgstr "Cycladische archipel"
 
 #: maps/random/danubius.jsonsettings.Daytime[0].Description
 msgid "Bright daylight illuminates the scene."
@@ -271,7 +271,7 @@ msgstr "Spelers beginnen aan de oevers van de Donau in de periode na de uitbreid
 
 #: maps/random/danubius.jsonsettings.Name
 msgid "Danubius"
-msgstr "Danubius"
+msgstr "Donau"
 
 #: maps/random/deep_forest.jsonsettings.Description
 msgid "A deep dark forest in Germania."
@@ -311,7 +311,7 @@ msgstr "Elephantine"
 msgid ""
 "A neighboring province has pledged alegiance to your rule. It's up to you to command them to victory.\n"
 "[color=\"yellow\"]Caution! If nomad mode is disabled, each player will start with two civic centers.[/color]"
-msgstr ""
+msgstr "Een naburige provincie heeft trouw gezworen aan uw gezag. Het is aan u ze naar de overwinning te leiden.\n[color=\"yellow\"]Let op! Als de nomade modus is uitgeschakeld begint iedere speler met twee beschavingscentra.[/color]"
 
 #: maps/random/empire.jsonsettings.Name
 msgid "Empire"
@@ -325,7 +325,7 @@ msgstr "Spelers starten in Noord-Frankrijk of Zuid-Engeland, met Het Kanaal als 
 
 #: maps/random/english_channel.jsonsettings.Name
 msgid "English Channel"
-msgstr "Engels Kanaal"
+msgstr "Het Kanaal"
 
 #: maps/random/extinct_volcano.jsonsettings.Description
 msgid ""
@@ -336,7 +336,7 @@ msgstr "[color=\"red\"]BELANGRIJKE OPMERKING: COMPUTERGESTUURDE SPELERS WERKEN N
 
 #: maps/random/extinct_volcano.jsonsettings.Name
 msgid "Extinct Volcano"
-msgstr "Uitgestorven vulkaan"
+msgstr "Dode vulkaan"
 
 #: maps/random/extinct_volcano_triggers.js:59
 msgid "It keeps on raining, we will have to evacuate soon!"
@@ -592,7 +592,7 @@ msgstr "Neder-Nubië"
 #: maps/random/mainland.jsonsettings.Description
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[8].Description
 msgid "A typical map without any water."
-msgstr "Een typische kaart zonder water."
+msgstr "Een gewone kaart zonder water."
 
 #: maps/random/mainland.jsonsettings.Name
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[8].Name
@@ -815,7 +815,7 @@ msgstr "Enge landmassa's worden door wateren gescheiden, met slechts enkele land
 
 #: maps/random/river_archipelago.jsonsettings.Name
 msgid "River Archipelago"
-msgstr "Rivier Archipel"
+msgstr "Rivier archipel"
 
 #: maps/random/rivers.jsonsettings.Description
 msgid ""
@@ -1051,7 +1051,7 @@ msgstr "Iedere speler start bij een weelderige oase in een grote, eenzame woesti
 #: maps/random/saharan_oases.jsonsettings.Name
 #: maps/scenarios/saharan_oases.xml:Name:26
 msgid "Saharan Oases"
-msgstr "Sahara Oase"
+msgstr "Saharaanse oase"
 
 #: maps/random/sahel.jsonsettings.Description
 msgid ""
@@ -1166,7 +1166,7 @@ msgid "Choose a random land landscape"
 msgstr "Selecteer een willekeurige landkaart zonder water."
 
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[1].Description
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:39
 #: maps/skirmishes/corinthian_isthmus_4p.xml:Description:39
 msgid ""
 "Two Mediterranean land masses connected by a narrow spit of land, called an "
@@ -1331,7 +1331,7 @@ msgstr "Arcadië"
 #: maps/scenarios/necropolis.xml:PlayerData[0].Name:38
 #: maps/scenarios/reservoir.xml:PlayerData[0].Name:26
 #: maps/scenarios/saharan_oases.xml:PlayerData[0].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[0].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[0].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[0].Name:26
@@ -1340,6 +1340,7 @@ msgstr "Arcadië"
 #: maps/scenarios/tropical_island.xml:PlayerData[0].Name:38
 #: maps/scenarios/walls.xml:PlayerData[0].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[0].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[1].Name:39
 msgid "Player 1"
 msgstr "Speler 1"
 
@@ -1354,7 +1355,7 @@ msgstr "Speler 1"
 #: maps/scenarios/migration.xml:PlayerData[1].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[1].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[1].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[1].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[1].Name:26
@@ -1363,6 +1364,7 @@ msgstr "Speler 1"
 #: maps/scenarios/tropical_island.xml:PlayerData[1].Name:38
 #: maps/scenarios/walls.xml:PlayerData[1].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[1].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[2].Name:39
 msgid "Player 2"
 msgstr "Speler 2"
 
@@ -1418,7 +1420,7 @@ msgstr "Nikaia"
 
 #: maps/scenarios/azure_coast_8p.xml:PlayerData[2].Name:38
 msgid "Massalia"
-msgstr "Massalië"
+msgstr "Massilia"
 
 #: maps/scenarios/azure_coast_8p.xml:PlayerData[3].Name:38
 msgid "Olbia"
@@ -1430,7 +1432,7 @@ msgstr "Deciates"
 
 #: maps/scenarios/azure_coast_8p.xml:PlayerData[5].Name:38
 msgid "Salluvii"
-msgstr "Salluvii"
+msgstr "Salluviërs"
 
 #: maps/scenarios/azure_coast_8p.xml:PlayerData[6].Name:38
 msgid "Cavares"
@@ -1438,7 +1440,7 @@ msgstr "Cavares"
 
 #: maps/scenarios/azure_coast_8p.xml:PlayerData[7].Name:38
 msgid "Verguni"
-msgstr "Verguni"
+msgstr "Vergunni"
 
 #: maps/scenarios/battle_for_the_tiber.xml:Description:26
 msgid ""
@@ -1524,7 +1526,7 @@ msgstr "Chalcis"
 
 #: maps/scenarios/campaign_test_map.xml:PlayerData[6].Name:38
 msgid "Peloponnesian League"
-msgstr "Peloponnesische Oorlog"
+msgstr "Peloponnesische bond"
 
 #: maps/scenarios/campaign_test_map.xml:PlayerData[7].Name:38
 msgid "Religious Institutions"
@@ -1558,7 +1560,7 @@ msgstr "U"
 msgid ""
 "A combat demonstration between a small number of ranged and melee infantry "
 "units."
-msgstr "Een gevechtsdemonstratie tussen kleine aantallen afstands- en mêlee infanterie eenheden."
+msgstr "Een gevechtsdemonstratie tussen kleine aantallen afstands- en mêleeinfanterie eenheden."
 
 #: maps/scenarios/combat_demo.xml:Name:26
 msgid "Combat Demo"
@@ -1570,7 +1572,7 @@ msgstr "1296 eenheden. Enorm traag (optimalisatie is nodig)."
 
 #: maps/scenarios/combat_demo_huge.xml:Name:73
 msgid "Combat Demo (Huge)"
-msgstr "Gevechtsdemo (groot)"
+msgstr "Gevechtsdemo (enorm)"
 
 #: maps/scenarios/death_canyon_invasion_force.xml:Description:38
 msgid ""
@@ -1595,7 +1597,7 @@ msgstr "Invasiekracht"
 #: maps/scenarios/migration.xml:PlayerData[2].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[2].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[2].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[3].Name:39
 #: maps/scenarios/siwa_oasis.xml:PlayerData[2].Name:26
 msgid "Player 3"
@@ -1691,16 +1693,16 @@ msgid ""
 "This is a WFG community-designed map by: SMST, NOXAS1, and Yodaspirine."
 msgstr "Multiplayer kaart. Iedere speler start op een klein eiland met een minimale hoeveelheid grondstoffen. De rest ligt op een grotere landmassa.\n\nDit is een kaart ontworpen door de WFG community, door SMST, NOXAS1 en Yodaspirine."
 
-#: maps/scenarios/miletus.xml:Description:26
+#: maps/scenarios/miletus.xml:Description:39
 msgid "A sandbox scenario for one player."
 msgstr "Een zandbak scenario voor één speler."
 
-#: maps/scenarios/miletus.xml:Name:26
-#: maps/scenarios/miletus.xml:PlayerData[0].Name:26
+#: maps/scenarios/miletus.xml:Name:39
+#: maps/scenarios/miletus.xml:PlayerData[0].Name:39
 msgid "Miletus"
 msgstr "Miletus"
 
-#: maps/scenarios/miletus.xml:PlayerData[1].Name:26
+#: maps/scenarios/miletus.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_ptolemies_02.xml:PlayerData[1].Name:38
 msgid "Romans"
 msgstr "Rome"
@@ -1885,16 +1887,16 @@ msgstr "De Perzen"
 msgid "The Gauls"
 msgstr "De Galliërs"
 
-#: maps/scenarios/sandbox_britons.xml:Description:38
+#: maps/scenarios/sandbox_britons.xml:Description:39
 #: maps/scenarios/sandbox_gauls.xml:Description:39
 msgid "Play around with the Gallic faction in an idyllic sandbox setting."
 msgstr "Speel met de Gallische beschaving in een idyllische zandbak."
 
-#: maps/scenarios/sandbox_britons.xml:Name:38
+#: maps/scenarios/sandbox_britons.xml:Name:39
 msgid "Sandbox - The Britons"
 msgstr "Zandbak - De Britten"
 
-#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[4].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[4].Name:39
 msgid "Roman Interlopers"
 msgstr "Romeinse wachters"
@@ -2476,14 +2478,14 @@ msgid_plural ""
 msgstr[0] "%(lastPlayer)s is verslagen (wonder overwinning)."
 msgstr[1] "%(players)s en %(lastPlayer)s zijn verslagen (wonder overwinning)."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Description:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Description:39
 msgid ""
-"Each player starts the match atop a large flat plateau.\n"
+"Each player starts the match atop a large flat plateau, otherwise known as an acropolis.\n"
 "\n"
-"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed plateau commanding the valley below."
-msgstr "Elke speler start bovenop een vlak plateau.\n\nIn het oosten is er een baai waar gevist kan worden. In het westen is het binnenland ruwer, alwaar zich een onbezet plateau bevind, welke de vallei daaronder overziet."
+"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed acropolis commanding the valley below."
+msgstr "Elke speler start boven op een vlak plateau, ook gekend als een akropolis.\n\nIn het oosten is er een baai waar gevist kan worden. In het westen is het land ruwer, met de mogelijkheid om een nieuw stadscentrum op een akropolis te bouwen."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Name:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Name:39
 msgid "Acropolis Bay (2)"
 msgstr "Akropolisbaai (2)"
 
@@ -2565,16 +2567,6 @@ msgstr "Het zuiden van de Sahara, ten oosten van de Nijl, ligt een halfdor gebie
 msgid "Island of Meroë (2)"
 msgstr "Eiland van Meroë (2)"
 
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[0].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[2].Name:39
-msgid "West Player"
-msgstr "Westelijke speler"
-
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[1].Name:39
-msgid "East Player"
-msgstr "Oostenlijke speler"
-
 #: maps/skirmishes/caspian_sea_2pv2p.xml:Description:38
 msgid ""
 "Two teams face off across a long, very large saltwater lake.\n"
@@ -2597,7 +2589,7 @@ msgstr "Noordelijk Italië, voor de Alpen, werd door de Romeinen Cisalpijns Gall
 msgid "Cisalpine Winter (2)"
 msgstr "Cisalpijnse winter (2)"
 
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:39
 msgid "Corinthian Isthmus (2)"
 msgstr "Landengte van Korinthe (2)"
 
@@ -2627,11 +2619,11 @@ msgstr "Reeds sinds prehistorische tijden hebben de Egyptenaren zich bij het Mo�
 msgid "Crocodilopolis (4)"
 msgstr "Krokodilopolis (4)"
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:39
 msgid "A \"small island\"-style map set in the Aegean Sea."
 msgstr "Een \"kleine eilanden\" stijl kaart in de Egeïsche zee."
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:39
 msgid "Cycladic Archipelago (2)"
 msgstr "Cycladisch Archipel (2)"
 
@@ -2645,18 +2637,6 @@ msgstr "Een \"kleine eilanden\" stijl kaart in de Egeïsche zee.\n\nKaartgrootte
 #: maps/skirmishes/cycladic_archipelago_3p.xml:Name:38
 msgid "Cycladic Archipelago (3)"
 msgstr "Cycladisch Archipel (3)"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[0].Name:38
-msgid "Samos"
-msgstr "Samos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[1].Name:38
-msgid "Lesbos"
-msgstr "Lesbos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[2].Name:38
-msgid "Delos"
-msgstr "Delos"
 
 #: maps/skirmishes/death_canyon_2p.xml:Description:38
 msgid ""
@@ -2854,16 +2834,6 @@ msgstr "De Hydaspes, oftewel de Jhelum of Jahalum, is een rivier in de Punjab. D
 msgid "Hydaspes River (4)"
 msgstr "De Hydaspes (4)"
 
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[3].Name:39
-msgid "Macedonian Position"
-msgstr "Macedonische positie"
-
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[2].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[4].Name:39
-msgid "Pauravan Position"
-msgstr "Pauravanische positie"
-
 #: maps/skirmishes/libyan_oases_4p.xml:Description:38
 msgid ""
 "An otherwise wide-open, flat desert map is pierced in the center by two lush oases.\n"
@@ -2912,14 +2882,14 @@ msgstr "Twee van de grootste koninkrijken van India, de Maurya's en de Gupta's, 
 msgid "Magadha (2)"
 msgstr "Magadha (2)"
 
-#: maps/skirmishes/median_oasis_2p.xml:Description:38
+#: maps/skirmishes/median_oasis_2p.xml:Description:39
 #: maps/skirmishes/median_oasis_4p.xml:Description:38
 msgid ""
 "A large oasis acts as the hub of mountainous spokes that divide the home "
 "territories of each player."
 msgstr "Een grote oase als een middelpunt van bergketens die de gebieden van elke speler verdeelt."
 
-#: maps/skirmishes/median_oasis_2p.xml:Name:38
+#: maps/skirmishes/median_oasis_2p.xml:Name:39
 msgid "Median Oasis (2)"
 msgstr "Medische oase (2)"
 
@@ -3150,12 +3120,12 @@ msgid ""
 msgstr "Een dor woestijnbekken omgeven door steile valleien, wordt het Tarimbekken door de Han-Chinezen ook wel \"De Westelijke Gebieden\" genoemd, en is het voor hen de uiterste grens van hun invloedssfeer.\n\nHet bekken zelf is ontdaan van enig leven en heeft aan defensieve mogelijkheden weinig te bieden. In de woeste bergvalleien schuilt enig leven in de vorm van dichte bosschages, enkele boomsoorten en wat geiten."
 
 #: maps/skirmishes/tarim_basin_2p.xml:Name:39
-msgid "Tarim Basin (2 players)"
-msgstr "Tarimbekken (2 spelers)"
+msgid "Tarim Basin (2)"
+msgstr "Tarimbekken (2)"
 
 #: maps/skirmishes/tarim_basin_4p.xml:Name:39
-msgid "Tarim Basin (4 players)"
-msgstr "Tarimbekken (4 spelers)"
+msgid "Tarim Basin (4)"
+msgstr "Tarimbekken (4)"
 
 #: maps/skirmishes/team_oasis_2pv2p.xml:Description:38
 msgid ""
@@ -3254,10 +3224,6 @@ msgstr "Vreemdelingen vallen Brittannië binnen. De inheemse Britten nemen het o
 msgid "White Cliffs of Dover (5)"
 msgstr "Witte Kliffen van Dover (5)"
 
-#: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[1].Name:39
-msgid "Britons"
-msgstr "Britten"
-
 #: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[2].Name:39
 msgid "Invader 1"
 msgstr "Indringer 1"
@@ -3279,8 +3245,8 @@ msgid "The Yangtze River in China. "
 msgstr "De Jangtsekiang rivier in China."
 
 #: maps/skirmishes/yangtze_2p.xml:Name:39
-msgid "Chang Jiang (2 players)"
-msgstr "Chang Jiang (2 spelers)"
+msgid "Chang Jiang (2)"
+msgstr "Jangtsekiang (2)"
 
 #: maps/skirmishes/zagros_mountains_2p.xml:Description:38
 msgid ""

@@ -31,9 +31,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-25 07:09+0000\n"
 "PO-Revision-Date: 2014-06-19 17:52+0000\n"
-"Last-Translator: Николай Авдеев <nickkolok@mail.ru>, 2016,2021\n"
+"Last-Translator: nwtour <nwtour@mail.ru>, 2021-2022\n"
 "Language-Team: Russian (http://www.transifex.com/wildfire-games/0ad/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1173,7 +1173,7 @@ msgid "Choose a random land landscape"
 msgstr "Выбрать случайный сухопутный рельеф"
 
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[1].Description
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:39
 #: maps/skirmishes/corinthian_isthmus_4p.xml:Description:39
 msgid ""
 "Two Mediterranean land masses connected by a narrow spit of land, called an "
@@ -1338,7 +1338,7 @@ msgstr "Аркадия"
 #: maps/scenarios/necropolis.xml:PlayerData[0].Name:38
 #: maps/scenarios/reservoir.xml:PlayerData[0].Name:26
 #: maps/scenarios/saharan_oases.xml:PlayerData[0].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[0].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[0].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[0].Name:26
@@ -1347,6 +1347,7 @@ msgstr "Аркадия"
 #: maps/scenarios/tropical_island.xml:PlayerData[0].Name:38
 #: maps/scenarios/walls.xml:PlayerData[0].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[0].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[1].Name:39
 msgid "Player 1"
 msgstr "Игрок 1"
 
@@ -1361,7 +1362,7 @@ msgstr "Игрок 1"
 #: maps/scenarios/migration.xml:PlayerData[1].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[1].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[1].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[1].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[1].Name:26
@@ -1370,6 +1371,7 @@ msgstr "Игрок 1"
 #: maps/scenarios/tropical_island.xml:PlayerData[1].Name:38
 #: maps/scenarios/walls.xml:PlayerData[1].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[1].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[2].Name:39
 msgid "Player 2"
 msgstr "Игрок 2"
 
@@ -1602,7 +1604,7 @@ msgstr "Сила захвата"
 #: maps/scenarios/migration.xml:PlayerData[2].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[2].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[2].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[3].Name:39
 #: maps/scenarios/siwa_oasis.xml:PlayerData[2].Name:26
 msgid "Player 3"
@@ -1698,16 +1700,16 @@ msgid ""
 "This is a WFG community-designed map by: SMST, NOXAS1, and Yodaspirine."
 msgstr "Карта для сетевой игры. Каждый игрок начинает на маленьком, отдаленном от большой земли, острове с минимальными ресурсами.\n\nЭто карта разработана WFG-сообществом: SMST, NOXAS1 и Yodaspirine."
 
-#: maps/scenarios/miletus.xml:Description:26
+#: maps/scenarios/miletus.xml:Description:39
 msgid "A sandbox scenario for one player."
 msgstr "Сценарий песочницы для одного игрока."
 
-#: maps/scenarios/miletus.xml:Name:26
-#: maps/scenarios/miletus.xml:PlayerData[0].Name:26
+#: maps/scenarios/miletus.xml:Name:39
+#: maps/scenarios/miletus.xml:PlayerData[0].Name:39
 msgid "Miletus"
 msgstr "Милет"
 
-#: maps/scenarios/miletus.xml:PlayerData[1].Name:26
+#: maps/scenarios/miletus.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_ptolemies_02.xml:PlayerData[1].Name:38
 msgid "Romans"
 msgstr "Римляне"
@@ -1892,16 +1894,16 @@ msgstr "Персы"
 msgid "The Gauls"
 msgstr "Галлы"
 
-#: maps/scenarios/sandbox_britons.xml:Description:38
+#: maps/scenarios/sandbox_britons.xml:Description:39
 #: maps/scenarios/sandbox_gauls.xml:Description:39
 msgid "Play around with the Gallic faction in an idyllic sandbox setting."
 msgstr "Поиграйте галлами в идиллии песочницы."
 
-#: maps/scenarios/sandbox_britons.xml:Name:38
+#: maps/scenarios/sandbox_britons.xml:Name:39
 msgid "Sandbox - The Britons"
 msgstr "Песочница — Бритты"
 
-#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[4].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[4].Name:39
 msgid "Roman Interlopers"
 msgstr "Римский контрабандист "
@@ -2495,14 +2497,14 @@ msgstr[1] "%(lastPlayer)s проиграл (построено Чудо)."
 msgstr[2] "%(lastPlayer)s проиграл (построено Чудо)."
 msgstr[3] "%(players)s и %(lastPlayer)s проиграли (построено Чудо)."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Description:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Description:39
 msgid ""
-"Each player starts the match atop a large flat plateau.\n"
+"Each player starts the match atop a large flat plateau, otherwise known as an acropolis.\n"
 "\n"
-"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed plateau commanding the valley below."
-msgstr "Каждый игрок начинает игру на большом плоском плато.\n\nК востоку лежит большая бухта с промысловыми возможностями. На западе изрезанные внутренние районы с незанятым плато, господствующим над долиной внизу."
+"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed acropolis commanding the valley below."
+msgstr "Каждый игрок начинает игру на большом плоском плато, известном также как акрополь. \n\n \nК востоку лежит большая бухта с промысловыми возможностями. На западе изрезанные внутренние районы с незанятым акрополем, господствующим над долиной внизу."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Name:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Name:39
 msgid "Acropolis Bay (2)"
 msgstr "Залив акрополь (2)"
 
@@ -2584,16 +2586,6 @@ msgstr "К югу от Сахары и востоку от Нила лежит �
 msgid "Island of Meroë (2)"
 msgstr "Остров Мероэ (2)"
 
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[0].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[2].Name:39
-msgid "West Player"
-msgstr "Западный игрок"
-
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[1].Name:39
-msgid "East Player"
-msgstr "Восточный игрок"
-
 #: maps/skirmishes/caspian_sea_2pv2p.xml:Description:38
 msgid ""
 "Two teams face off across a long, very large saltwater lake.\n"
@@ -2616,7 +2608,7 @@ msgstr "Северную Италию около Альп римляне наз�
 msgid "Cisalpine Winter (2)"
 msgstr "Цизальпийская зима (2)"
 
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:39
 msgid "Corinthian Isthmus (2)"
 msgstr "Коринфский перешеек (2)"
 
@@ -2646,11 +2638,11 @@ msgstr "Древнее озеро Моерис близ реки Нил в Ли�
 msgid "Crocodilopolis (4)"
 msgstr "Крокодилополь (4)"
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:39
 msgid "A \"small island\"-style map set in the Aegean Sea."
 msgstr "«Маленький остров» — набор карт в Эгейском море."
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:39
 msgid "Cycladic Archipelago (2)"
 msgstr "Кикладские острова (2)"
 
@@ -2664,18 +2656,6 @@ msgstr "«Маленький остров» — типовая карта Эге
 #: maps/skirmishes/cycladic_archipelago_3p.xml:Name:38
 msgid "Cycladic Archipelago (3)"
 msgstr "Кикладские острова (3)"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[0].Name:38
-msgid "Samos"
-msgstr "Самос"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[1].Name:38
-msgid "Lesbos"
-msgstr "Лесбос"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[2].Name:38
-msgid "Delos"
-msgstr "Делос"
 
 #: maps/skirmishes/death_canyon_2p.xml:Description:38
 msgid ""
@@ -2873,16 +2853,6 @@ msgstr "Гидаспес, он же Джелум, река в индийском
 msgid "Hydaspes River (4)"
 msgstr "Река Гидасп (4)"
 
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[3].Name:39
-msgid "Macedonian Position"
-msgstr "Позиция македонян"
-
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[2].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[4].Name:39
-msgid "Pauravan Position"
-msgstr "Позиция Пуруравы"
-
 #: maps/skirmishes/libyan_oases_4p.xml:Description:38
 msgid ""
 "An otherwise wide-open, flat desert map is pierced in the center by two lush oases.\n"
@@ -2931,14 +2901,14 @@ msgstr "Две величайших индийских империи, Импе�
 msgid "Magadha (2)"
 msgstr "Магадха (2)"
 
-#: maps/skirmishes/median_oasis_2p.xml:Description:38
+#: maps/skirmishes/median_oasis_2p.xml:Description:39
 #: maps/skirmishes/median_oasis_4p.xml:Description:38
 msgid ""
 "A large oasis acts as the hub of mountainous spokes that divide the home "
 "territories of each player."
 msgstr "Большой оазис с горными хребтами которые разделяют территории игроков."
 
-#: maps/skirmishes/median_oasis_2p.xml:Name:38
+#: maps/skirmishes/median_oasis_2p.xml:Name:39
 msgid "Median Oasis (2)"
 msgstr "Средний оазис (2)"
 
@@ -3166,15 +3136,15 @@ msgid ""
 "A barren desert basin surrounded by mountainous valleys, the Tarim Basin is also called \"The Western Regions\" by the Han Chinese, and represents the furthest extent of their power.\n"
 "\n"
 "The basin itself is bereft of life  and offers little in the way of defensibility. The rugged mountain valleys harbor the only life, in the form of hearty shrub and tree species and some goats."
-msgstr ""
+msgstr "Бесплодная пустынная равнина, окруженная горными долинами, Таримская впадина также называется китайцами Хань \"Западными регионами\" и представляет собой крайнюю степень их власти.\n\nВпадина лишена жизни и мало что может защитить. Изрезанные горные долины являются пристанищем форм жизни в виде густых кустарников и деревьев, а также некоторых коз."
 
 #: maps/skirmishes/tarim_basin_2p.xml:Name:39
-msgid "Tarim Basin (2 players)"
-msgstr ""
+msgid "Tarim Basin (2)"
+msgstr "Таримская впадина (2)"
 
 #: maps/skirmishes/tarim_basin_4p.xml:Name:39
-msgid "Tarim Basin (4 players)"
-msgstr ""
+msgid "Tarim Basin (4)"
+msgstr "Таримская впадина (4)"
 
 #: maps/skirmishes/team_oasis_2pv2p.xml:Description:38
 msgid ""
@@ -3273,10 +3243,6 @@ msgstr "Иностранцы вторгаются в Британию. Мест�
 msgid "White Cliffs of Dover (5)"
 msgstr "Белые скалы Дувра (5)"
 
-#: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[1].Name:39
-msgid "Britons"
-msgstr "Бритты"
-
 #: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[2].Name:39
 msgid "Invader 1"
 msgstr "Захватчик 1"
@@ -3295,11 +3261,11 @@ msgstr "Захватчик 4"
 
 #: maps/skirmishes/yangtze_2p.xml:Description:39
 msgid "The Yangtze River in China. "
-msgstr ""
+msgstr "Река Янцзы в Китае."
 
 #: maps/skirmishes/yangtze_2p.xml:Name:39
-msgid "Chang Jiang (2 players)"
-msgstr ""
+msgid "Chang Jiang (2)"
+msgstr "Чанг Цзян (2)"
 
 #: maps/skirmishes/zagros_mountains_2p.xml:Description:38
 msgid ""

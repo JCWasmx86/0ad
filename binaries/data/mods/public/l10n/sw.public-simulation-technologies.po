@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:53+0000\n"
 "Language-Team: Swahili (http://www.transifex.com/wildfire-games/0ad/language/sw/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,6 @@ msgstr ""
 #: simulation/data/technologies/health_regen_units.jsonrequirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.jsonrequirementsTooltip
 #: simulation/data/technologies/immortals.jsonrequirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/long_walls.jsonrequirementsTooltip
 #: simulation/data/technologies/nisean_horses.jsonrequirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.jsonrequirementsTooltip
@@ -116,6 +115,7 @@ msgstr ""
 #: simulation/data/technologies/heal_rate.jsonrequirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.jsonrequirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.jsonrequirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/pop_house_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.jsonrequirementsTooltip
@@ -201,7 +201,7 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr ""
 
 #: simulation/data/technologies/art_of_war.jsontooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
+msgid "All Citizen-Soldiers −25% required promotion experience."
 msgstr ""
 
 #: simulation/data/technologies/attack_soldiers_will.jsondescription
@@ -342,8 +342,16 @@ msgstr ""
 msgid "Federated States"
 msgstr ""
 
+#: simulation/data/technologies/civbonuses/han_population.jsontooltip
+#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
+#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
+msgid "+10% maximum population limit."
+msgstr ""
+
 #: simulation/data/technologies/civbonuses/han_walls.jsondescription
-msgid "Han built massive walls, the great wall."
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/han_walls.jsongenericName
@@ -363,7 +371,7 @@ msgid "Resource-Rich Economy"
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsontooltip
-msgid "Storehouse technologies -100% research time."
+msgid "Storehouse technologies −100% research time."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/maur_elephants.jsondescription
@@ -398,11 +406,6 @@ msgstr ""
 
 #: simulation/data/technologies/civbonuses/maur_population.jsonspecificName.maur
 msgid "Chakravarti Samrāt"
-msgstr ""
-
-#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
-#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
-msgid "+10% maximum population limit."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/maur_walls.jsondescription
@@ -450,7 +453,7 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.jsongenericName
-msgid "Civil Engineering - Level 1"
+msgid "Civil Engineering − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.jsonspecificName.han
@@ -459,19 +462,19 @@ msgid "Gōngchéng"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.jsontooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
+msgid "All structures −15% build time, +10% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.jsongenericName
-msgid "Civil Engineering - Level 2"
+msgid "Civil Engineering − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.jsontooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
+msgid "All structures −25% build time, +20% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.jsongenericName
-msgid "Civil Service - Level 1"
+msgid "Civil Service − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.jsonspecificName.han
@@ -482,12 +485,12 @@ msgstr ""
 #: simulation/data/technologies/civil_service_01.jsontooltip
 #: simulation/data/technologies/civil_service_02.jsontooltip
 msgid ""
-"Technologies at all buildings, except the Forge, -15% cost and -15% research"
+"Technologies at all buildings, except the Forge, −15% cost and −15% research"
 " time."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_02.jsongenericName
-msgid "Civil Service - Level 2"
+msgid "Civil Service − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/colonization.jsondescription
@@ -975,8 +978,8 @@ msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.jsondescription
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan "
-"Mercenary Archers (Toxotes Kretikos)."
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos) and Cretan Mercenary Archers (Toxotes Kretikos)."
 msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.jsongenericName
@@ -984,7 +987,9 @@ msgid "Iphicratean Reforms"
 msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.jsontooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
+msgid ""
+"Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary"
+" Archers."
 msgstr ""
 
 #: simulation/data/technologies/long_walls.jsondescription

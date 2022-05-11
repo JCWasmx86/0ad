@@ -51,7 +51,7 @@ msgid ""
 "time strategy (RTS) games. There are currently a lot of missing features and"
 " poorly-balanced stats – you will probably have to wait until a beta release"
 " for it to work well."
-msgstr "El trebeyu al meyor resultará conhocidu pol assemeyu que tien cun outros títulos de l géneru Strategïa n tiempu real (STR). Indagora lli fhaltæn mũîthæs characterísticæs & læs statísticæs stan mal equilibradæs – tenras de sperar a que se lhançe una version beta pa que fherrule bien."
+msgstr "El trebeyu al meyor resultará conhocidu pol assemeyu que tien cun outros títulos de l géneru Strategïa n tiempu real (STR). Indagora lly fhaltæn mũîthæs characterísticæs & læs statísticæs stan mal equilibradæs – tenras de sperar a que se lhançe una version beta pa que fherrule bien."
 
 #: gui/manual/intro.txt:10
 msgid "Basic controls (by default):"
@@ -135,13 +135,13 @@ msgstr "• [font=\"sans-bold-14\"]Scriptígëno[font=\"sans-14\"] – Terreiro 
 msgid ""
 "• [font=\"sans-bold-14\"]Scenario map[font=\"sans-14\"] – A map created by "
 "map designers and with fixed civilizations"
-msgstr "• [font=\"sans-bold-14\"]Scenario[font=\"sans-14\"] – Terreiro pre-disegnaho cun culturæs fixæs"
+msgstr "• [font=\"sans-bold-14\"]Scenario[font=\"sans-14\"] – Terreiro pre-deseñaho cun culturæs fixæs"
 
 #: gui/manual/intro.txt:31
 msgid ""
 "• [font=\"sans-bold-14\"]Skirmish map[font=\"sans-14\"] – A map created by "
 "map designers but where the civilizations can be chosen"
-msgstr "• [font=\"sans-bold-14\"]Reincuœntru[font=\"sans-14\"] – Terreiro pre-disegnaho sin culturæs fixæs"
+msgstr "• [font=\"sans-bold-14\"]Reincuœntru[font=\"sans-14\"] – Terreiro pre-deseñaho sin culturæs fixæs"
 
 #: gui/manual/intro.txt:33
 msgid ""
@@ -177,7 +177,7 @@ msgstr "Puœdes afhaze’ los atayos al tou gustu n [font=\"sans-bold-14\"]Opço
 
 #: gui/manual/intro.txt:42
 msgid "[font=\"sans-bold-14\"]Program-wide[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]De l programma[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Todu l programma[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:43
 msgid ""
@@ -194,7 +194,7 @@ msgstr "  hotkey.console.toggle – Alterna’l terminal"
 
 #: gui/manual/intro.txt:46
 msgid "  hotkey.fps.toggle – Toggle frame counter (FPS)"
-msgstr "  hotkey.fps.toggle – Alterna’l freqüencímetru (Q/s)"
+msgstr "  hotkey.fps.toggle – Alterna’l freqüencímetro (Q/s)"
 
 #: gui/manual/intro.txt:47
 msgid ""
@@ -231,7 +231,7 @@ msgstr "  hotkey.tab.prev – Tornar a la lhingueta anterior"
 
 #: gui/manual/intro.txt:54
 msgid "[font=\"sans-bold-14\"]In Game[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]De l xhuœw[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]In trebeyu[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:55
 msgid ""
@@ -283,7 +283,7 @@ msgstr "  hotkey.confirm – Abri’ la conversa ou invia’l recau"
 
 #: gui/manual/intro.txt:65
 msgid "  hotkey.teamchat – Send team chat"
-msgstr "  hotkey.teamchat – Inviar un recau comuñeiru"
+msgstr "  hotkey.teamchat – Inviar un recau al equipu"
 
 #: gui/manual/intro.txt:66
 msgid ""
@@ -323,7 +323,7 @@ msgstr "  hotkey.selection.remove – Camudador – apartar de la scolheitha (ou
 msgid ""
 "  hotkey.selection.offscreen – Modifier – add all units, including offscreen"
 " units, to selection."
-msgstr "  hotkey.selection.offscreen – Camudador – aggregar a la scolheitha todelæs unidades, inda que nun stean a la vista."
+msgstr "  hotkey.selection.offscreen – Camudador – aggregar a la scolheitha todelæs unidades, inda que stean lhœñe de la vista."
 
 #: gui/manual/intro.txt:73
 msgid ""
@@ -390,7 +390,7 @@ msgstr "  hotkey.camera.jump.set.1 – Consiña’ la posiçon de la cámara par
 msgid ""
 "  hotkey.camera.jump.1 – Move the camera to a marked position. Jump back to "
 "the last location if the camera is already over the marked position"
-msgstr "  hotkey.camera.jump.1 – Move’ la cámara a una posiçon consiñada. Retornar a la última posiçon si la cámara sta ya sobre la posiçon consiñada"
+msgstr "  hotkey.camera.jump.1 – Move’ la cámara a una posiçon consiñada. Retornar a la última posiçon si la cámara sta ya subre la posiçon consiñada"
 
 #: gui/manual/intro.txt:86
 msgid ""
@@ -455,7 +455,7 @@ msgstr "  hotkey.civinfo – Alterna’l quadro de synopses culturales"
 
 #: gui/manual/intro.txt:99
 msgid "[font=\"sans-bold-14\"]Modify mouse action[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]De l mure[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Mure[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:100
 msgid "  hotkey.session.garrison + Right Click on structure – Garrison"
@@ -467,7 +467,7 @@ msgstr "  hotkey.session.repair + Boton dir. de l mure n una construcçon – Eg
 
 #: gui/manual/intro.txt:102
 msgid "  hotkey.session.patrol + Right Click – Patrol"
-msgstr "  hotkey.session.patrol + Boton dir. de l mure – Rondar"
+msgstr "  hotkey.session.patrol + Boton dir. de l mure – Roldar"
 
 #: gui/manual/intro.txt:103
 msgid ""
@@ -540,31 +540,31 @@ msgstr "  hotkey.selection.singleselection – Camudador pa scoyer unidades indi
 msgid ""
 "  Right Click with a structure(s) selected – Set a rally point for units "
 "created/ungarrisoned from that structure"
-msgstr "  Boton dir. de l mure cun construcçones scoyidæs – Afhitar un punto d’incuœntru pa læs unidades que salgan d’essa construcçon"
+msgstr "  Boton dir. de l mure cun construcçones scoyidæs – Afhitar un punto d’alcuœntru pa læs unidades que salgan d’essa construcçon"
 
 #: gui/manual/intro.txt:115
 msgid ""
 "  hotkey.session.garrison + Right Click with unit(s) selected – Garrison (If"
 " the cursor is over an own or allied structure)"
-msgstr "  hotkey.session.garrison + Boton dir. de l mure cun unidades scoyidæs – Abellugar (si l cursor sta n riba d’una construcçon propria ou associada)"
+msgstr "  hotkey.session.garrison + Boton dir. de l mure cun unidades scoyidæs – Abellugar (si l cursor sta n riba d’una construcçon propria ou alliada)"
 
 #: gui/manual/intro.txt:116
 msgid ""
 "  hotkey.session.attack + Right Click with unit(s) selected – Attack "
 "(instead of capture or gather)"
-msgstr "  hotkey.session.attack + Boton dir. de l mure cun unidades scoyidæs – Aggredir (in vez d’appropriase ou obtener)"
+msgstr "  hotkey.session.attack + Boton dir. de l mure cun unidades scoyidæs – Attacar (in vez d’appropriase ou obtener)"
 
 #: gui/manual/intro.txt:117
 msgid ""
 "  hotkey.session.attackmove + Right Click with unit(s) selected – Attack "
 "move (by default all enemy units and structures along the way are targeted)"
-msgstr "  hotkey.session.attackmove + Boton dir. de l mure cun unidades scoyidæs – Mover & aggredir (por defectu, acometen todo lo q’atopen de camin)"
+msgstr "  hotkey.session.attackmove + Boton dir. de l mure cun unidades scoyidæs – Movese & attacar (por defectu, acometen todo lo q’atopen de camin)"
 
 #: gui/manual/intro.txt:118
 msgid ""
 "  hotkey.session.attackmoveUnit + Right Click with unit(s) selected – Attack"
 " move, only units along the way are targeted"
-msgstr "  hotkey.session.attackmoveUnit + Boton dir. de l mure cun unidades scoyidæs – Mover & aggredir, acometiendo læs unidades q’atopen de camin"
+msgstr "  hotkey.session.attackmoveUnit + Boton dir. de l mure cun unidades scoyidæs – Movese & attacar (solo læs unidades q’atopen de camin)"
 
 #: gui/manual/intro.txt:119
 msgid ""
@@ -574,11 +574,11 @@ msgstr "  hotkey.session.snaptoedges + Moçon de l Mure a la veira de construcç
 
 #: gui/manual/intro.txt:120
 msgid "  hotkey.session.flare + Right Click – Send a flare to your allies"
-msgstr "  hotkey.session.flare + Boton dir. de l mure – Siñar a los socios"
+msgstr "  hotkey.session.flare + Boton dir. de l mure – Siñar a los alliahos"
 
 #: gui/manual/intro.txt:122
 msgid "[font=\"sans-bold-14\"]Overlays[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]De læs subrecapæs[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Subrecapæs[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:123
 msgid "  hotkey.session.gui.toggle – Toggle the GUI"
@@ -623,11 +623,11 @@ msgstr "  hotkey.session.toggleaurasrange – Alterna’ læs visualizaçones de
 msgid ""
 "  hotkey.session.togglehealrange – Toggle heal range visualizations of "
 "selected units"
-msgstr "  hotkey.session.togglehealrange – Alterna’ læs visualizaçones de l algame sanativu de læs unidades scoyidæs"
+msgstr "  hotkey.session.togglehealrange – Alterna’ læs visualizaçones de l algame de cura de læs unidades scoyidæs"
 
 #: gui/manual/intro.txt:132
 msgid "[font=\"sans-bold-14\"]Camera manipulation[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]De la cámara[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Cámara[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:133
 msgid "  hotkey.camera.up – Pan screen up"
@@ -701,7 +701,7 @@ msgstr "  hotkey.camera.pan – Dislocar premiendo l boton & moviendo l mure."
 
 #: gui/manual/intro.txt:149
 msgid "[font=\"sans-bold-14\"]During Structure Placement[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]Q’orientæn læs previsualizaçones de construcçones[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Orientaçon de previsualizaçones de construcçones[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:150
 msgid ""
@@ -720,7 +720,7 @@ msgstr "  Arrastre ezquierdu – Gyrar pentre mediæs de l mure (in llu soltando
 
 #: gui/manual/intro.txt:154
 msgid "[font=\"sans-bold-14\"]When loading a saved game[font=\"sans-14\"]"
-msgstr "[font=\"sans-bold-14\"]Que gëstionæn læs partidæs guardadæs[font=\"sans-14\"]"
+msgstr "[font=\"sans-bold-14\"]Gëstion de partidæs guardadæs[font=\"sans-14\"]"
 
 #: gui/manual/intro.txt:155
 msgid "  hotkey.cancel – Cancel"

@@ -17,6 +17,7 @@
 # Hasan Can Cezveci
 # Hüseyin Cem Aras
 # İrfan Sunay
+# Ismet Kabasakal
 # Mehmet Burak Kaya
 # Muha Aliss
 # On Fi
@@ -29,9 +30,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-07 08:09+0000\n"
-"PO-Revision-Date: 2022-03-07 08:24+0000\n"
-"Last-Translator: Transifex Bot\n"
+"POT-Creation-Date: 2022-05-02 07:08+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: Cem Aktas <cemwstone@gmail.com>, 2018,2021-2022\n"
 "Language-Team: Turkish (http://www.transifex.com/wildfire-games/0ad/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -695,22 +696,22 @@ msgstr "Bilinmeyen Galibiyet Şartları"
 #: gui/common/tab_buttons.js:65
 #, javascript-format
 msgid "Scroll down or use %(hotkey)s to move a tab right."
-msgstr ""
+msgstr "Bir sekmeyi sağa taşımak için fare ile aşağı kaydırın veya %(hotkey)s tuşunu kullanın."
 
 #: gui/common/tab_buttons.js:65
 #, javascript-format
 msgid "Scroll up or use %(hotkey)s to move a tab left."
-msgstr ""
+msgstr "Bir sekmeyi sola taşımak için fare ile yukarı kaydırın veya %(hotkey)s tuşunu kullanın."
 
 #: gui/common/tab_buttons.js:66
 #, javascript-format
 msgid "Scroll down or use %(hotkey)s to move a tab down."
-msgstr ""
+msgstr "Bir sekmeyi aşağı taşımak için fare ile aşağı kaydırın ya da %(hotkey)s tuşunu kullanın."
 
 #: gui/common/tab_buttons.js:66
 #, javascript-format
 msgid "Scroll up or use %(hotkey)s to move a tab up."
-msgstr ""
+msgstr "Bir sekmeyi yukarı taşımak için fare ile yukarı kaydırın veya %(hotkey)s tuşunu kullanın."
 
 #: gui/common/tooltips.js:63
 #, javascript-format
@@ -1376,19 +1377,19 @@ msgstr "Çerçeve tamburu, darbuka, riq, toms"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[11].Subtitle
 msgid "Guitar"
-msgstr ""
+msgstr "Gitar"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[12].Subtitle
 msgid "Handpan"
-msgstr ""
+msgstr "Hang"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[13].Subtitle
 msgid "Harp"
-msgstr ""
+msgstr "Arp"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[14].Subtitle
 msgid "Shruti Box"
-msgstr ""
+msgstr "Şuruti Kutusu"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[15].Subtitle
 msgid "Tin whistles"
@@ -1412,11 +1413,11 @@ msgstr "Ek müzik"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[3].Subtitle
 msgid "Cajon"
-msgstr ""
+msgstr "Kahon"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[4].Subtitle
 msgid "Cello"
-msgstr ""
+msgstr "Çello"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[5].Subtitle
 msgid "Celtic harp"
@@ -1432,7 +1433,7 @@ msgstr "Cembe"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[8].Subtitle
 msgid "Dulcimer"
-msgstr ""
+msgstr "Santur"
 
 #: gui/credits/texts/audio.jsonContent[1].Content[9].Subtitle
 msgid "Flute"
@@ -2110,12 +2111,12 @@ msgctxt "hotkey metadata"
 msgid ""
 "Custom hotkey to trigger exit-to-desktop. The native hotkeys (Alt+F4 / Cmd+Q"
 " / etc.) are always active."
-msgstr ""
+msgstr "Masaüstüne çıkışı tetikleyen özel kısayol tuşu. Varsayılan kısayol tuşları (Alt+F4 / Cmd+Q / vb.) her zaman etkindir."
 
 #: gui/hotkeys/spec/engine.jsonmapped_hotkeys.general.exit.name
 msgctxt "hotkey metadata"
 msgid "Custom exit to desktop"
-msgstr ""
+msgstr "Masaüstüne uyarlanmış çıkış"
 
 #: gui/hotkeys/spec/engine.jsonmapped_hotkeys.general.paste.desc
 msgctxt "hotkey metadata"
@@ -2300,7 +2301,7 @@ msgstr "Oyun içi"
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attack.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to attack instead of another action (e.g. capture)."
-msgstr ""
+msgstr "Başka bir eylem yerine saldırmak hareketini etkinleştiren değiştirici (örneğin, ele geçirmek)."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attack.name
 msgctxt "hotkey metadata"
@@ -2310,32 +2311,32 @@ msgstr "Saldırıyı zorla"
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attackmove.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to attackmove when clicking on a point."
-msgstr ""
+msgstr "Bir noktaya tıkladıktan sonra saldırı hareketini etkinleştiren değiştirici."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attackmove.name
 msgctxt "hotkey metadata"
 msgid "Attack Move"
-msgstr ""
+msgstr "Saldırmak Hareketi"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attackmoveUnit.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to attackmove targeting only units when clicking on a point."
-msgstr ""
+msgstr "Bir noktaya tıkladıktan sonra sadece üniteleri hedef alan saldırı hareketini etkinleştiren değiştirici."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.attackmoveUnit.name
 msgctxt "hotkey metadata"
 msgid "Attack Move (unit only)"
-msgstr ""
+msgstr "Saldırmak Hareketi (sadece ünite)"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.autorallypoint.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to set the rally point on the building itself."
-msgstr ""
+msgstr "Toplanma noktasını binanın kendisine atayan değiştirici."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.autorallypoint.name
 msgctxt "hotkey metadata"
 msgid "Auto-rally point"
-msgstr ""
+msgstr "Oto toplanma noktası"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.backtowork.desc
 msgctxt "hotkey metadata"
@@ -2350,7 +2351,7 @@ msgstr "Çalışmaya Dön"
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.batchtrain.desc
 msgctxt "hotkey metadata"
 msgid "Modifier to train units in batches."
-msgstr ""
+msgstr "Üniteleri bölük halinde eğiten değiştirici."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.batchtrain.name
 msgctxt "hotkey metadata"
@@ -2367,13 +2368,13 @@ msgstr "Seçili birlikleri elindekileri bıraktıktan sonra saldırmak için bel
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.calltoarms.name
 msgctxt "hotkey metadata"
 msgid "Call to arms"
-msgstr ""
+msgstr "Seferberlik çağrısı"
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.deselectgroup.desc
 msgctxt "hotkey metadata"
 msgid ""
 "Modifier to deselect units when clicking group icon, instead of selecting."
-msgstr ""
+msgstr "Grup ikonuna tıklarken, grubu seçme seçeneği yerine seçmeme seçeneğine değiştirici."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.deselectgroup.name
 msgctxt "hotkey metadata"
@@ -2383,7 +2384,7 @@ msgstr "Birliğin türünün seçimini kaldır"
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.flare.desc
 msgctxt "hotkey metadata"
 msgid "Set the cursor to Flare while this hotkey is pressed."
-msgstr ""
+msgstr "Bu kısayol tuşuna basıldığında imleci, Parla özelliğine ayarlayın."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.flare.name
 msgctxt "hotkey metadata"
@@ -2683,7 +2684,7 @@ msgstr ""
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.stop.desc
 msgctxt "hotkey metadata"
 msgid "Stop the current action."
-msgstr ""
+msgstr "Mevcut eylemi durdurun."
 
 #: gui/hotkeys/spec/ingame.jsonmapped_hotkeys.ingame.session.stop.name
 msgctxt "hotkey metadata"
@@ -2937,7 +2938,7 @@ msgstr ""
 #: gui/hotkeys/spec/ingamegui.jsonmapped_hotkeys.ingamegui.session.savedgames.delete.desc
 msgctxt "hotkey metadata"
 msgid "Delete the saved game (in the save/load windows)."
-msgstr ""
+msgstr "Kaydedilen oyunu silin (kaydetme/yükleme pencerelerinde)."
 
 #: gui/hotkeys/spec/ingamegui.jsonmapped_hotkeys.ingamegui.session.savedgames.delete.name
 msgctxt "hotkey metadata"
@@ -3098,16 +3099,6 @@ msgctxt "hotkey metadata"
 msgid "Cancel selection"
 msgstr "Seçimi iptal et"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.desc
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0 to the current selection."
-msgstr "Kontrol Grubu 0'ı seçime ekle."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.name
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0"
-msgstr "Kontrol Grubu 0'ı ekle."
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.1.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1 to the current selection."
@@ -3117,6 +3108,16 @@ msgstr "Kontrol Grubu 1'i seçime ekle."
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1"
 msgstr "Kontrol Grubu 1'i ekle."
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.desc
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10 to the current selection."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.name
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.2.desc
 msgctxt "hotkey metadata"
@@ -3198,16 +3199,6 @@ msgctxt "hotkey metadata"
 msgid "Add Control Group 9"
 msgstr "Kontrol Grubu 9'u ekle."
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.desc
-msgctxt "hotkey metadata"
-msgid "Save current selection as Control Group 0."
-msgstr "Seçili olanı Kontrol Grubu 0 olarak kayıt et."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.name
-msgctxt "hotkey metadata"
-msgid "Set Control Group 0"
-msgstr "Kontrol Grubu 0'ı ayarla"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.1.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 1."
@@ -3217,6 +3208,16 @@ msgstr "Seçili olanı Kontrol Grubu 1 olarak kayıt et."
 msgctxt "hotkey metadata"
 msgid "Set Control Group 1"
 msgstr "Kontrol Grubu 1'i ayarla"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.desc
+msgctxt "hotkey metadata"
+msgid "Save current selection as Control Group 10."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.name
+msgctxt "hotkey metadata"
+msgid "Set Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.2.desc
 msgctxt "hotkey metadata"
@@ -3298,16 +3299,6 @@ msgctxt "hotkey metadata"
 msgid "Set Control Group 9"
 msgstr "Kontrol Grubu 9'u ayarla"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.desc
-msgctxt "hotkey metadata"
-msgid "Change the current selection to Control Group 0."
-msgstr "Geçerli seçimi Kontrol Grubu 0 olarak değiştirin."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.name
-msgctxt "hotkey metadata"
-msgid "Select Control Group 0"
-msgstr "Kontrol Grubu 0'ı seç"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.1.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 1."
@@ -3317,6 +3308,16 @@ msgstr "Geçerli seçimi Kontrol Grubu 1 olarak değiştirin."
 msgctxt "hotkey metadata"
 msgid "Select Control Group 1"
 msgstr "Kontrol Grubu 1'i seç"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.desc
+msgctxt "hotkey metadata"
+msgid "Change the current selection to Control Group 10."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.name
+msgctxt "hotkey metadata"
+msgid "Select Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.2.desc
 msgctxt "hotkey metadata"
@@ -3496,7 +3497,7 @@ msgstr ""
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.singleselection.name
 msgctxt "hotkey metadata"
 msgid "Single selection"
-msgstr ""
+msgstr "Tekli seçim"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.woundedonly.desc
 msgctxt "hotkey metadata"
@@ -4048,6 +4049,15 @@ msgstr "Pencere modu"
 msgid "Start 0 A.D. in a window."
 msgstr "0 A.D.'yi pencere modunda başlat."
 
+#: gui/options/options.json[1].options[10].label
+msgid "Mouse drag"
+msgstr ""
+
+#: gui/options/options.json[1].options[10].tooltip
+msgid ""
+"Number of pixels the mouse can move before the action is considered a drag."
+msgstr ""
+
 #: gui/options/options.json[1].options[1].label
 #: gui/options/options.json[2].options[1].label
 msgid "Fog"
@@ -4329,7 +4339,7 @@ msgstr "Yok"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0].label.tooltip
 msgid "Entities will all look the same."
-msgstr ""
+msgstr "Varlıkların tümü aynı görünecek."
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].label
 msgid "Quality"
@@ -4417,7 +4427,7 @@ msgstr "Hesaplamalarda gerçek su derinliğini kullanın."
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].label
 msgid "Texture quality"
-msgstr ""
+msgstr "Doku kalitesi"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0].label._string
 msgctxt "Option for the texture quality."
@@ -4448,31 +4458,31 @@ msgstr "Yüksek"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].label
 msgid "Texture anisotropic filter"
-msgstr ""
+msgstr "Doku anisotropik filtre"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[0].label
 msgid "1x"
-msgstr ""
+msgstr "1x"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[1].label
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[1].tooltip
 msgid "2x"
-msgstr ""
+msgstr "2x"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[2].label
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[2].tooltip
 msgid "4x"
-msgstr ""
+msgstr "4x"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[3].label
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[3].tooltip
 msgid "8x"
-msgstr ""
+msgstr "8x"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[4].label
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].list[4].tooltip
 msgid "16x"
-msgstr ""
+msgstr "16x"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19].list[0][20].tooltip
 msgid ""
@@ -4665,7 +4675,7 @@ msgstr "Eşleşme kurulumu sırasında müşterilere ücretsiz oyuncu yuvaların
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][5].label
 msgid "Networking / Lobby"
-msgstr ""
+msgstr "Ağ / Bekleme Odası"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][5].options[0].label
 msgid "TLS encryption"
@@ -4923,7 +4933,7 @@ msgstr "Birimlerin birden fazla kontrol grubunun parçası olup olmayacağına k
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[22].label
 msgid "Formation control"
-msgstr ""
+msgstr "Diziliş kontrolü"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[22].list[0].label
 msgid "Walk/Patrol Only"
@@ -4949,7 +4959,7 @@ msgstr ""
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[23].label
 msgid "Battalion-style formations"
-msgstr ""
+msgstr "Tabur tarzı dizilişler"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[23].tooltip
 msgid "Whether formations are selected as a whole."
@@ -4974,7 +4984,7 @@ msgstr ""
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[4].label
 msgid "Minimap icons"
-msgstr ""
+msgstr "Mini harita ikonu"
 
 #: gui/options/options.json[2].options[6].list[0][7].list[0][10].list[0][1][19][4].options[3].list[0][1][6].options[4].tooltip
 msgid "Show special icons for some entities on the minimap."
@@ -5101,7 +5111,7 @@ msgstr "Model kalite ayarı. "
 
 #: gui/options/options.json[2].tooltip
 msgid "More specific rendering settings."
-msgstr ""
+msgstr "Daha fazla özel render ayarları."
 
 #: gui/options/options.xml:(caption):15
 msgid "Game Options"
@@ -5142,8 +5152,8 @@ msgid "Tutorial"
 msgstr "Rehber"
 
 #: gui/pregame/MainMenuItems.js:15
-msgid "Start the economic tutorial."
-msgstr "Ekonomi rehberini başlat."
+msgid "Start the introductory tutorial."
+msgstr "Giriş eğitimini başlatın."
 
 #: gui/pregame/MainMenuItems.js:36
 #: gui/reference/common/Buttons/StructreeButton.js:21
@@ -5170,11 +5180,11 @@ msgstr "%(hotkey)s : 0 A.D.'deki uygarlıklar hakkında öğren."
 
 #: gui/pregame/MainMenuItems.js:60
 msgid "Catafalque Overview"
-msgstr ""
+msgstr "Katafalk Genel Bakış"
 
 #: gui/pregame/MainMenuItems.js:61
 msgid "Compare the bonuses of catafalques featured in 0 A.D."
-msgstr ""
+msgstr "0 A.D.'de yer alan katafalkların bonuslarını karşılaştırın"
 
 #: gui/pregame/MainMenuItems.js:67
 msgid "Map Overview"
@@ -5349,7 +5359,7 @@ msgstr "Hata"
 
 #: gui/pregame/MainMenuItems.js:270
 msgid "Credits"
-msgstr "Katkıcılar"
+msgstr "Katkıda bulunanlar"
 
 #: gui/pregame/MainMenuItems.js:271
 msgid "Show the 0 A.D. credits."
@@ -5372,8 +5382,8 @@ msgid "WILDFIRE GAMES"
 msgstr "WILDFIRE GAMES"
 
 #: gui/pregame/ProjectInformation.js:18
-msgid "Alpha XXVI: Z——"
-msgstr "Alpha XXVI: Z——"
+msgid "Alpha XXVI: Zhuangzi"
+msgstr "Alpha XXVI: Zhuangzi"
 
 #: gui/pregame/ProjectInformation.js:19
 msgid ""
@@ -5514,7 +5524,7 @@ msgstr "%(hotkey)s: Katafalk Bonuslarını Kapatın."
 
 #: gui/reference/catafalque/catafalque.xml:(caption):18
 msgid "Catafalque Bonuses"
-msgstr ""
+msgstr "Katafalk bonusu"
 
 #. Translation: Description of an item in the CivInfo page, on a new line and
 #. indented.
@@ -5572,14 +5582,14 @@ msgstr[1] "Kahramanlar"
 #: gui/reference/civinfo/Sections/Subsections/StructuresSubsection.js:29
 msgid "Specific Structure"
 msgid_plural "Specific Structures"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Özel Yapı"
+msgstr[1] "Özel Yapılar"
 
 #: gui/reference/civinfo/Sections/Subsections/TechnologiesSubsection.js:28
 msgid "Specific Technology"
 msgid_plural "Specific Technologies"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Özel Teknoloji"
+msgstr[1] "Özel Teknolojiler"
 
 #: gui/reference/common/Buttons/CivInfoButton.js:27
 #, javascript-format
@@ -5930,8 +5940,8 @@ msgid "Score"
 msgstr "Puan"
 
 #: gui/summary/layout.js:15 gui/summary/layout.js:33 gui/summary/layout.js:71
-#: gui/summary/layout.js:111 gui/summary/layout.js:162
-#: gui/summary/layout.js:194 gui/summary/summary.xml:(caption):70
+#: gui/summary/layout.js:110 gui/summary/layout.js:161
+#: gui/summary/layout.js:193 gui/summary/summary.xml:(caption):70
 msgid "Player name"
 msgstr "Oyuncu adı:"
 
@@ -5955,7 +5965,7 @@ msgstr "Keşik skor"
 msgid "Structures"
 msgstr "Binalar"
 
-#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:112
+#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:111
 msgid "Total"
 msgstr "Toplam"
 
@@ -6032,107 +6042,107 @@ msgstr "Tüccarlar"
 
 #: gui/summary/layout.js:84
 #, javascript-format
-msgid "Unit Statistics (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
-msgstr "Birim İstatistikleri ( %(trained)s / %(killed)s / %(captured)s / %(lost)s )"
+msgid "Unit Statistics (%(trained)s / %(killed)s / %(lost)s)"
+msgstr "Birim İstatistikleri (%(trained)s / %(killed)s / %(lost)s)"
 
-#: gui/summary/layout.js:109
+#: gui/summary/layout.js:108
 msgid "Resources"
 msgstr "Kaynaklar"
 
-#: gui/summary/layout.js:121
+#: gui/summary/layout.js:120
 msgid "Tributes"
 msgstr "Haraç"
 
-#: gui/summary/layout.js:122
+#: gui/summary/layout.js:121
 #, javascript-format
 msgid ""
 "Tributes \n"
 "(%(sent)s / %(received)s)"
 msgstr "Haraçlar\n(%(sent)s / %(received)s)"
 
-#: gui/summary/layout.js:130
+#: gui/summary/layout.js:129
 msgid "Treasures collected"
 msgstr "Toplanan hazineler"
 
-#: gui/summary/layout.js:131
+#: gui/summary/layout.js:130
 msgid "Loot"
 msgstr "Yağma"
 
-#: gui/summary/layout.js:132
+#: gui/summary/layout.js:131
 msgid "Livestock bred"
 msgstr "Hayvan yetiştirme"
 
-#: gui/summary/layout.js:136
+#: gui/summary/layout.js:135
 #, javascript-format
 msgid "Resource Statistics (%(gathered)s / %(used)s)"
 msgstr "Kaynak İstatislikleri (%(gathered)s / %(used)s)"
 
-#: gui/summary/layout.js:160
+#: gui/summary/layout.js:159
 msgid "Market"
 msgstr "Pazar"
 
-#: gui/summary/layout.js:163
+#: gui/summary/layout.js:162
 msgid "Trade income"
 msgstr "Ticari kazanç"
 
-#: gui/summary/layout.js:164
+#: gui/summary/layout.js:163
 msgid "Barter efficiency"
 msgstr "Takas verimi"
 
 #. Translation: use %(resourceWithinSentence)s if needed
-#: gui/summary/layout.js:170
+#: gui/summary/layout.js:169
 #, javascript-format
 msgid "%(resourceFirstWord)s exchanged"
 msgstr "%(resourceFirstWord)s alışverişi yapıldı"
 
-#: gui/summary/layout.js:192
+#: gui/summary/layout.js:191
 msgid "Miscellaneous"
 msgstr "Çeşitli"
 
-#: gui/summary/layout.js:195
+#: gui/summary/layout.js:194
 msgid "Kill / Death ratio"
 msgstr "Öldürülme / Vefa oranı"
 
-#: gui/summary/layout.js:196 gui/summary/summary.js:99
+#: gui/summary/layout.js:195 gui/summary/summary.js:99
 msgid "Population"
 msgstr "Nüfus"
 
-#: gui/summary/layout.js:197
+#: gui/summary/layout.js:196
 msgid "Map control (peak)"
 msgstr "Harita kontrol (tepe)"
 
-#: gui/summary/layout.js:198
+#: gui/summary/layout.js:197
 msgid "Map control (finish)"
 msgstr "Harita kontrol (bitiş)"
 
-#: gui/summary/layout.js:199
+#: gui/summary/layout.js:198
 msgid "Map exploration"
 msgstr "Harita açığa çıkması"
 
-#: gui/summary/layout.js:200
+#: gui/summary/layout.js:199
 msgid "Vegetarian ratio"
 msgstr "Vejetaryen oranı"
 
-#: gui/summary/layout.js:201
+#: gui/summary/layout.js:200
 msgid "Feminization"
 msgstr "Kadınlaşma"
 
-#: gui/summary/layout.js:204
+#: gui/summary/layout.js:203
 msgid "Bribes"
 msgstr "Rüşvet"
 
-#: gui/summary/layout.js:205
+#: gui/summary/layout.js:204
 #, javascript-format
 msgid ""
 "Bribes\n"
 "(%(succeeded)s / %(failed)s)"
 msgstr "Rüşvet\n(%(succeeded)s / %(failed)s)"
 
-#: gui/summary/layout.js:231
+#: gui/summary/layout.js:230
 msgid "Charts"
 msgstr "Grafikler"
 
-#: gui/summary/layout.js:378
+#: gui/summary/layout.js:377
 msgid "Team total"
 msgstr "Takım bütünü"
 
@@ -6915,7 +6925,7 @@ msgstr "Yapıları hizalamak, gelecekteki inşaatlar için alan tasarrufu sağla
 msgid ""
 "Tightly packed groups of structures can also be used for obstructing raiding"
 " enemies."
-msgstr ""
+msgstr "Sıkıca paketlenmiş yapı grupları, baskın yapan düşmanları engellemek için de kullanılabilir."
 
 #: gui/text/tips/spartan_hoplites.txt:1
 msgid "SPARTIATES"
@@ -7179,7 +7189,7 @@ msgstr "Et"
 #: simulation/data/resources/food.jsonsubtypes.rice
 msgctxt "firstWord"
 msgid "Rice"
-msgstr ""
+msgstr "Prinç"
 
 #. Translation: Word as used in the middle of a sentence (which may require
 #. using lowercase
@@ -7187,7 +7197,7 @@ msgstr ""
 #: simulation/data/resources/food.jsonsubtypes.rice
 msgctxt "withinSentence"
 msgid "Rice"
-msgstr ""
+msgstr "Prinç"
 
 #: simulation/data/resources/metal.jsondescription
 msgid "Mine from metal mines or quarries."

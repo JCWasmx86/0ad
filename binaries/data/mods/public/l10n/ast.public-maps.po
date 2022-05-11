@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-25 07:09+0000\n"
 "PO-Revision-Date: 2014-06-19 17:52+0000\n"
 "Last-Translator: David Sowa <isithere2@yahoo.com>, 2016-2022\n"
 "Language-Team: Asturian (http://www.transifex.com/wildfire-games/0ad/language/ast/)\n"
@@ -25,13 +25,13 @@ msgstr "Los xhogadores intamæn a intrambos lhahos d’un mar d’isllæs spars�
 
 #: maps/random/aegean_sea.jsonsettings.Name
 msgid "Aegean Sea"
-msgstr "Mar Exheo"
+msgstr "Mar Egëo"
 
 #: maps/random/african_plains.jsonsettings.Description
 msgid ""
 "The central region of the vast continent of Africa, birthplace of humanity. "
 "Players start in a lush area teeming with vegetation and wildlife."
-msgstr "La zona central de l vastu continente d’África, el vierçu l home. Los xhogadores intamæn n una fhaça nieta intsén de flora & fauna."
+msgstr "La zona central de l vastu continente d’África, el vierçu l home. Los xhogadores intamæn n un campu nietu intsén de flora & fauna."
 
 #: maps/random/african_plains.jsonsettings.Name
 msgid "African Plains"
@@ -41,7 +41,7 @@ msgstr "Tyanada africana"
 msgid ""
 "High Alpine mountains surrounding deep valleys strung with mountain streams "
 "and finger-like lakes."
-msgstr "Valhes fhondos bañahos por lhagos & regatos & cerrahos d’altæs paredes alpinæs."
+msgstr "Valhes fhondos travessahos por lhagos & regatos & cerrahos d’altæs paredes alpinæs."
 
 #: maps/random/alpine_lakes.jsonsettings.Name
 msgid "Alpine Lakes"
@@ -91,7 +91,7 @@ msgid ""
 "animals, profiting from its milder climate. Wolves, ever present, have shed "
 "their winter clothes; deer, hares and muskox populate the plains. The last "
 "traces of winter are rapidly disappearing, only to reappear very soon."
-msgstr "Llega'l veranu a los xelebreos boreales y con elli munchos bichos qu'aprovechen el tiempu criador. Los llobos, presentes todu'l añu, mudaron el pelame; esbarrien la tundra venaos, llebres y bues moscaos. Los caberos restos del hibiernu van desapareciendo pa, de secute, reaparecer."
+msgstr "Intra l verano nos xhelebreos boreales & cun él abondos animales, attrahidos pol tiempu criador. Los lhobos perennes tienen mudaho l sou pelame hibernal; ciervos, lhiebres & wœis moschahos puœblræn læs planicies. Los postreiros restos de la xhelada van comiendo-se, mas retornaran da breve."
 
 #: maps/random/arctic_summer.jsonsettings.Name
 msgid "Arctic Summer"
@@ -102,21 +102,21 @@ msgid ""
 "Each player starts deep in the forest.\n"
 "\n"
 "The Ardennes is a region of extensive forests, rolling hills and ridges formed within the Givetian Ardennes mountain range, primarily in modern day Belgium and Luxembourg. The region took its name from the ancient Silva, a vast forest in Roman times called Arduenna Silva."
-msgstr "Cada xugador entama no fondero la viesca.\n\nLos sotambios forestales de L'Ardena, una fastera de monte que s'espurre principalmente entre Bélxica y Luxemburgu. El nome de la rexón remanez de la denomación galo-romana de la sua silva, Arduenna."
+msgstr "Cada xhogador intama a lo fhondeiro la silva.\n\nL Ardenne ye un pays d’extensos soutos, sotambios & sierros, de los que se conforma l Massif ardennais, principalmente n Bélgïca & Luxemburgo. El nome la fhastielha remaneç de l antigua viesca de sou, una vasta silva que n tiempos romanos se tyamaba Arduenna."
 
 #: maps/random/ardennes_forest.jsonsettings.Name
 msgid "Ardennes Forest"
-msgstr "Arduenna"
+msgstr "Arduenna Silva"
 
 #: maps/random/atlas_mountains.jsonsettings.Description
 msgid ""
 "A rugged land with small room for buildings with scarce wood. Represents the"
 " mountain range in the Northwest Africa."
-msgstr "La sierra de l'África occidental septentrional, un terrén arispiu con pocu campu pa construcciones y poca madera."
+msgstr "Una tierra arispia cun poucu campu par construcçones & pouca madeira. Representa la sierra homónima de l África septentrional."
 
 #: maps/random/atlas_mountains.jsonsettings.Name
 msgid "Atlas Mountains"
-msgstr "L'Atles"
+msgstr "Monte Atlas"
 
 #: maps/random/bahrain.jsonsettings.Description
 msgid ""
@@ -127,22 +127,22 @@ msgid ""
 "Bahrain is never left unoccupied for long. But now, with the previous "
 "occupants gone, the land prepares for war. Will you be the next Ruler of "
 "Bahrain?"
-msgstr "Týlos (Baḥréin), l'antigua cabecera del reinu de Tilmún que decayó nel 800 a.C., pasó peles manes de los sumerios, los asirios, los babilonios y los perses, entre otros. Una islla afayadiza del sinu Pérsicu y un emporiu perlleru gracies a les abondes ostres que la arredolen, a Týlos nunca nun lu dexen quedar munchu tiempu. Pero agora, col esbarrumbu de los ocupantes anteriores, el país se prepara pa la guerra. ¿Vas aportar tu a Gobernador de Týlos?"
+msgstr "Tylos, cabeça de l antiguo reyno de Dilmun que cahîu n 800 a.C., passou pelæs manos de sumerios, assyrios, babylonios & persas, entre outros. Una islla afhayadiça de l Sinus Persicus (golfu Pérsicu) & un emporio de perllæs graciæs al sou ostreosu fhondu marin, a Tylos nunca nun llu deixæn quedar mũîthu tiempu. Pero hagora, lhibre de los occupantes anteriores, el pays se prepara pa la gerra. ¿Vas aportar tu a Rey de Tylos?"
 
 #: maps/random/bahrain.jsonsettings.Name
 msgid "Bahrain"
-msgstr "Týlos"
+msgstr "Tylos"
 
 #: maps/random/belgian_uplands.jsonsettings.Description
 msgid ""
 "An experimental map with its heightmap generated by erosion to look more "
 "natural. Not all seeds will be fair though! Tiny maps with 8 players may "
 "take a while to generate."
-msgstr "Un mapa experimental que xenera la topografía pela erosión p'aparecer más natural. Repara que non tódolos anicios van ser xustos y los mapes nanos podríen tardar en xenerase con 8 xugadores."
+msgstr "Un terreiro experimental cun la topographíæ gënerada pela erosion pa pahecer mas natural. ¡Non todolos inicios van ser xhustos! Cun 8 xhogadores, los inicios nanos podríæn tardar in gënerase."
 
 #: maps/random/belgian_uplands.jsonsettings.Name
 msgid "Belgian Uplands"
-msgstr "Bélxica alta"
+msgstr "Bélgïca alta"
 
 #: maps/random/botswanan_haven.jsonsettings.Description
 msgid ""
@@ -150,28 +150,28 @@ msgid ""
 "inhospitable just weeks before has come to life totally transformed. Herds "
 "of zebras graze amid the tall, lush grasses in which lions lie waiting, "
 "while in the shallow pools lurk fearsome crocodiles."
-msgstr "Esti rubial africanu qu'unes selmanes enantes estaba ermu y ensuchu acaba de vivecer, camudáu dafechu gracies al lloviu. Les grees de cebres rañen la pación ensin decatase de los lleones ende amatagaos, mentres los crocodilos gusmien pelos champanes."
+msgstr "El Kalahari na staçon tyuviosa, un ermu q’ha poucæs selmanæs staba áridu & inhóspitu tien vivecido todu demudau. Peguadæs de zebræs pacen pel herbaho alto & vicioso u los lheones caçæn a la spera, de la que nos fontascos assestæn crocodilos terribles."
 
 #: maps/random/botswanan_haven.jsonsettings.Name
 msgid "Botswanan Haven"
-msgstr "El Calaḥari"
+msgstr "Requeixada de Botswana"
 
 #: maps/random/caledonian_meadows.jsonsettings.Description
 msgid ""
 "Fertile lands surrounded by harsh terrain.\n"
 "Remains of recent snowfalls still haunt the forests, and torrential rivers from the snowmelt have barely died away.\n"
 "Aiming at a realistic terrain, this map might not always be balanced."
-msgstr "Tierra vicioso arrodiao de monte argañoso.\nEnvolubra los pinales una falopada cayida apocayá y malapenes nun escosen les riegues de dilidura.\nEmpobináu al realismu, esti mapa non siempres está equilibráu."
+msgstr "Vrañæs granibles arrodiadæs de terreno arganhoso.\nRestos de fhaloupadæs recien cahidæs a inda involobræn los pinalres & mal tienen scossaho a penæs læs riegæs de dilidura.\nImpobinaho al realismo, esti terreiro non siempre stará equilibraho."
 
 #: maps/random/caledonian_meadows.jsonsettings.Name
 msgid "Caledonian Meadows"
-msgstr "Praos de Caledonia"
+msgstr "Prahos de Caledonia"
 
 #: maps/random/cantabrian_highlands.jsonsettings.Description
 msgid ""
 "Each player starts on a hill surrounded by steep cliffs. Inspired by "
 "Cantabria, a mountainous region in the north of the Iberian peninsula."
-msgstr "Cada xugador entama nun cantu arredoláu de desbentíos. Inspírase na estaya cantábrica de la península ibérica."
+msgstr "Cada xhogador intama n un cantu arrodiau de deventíos. Inspira-se na staya cantábrica de la península Ibérica."
 
 #: maps/random/cantabrian_highlands.jsonsettings.Name
 msgid "Cantabrian Highlands"
@@ -179,7 +179,7 @@ msgstr "El Cantábricu"
 
 #: maps/random/canyon.jsonsettings.Description
 msgid "Players start around the map in deep canyons."
-msgstr "Los xugadores entamen en foces fondes."
+msgstr "Los xhogadores intamæn en fhouces fhondæs."
 
 #: maps/random/canyon.jsonsettings.Name
 msgid "Canyon"
@@ -188,7 +188,7 @@ msgstr "Beyos"
 #: maps/random/continent.jsonsettings.Description
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[0].Description
 msgid "All players starts on a continent surrounded by water."
-msgstr "Tódolos xugadores entamen nuna masa de tierra arrodiada d'agua."
+msgstr "Todolos xhogadores intamæn n una massa de tierra arrodiada d’awa."
 
 #: maps/random/continent.jsonsettings.Name
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[0].Name
@@ -204,7 +204,7 @@ msgstr "Dues mases de tierra xunides por una facina de tierra, esto ye, un «ism
 
 #: maps/random/corinthian_isthmus.jsonsettings.Name
 msgid "Corinthian Isthmus"
-msgstr "L'ismu de Corintu"
+msgstr "Isthmu de Corinthu"
 
 #: maps/random/corsica.jsonsettings.Description
 msgid ""
@@ -296,7 +296,7 @@ msgstr "Elefantina"
 msgid ""
 "A neighboring province has pledged alegiance to your rule. It's up to you to command them to victory.\n"
 "[color=\"yellow\"]Caution! If nomad mode is disabled, each player will start with two civic centers.[/color]"
-msgstr "Una provicina vizina tien-ti xhuraho lhealtá. Hagora te toca a ti trahellis la victoria.\n[color=\"yellow\"]Avisu: si l modu nómada sta disactivau, cada xhogador vaî intamar cun dous foros.[/color]"
+msgstr "Una provicina vizina tien-ti xhuraho lhealtá. Hagora te toca a ti trahellys la victoria.\n[color=\"yellow\"]Avisu: si l modu nómada sta disactivau, cada xhogador vaî intamar cun dous foros.[/color]"
 
 #: maps/random/empire.jsonsettings.Name
 msgid "Empire"
@@ -1151,7 +1151,7 @@ msgid "Choose a random land landscape"
 msgstr "Scoyer un ambiente terrestre de modu aleatoriu."
 
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[1].Description
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:39
 #: maps/skirmishes/corinthian_isthmus_4p.xml:Description:39
 msgid ""
 "Two Mediterranean land masses connected by a narrow spit of land, called an "
@@ -1316,7 +1316,7 @@ msgstr "Arcadia"
 #: maps/scenarios/necropolis.xml:PlayerData[0].Name:38
 #: maps/scenarios/reservoir.xml:PlayerData[0].Name:26
 #: maps/scenarios/saharan_oases.xml:PlayerData[0].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[0].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[0].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[0].Name:26
@@ -1325,6 +1325,7 @@ msgstr "Arcadia"
 #: maps/scenarios/tropical_island.xml:PlayerData[0].Name:38
 #: maps/scenarios/walls.xml:PlayerData[0].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[0].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[1].Name:39
 msgid "Player 1"
 msgstr "Xugador 1"
 
@@ -1339,7 +1340,7 @@ msgstr "Xugador 1"
 #: maps/scenarios/migration.xml:PlayerData[1].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[1].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[1].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[1].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[1].Name:26
@@ -1348,6 +1349,7 @@ msgstr "Xugador 1"
 #: maps/scenarios/tropical_island.xml:PlayerData[1].Name:38
 #: maps/scenarios/walls.xml:PlayerData[1].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[1].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[2].Name:39
 msgid "Player 2"
 msgstr "Xugador 2"
 
@@ -1580,7 +1582,7 @@ msgstr "Forcia invasora"
 #: maps/scenarios/migration.xml:PlayerData[2].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[2].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[2].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[3].Name:39
 #: maps/scenarios/siwa_oasis.xml:PlayerData[2].Name:26
 msgid "Player 3"
@@ -1676,16 +1678,16 @@ msgid ""
 "This is a WFG community-designed map by: SMST, NOXAS1, and Yodaspirine."
 msgstr "Mapa multixugador. Cada xugador entama nuna isllina con recursos mínimos asitiada frente a la mariña d'una gran masa de tierra.\n\nEsti mapa ye de la comunidá WFG. Diseñáronlu: SMST, NOXAS1 ya Yodaspirine."
 
-#: maps/scenarios/miletus.xml:Description:26
+#: maps/scenarios/miletus.xml:Description:39
 msgid "A sandbox scenario for one player."
 msgstr "Un escenariu non violentu pa un xugador."
 
-#: maps/scenarios/miletus.xml:Name:26
-#: maps/scenarios/miletus.xml:PlayerData[0].Name:26
+#: maps/scenarios/miletus.xml:Name:39
+#: maps/scenarios/miletus.xml:PlayerData[0].Name:39
 msgid "Miletus"
 msgstr "Miletu"
 
-#: maps/scenarios/miletus.xml:PlayerData[1].Name:26
+#: maps/scenarios/miletus.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_ptolemies_02.xml:PlayerData[1].Name:38
 msgid "Romans"
 msgstr "Romanos"
@@ -1870,16 +1872,16 @@ msgstr "Los perses"
 msgid "The Gauls"
 msgstr "Los galos"
 
-#: maps/scenarios/sandbox_britons.xml:Description:38
+#: maps/scenarios/sandbox_britons.xml:Description:39
 #: maps/scenarios/sandbox_gauls.xml:Description:39
 msgid "Play around with the Gallic faction in an idyllic sandbox setting."
 msgstr "Xuega cola facción gala nuna rodiada pacetible ya idílica."
 
-#: maps/scenarios/sandbox_britons.xml:Name:38
+#: maps/scenarios/sandbox_britons.xml:Name:39
 msgid "Sandbox - The Britons"
 msgstr "Probadoriu - Los britanos"
 
-#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[4].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[4].Name:39
 msgid "Roman Interlopers"
 msgstr "Esqueronos romanos"
@@ -2314,7 +2316,7 @@ msgstr "Prueba d'emburriu"
 
 #: maps/scenarios/units_demo.xml:Description:27
 msgid "Every unit in the game."
-msgstr "Tódeles unidades del xuegu."
+msgstr "Todelæs unidades de l trebeyu."
 
 #: maps/scenarios/units_demo.xml:Name:27
 msgid "Units Demo"
@@ -2461,14 +2463,14 @@ msgid_plural ""
 msgstr[0] "Vencióse a %(lastPlayer)s (victoria per maravía)."
 msgstr[1] "Vencióse a %(players)s y %(lastPlayer)s (victoria per maravía)."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Description:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Description:39
 msgid ""
-"Each player starts the match atop a large flat plateau.\n"
+"Each player starts the match atop a large flat plateau, otherwise known as an acropolis.\n"
 "\n"
-"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed plateau commanding the valley below."
-msgstr "Cada xugador entama l'alcuentru nun tesón.\n\nA oriente hai una gran badea con pexe. A occidente, nel trespaís argañosu, una collada desierta que domina'l valle embaxo."
+"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed acropolis commanding the valley below."
+msgstr "Cada xugador entama l'alcuentru na picorota d'una ciudá, esto ye, l'acrópolis.\n\nAl este hai una gran badea con pexe. Al oeste, nel trespaís argañosu, queda ensin reclamar una collada que domina la playa embaxo."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Name:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Name:39
 msgid "Acropolis Bay (2)"
 msgstr "Badea los acrópolis (2)"
 
@@ -2550,16 +2552,6 @@ msgstr "Al mediudía del Sáḥara, al oriente del Nilu, existe una rexón semi-
 msgid "Island of Meroë (2)"
 msgstr "La islla de Medevi (2)"
 
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[0].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[2].Name:39
-msgid "West Player"
-msgstr "Xugador occidental"
-
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[1].Name:39
-msgid "East Player"
-msgstr "Xugador oriental"
-
 #: maps/skirmishes/caspian_sea_2pv2p.xml:Description:38
 msgid ""
 "Two teams face off across a long, very large saltwater lake.\n"
@@ -2582,7 +2574,7 @@ msgstr "A la Italia septentrional que llenda colos Alpes los romanos denómabenl
 msgid "Cisalpine Winter (2)"
 msgstr "Hibiernu cisalpín (2)"
 
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:39
 msgid "Corinthian Isthmus (2)"
 msgstr "Ismu de Corintu (2)"
 
@@ -2612,11 +2604,11 @@ msgstr "A la vera d'onde'l Nilu traviesa l'ermu de Libia queda'l llagu de Mérid
 msgid "Crocodilopolis (4)"
 msgstr "Crocodilópolis (4)"
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:39
 msgid "A \"small island\"-style map set in the Aegean Sea."
 msgstr "Un mapa d'islluques ambientáu en Mar Exéu."
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:39
 msgid "Cycladic Archipelago (2)"
 msgstr "Les Cíclades (2)"
 
@@ -2630,18 +2622,6 @@ msgstr "Un mapa d'islluques ambientáu en Mar Exéu.\n\nTamañu del mapa: Grand�
 #: maps/skirmishes/cycladic_archipelago_3p.xml:Name:38
 msgid "Cycladic Archipelago (3)"
 msgstr "Les Cíclades (3)"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[0].Name:38
-msgid "Samos"
-msgstr "Samos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[1].Name:38
-msgid "Lesbos"
-msgstr "Lesbos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[2].Name:38
-msgid "Delos"
-msgstr "Delos"
 
 #: maps/skirmishes/death_canyon_2p.xml:Description:38
 msgid ""
@@ -2839,16 +2819,6 @@ msgstr "El ríu Hidaspe, güei «Jhelum», del Panxab. Ye'l sitiu de la famosa b
 msgid "Hydaspes River (4)"
 msgstr "El ríu Hysdaspes (4)"
 
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[3].Name:39
-msgid "Macedonian Position"
-msgstr "Posición macedonia"
-
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[2].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[4].Name:39
-msgid "Pauravan Position"
-msgstr "Posición paurava"
-
 #: maps/skirmishes/libyan_oases_4p.xml:Description:38
 msgid ""
 "An otherwise wide-open, flat desert map is pierced in the center by two lush oases.\n"
@@ -2897,14 +2867,14 @@ msgstr "Dos de los grandes imperios índicos, el mauriu y el gupta, aniciaron en
 msgid "Magadha (2)"
 msgstr "Mágadha (2)"
 
-#: maps/skirmishes/median_oasis_2p.xml:Description:38
+#: maps/skirmishes/median_oasis_2p.xml:Description:39
 #: maps/skirmishes/median_oasis_4p.xml:Description:38
 msgid ""
 "A large oasis acts as the hub of mountainous spokes that divide the home "
 "territories of each player."
 msgstr "Un gran oasis anueda les cordaleres entre los territorios de cada xugador."
 
-#: maps/skirmishes/median_oasis_2p.xml:Name:38
+#: maps/skirmishes/median_oasis_2p.xml:Name:39
 msgid "Median Oasis (2)"
 msgstr "Oasis de Media (2)"
 
@@ -3135,12 +3105,12 @@ msgid ""
 msgstr "Una cœnca árida & erma entre rimadæs montunæs, a la bacíæ de l Tarim los hàn tamien lla tyamæn “læs fhasteiræs occidentales”, l extremu de l authoridá tsina.\n\nLa bacíæ sta disapossiada de vida & ufre poucos medios de defensa. Læs valladæs garmosæs alhugæn la única flora & fauna, na fhorma de carbæs, arbolruccos & daqué cabræs."
 
 #: maps/skirmishes/tarim_basin_2p.xml:Name:39
-msgid "Tarim Basin (2 players)"
-msgstr "Bacíæ de l Tarim (2 xhogadores)"
+msgid "Tarim Basin (2)"
+msgstr "Bacíæ de l Tarim (2)"
 
 #: maps/skirmishes/tarim_basin_4p.xml:Name:39
-msgid "Tarim Basin (4 players)"
-msgstr "Bacíæ de l Tarim (4 xhogadores)"
+msgid "Tarim Basin (4)"
+msgstr "Bacíæ de l Tarim (4)"
 
 #: maps/skirmishes/team_oasis_2pv2p.xml:Description:38
 msgid ""
@@ -3239,10 +3209,6 @@ msgstr "¡Los foriatos quieren tomar Britania! Los britanos han lluchar contra e
 msgid "White Cliffs of Dover (5)"
 msgstr "Los cantiles de Dubres (5)"
 
-#: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[1].Name:39
-msgid "Britons"
-msgstr "Britanos"
-
 #: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[2].Name:39
 msgid "Invader 1"
 msgstr "Invasor 1"
@@ -3264,8 +3230,8 @@ msgid "The Yangtze River in China. "
 msgstr "El ríu “Cháng Jiāng” na Tsina."
 
 #: maps/skirmishes/yangtze_2p.xml:Name:39
-msgid "Chang Jiang (2 players)"
-msgstr "Chang Jiang (2 xhogadores)"
+msgid "Chang Jiang (2)"
+msgstr "Chang Jiang (2)"
 
 #: maps/skirmishes/zagros_mountains_2p.xml:Description:38
 msgid ""

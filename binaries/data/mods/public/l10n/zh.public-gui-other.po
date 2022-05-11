@@ -9,6 +9,7 @@
 # Bill Stark
 # Boya Yang
 # Brett Dong
+# brow red
 # Bun Eang VINH
 # chaoyang huang
 # Charles Yang
@@ -87,9 +88,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-07 08:09+0000\n"
-"PO-Revision-Date: 2022-03-09 19:41+0000\n"
-"Last-Translator: Aiyorik Su\n"
+"POT-Creation-Date: 2022-05-02 07:08+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: Wolfson Liu <wolfsonliu@foxmail.com>, 2020,2022\n"
 "Language-Team: Chinese (http://www.transifex.com/wildfire-games/0ad/language/zh/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -251,7 +252,7 @@ msgstr "无尽模式"
 
 #: gui/common/gamedescription.js:189
 msgid "No winner will be determined, even if everyone is defeated."
-msgstr "没有胜利者"
+msgstr "不判定胜利者，即时每个人都被击败。"
 
 #: gui/common/gamedescription.js:202
 #, javascript-format
@@ -273,7 +274,7 @@ msgstr "遗迹数量"
 
 #: gui/common/gamedescription.js:239
 msgid "Hero Garrison"
-msgstr "英雄驻军"
+msgstr "英雄驻守"
 
 #: gui/common/gamedescription.js:240
 msgid "Heroes can be garrisoned."
@@ -519,7 +520,7 @@ msgstr "与 %(player)s 的连接不稳定(%(milliseconds)s 毫秒)"
 msgid ""
 "This is often caused by UDP port 20595 not being forwarded on the host side,"
 " by a firewall, or anti-virus software."
-msgstr "通常是由 UDP 端口 20595 未在主机端、防火墙或防病毒软件上转发引起的。"
+msgstr "这通常是因为防火墙或杀毒软件，主持端未转发UDP端口20595造成的。"
 
 #: gui/common/network.js:67
 msgid "The host has ended the game."
@@ -3141,16 +3142,6 @@ msgctxt "hotkey metadata"
 msgid "Cancel selection"
 msgstr "取消选取"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.desc
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0 to the current selection."
-msgstr "将第 0 小队添加到当前列表。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.name
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0"
-msgstr "增加编队0"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.1.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1 to the current selection."
@@ -3160,6 +3151,16 @@ msgstr "将第 1 小队添加到当前列表。"
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1"
 msgstr "增加编队1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.desc
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10 to the current selection."
+msgstr "增加编队10到当前选择中。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.name
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10"
+msgstr "增加编队10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.2.desc
 msgctxt "hotkey metadata"
@@ -3241,16 +3242,6 @@ msgctxt "hotkey metadata"
 msgid "Add Control Group 9"
 msgstr "增加第 9 小队"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.desc
-msgctxt "hotkey metadata"
-msgid "Save current selection as Control Group 0."
-msgstr "保存当前列表为第 0 小队。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.name
-msgctxt "hotkey metadata"
-msgid "Set Control Group 0"
-msgstr "设置第 0 小队"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.1.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 1."
@@ -3260,6 +3251,16 @@ msgstr "保存当前列表为第 1 小队。"
 msgctxt "hotkey metadata"
 msgid "Set Control Group 1"
 msgstr "设置第 1 小队"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.desc
+msgctxt "hotkey metadata"
+msgid "Save current selection as Control Group 10."
+msgstr "保存当前选择为编队10。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.name
+msgctxt "hotkey metadata"
+msgid "Set Control Group 10"
+msgstr "设置编队10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.2.desc
 msgctxt "hotkey metadata"
@@ -3341,16 +3342,6 @@ msgctxt "hotkey metadata"
 msgid "Set Control Group 9"
 msgstr "设置第 9 小队"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.desc
-msgctxt "hotkey metadata"
-msgid "Change the current selection to Control Group 0."
-msgstr "修改当前队列为第 0 小队。"
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.name
-msgctxt "hotkey metadata"
-msgid "Select Control Group 0"
-msgstr "选取第 0 小队"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.1.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 1."
@@ -3360,6 +3351,16 @@ msgstr "修改当前队列为第 1 小队。"
 msgctxt "hotkey metadata"
 msgid "Select Control Group 1"
 msgstr "选取第 1 小队"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.desc
+msgctxt "hotkey metadata"
+msgid "Change the current selection to Control Group 10."
+msgstr "修改当前选择为编队10。"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.name
+msgctxt "hotkey metadata"
+msgid "Select Control Group 10"
+msgstr "选择编队10"
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.2.desc
 msgctxt "hotkey metadata"
@@ -4090,6 +4091,15 @@ msgstr "窗口模式"
 #: gui/options/options.json[1].options[0].tooltip
 msgid "Start 0 A.D. in a window."
 msgstr "开启窗口游戏"
+
+#: gui/options/options.json[1].options[10].label
+msgid "Mouse drag"
+msgstr "鼠标拖动"
+
+#: gui/options/options.json[1].options[10].tooltip
+msgid ""
+"Number of pixels the mouse can move before the action is considered a drag."
+msgstr "在被认为是拖动行为之前，鼠标能移动的像素数量。"
 
 #: gui/options/options.json[1].options[1].label
 #: gui/options/options.json[2].options[1].label
@@ -5185,8 +5195,8 @@ msgid "Tutorial"
 msgstr "教程"
 
 #: gui/pregame/MainMenuItems.js:15
-msgid "Start the economic tutorial."
-msgstr "开始经济教学"
+msgid "Start the introductory tutorial."
+msgstr "开始介绍性教程"
 
 #: gui/pregame/MainMenuItems.js:36
 #: gui/reference/common/Buttons/StructreeButton.js:21
@@ -5415,8 +5425,8 @@ msgid "WILDFIRE GAMES"
 msgstr "WILDFIRE GAMES"
 
 #: gui/pregame/ProjectInformation.js:18
-msgid "Alpha XXVI: Z——"
-msgstr "版本 26："
+msgid "Alpha XXVI: Zhuangzi"
+msgstr "内测版 26：庄子"
 
 #: gui/pregame/ProjectInformation.js:19
 msgid ""
@@ -5662,7 +5672,7 @@ msgstr "训练："
 #. technology selected.
 #: gui/reference/common/tooltips.js:39
 msgid "Researched at:"
-msgstr "研究:"
+msgstr "研究于:"
 
 #. Translation: Label before a list of the names of structures the selected
 #. unit can
@@ -5676,7 +5686,7 @@ msgstr "可建造："
 #. structure can research.
 #: gui/reference/common/tooltips.js:57
 msgid "Researches:"
-msgstr "物资："
+msgstr "研究："
 
 #. Translation: Label before a list of the names of units the selected unit or
 #. structure can
@@ -5966,8 +5976,8 @@ msgid "Score"
 msgstr "得分"
 
 #: gui/summary/layout.js:15 gui/summary/layout.js:33 gui/summary/layout.js:71
-#: gui/summary/layout.js:111 gui/summary/layout.js:162
-#: gui/summary/layout.js:194 gui/summary/summary.xml:(caption):70
+#: gui/summary/layout.js:110 gui/summary/layout.js:161
+#: gui/summary/layout.js:193 gui/summary/summary.xml:(caption):70
 msgid "Player name"
 msgstr "玩家昵称"
 
@@ -5991,7 +6001,7 @@ msgstr "探索得分"
 msgid "Structures"
 msgstr "建筑"
 
-#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:112
+#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:111
 msgid "Total"
 msgstr "总计"
 
@@ -6068,107 +6078,107 @@ msgstr "商人"
 
 #: gui/summary/layout.js:84
 #, javascript-format
-msgid "Unit Statistics (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
-msgstr "单位数据  (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
+msgid "Unit Statistics (%(trained)s / %(killed)s / %(lost)s)"
+msgstr "单位统计（%(trained)s / %(killed)s / %(lost)s）"
 
-#: gui/summary/layout.js:109
+#: gui/summary/layout.js:108
 msgid "Resources"
 msgstr "物资"
 
-#: gui/summary/layout.js:121
+#: gui/summary/layout.js:120
 msgid "Tributes"
 msgstr "进贡"
 
-#: gui/summary/layout.js:122
+#: gui/summary/layout.js:121
 #, javascript-format
 msgid ""
 "Tributes \n"
 "(%(sent)s / %(received)s)"
 msgstr "进贡\n(%(sent)s / %(received)s)"
 
-#: gui/summary/layout.js:130
+#: gui/summary/layout.js:129
 msgid "Treasures collected"
 msgstr "收集的宝藏"
 
-#: gui/summary/layout.js:131
+#: gui/summary/layout.js:130
 msgid "Loot"
 msgstr "战利品"
 
-#: gui/summary/layout.js:132
+#: gui/summary/layout.js:131
 msgid "Livestock bred"
 msgstr "繁殖牲畜"
 
-#: gui/summary/layout.js:136
+#: gui/summary/layout.js:135
 #, javascript-format
 msgid "Resource Statistics (%(gathered)s / %(used)s)"
 msgstr "物资统计 (%(gathered)s / %(used)s)"
 
-#: gui/summary/layout.js:160
+#: gui/summary/layout.js:159
 msgid "Market"
 msgstr "集市"
 
-#: gui/summary/layout.js:163
+#: gui/summary/layout.js:162
 msgid "Trade income"
 msgstr "贸易收入"
 
-#: gui/summary/layout.js:164
+#: gui/summary/layout.js:163
 msgid "Barter efficiency"
 msgstr "贸易效率"
 
 #. Translation: use %(resourceWithinSentence)s if needed
-#: gui/summary/layout.js:170
+#: gui/summary/layout.js:169
 #, javascript-format
 msgid "%(resourceFirstWord)s exchanged"
 msgstr "%(resourceFirstWord)s  改变"
 
-#: gui/summary/layout.js:192
+#: gui/summary/layout.js:191
 msgid "Miscellaneous"
 msgstr "杂项"
 
-#: gui/summary/layout.js:195
+#: gui/summary/layout.js:194
 msgid "Kill / Death ratio"
 msgstr "杀敌/阵亡比例"
 
-#: gui/summary/layout.js:196 gui/summary/summary.js:99
+#: gui/summary/layout.js:195 gui/summary/summary.js:99
 msgid "Population"
 msgstr "人口"
 
-#: gui/summary/layout.js:197
+#: gui/summary/layout.js:196
 msgid "Map control (peak)"
 msgstr "地图控制(最高)"
 
-#: gui/summary/layout.js:198
+#: gui/summary/layout.js:197
 msgid "Map control (finish)"
 msgstr "地图控制(完成)"
 
-#: gui/summary/layout.js:199
+#: gui/summary/layout.js:198
 msgid "Map exploration"
 msgstr "地图探测"
 
-#: gui/summary/layout.js:200
+#: gui/summary/layout.js:199
 msgid "Vegetarian ratio"
 msgstr "素食比例"
 
-#: gui/summary/layout.js:201
+#: gui/summary/layout.js:200
 msgid "Feminization"
 msgstr "公民比例"
 
-#: gui/summary/layout.js:204
+#: gui/summary/layout.js:203
 msgid "Bribes"
 msgstr "贿赂"
 
-#: gui/summary/layout.js:205
+#: gui/summary/layout.js:204
 #, javascript-format
 msgid ""
 "Bribes\n"
 "(%(succeeded)s / %(failed)s)"
 msgstr "贿赂\n(%(succeeded)s / %(failed)s)"
 
-#: gui/summary/layout.js:231
+#: gui/summary/layout.js:230
 msgid "Charts"
 msgstr "图表"
 
-#: gui/summary/layout.js:378
+#: gui/summary/layout.js:377
 msgid "Team total"
 msgstr "队伍总计"
 

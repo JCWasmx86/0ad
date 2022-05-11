@@ -16,16 +16,17 @@
 # Ondrej K.
 # Peto
 # Roman 'Kaktuxista' Benji
-# Slavomír Slovenkai
+# Rudolf Tisoň
+# c1d3d4413723242329060e6153cf18b8_282267d
 # Stanislav Kubiš
 # Tom Hanax
 # Zuzana Miadoková
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-25 07:09+0000\n"
 "PO-Revision-Date: 2014-06-19 17:52+0000\n"
-"Last-Translator: Stanislav Kubiš, 2021\n"
+"Last-Translator: Zuzana Miadoková, 2019,2021-2022\n"
 "Language-Team: Slovak (http://www.transifex.com/wildfire-games/0ad/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1165,7 +1166,7 @@ msgid "Choose a random land landscape"
 msgstr "Vyber náhodnú krajinu na súši"
 
 #: maps/random/unknown.jsonsettings.Landscapes[0].Items[1].Description
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Description:39
 #: maps/skirmishes/corinthian_isthmus_4p.xml:Description:39
 msgid ""
 "Two Mediterranean land masses connected by a narrow spit of land, called an "
@@ -1330,7 +1331,7 @@ msgstr "Arkádia"
 #: maps/scenarios/necropolis.xml:PlayerData[0].Name:38
 #: maps/scenarios/reservoir.xml:PlayerData[0].Name:26
 #: maps/scenarios/saharan_oases.xml:PlayerData[0].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[0].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[0].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[0].Name:26
@@ -1339,6 +1340,7 @@ msgstr "Arkádia"
 #: maps/scenarios/tropical_island.xml:PlayerData[0].Name:38
 #: maps/scenarios/walls.xml:PlayerData[0].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[0].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[1].Name:39
 msgid "Player 1"
 msgstr "Hráč 1"
 
@@ -1353,7 +1355,7 @@ msgstr "Hráč 1"
 #: maps/scenarios/migration.xml:PlayerData[1].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[1].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[1].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[1].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[2].Name:39
 #: maps/scenarios/sandbox_iberians.xml:PlayerData[1].Name:38
 #: maps/scenarios/siwa_oasis.xml:PlayerData[1].Name:26
@@ -1362,6 +1364,7 @@ msgstr "Hráč 1"
 #: maps/scenarios/tropical_island.xml:PlayerData[1].Name:38
 #: maps/scenarios/walls.xml:PlayerData[1].Name:26
 #: maps/scenarios/walltest.xml:PlayerData[1].Name:26
+#: maps/skirmishes/acropolis_bay_2p.xml:PlayerData[2].Name:39
 msgid "Player 2"
 msgstr "Hráč 2"
 
@@ -1594,7 +1597,7 @@ msgstr "Invázna jednotka"
 #: maps/scenarios/migration.xml:PlayerData[2].Name:26
 #: maps/scenarios/necropolis.xml:PlayerData[2].Name:38
 #: maps/scenarios/saharan_oases.xml:PlayerData[2].Name:26
-#: maps/scenarios/sandbox_britons.xml:PlayerData[2].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[3].Name:39
 #: maps/scenarios/siwa_oasis.xml:PlayerData[2].Name:26
 msgid "Player 3"
@@ -1690,16 +1693,16 @@ msgid ""
 "This is a WFG community-designed map by: SMST, NOXAS1, and Yodaspirine."
 msgstr "Mapa pre hru viacerých hráčov. Každý hráč začína na malom ostrove poskytujúcom minimum prírodných zdrojov, ktorý leží pri pobreží rozsiahlej pevniny.\n\nTáto mapa bola navrhnutá komunitou WFG a jej autormi sú: SMST, NOXAS1 a Yodaspirine."
 
-#: maps/scenarios/miletus.xml:Description:26
+#: maps/scenarios/miletus.xml:Description:39
 msgid "A sandbox scenario for one player."
 msgstr "Scenár v podobe pieskoviska pre jedného hráča."
 
-#: maps/scenarios/miletus.xml:Name:26
-#: maps/scenarios/miletus.xml:PlayerData[0].Name:26
+#: maps/scenarios/miletus.xml:Name:39
+#: maps/scenarios/miletus.xml:PlayerData[0].Name:39
 msgid "Miletus"
 msgstr "Milét"
 
-#: maps/scenarios/miletus.xml:PlayerData[1].Name:26
+#: maps/scenarios/miletus.xml:PlayerData[1].Name:39
 #: maps/scenarios/sandbox_ptolemies_02.xml:PlayerData[1].Name:38
 msgid "Romans"
 msgstr "Rimania"
@@ -1785,7 +1788,7 @@ msgstr ""
 
 #: maps/scenarios/pickup_test_map.xml:Name:39
 msgid "Pickup test map"
-msgstr ""
+msgstr "Zober testovaciu mapu"
 
 #: maps/scenarios/polynesia.xml:Description:39
 msgid "Demo map for new fancy water effects."
@@ -1884,16 +1887,16 @@ msgstr "Peržania"
 msgid "The Gauls"
 msgstr "Galovia"
 
-#: maps/scenarios/sandbox_britons.xml:Description:38
+#: maps/scenarios/sandbox_britons.xml:Description:39
 #: maps/scenarios/sandbox_gauls.xml:Description:39
 msgid "Play around with the Gallic faction in an idyllic sandbox setting."
 msgstr "Pohrajte sa s galskou frakciou v idylickom prostredí pieskoviska."
 
-#: maps/scenarios/sandbox_britons.xml:Name:38
+#: maps/scenarios/sandbox_britons.xml:Name:39
 msgid "Sandbox - The Britons"
 msgstr "Pieskovisko - Briti"
 
-#: maps/scenarios/sandbox_britons.xml:PlayerData[3].Name:38
+#: maps/scenarios/sandbox_britons.xml:PlayerData[4].Name:39
 #: maps/scenarios/sandbox_gauls.xml:PlayerData[4].Name:39
 msgid "Roman Interlopers"
 msgstr "Rímski votrelci"
@@ -1926,7 +1929,7 @@ msgstr ""
 
 #: maps/scenarios/sandbox_han.xml:Name:39
 msgid "Sandbox - The Han Chinese"
-msgstr ""
+msgstr "Pieskovisko - Chanovia"
 
 #: maps/scenarios/sandbox_iberians.xml:Description:38
 msgid "A demo map for the Iberians."
@@ -1963,7 +1966,7 @@ msgstr ""
 
 #: maps/scenarios/sandbox_mauryas.xml:Name:39
 msgid "Sandbox - The Maurya Indians"
-msgstr ""
+msgstr "Pieskovisko - Maurjovskí Indovia"
 
 #: maps/scenarios/sandbox_persians.xml:Description:39
 msgid "A simple map showcasing the Persian civilization's assets in the game."
@@ -1971,7 +1974,7 @@ msgstr ""
 
 #: maps/scenarios/sandbox_persians.xml:Name:39
 msgid "Sandbox - The Achaemenid Persians"
-msgstr ""
+msgstr "Pieskovisko - Staroperžania"
 
 #: maps/scenarios/sandbox_ptolemies.xml:Description:38
 #: maps/skirmishes/sporades_islands_2p.xml:Description:39
@@ -2019,7 +2022,7 @@ msgstr ""
 
 #: maps/scenarios/sandbox_romans.xml:Name:39
 msgid "Sandbox - The Romans"
-msgstr ""
+msgstr "Pieskovisko - Rimania"
 
 #: maps/scenarios/sandbox_seleucids.xml:Description:38
 msgid "A sandbox scenario for players to try out the Seleucid civilisation."
@@ -2298,7 +2301,7 @@ msgstr ""
 
 #: maps/scenarios/unit_chasing_test.xml:Name:40
 msgid "Unit Chasing test"
-msgstr ""
+msgstr "Test naháňania jednotiek"
 
 #: maps/scenarios/unit_dancing_test.xml:Description:40
 msgid "This map is designed to test a few different cases of 'Dancing'."
@@ -2328,7 +2331,7 @@ msgstr ""
 
 #: maps/scenarios/unit_pushing_test.xml:Name:40
 msgid "Unit Pushing test"
-msgstr ""
+msgstr "Test tlačenia jednotiek"
 
 #: maps/scenarios/units_demo.xml:Description:27
 msgid "Every unit in the game."
@@ -2352,7 +2355,7 @@ msgstr "Test múrov"
 
 #: maps/scenarios/we_are_legion.xml:Description:26
 msgid "A quick battle demo map using Roman legionaries."
-msgstr ""
+msgstr "Rýchla mapa na ukážku boja pomocou rímskych legionárov."
 
 #: maps/scenarios/we_are_legion.xml:Name:26
 msgid "We Are Legion"
@@ -2368,12 +2371,12 @@ msgstr "%(_player_)s a ich spojenci získali kontrolu nad všetkými relikviami 
 #: maps/scripts/CaptureTheRelic.js:145
 #, javascript-format
 msgid "%(_player_)s has captured all relics and will win in %(time)s."
-msgstr ""
+msgstr "%(_player_)s získal kontrolu nad všetkými relikviami a vyhrá za %(time)s."
 
 #: maps/scripts/CaptureTheRelic.js:156
 #, javascript-format
 msgid "You and your allies have captured all relics and will win in %(time)s."
-msgstr ""
+msgstr "Ty spolu s tvojimi spojencami ste získali kontrolu nad všetkými relikviami a vyhráte sa %(time)s."
 
 #: maps/scripts/CaptureTheRelic.js:157
 #, javascript-format
@@ -2384,25 +2387,25 @@ msgstr "Získal si kontrolu nad všetkými relikviami a vyhráš za %(time)s."
 #, javascript-format
 msgid "%(lastPlayer)s has won (Capture the Relic)."
 msgid_plural "%(players)s and %(lastPlayer)s have won (Capture the Relic)."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%(lastPlayer)s vyhral (Zmocni sa relikvie)."
+msgstr[1] "%(players)s a %(lastPlayer)s vyhrali (Zmocni sa relikvie)."
+msgstr[2] "%(players)s a %(lastPlayer)s vyhrali (Zmocni sa relikvie)."
+msgstr[3] "%(players)s a %(lastPlayer)s vyhrali (Zmocni sa relikvie)."
 
 #: maps/scripts/CaptureTheRelic.js:175
 #, javascript-format
 msgid "%(lastPlayer)s has been defeated (Capture the Relic)."
 msgid_plural ""
 "%(players)s and %(lastPlayer)s have been defeated (Capture the Relic)."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%(lastPlayer)s bol porazený (Zmocni sa relikvie)."
+msgstr[1] "%(players)s a %(lastPlayer)s boli porazení (Zmocni sa relikvie)."
+msgstr[2] "%(players)s a %(lastPlayer)s boli porazení (Zmocni sa relikvie)."
+msgstr[3] "%(players)s a %(lastPlayer)s boli porazení (Zmocni sa relikvie)."
 
 #: maps/scripts/Conquest.js:5
 #, javascript-format
 msgid "%(player)s has been defeated (lost all critical units and structures)."
-msgstr ""
+msgstr "%(player)s  bol porazený (stratil všetky kritické jednotky a budovy)."
 
 #: maps/scripts/ConquestCivicCentres.js:5
 #, javascript-format
@@ -2419,12 +2422,12 @@ msgstr "%(player)s bol porazený (stratil všetky občianske centrá, dôležit�
 #: maps/scripts/ConquestStructures.js:5
 #, javascript-format
 msgid "%(player)s has been defeated (lost all structures)."
-msgstr ""
+msgstr "%(player)s bol porazený (stratil všetky budovy)."
 
 #: maps/scripts/ConquestStructures.js:9
 #, javascript-format
 msgid "%(player)s has been defeated (lost all structures and critical units)."
-msgstr ""
+msgstr "%(player)s bol porazená (stratil všetky budovy a dôležité jednotky)."
 
 #: maps/scripts/ConquestUnits.js:5
 #, javascript-format
@@ -2434,7 +2437,7 @@ msgstr "%(player)s bol porazený (stratil všetky jednotky)."
 #: maps/scripts/ConquestUnits.js:9
 #, javascript-format
 msgid "%(player)s has been defeated (lost all units and critical structures)."
-msgstr ""
+msgstr "%(player)s bol porazený (stratil všetky jednotky a dôležité budovy)."
 
 #: maps/scripts/Regicide.js:130
 #, javascript-format
@@ -2446,27 +2449,27 @@ msgstr "%(player)s bol porazený (prišiel o hrdinu)."
 msgid ""
 "%(_player_)s owns a Wonder and %(_player_)s and their allies will win in "
 "%(time)s."
-msgstr ""
+msgstr "%(_player_)s vlastní Div sveta a %(_player_)s spolu s jeho spojencami vyhrajú za %(time)s."
 
 #: maps/scripts/WonderVictory.js:81
 #, javascript-format
 msgid "%(_player_)s owns a Wonder and will win in %(time)s."
-msgstr ""
+msgstr "%(_player_)s vlastní Div sveta a vyhrá za %(time)s."
 
 #: maps/scripts/WonderVictory.js:92
 #, javascript-format
 msgid "%(_player_)s owns a Wonder and you will win in %(time)s."
-msgstr ""
+msgstr "%(_player_)s vlastní Div sveta a ty vyhráš za %(time)s."
 
 #: maps/scripts/WonderVictory.js:104
 #, javascript-format
 msgid "You own a Wonder and you and your allies will win in %(time)s."
-msgstr ""
+msgstr "Vlastníš Div sveta a vyhráš spolu so svojimi spojencami za %(time)s."
 
 #: maps/scripts/WonderVictory.js:105
 #, javascript-format
 msgid "You own a Wonder and will win in %(time)s."
-msgstr ""
+msgstr "Vlastníš Div sveta a vyhráš za %(time)s."
 
 #: maps/scripts/WonderVictory.js:150
 #, javascript-format
@@ -2487,14 +2490,14 @@ msgstr[1] "%(players)s a %(lastPlayer)s boli porazení (výhra Divom sveta)."
 msgstr[2] "%(players)s a %(lastPlayer)s boli porazení (výhra Divom sveta)."
 msgstr[3] "%(players)s a %(lastPlayer)s boli porazení (výhra Divom sveta)."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Description:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Description:39
 msgid ""
-"Each player starts the match atop a large flat plateau.\n"
+"Each player starts the match atop a large flat plateau, otherwise known as an acropolis.\n"
 "\n"
-"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed plateau commanding the valley below."
-msgstr ""
+"To the East lies a large bay with fishing opportunities. To the West is a rugged hinterland with an unclaimed acropolis commanding the valley below."
+msgstr "Každý hráč začína na vrchole veľkej plošiny, tiež nazývanej akropola.\n\nNa východe leží veľký záliv, ktorý ponúka príležitosti na lov rýb. Na západe sa rozprestiera drsná krajina s neobsadenou akropolou so širokým rozhľadom na údolie popod ňou."
 
-#: maps/skirmishes/acropolis_bay_2p.xml:Name:38
+#: maps/skirmishes/acropolis_bay_2p.xml:Name:39
 msgid "Acropolis Bay (2)"
 msgstr "Akropoly pri zálive (2)"
 
@@ -2576,16 +2579,6 @@ msgstr "Južne od Sahary, východne od Nílu leží polosuché územie známe v 
 msgid "Island of Meroë (2)"
 msgstr "Ostrov Meroë (2)"
 
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[0].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[2].Name:39
-msgid "West Player"
-msgstr "Západný hráč"
-
-#: maps/skirmishes/butana_steppe_2p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/tarim_basin_2p.xml:PlayerData[1].Name:39
-msgid "East Player"
-msgstr "Východný hráč"
-
 #: maps/skirmishes/caspian_sea_2pv2p.xml:Description:38
 msgid ""
 "Two teams face off across a long, very large saltwater lake.\n"
@@ -2608,7 +2601,7 @@ msgstr "Severné Taliansko, neďaleko Álp, je Rimanmi nazývané Cisalpínska G
 msgid "Cisalpine Winter (2)"
 msgstr "Cisalpínska zima (2)"
 
-#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:38
+#: maps/skirmishes/corinthian_isthmus_2p.xml:Name:39
 msgid "Corinthian Isthmus (2)"
 msgstr "Korintská šija (2)"
 
@@ -2638,11 +2631,11 @@ msgstr ""
 msgid "Crocodilopolis (4)"
 msgstr "Krokodílopolis (4)"
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Description:39
 msgid "A \"small island\"-style map set in the Aegean Sea."
 msgstr "Mapa na štýl „ostrovčekov“ zasadená do oblasti Egejského mora."
 
-#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:38
+#: maps/skirmishes/cycladic_archipelago_2p.xml:Name:39
 msgid "Cycladic Archipelago (2)"
 msgstr "Kykladské súostrovie (2)"
 
@@ -2656,18 +2649,6 @@ msgstr "Mapa na štýl „ostrovčekov“ zasadená do oblasti Egejského mora.\
 #: maps/skirmishes/cycladic_archipelago_3p.xml:Name:38
 msgid "Cycladic Archipelago (3)"
 msgstr "Kykladské súostrovie (3)"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[0].Name:38
-msgid "Samos"
-msgstr "Samos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[1].Name:38
-msgid "Lesbos"
-msgstr "Lesbos"
-
-#: maps/skirmishes/cycladic_archipelago_3p.xml:PlayerData[2].Name:38
-msgid "Delos"
-msgstr "Dilos"
 
 #: maps/skirmishes/death_canyon_2p.xml:Description:38
 msgid ""
@@ -2865,16 +2846,6 @@ msgstr ""
 msgid "Hydaspes River (4)"
 msgstr "Rieka Hydaspés (4)"
 
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[1].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[3].Name:39
-msgid "Macedonian Position"
-msgstr "Macedónska pozícia"
-
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[2].Name:39
-#: maps/skirmishes/hydaspes_river_4p.xml:PlayerData[4].Name:39
-msgid "Pauravan Position"
-msgstr "Pauravská pozícia"
-
 #: maps/skirmishes/libyan_oases_4p.xml:Description:38
 msgid ""
 "An otherwise wide-open, flat desert map is pierced in the center by two lush oases.\n"
@@ -2923,14 +2894,14 @@ msgstr ""
 msgid "Magadha (2)"
 msgstr "Magadha (2)"
 
-#: maps/skirmishes/median_oasis_2p.xml:Description:38
+#: maps/skirmishes/median_oasis_2p.xml:Description:39
 #: maps/skirmishes/median_oasis_4p.xml:Description:38
 msgid ""
 "A large oasis acts as the hub of mountainous spokes that divide the home "
 "territories of each player."
 msgstr "Veľká oáza pripomínajúca hlavu kolesa s vrchovatými spicami, ktoré delia územia hráčov."
 
-#: maps/skirmishes/median_oasis_2p.xml:Name:38
+#: maps/skirmishes/median_oasis_2p.xml:Name:39
 msgid "Median Oasis (2)"
 msgstr "Médska oáza (2)"
 
@@ -3161,11 +3132,11 @@ msgid ""
 msgstr ""
 
 #: maps/skirmishes/tarim_basin_2p.xml:Name:39
-msgid "Tarim Basin (2 players)"
+msgid "Tarim Basin (2)"
 msgstr ""
 
 #: maps/skirmishes/tarim_basin_4p.xml:Name:39
-msgid "Tarim Basin (4 players)"
+msgid "Tarim Basin (4)"
 msgstr ""
 
 #: maps/skirmishes/team_oasis_2pv2p.xml:Description:38
@@ -3224,7 +3195,7 @@ msgid ""
 "Skirmish as ash lightly falls around this recently erupted volcano. The "
 "scorched landscape offers little food, though the blasted forests are still "
 "laden with useful wood."
-msgstr ""
+msgstr "Zatiaľ čo jemný popol padá okolo tejto nedávno vybuchnutej sopky, okolo nej dochádza k šarvátkam. Spálená krajina poskytuje minimum jedla, ale jej lesy stále ukrývajú použiteľné drevo."
 
 #: maps/skirmishes/vesuvius_6p.xml:Name:39
 msgid "Vesuvius (6)"
@@ -3265,10 +3236,6 @@ msgstr ""
 msgid "White Cliffs of Dover (5)"
 msgstr "Biele útesy Doveru (5)"
 
-#: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[1].Name:39
-msgid "Britons"
-msgstr "Briti"
-
 #: maps/skirmishes/white_cliffs_of_dover_5p.xml:PlayerData[2].Name:39
 msgid "Invader 1"
 msgstr "Votrelec 1"
@@ -3287,10 +3254,10 @@ msgstr "Votrelec 4"
 
 #: maps/skirmishes/yangtze_2p.xml:Description:39
 msgid "The Yangtze River in China. "
-msgstr ""
+msgstr "Rieka Jang-c’ v Číne."
 
 #: maps/skirmishes/yangtze_2p.xml:Name:39
-msgid "Chang Jiang (2 players)"
+msgid "Chang Jiang (2)"
 msgstr ""
 
 #: maps/skirmishes/zagros_mountains_2p.xml:Description:38

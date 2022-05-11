@@ -39,15 +39,15 @@ public:
 	CModelRData* CreateModelData(const void* key, CModel* model) override;
 	void UpdateModelData(CModel* model, CModelRData* data, int updateflags) override;
 
-	void BeginPass(int streamflags) override;
+	void BeginPass() override;
 	void EndPass(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext, int streamflags) override;
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext) override;
 	void PrepareModelDef(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		Renderer::Backend::GL::CShaderProgram* shader, int streamflags, const CModelDef& def) override;
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+		const CModelDef& def) override;
 	void RenderModel(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-		Renderer::Backend::GL::CShaderProgram* shader, int streamflags, CModel* model, CModelRData* data) override;
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+		Renderer::Backend::IShaderProgram* shader, CModel* model, CModelRData* data) override;
 
 protected:
 	struct ShaderModelRendererInternals;

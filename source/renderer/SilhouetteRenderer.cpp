@@ -444,7 +444,7 @@ void SilhouetteRenderer::RenderSubmitCasters(SceneCollector& collector)
 }
 
 void SilhouetteRenderer::RenderDebugBounds(
-	Renderer::Backend::GL::CDeviceCommandContext* UNUSED(deviceCommandContext))
+	Renderer::Backend::IDeviceCommandContext* UNUSED(deviceCommandContext))
 {
 	if (m_DebugBounds.empty())
 		return;
@@ -454,7 +454,7 @@ void SilhouetteRenderer::RenderDebugBounds(
 }
 
 void SilhouetteRenderer::RenderDebugOverlays(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	if (m_DebugRects.empty())
 		return;
@@ -477,13 +477,15 @@ void SilhouetteRenderer::RenderDebugOverlays(
 	pipelineStateDesc.rasterizationState.cullMode = Renderer::Backend::CullMode::NONE;
 	deviceCommandContext->SetGraphicsPipelineState(pipelineStateDesc);
 
-	Renderer::Backend::GL::CShaderProgram* shader = shaderTech->GetShader();
-	shader->Uniform(str_transform, proj);
+	Renderer::Backend::IShaderProgram* shader = shaderTech->GetShader();
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), proj.AsFloatArray());
 
-	for (size_t i = 0; i < m_DebugRects.size(); ++i)
+	const int32_t colorBindingSlot = shader->GetBindingSlot(str_color);
+	for (const DebugRect& r : m_DebugRects)
 	{
-		const DebugRect& r = m_DebugRects[i];
-		shader->Uniform(str_color, r.color);
+		deviceCommandContext->SetUniform(
+			colorBindingSlot, r.color.AsFloatArray());
 		u16 verts[] =
 		{
 			r.x0, r.y0,
@@ -493,8 +495,13 @@ void SilhouetteRenderer::RenderDebugOverlays(
 			r.x1, r.y1,
 			r.x0, r.y1,
 		};
-		shader->VertexPointer(
-			Renderer::Backend::Format::R16G16_SINT, 0, verts);
+
+		deviceCommandContext->SetVertexAttributeFormat(
+			Renderer::Backend::VertexAttributeStream::POSITION,
+			Renderer::Backend::Format::R16G16_SINT, 0, 0, 0);
+
+		deviceCommandContext->SetVertexBufferData(0, verts);
+
 		deviceCommandContext->Draw(0, 6);
 	}
 

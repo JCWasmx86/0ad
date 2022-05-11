@@ -2,10 +2,7 @@
 <actor version="1">
   <castshadow/>
   <group>
-    <variant frequency="3" name="base">
-      <props>
-        <prop actor="props/flora/decal_palms_patch.xml" attachpoint="root"/>
-      </props>
+    <variant frequency="1" name="base">
       <textures>
         <texture file="gaia/palm_date_new_norm.png" name="normTex"/>
         <texture file="gaia/palm_date_new_spec.png" name="specTex"/>
@@ -37,10 +34,10 @@
     <variant frequency="3" name="4">
       <mesh>gaia/palm_date_new_4.dae</mesh>
     </variant>
-    <variant frequency="3" name="5">
+    <variant frequency="2" name="5">
       <mesh>gaia/palm_date_new_5.dae</mesh>
     </variant>
-    <variant frequency="3" name="6">
+    <variant frequency="2" name="6">
       <mesh>gaia/palm_date_new_6.dae</mesh>
     </variant>
   </group>

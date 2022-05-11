@@ -65,11 +65,6 @@ const g_FreehandSelection_MinLengthOfLine = 8;
 const g_FreehandSelection_MinNumberOfUnits = 2;
 
 /**
- * Number of pixels the mouse can move before the action is considered a drag.
- */
-const g_MaxDragDelta = 4;
-
-/**
  * Used for remembering mouse coordinates at start of drag operations.
  */
 var g_DragStart;
@@ -95,6 +90,11 @@ const g_FlareCooldown = 3000;
 const doublePressTime = 500;
 var doublePressTimer = 0;
 var prevHotkey = 0;
+
+function getMaxDragDelta()
+{
+	return Engine.ConfigDB_GetValue("user", "gui.session.dragdelta");
+}
 
 function updateCursorAndTooltip()
 {
@@ -580,8 +580,7 @@ function handleInputBeforeGui(ev, hoveredObject)
 		case "mousemotion":
 			// If the mouse moved far enough from the original click location,
 			// then switch to drag-orientation mode.
-			let maxDragDelta = 16;
-			if (g_DragStart.distanceTo(ev) >= maxDragDelta)
+			if (g_DragStart.distanceTo(ev) >= Math.square(getMaxDragDelta()))
 			{
 				inputState = INPUT_BUILDING_DRAG;
 				return false;
@@ -720,8 +719,7 @@ function handleInputBeforeGui(ev, hoveredObject)
 		switch (ev.type)
 		{
 		case "mousemotion":
-			let maxDragDelta = 16;
-			if (g_DragStart.distanceTo(ev) >= maxDragDelta)
+			if (g_DragStart.distanceTo(ev) >= Math.square(getMaxDragDelta()))
 				// Rotate in the direction of the cursor.
 				placementSupport.angle = placementSupport.position.horizAngleTo(Engine.GetTerrainAtScreenPoint(ev.x, ev.y));
 			else
@@ -860,13 +858,13 @@ function handleInputAfterGui(ev)
 					if (ev.hotkey.indexOf("selection.group.select.") == 0)
 					{
 						let sptr = ev.hotkey.split(".");
-						performGroup("snap", sptr[3]);
+						performGroup("snap", sptr[3] - 1);
 					}
 				}
 				else
 				{
 					let sptr = ev.hotkey.split(".");
-					performGroup(sptr[2], sptr[3]);
+					performGroup(sptr[2], sptr[3] - 1);
 
 					doublePressTimer = now;
 					prevHotkey = ev.hotkey;
@@ -922,7 +920,7 @@ function handleInputAfterGui(ev)
 		switch (ev.type)
 		{
 		case "mousemotion":
-			if (g_DragStart.distanceTo(ev) >= g_MaxDragDelta)
+			if (g_DragStart.distanceTo(ev) >= getMaxDragDelta())
 			{
 				inputState = INPUT_BANDBOXING;
 				return false;
@@ -1005,7 +1003,7 @@ function handleInputAfterGui(ev)
 		switch (ev.type)
 		{
 		case "mousemotion":
-			if (g_DragStart.distanceToSquared(ev) >= Math.square(g_MaxDragDelta))
+			if (g_DragStart.distanceToSquared(ev) >= Math.square(getMaxDragDelta()))
 			{
 				inputState = INPUT_UNIT_POSITION;
 				return false;
@@ -1607,6 +1605,11 @@ function flushTrainingBatch()
 
 function performGroup(action, groupId)
 {
+	if (g_Groups.groups[groupId] === undefined)
+	{
+		warn("Invalid groupId " + groupId);
+		return;
+	}
 	switch (action)
 	{
 	case "snap":

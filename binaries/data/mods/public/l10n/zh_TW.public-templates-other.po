@@ -15,7 +15,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-02-28 08:09+0000\n"
+"POT-Creation-Date: 2022-04-10 20:43+0000\n"
 "PO-Revision-Date: 2014-06-19 17:54+0000\n"
 "Last-Translator: Yuan Chang <daan0014119@gmail.com>, 2022\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wildfire-games/0ad/language/zh_TW/)\n"
@@ -637,13 +637,9 @@ msgstr "無花果"
 msgid "Grapes"
 msgstr "葡萄"
 
-#: simulation/templates/gaia/fruit/olive.xml:7
-msgid "Olive"
-msgstr "橄欖"
-
 #: simulation/templates/gaia/ruins/column_doric.xml:8
-msgid "Ancient Ruins"
-msgstr "古代遺蹟"
+msgid "Doric Column"
+msgstr "多立克柱"
 
 #: simulation/templates/gaia/ruins/metal_statue_isis.xml:9
 msgid "Isis Cult Image"
@@ -660,11 +656,11 @@ msgstr "小金字塔"
 #: simulation/templates/gaia/ruins/standing_stone.xml:8
 #: simulation/templates/gaia/treasure/standing_stone.xml:8
 msgid "Celtic Standing Stone"
-msgstr "塞爾特立石"
+msgstr "凱爾特立石"
 
 #: simulation/templates/gaia/ruins/stone_statues_egyptian.xml:8
-msgid "Ptolemaic Egyptian Statues"
-msgstr "埃及托勒密雕像"
+msgid "Egyptian Statue"
+msgstr "埃及雕像"
 
 #: simulation/templates/gaia/ruins/stone_statues_kushite.xml:8
 msgid "Kushite Statue"
@@ -689,7 +685,7 @@ msgid "Ammon-Ra Ram Statue"
 msgstr "阿蒙-拉公羊雕像"
 
 #: simulation/templates/gaia/ruins/stone_statues_roman.xml:8
-msgid "Roman Statues"
+msgid "Roman Statue"
 msgstr "羅馬雕像"
 
 #: simulation/templates/gaia/ruins/unfinished_greek_temple.xml:8
@@ -921,6 +917,10 @@ msgstr "匈牙利櫟"
 msgid "Large Oak"
 msgstr "大櫟"
 
+#: simulation/templates/gaia/tree/olive.xml:7
+msgid "Olive"
+msgstr "橄欖"
+
 #: simulation/templates/gaia/tree/palm_areca.xml:4
 msgid "Areca Palm"
 msgstr "散尾葵"
@@ -991,7 +991,7 @@ msgstr "香椿"
 msgid "Rainforest Tree"
 msgstr "雨林植物"
 
-#: simulation/templates/mixins/builder.xml:39
+#: simulation/templates/mixins/builder.xml:40
 msgid "Builder"
 msgstr "建築工"
 
@@ -1010,6 +1010,14 @@ msgstr "神壇"
 #: simulation/templates/mixins/trading_post.xml:8
 msgid "Trading Post"
 msgstr "貿易站"
+
+#: simulation/templates/obstructors/placement.xml:10
+msgid "Obstructor"
+msgstr "路障"
+
+#: simulation/templates/obstructors/placement.xml:12
+msgid "Placement obstructor to prevent construction but not movement"
+msgstr "擺放路障來避免建造但不包含移動"
 
 #: simulation/templates/skirmish/structures/default_house_10.xml:5
 msgid ""
@@ -1040,7 +1048,7 @@ msgstr "線式戰陣"
 msgid "Requires at least 4 Soldiers or Siege engines."
 msgstr "需要至少 4 名士兵或攻城武器。"
 
-#: simulation/templates/special/formations/box.xml:11
+#: simulation/templates/special/formations/box.xml:12
 msgid "Box"
 msgstr "方陣"
 
@@ -1080,7 +1088,7 @@ msgstr "僅限重裝步兵，需要至少 10 名。"
 msgid "Phalanx"
 msgstr "希臘方陣"
 
-#: simulation/templates/special/formations/scatter.xml:7
+#: simulation/templates/special/formations/scatter.xml:8
 msgid "Scatter"
 msgstr "分散"
 
@@ -1100,7 +1108,7 @@ msgstr "僅限長槍步兵，需要至少 16 名。"
 msgid "Syntagma"
 msgstr "馬其頓方陣"
 
-#: simulation/templates/special/formations/testudo.xml:69
+#: simulation/templates/special/formations/testudo.xml:70
 msgid "Testudo"
 msgstr "龜甲陣"
 

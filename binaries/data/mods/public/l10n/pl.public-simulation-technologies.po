@@ -12,6 +12,7 @@
 # Krzysztof Grabania
 # Kuba Teichert
 # Leszek Szary
+# Łukasz Ankudo
 # Lukasz B
 # Marcin Malinowski
 # Marcin S
@@ -35,9 +36,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:53+0000\n"
-"Last-Translator: Przemysław Murach <moonshine133@vp.pl>, 2019-2022\n"
+"Last-Translator: Łukasz Ankudo, 2022\n"
 "Language-Team: Polish (http://www.transifex.com/wildfire-games/0ad/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +74,6 @@ msgstr "Spartańskie wychowanie"
 #: simulation/data/technologies/health_regen_units.jsonrequirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.jsonrequirementsTooltip
 #: simulation/data/technologies/immortals.jsonrequirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/long_walls.jsonrequirementsTooltip
 #: simulation/data/technologies/nisean_horses.jsonrequirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.jsonrequirementsTooltip
@@ -146,6 +146,7 @@ msgstr "Trening łuczniczy"
 #: simulation/data/technologies/heal_rate.jsonrequirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.jsonrequirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.jsonrequirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.jsonrequirementsTooltip
 #: simulation/data/technologies/pop_house_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.jsonrequirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.jsonrequirementsTooltip
@@ -231,8 +232,8 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr "Sūnzǐ BīngFǎ"
 
 #: simulation/data/technologies/art_of_war.jsontooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
-msgstr "Wszyscy żołnierze -25% wymaganego doświadczenia do awansu."
+msgid "All Citizen-Soldiers −25% required promotion experience."
+msgstr "Wszyscy żołnierze −25% wymaganego doświadczenia do awansu."
 
 #: simulation/data/technologies/attack_soldiers_will.jsondescription
 msgid ""
@@ -372,9 +373,17 @@ msgstr "Jednocząc Chiny pod jednym cesarzem, dynastia Han rządziła ponad 40 m
 msgid "Federated States"
 msgstr "Stany"
 
+#: simulation/data/technologies/civbonuses/han_population.jsontooltip
+#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
+#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
+msgid "+10% maximum population limit."
+msgstr "+10% limitu populacji."
+
 #: simulation/data/technologies/civbonuses/han_walls.jsondescription
-msgid "Han built massive walls, the great wall."
-msgstr "Han wybudowali masywne mury, takie jak Wielki Mur."
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic "
+"fortifications several meters thick and stretching for kilometers."
+msgstr "Dynastia Han zbudowała potężne mury z ubitej ziemi. Były to gigantyczne fortyfikacje o grubości kilku metrów i ciągnące się kilometrami."
 
 #: simulation/data/technologies/civbonuses/han_walls.jsongenericName
 msgid "Great Wall"
@@ -386,15 +395,15 @@ msgstr "Mury +50% zdrowia."
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsondescription
 msgid "The Macedonian economy relied greatly on their vast natural resources."
-msgstr ""
+msgstr "Gospodarka macedońska w dużej mierze opierała się na ogromnych zasobach naturalnych."
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsongenericName
 msgid "Resource-Rich Economy"
-msgstr ""
+msgstr "Gospodarka bogata w zasoby"
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.jsontooltip
-msgid "Storehouse technologies -100% research time."
-msgstr ""
+msgid "Storehouse technologies −100% research time."
+msgstr "Technologie w magazynie −100% czasu opracowywania."
 
 #: simulation/data/technologies/civbonuses/maur_elephants.jsondescription
 msgid ""
@@ -429,11 +438,6 @@ msgstr "Cesarz cesarzy"
 #: simulation/data/technologies/civbonuses/maur_population.jsonspecificName.maur
 msgid "Chakravarti Samrāt"
 msgstr "Chakravarti Samrāt"
-
-#: simulation/data/technologies/civbonuses/maur_population.jsontooltip
-#: simulation/data/technologies/civbonuses/pers_population.jsontooltip
-msgid "+10% maximum population limit."
-msgstr "+10% limitu populacji."
 
 #: simulation/data/technologies/civbonuses/maur_walls.jsondescription
 msgid ""
@@ -480,8 +484,8 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr "Domy i budowle ekonomiczne -40% drewna i zdrowia."
 
 #: simulation/data/technologies/civil_engineering_01.jsongenericName
-msgid "Civil Engineering - Level 1"
-msgstr "Inżynieria lądowa - poziom 1"
+msgid "Civil Engineering − Level 1"
+msgstr "Inżynieria lądowa − poziom 1"
 
 #: simulation/data/technologies/civil_engineering_01.jsonspecificName.han
 #: simulation/data/technologies/civil_engineering_02.jsonspecificName.han
@@ -489,20 +493,20 @@ msgid "Gōngchéng"
 msgstr "Gōngchéng"
 
 #: simulation/data/technologies/civil_engineering_01.jsontooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
-msgstr "Struktury -15% czasu budowy, +10% zdrowia i -5% kosztu."
+msgid "All structures −15% build time, +10% health and −5% cost."
+msgstr "Struktury −15% czasu budowy, +10% zdrowia i −5% kosztu."
 
 #: simulation/data/technologies/civil_engineering_02.jsongenericName
-msgid "Civil Engineering - Level 2"
-msgstr "Inżynieria lądowa - poziom 2"
+msgid "Civil Engineering − Level 2"
+msgstr "Inżynieria lądowa − poziom 2"
 
 #: simulation/data/technologies/civil_engineering_02.jsontooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
-msgstr "Struktury -25% czasu budowy, +20% zdrowia i -5% kosztu."
+msgid "All structures −25% build time, +20% health and −5% cost."
+msgstr "Struktury −25% czasu budowy, +20% zdrowia i −5% kosztu."
 
 #: simulation/data/technologies/civil_service_01.jsongenericName
-msgid "Civil Service - Level 1"
-msgstr "Służba cywilna"
+msgid "Civil Service − Level 1"
+msgstr "Służba cywilna − poziom 1"
 
 #: simulation/data/technologies/civil_service_01.jsonspecificName.han
 #: simulation/data/technologies/civil_service_02.jsonspecificName.han
@@ -512,13 +516,13 @@ msgstr "Guānliáo"
 #: simulation/data/technologies/civil_service_01.jsontooltip
 #: simulation/data/technologies/civil_service_02.jsontooltip
 msgid ""
-"Technologies at all buildings, except the Forge, -15% cost and -15% research"
+"Technologies at all buildings, except the Forge, −15% cost and −15% research"
 " time."
-msgstr "Technologie w każdej z budowli (prócz kuźni) -15% kosztu i czasu opracowywania."
+msgstr "Technologie w każdej z budowli (prócz kuźni) −15% kosztu i −15 czasu opracowywania."
 
 #: simulation/data/technologies/civil_service_02.jsongenericName
-msgid "Civil Service - Level 2"
-msgstr "Służba cywilna - poziom 2"
+msgid "Civil Service − Level 2"
+msgstr "Służba cywilna − poziom 2"
 
 #: simulation/data/technologies/colonization.jsondescription
 msgid ""
@@ -1005,17 +1009,19 @@ msgstr "Piechota -10% czasu szkolenia."
 
 #: simulation/data/technologies/iphicratean_reforms.jsondescription
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan "
-"Mercenary Archers (Toxotes Kretikos)."
-msgstr "Ateńskie triery mogą szkolić Piechotę morską (Epibates Athenaikos) oraz Kreteńskich najemnych łuczników (Toxotes Kretikos)."
+"Athenian gymnasium, docks and triremes can train Marines (Epibates "
+"Athenaikos) and Cretan Mercenary Archers (Toxotes Kretikos)."
+msgstr "Ateński gimnazjon oraz ateńskie triery mogą szkolić piechotę morską (Epibates Athenaikos) oraz Kreteńskich najemnych łuczników (Toxotes Kretikos)."
 
 #: simulation/data/technologies/iphicratean_reforms.jsongenericName
 msgid "Iphicratean Reforms"
 msgstr "Reformy Ifikratesa"
 
 #: simulation/data/technologies/iphicratean_reforms.jsontooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
-msgstr "Ateńskie triery mogą szkolić piechotę morską i kreteńskich najemnych łuczników."
+msgid ""
+"Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary"
+" Archers."
+msgstr "Ateński gimnazjon oraz ateńskie triery mogą szkolić piechotę morską i kreteńskich najemnych łuczników."
 
 #: simulation/data/technologies/long_walls.jsondescription
 msgid ""
@@ -1123,7 +1129,7 @@ msgid ""
 "Advance to City Phase, which unlocks more entities and technologies. Civic "
 "Centers +50% territory influence radius. Structures +9 capture points "
 "regeneration rate per garrisoned unit. Workers +10% metal gather rate."
-msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra miasta +50% zasięgu wpływu terytorialnego. Budowle +9 regeneracji punktów przejęcia na każdą jednostkę w garnizonie. Robotnicy +10% do zbierania metalu."
+msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra osady +50% zasięgu wpływu terytorialnego. Budowle +9 regeneracji punktów przejęcia na każdą jednostkę w garnizonie. Robotnicy +10% do zbierania metalu."
 
 #: simulation/data/technologies/phase_city_generic.jsondescription
 msgid ""
@@ -1140,7 +1146,7 @@ msgid ""
 "Advance to City Phase, which unlocks more entities and technologies. Civic "
 "Centers +50% territory influence radius. Structures +9 capture points "
 "regeneration rate per garrisoned unit."
-msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra miasta +50% zasięgu wpływu terytorialnego. Budowle +9 regeneracji punktów przejęcia na każdą jednostkę w garnizonie."
+msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra osady +50% zasięgu wpływu terytorialnego. Budowle +9 regeneracji punktów przejęcia na każdą jednostkę w garnizonie."
 
 #: simulation/data/technologies/phase_town.jsondescription
 msgid ""
@@ -1179,7 +1185,7 @@ msgid ""
 "Advance to Town Phase, which unlocks more entities and technologies. Civic "
 "Centers +30% territory influence radius. Structures +7 capture points "
 "regeneration rate per garrisoned unit. Workers +10% metal gather rate."
-msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra miasta +30% zasięgu wpływu terytorialnego. Budowle +7 regeneracji punktów przejęcia na każdą jednostkę w garnizonie. Robotnicy +10% do zbierania metalu."
+msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra osady +30% zasięgu wpływu terytorialnego. Budowle +7 regeneracji punktów przejęcia na każdą jednostkę w garnizonie. Robotnicy +10% do zbierania metalu."
 
 #: simulation/data/technologies/phase_town_generic.jsondescription
 msgid ""
@@ -1195,7 +1201,7 @@ msgid ""
 "Advance to Town Phase, which unlocks more entities and technologies. Civic "
 "Centers +30% territory influence radius. Structures +7 capture points "
 "regeneration rate per garrisoned unit."
-msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra miasta +30% zasięgu wpływu terytorialnego. Budowle +7 regeneracji punktów przejęcia na każdą jednostkę w garnizonie."
+msgstr "Przejdź do fazy miasta, która zapewnia więcej jednostek i technologii. Centra osady +30% zasięgu wpływu terytorialnego. Budowle +7 regeneracji punktów przejęcia na każdą jednostkę w garnizonie."
 
 #: simulation/data/technologies/phase_village.jsongenericName
 msgid "Village Phase"
@@ -1293,7 +1299,7 @@ msgstr "Drewnaine belki wzmacniające kadłub statku."
 
 #: simulation/data/technologies/ship_health.jsongenericName
 msgid "Reinforced hull"
-msgstr "Wzmocniony kadłub."
+msgstr "Wzmocniony kadłub"
 
 #: simulation/data/technologies/ship_health.jsontooltip
 msgid "Ships +25% health."
@@ -1588,7 +1594,7 @@ msgstr "Wzmocnij tarcze mocniejszym stopem metalu."
 
 #: simulation/data/technologies/soldier_resistance_pierce_03.jsongenericName
 msgid "Improved Shield Alloys"
-msgstr "Tarcza ulepszona stopem metalu."
+msgstr "Tarcza ulepszona stopem metalu"
 
 #: simulation/data/technologies/soldier_resistance_pierce_03.jsontooltip
 msgid "Soldiers +2 pierce resistance."
@@ -1875,7 +1881,7 @@ msgstr "Kartografia"
 msgid ""
 "See what your allies see, browse their summary and check their resources and"
 " population count in the top panel."
-msgstr "Widzisz to, co twoi sojusznicy, przeglądasz ich podsumowanie i sprawdzasz ich surowce i liczbę ludności w górnym panelu."
+msgstr "Widzisz to, co twoi sojusznicy, przeglądasz ich podsumowanie, sprawdzasz ich surowce oraz liczbę ludności w górnym panelu."
 
 #: simulation/data/technologies/unlock_spies.jsondescription
 msgid ""

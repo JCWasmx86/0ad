@@ -23,9 +23,6 @@
 #include "graphics/PreprocessorWrapper.h"
 #include "graphics/ShaderManager.h"
 #include "graphics/TextureManager.h"
-#include "lib/timer.h"
-#include "maths/Matrix3D.h"
-#include "maths/Vector3D.h"
 #include "ps/CLogger.h"
 #include "ps/Filesystem.h"
 #include "ps/Profile.h"
@@ -41,8 +38,8 @@
 #endif
 
 #include <algorithm>
-
-TIMER_ADD_CLIENT(tc_ShaderProgramValidation);
+#include <map>
+#include <unordered_map>
 
 namespace Renderer
 {
@@ -56,7 +53,28 @@ namespace GL
 namespace
 {
 
-GLint GLSizeFromFormat(const Renderer::Backend::Format format)
+struct Binding
+{
+	Binding(int a, int b) : first(a), second(b) { }
+
+	Binding() : first(-1), second(-1) { }
+
+	/**
+		* Returns whether this uniform attribute is active in the shader.
+		* If not then there's no point calling Uniform() to set its value.
+		*/
+	bool Active() const { return first != -1 || second != -1; }
+
+	int first;
+	int second;
+};
+
+int GetStreamMask(const VertexAttributeStream stream)
+{
+	return 1 << static_cast<int>(stream);
+}
+
+GLint GLSizeFromFormat(const Format format)
 {
 	GLint size = 1;
 	if (format == Renderer::Backend::Format::R32_SFLOAT ||
@@ -80,7 +98,7 @@ GLint GLSizeFromFormat(const Renderer::Backend::Format format)
 	return size;
 }
 
-GLenum GLTypeFromFormat(const Renderer::Backend::Format format)
+GLenum GLTypeFromFormat(const Format format)
 {
 	GLenum type = GL_FLOAT;
 	if (format == Renderer::Backend::Format::R32_SFLOAT ||
@@ -103,56 +121,214 @@ GLenum GLTypeFromFormat(const Renderer::Backend::Format format)
 	return type;
 }
 
-GLenum ParseAttribSemantics(const CStr& str)
+GLboolean NormalizedFromFormat(const Format format)
 {
-	// Map known semantics onto the attribute locations documented by NVIDIA
-	if (str == "gl_Vertex") return 0;
-	if (str == "gl_Normal") return 2;
-	if (str == "gl_Color") return 3;
-	if (str == "gl_SecondaryColor") return 4;
-	if (str == "gl_FogCoord") return 5;
-	if (str == "gl_MultiTexCoord0") return 8;
-	if (str == "gl_MultiTexCoord1") return 9;
-	if (str == "gl_MultiTexCoord2") return 10;
-	if (str == "gl_MultiTexCoord3") return 11;
-	if (str == "gl_MultiTexCoord4") return 12;
-	if (str == "gl_MultiTexCoord5") return 13;
-	if (str == "gl_MultiTexCoord6") return 14;
-	if (str == "gl_MultiTexCoord7") return 15;
+	switch (format)
+	{
+	case Format::R8G8_UNORM: FALLTHROUGH;
+	case Format::R8G8B8_UNORM: FALLTHROUGH;
+	case Format::R8G8B8A8_UNORM: FALLTHROUGH;
+	case Format::R16_UNORM: FALLTHROUGH;
+	case Format::R16G16_UNORM:
+		return GL_TRUE;
+	default:
+		break;
+	}
+	return GL_FALSE;
+}
+
+int GetAttributeLocationFromStream(
+	CDevice* device, const VertexAttributeStream stream)
+{
+	// Old mapping makes sense only if we have an old/low-end hardware. Else we
+	// need to use sequential numbering to fix #3054. We use presence of
+	// compute shaders as a check that the hardware has universal CUs.
+	if (device->GetCapabilities().computeShaders)
+	{
+		return static_cast<int>(stream);
+	}
+	else
+	{
+		// Map known semantics onto the attribute locations documented by NVIDIA:
+		//  https://download.nvidia.com/developer/Papers/2005/OpenGL_2.0/NVIDIA_OpenGL_2.0_Support.pdf
+		//  https://developer.download.nvidia.com/opengl/glsl/glsl_release_notes.pdf
+		switch (stream)
+		{
+		case VertexAttributeStream::POSITION: return 0;
+		case VertexAttributeStream::NORMAL: return 2;
+		case VertexAttributeStream::COLOR: return 3;
+		case VertexAttributeStream::UV0: return 8;
+		case VertexAttributeStream::UV1: return 9;
+		case VertexAttributeStream::UV2: return 10;
+		case VertexAttributeStream::UV3: return 11;
+		case VertexAttributeStream::UV4: return 12;
+		case VertexAttributeStream::UV5: return 13;
+		case VertexAttributeStream::UV6: return 14;
+		case VertexAttributeStream::UV7: return 15;
+		}
+	}
 
 	debug_warn("Invalid attribute semantics");
 	return 0;
 }
 
+bool PreprocessShaderFile(
+	bool arb, const CShaderDefines& defines, const VfsPath& path,
+	CStr& source, std::vector<VfsPath>& fileDependencies)
+{
+	CVFSFile file;
+	if (file.Load(g_VFS, path) != PSRETURN_OK)
+	{
+		LOGERROR("Failed to load shader file: '%s'", path.string8());
+		return false;
+	}
+
+	CPreprocessorWrapper preprocessor(
+		[arb, &fileDependencies](const CStr& includePath, CStr& out) -> bool
+		{
+			const VfsPath includeFilePath(
+				(arb ? L"shaders/arb/" : L"shaders/glsl/") + wstring_from_utf8(includePath));
+			// Add dependencies anyway to reload the shader when the file is
+			// appeared.
+			fileDependencies.push_back(includeFilePath);
+			CVFSFile includeFile;
+			if (includeFile.Load(g_VFS, includeFilePath) != PSRETURN_OK)
+			{
+				LOGERROR("Failed to load shader include file: '%s'", includeFilePath.string8());
+				return false;
+			}
+			out = includeFile.GetAsString();
+			return true;
+		});
+	preprocessor.AddDefines(defines);
+
+#if CONFIG2_GLES
+	if (!arb)
+	{
+		// GLES defines the macro "GL_ES" in its GLSL preprocessor,
+		// but since we run our own preprocessor first, we need to explicitly
+		// define it here
+		preprocessor.AddDefine("GL_ES", "1");
+	}
+#endif
+
+	source = preprocessor.Preprocess(file.GetAsString());
+
+	return true;
+}
+
+#if !CONFIG2_GLES
+std::tuple<GLenum, GLenum, GLint> GetElementTypeAndCountFromString(const CStr& str)
+{
+#define CASE(MATCH_STRING, TYPE, ELEMENT_TYPE, ELEMENT_COUNT) \
+	if (str == MATCH_STRING) return {GL_ ## TYPE, GL_ ## ELEMENT_TYPE, ELEMENT_COUNT}
+
+	CASE("float", FLOAT, FLOAT, 1);
+	CASE("vec2", FLOAT_VEC2, FLOAT, 2);
+	CASE("vec3", FLOAT_VEC3, FLOAT, 3);
+	CASE("vec4", FLOAT_VEC4, FLOAT, 4);
+	CASE("mat2", FLOAT_MAT2, FLOAT, 4);
+	CASE("mat3", FLOAT_MAT3, FLOAT, 9);
+	CASE("mat4", FLOAT_MAT4, FLOAT, 16);
+#if !CONFIG2_GLES // GL ES 2.0 doesn't support non-square matrices.
+	CASE("mat2x3", FLOAT_MAT2x3, FLOAT, 6);
+	CASE("mat2x4", FLOAT_MAT2x4, FLOAT, 8);
+	CASE("mat3x2", FLOAT_MAT3x2, FLOAT, 6);
+	CASE("mat3x4", FLOAT_MAT3x4, FLOAT, 12);
+	CASE("mat4x2", FLOAT_MAT4x2, FLOAT, 8);
+	CASE("mat4x3", FLOAT_MAT4x3, FLOAT, 12);
+#endif
+
+	// A somewhat incomplete listing, missing "shadow" and "rect" versions
+	// which are interpreted as 2D (NB: our shadowmaps may change
+	// type based on user config).
+#if CONFIG2_GLES
+	if (str == "sampler1D") debug_warn(L"sampler1D not implemented on GLES");
+#else
+	CASE("sampler1D", SAMPLER_1D, TEXTURE_1D, 1);
+#endif
+	CASE("sampler2D", SAMPLER_2D, TEXTURE_2D, 1);
+#if CONFIG2_GLES
+	if (str == "sampler2DShadow") debug_warn(L"sampler2DShadow not implemented on GLES");
+	if (str == "sampler3D") debug_warn(L"sampler3D not implemented on GLES");
+#else
+	CASE("sampler2DShadow", SAMPLER_2D_SHADOW, TEXTURE_2D, 1);
+	CASE("sampler3D", SAMPLER_3D, TEXTURE_3D, 1);
+#endif
+	CASE("samplerCube", SAMPLER_CUBE, TEXTURE_CUBE_MAP, 1);
+
+#undef CASE
+	return {0, 0, 0};
+}
+#endif // !CONFIG2_GLES
+
 } // anonymous namespace
 
 #if !CONFIG2_GLES
 
-class CShaderProgramARB : public CShaderProgram
+class CShaderProgramARB final : public CShaderProgram
 {
 public:
 	CShaderProgramARB(
 		CDevice* device,
-		const VfsPath& vertexFile, const VfsPath& fragmentFile,
+		const VfsPath& path, const VfsPath& vertexFilePath, const VfsPath& fragmentFilePath,
 		const CShaderDefines& defines,
-		const std::map<CStrIntern, int>& vertexIndexes, const std::map<CStrIntern, frag_index_pair_t>& fragmentIndexes,
-		int streamflags) :
-		CShaderProgram(streamflags),
-		m_Device(device),
-		m_VertexFile(vertexFile), m_FragmentFile(fragmentFile),
-		m_Defines(defines),
-		m_VertexIndexes(vertexIndexes), m_FragmentIndexes(fragmentIndexes)
+		const std::map<CStrIntern, std::pair<CStr, int>>& vertexIndices,
+		const std::map<CStrIntern, std::pair<CStr, int>>& fragmentIndices,
+		int streamflags)
+		: CShaderProgram(streamflags), m_Device(device)
 	{
 		glGenProgramsARB(1, &m_VertexProgram);
 		glGenProgramsARB(1, &m_FragmentProgram);
 
-		Load();
+		std::vector<VfsPath> newFileDependencies = {path, vertexFilePath, fragmentFilePath};
+
+		CStr vertexCode;
+		if (!PreprocessShaderFile(true, defines, vertexFilePath, vertexCode, newFileDependencies))
+			return;
+		CStr fragmentCode;
+		if (!PreprocessShaderFile(true, defines, fragmentFilePath, fragmentCode, newFileDependencies))
+			return;
+
+		m_FileDependencies = std::move(newFileDependencies);
+
+		// TODO: replace by scoped bind.
+		m_Device->GetActiveCommandContext()->SetGraphicsPipelineState(
+			MakeDefaultGraphicsPipelineStateDesc());
+
+		if (!Compile(GL_VERTEX_PROGRAM_ARB, "vertex", m_VertexProgram, vertexFilePath, vertexCode))
+			return;
+
+		if (!Compile(GL_FRAGMENT_PROGRAM_ARB, "fragment", m_FragmentProgram, fragmentFilePath, fragmentCode))
+			return;
+
+		for (const auto& index : vertexIndices)
+		{
+			BindingSlot& bindingSlot = GetOrCreateBindingSlot(index.first);
+			bindingSlot.vertexProgramLocation = index.second.second;
+			const auto [type, elementType, elementCount] = GetElementTypeAndCountFromString(index.second.first);
+			bindingSlot.type = type;
+			bindingSlot.elementType = elementType;
+			bindingSlot.elementCount = elementCount;
+		}
+
+		for (const auto& index : fragmentIndices)
+		{
+			BindingSlot& bindingSlot = GetOrCreateBindingSlot(index.first);
+			bindingSlot.fragmentProgramLocation = index.second.second;
+			const auto [type, elementType, elementCount] = GetElementTypeAndCountFromString(index.second.first);
+			if (bindingSlot.type && type != bindingSlot.type)
+			{
+				LOGERROR("CShaderProgramARB: vertex and fragment program uniforms with the same name should have the same type.");
+			}
+			bindingSlot.type = type;
+			bindingSlot.elementType = elementType;
+			bindingSlot.elementCount = elementCount;
+		}
 	}
 
 	~CShaderProgramARB() override
 	{
-		Unload();
-
 		glDeleteProgramsARB(1, &m_VertexProgram);
 		glDeleteProgramsARB(1, &m_FragmentProgram);
 	}
@@ -184,37 +360,6 @@ public:
 		return true;
 	}
 
-	void Load()
-	{
-		CVFSFile vertexFile;
-		if (vertexFile.Load(g_VFS, m_VertexFile) != PSRETURN_OK)
-			return;
-
-		CVFSFile fragmentFile;
-		if (fragmentFile.Load(g_VFS, m_FragmentFile) != PSRETURN_OK)
-			return;
-
-		CPreprocessorWrapper preprocessor;
-		preprocessor.AddDefines(m_Defines);
-
-		CStr vertexCode = preprocessor.Preprocess(vertexFile.GetAsString());
-		CStr fragmentCode = preprocessor.Preprocess(fragmentFile.GetAsString());
-
-		// TODO: replace by scoped bind.
-		m_Device->GetActiveCommandContext()->SetGraphicsPipelineState(
-			MakeDefaultGraphicsPipelineStateDesc());
-
-		if (!Compile(GL_VERTEX_PROGRAM_ARB, "vertex", m_VertexProgram, m_VertexFile, vertexCode))
-			return;
-
-		if (!Compile(GL_FRAGMENT_PROGRAM_ARB, "fragment", m_FragmentProgram, m_FragmentFile, fragmentCode))
-			return;
-	}
-
-	void Unload()
-	{
-	}
-
 	void Bind(CShaderProgram* previousShaderProgram) override
 	{
 		if (previousShaderProgram)
@@ -232,170 +377,305 @@ public:
 		glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, 0);
 
 		UnbindClientStates();
-
-		// TODO: should unbind textures, probably
 	}
 
-	int GetUniformVertexIndex(CStrIntern id)
+	IDevice* GetDevice() override { return m_Device; }
+
+	int32_t GetBindingSlot(const CStrIntern name) const override
 	{
-		std::map<CStrIntern, int>::iterator it = m_VertexIndexes.find(id);
-		if (it == m_VertexIndexes.end())
-			return -1;
-		return it->second;
+		auto it = m_BindingSlotsMapping.find(name);
+		return it == m_BindingSlotsMapping.end() ? -1 : it->second;
 	}
 
-	frag_index_pair_t GetUniformFragmentIndex(CStrIntern id)
+	TextureUnit GetTextureUnit(const int32_t bindingSlot) override
 	{
-		std::map<CStrIntern, frag_index_pair_t>::iterator it = m_FragmentIndexes.find(id);
-		if (it == m_FragmentIndexes.end())
-			return std::make_pair(-1, 0);
-		return it->second;
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return { 0, 0, 0 };
+		TextureUnit textureUnit;
+		textureUnit.type = m_BindingSlots[bindingSlot].type;
+		textureUnit.target = m_BindingSlots[bindingSlot].elementType;
+		textureUnit.unit = m_BindingSlots[bindingSlot].fragmentProgramLocation;
+		return textureUnit;
 	}
 
-	Binding GetTextureBinding(texture_id_t id) override
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float value) override
 	{
-		frag_index_pair_t fPair = GetUniformFragmentIndex(id);
-		int index = fPair.first;
-		if (index == -1)
-			return Binding();
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT)
+		{
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform type (expected float)");
+			return;
+		}
+		SetUniform(m_BindingSlots[bindingSlot], value, 0.0f, 0.0f, 0.0f);
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC2)
+		{
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform type (expected vec2)");
+			return;
+		}
+		SetUniform(m_BindingSlots[bindingSlot], valueX, valueY, 0.0f, 0.0f);
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY, const float valueZ) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC3)
+		{
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform type (expected vec3)");
+			return;
+		}
+		SetUniform(m_BindingSlots[bindingSlot], valueX, valueY, valueZ, 0.0f);
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY,
+		const float valueZ, const float valueW) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC4)
+		{
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform type (expected vec4)");
+			return;
+		}
+		SetUniform(m_BindingSlots[bindingSlot], valueX, valueY, valueZ, valueW);
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot, PS::span<const float> values) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].elementType != GL_FLOAT)
+		{
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform element type (expected float)");
+			return;
+		}
+		if (m_BindingSlots[bindingSlot].elementCount > static_cast<GLint>(values.size()))
+		{
+			LOGERROR(
+				"CShaderProgramARB::SetUniform(): Invalid uniform element count (expected: %zu passed: %zu)",
+				m_BindingSlots[bindingSlot].elementCount, values.size());
+			return;
+		}
+		const GLenum type = m_BindingSlots[bindingSlot].type;
+
+		if (type == GL_FLOAT)
+			SetUniform(m_BindingSlots[bindingSlot], values[0], 0.0f, 0.0f, 0.0f);
+		else if (type == GL_FLOAT_VEC2)
+			SetUniform(m_BindingSlots[bindingSlot], values[0], values[1], 0.0f, 0.0f);
+		else if (type == GL_FLOAT_VEC3)
+			SetUniform(m_BindingSlots[bindingSlot], values[0], values[1], values[2], 0.0f);
+		else if (type == GL_FLOAT_VEC4)
+			SetUniform(m_BindingSlots[bindingSlot], values[0], values[1], values[2], values[3]);
+		else if (type == GL_FLOAT_MAT4)
+			SetUniformMatrix(m_BindingSlots[bindingSlot], values);
 		else
-			return Binding((int)fPair.second, index);
-	}
-
-	void BindTexture(texture_id_t id, GLuint tex) override
-	{
-		frag_index_pair_t fPair = GetUniformFragmentIndex(id);
-		int index = fPair.first;
-		if (index != -1)
-		{
-			m_Device->GetActiveCommandContext()->BindTexture(index, fPair.second, tex);
-		}
-	}
-
-	void BindTexture(Binding id, GLuint tex) override
-	{
-		int index = id.second;
-		if (index != -1)
-		{
-			m_Device->GetActiveCommandContext()->BindTexture(index, id.first, tex);
-		}
-	}
-
-	Binding GetUniformBinding(uniform_id_t id) override
-	{
-		return Binding(GetUniformVertexIndex(id), GetUniformFragmentIndex(id).first);
-	}
-
-	void Uniform(Binding id, float v0, float v1, float v2, float v3) override
-	{
-		if (id.first != -1)
-			glProgramLocalParameter4fARB(GL_VERTEX_PROGRAM_ARB, (GLuint)id.first, v0, v1, v2, v3);
-
-		if (id.second != -1)
-			glProgramLocalParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, (GLuint)id.second, v0, v1, v2, v3);
-	}
-
-	void Uniform(Binding id, const CMatrix3D& v) override
-	{
-		if (id.first != -1)
-		{
-			glProgramLocalParameter4fARB(GL_VERTEX_PROGRAM_ARB, (GLuint)id.first+0, v._11, v._12, v._13, v._14);
-			glProgramLocalParameter4fARB(GL_VERTEX_PROGRAM_ARB, (GLuint)id.first+1, v._21, v._22, v._23, v._24);
-			glProgramLocalParameter4fARB(GL_VERTEX_PROGRAM_ARB, (GLuint)id.first+2, v._31, v._32, v._33, v._34);
-			glProgramLocalParameter4fARB(GL_VERTEX_PROGRAM_ARB, (GLuint)id.first+3, v._41, v._42, v._43, v._44);
-		}
-
-		if (id.second != -1)
-		{
-			glProgramLocalParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, (GLuint)id.second+0, v._11, v._12, v._13, v._14);
-			glProgramLocalParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, (GLuint)id.second+1, v._21, v._22, v._23, v._24);
-			glProgramLocalParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, (GLuint)id.second+2, v._31, v._32, v._33, v._34);
-			glProgramLocalParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, (GLuint)id.second+3, v._41, v._42, v._43, v._44);
-		}
-	}
-
-	void Uniform(Binding id, size_t count, const CMatrix3D* v) override
-	{
-		ENSURE(count == 1);
-		Uniform(id, v[0]);
-	}
-
-	void Uniform(Binding id, size_t count, const float* v) override
-	{
-		ENSURE(count == 4);
-		Uniform(id, v[0], v[1], v[2], v[3]);
+			LOGERROR("CShaderProgramARB::SetUniform(): Invalid uniform type (expected float, vec2, vec3, vec4, mat4)");
+		ogl_WarnIfError();
 	}
 
 	std::vector<VfsPath> GetFileDependencies() const override
 	{
-		return {m_VertexFile, m_FragmentFile};
+		return m_FileDependencies;
 	}
 
 private:
+	struct BindingSlot
+	{
+		CStrIntern name;
+		int vertexProgramLocation;
+		int fragmentProgramLocation;
+		GLenum type;
+		GLenum elementType;
+		GLint elementCount;
+	};
+
+	BindingSlot& GetOrCreateBindingSlot(const CStrIntern name)
+	{
+		auto it = m_BindingSlotsMapping.find(name);
+		if (it == m_BindingSlotsMapping.end())
+		{
+			m_BindingSlotsMapping[name] = m_BindingSlots.size();
+			BindingSlot bindingSlot{};
+			bindingSlot.name = name;
+			bindingSlot.vertexProgramLocation = -1;
+			bindingSlot.fragmentProgramLocation = -1;
+			bindingSlot.elementType = 0;
+			bindingSlot.elementCount = 0;
+			m_BindingSlots.emplace_back(std::move(bindingSlot));
+			return m_BindingSlots.back();
+		}
+		else
+			return m_BindingSlots[it->second];
+	}
+
+	void SetUniform(
+		const BindingSlot& bindingSlot,
+		const float v0, const float v1, const float v2, const float v3)
+	{
+		SetUniform(GL_VERTEX_PROGRAM_ARB, bindingSlot.vertexProgramLocation, v0, v1, v2, v3);
+		SetUniform(GL_FRAGMENT_PROGRAM_ARB, bindingSlot.fragmentProgramLocation, v0, v1, v2, v3);
+	}
+
+	void SetUniform(
+		const GLenum target, const int location,
+		const float v0, const float v1, const float v2, const float v3)
+	{
+		if (location >= 0)
+		{
+			glProgramLocalParameter4fARB(
+				target, static_cast<GLuint>(location), v0, v1, v2, v3);
+		}
+	}
+
+	void SetUniformMatrix(
+		const BindingSlot& bindingSlot, PS::span<const float> values)
+	{
+		const size_t mat4ElementCount = 16;
+		ENSURE(values.size() == mat4ElementCount);
+		SetUniformMatrix(GL_VERTEX_PROGRAM_ARB, bindingSlot.vertexProgramLocation, values);
+		SetUniformMatrix(GL_FRAGMENT_PROGRAM_ARB, bindingSlot.fragmentProgramLocation, values);
+	}
+
+	void SetUniformMatrix(
+		const GLenum target, const int location, PS::span<const float> values)
+	{
+		if (location >= 0)
+		{
+			glProgramLocalParameter4fARB(
+				target, static_cast<GLuint>(location + 0), values[0], values[4], values[8], values[12]);
+			glProgramLocalParameter4fARB(
+				target, static_cast<GLuint>(location + 1), values[1], values[5], values[9], values[13]);
+			glProgramLocalParameter4fARB(
+				target, static_cast<GLuint>(location + 2), values[2], values[6], values[10], values[14]);
+			glProgramLocalParameter4fARB(
+				target, static_cast<GLuint>(location + 3), values[3], values[7], values[11], values[15]);
+		}
+	}
+
 	CDevice* m_Device = nullptr;
 
-	VfsPath m_VertexFile;
-	VfsPath m_FragmentFile;
-	CShaderDefines m_Defines;
+	std::vector<VfsPath> m_FileDependencies;
 
 	GLuint m_VertexProgram;
 	GLuint m_FragmentProgram;
 
-	std::map<CStrIntern, int> m_VertexIndexes;
-
-	// pair contains <index, gltype>
-	std::map<CStrIntern, frag_index_pair_t> m_FragmentIndexes;
+	std::vector<BindingSlot> m_BindingSlots;
+	std::unordered_map<CStrIntern, int32_t> m_BindingSlotsMapping;
 };
 
-#endif // #if !CONFIG2_GLES
+#endif // !CONFIG2_GLES
 
-//////////////////////////////////////////////////////////////////////////
-
-TIMER_ADD_CLIENT(tc_ShaderGLSLCompile);
-TIMER_ADD_CLIENT(tc_ShaderGLSLLink);
-
-class CShaderProgramGLSL : public CShaderProgram
+class CShaderProgramGLSL final : public CShaderProgram
 {
 public:
 	CShaderProgramGLSL(
-		CDevice* device,
-		const VfsPath& vertexFile, const VfsPath& fragmentFile,
+		CDevice* device, const CStr& name,
+		const VfsPath& path, const VfsPath& vertexFilePath, const VfsPath& fragmentFilePath,
 		const CShaderDefines& defines,
 		const std::map<CStrIntern, int>& vertexAttribs,
 		int streamflags) :
 	CShaderProgram(streamflags),
-		m_Device(device),
-		m_VertexFile(vertexFile), m_FragmentFile(fragmentFile),
-		m_Defines(defines), m_VertexAttribs(vertexAttribs)
+		m_Device(device), m_Name(name),
+		m_VertexAttribs(vertexAttribs)
 	{
 		for (std::map<CStrIntern, int>::iterator it = m_VertexAttribs.begin(); it != m_VertexAttribs.end(); ++it)
 			m_ActiveVertexAttributes.emplace_back(it->second);
 		std::sort(m_ActiveVertexAttributes.begin(), m_ActiveVertexAttributes.end());
+
 		m_Program = 0;
 		m_VertexShader = glCreateShader(GL_VERTEX_SHADER);
 		m_FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		m_FileDependencies = {m_VertexFile, m_FragmentFile};
+		m_FileDependencies = {path, vertexFilePath, fragmentFilePath};
 
-		Load();
+#if !CONFIG2_GLES
+		if (m_Device->GetCapabilities().debugLabels)
+		{
+			glObjectLabel(GL_SHADER, m_VertexShader, -1, vertexFilePath.string8().c_str());
+			glObjectLabel(GL_SHADER, m_FragmentShader, -1, fragmentFilePath.string8().c_str());
+		}
+#endif
+
+		std::vector<VfsPath> newFileDependencies = {path, vertexFilePath, fragmentFilePath};
+
+		CStr vertexCode;
+		if (!PreprocessShaderFile(false, defines, vertexFilePath, vertexCode, newFileDependencies))
+			return;
+		CStr fragmentCode;
+		if (!PreprocessShaderFile(false, defines, fragmentFilePath, fragmentCode, newFileDependencies))
+			return;
+
+		m_FileDependencies = std::move(newFileDependencies);
+
+		if (vertexCode.empty())
+		{
+			LOGERROR("Failed to preprocess vertex shader: '%s'", vertexFilePath.string8());
+			return;
+		}
+		if (fragmentCode.empty())
+		{
+			LOGERROR("Failed to preprocess fragment shader: '%s'", fragmentFilePath.string8());
+			return;
+		}
+
+#if CONFIG2_GLES
+		// Ugly hack to replace desktop GLSL 1.10/1.20 with GLSL ES 1.00,
+		// and also to set default float precision for fragment shaders
+		vertexCode.Replace("#version 110\n", "#version 100\n");
+		vertexCode.Replace("#version 110\r\n", "#version 100\n");
+		vertexCode.Replace("#version 120\n", "#version 100\n");
+		vertexCode.Replace("#version 120\r\n", "#version 100\n");
+		fragmentCode.Replace("#version 110\n", "#version 100\nprecision mediump float;\n");
+		fragmentCode.Replace("#version 110\r\n", "#version 100\nprecision mediump float;\n");
+		fragmentCode.Replace("#version 120\n", "#version 100\nprecision mediump float;\n");
+		fragmentCode.Replace("#version 120\r\n", "#version 100\nprecision mediump float;\n");
+#endif
+
+		// TODO: replace by scoped bind.
+		m_Device->GetActiveCommandContext()->SetGraphicsPipelineState(
+			MakeDefaultGraphicsPipelineStateDesc());
+
+		if (!Compile(m_VertexShader, vertexFilePath, vertexCode))
+			return;
+
+		if (!Compile(m_FragmentShader, fragmentFilePath, fragmentCode))
+			return;
+
+		if (!Link(vertexFilePath, fragmentFilePath))
+			return;
 	}
 
 	~CShaderProgramGLSL() override
 	{
-		Unload();
+		if (m_Program)
+			glDeleteProgram(m_Program);
 
 		glDeleteShader(m_VertexShader);
 		glDeleteShader(m_FragmentShader);
 	}
 
-	bool Compile(GLhandleARB shader, const VfsPath& file, const CStr& code)
+	bool Compile(GLuint shader, const VfsPath& file, const CStr& code)
 	{
-		TIMER_ACCRUE(tc_ShaderGLSLCompile);
-
-		ogl_WarnIfError();
-
 		const char* code_string = code.c_str();
 		GLint code_length = code.length();
 		glShaderSource(shader, 1, &code_string, &code_length);
+
+		ogl_WarnIfError();
 
 		glCompileShader(shader);
 
@@ -425,15 +705,20 @@ public:
 
 		ogl_WarnIfError();
 
-		return (ok ? true : false);
+		return ok;
 	}
 
-	bool Link()
+	bool Link(const VfsPath& vertexFilePath, const VfsPath& fragmentFilePath)
 	{
-		TIMER_ACCRUE(tc_ShaderGLSLLink);
-
 		ENSURE(!m_Program);
 		m_Program = glCreateProgram();
+
+#if !CONFIG2_GLES
+		if (m_Device->GetCapabilities().debugLabels)
+		{
+			glObjectLabel(GL_PROGRAM, m_Program, -1, m_Name.c_str());
+		}
+#endif
 
 		glAttachShader(m_Program, m_VertexShader);
 		ogl_WarnIfError();
@@ -463,9 +748,9 @@ public:
 			glGetProgramInfoLog(m_Program, length, NULL, infolog);
 
 			if (ok)
-				LOGMESSAGE("Info when linking program '%s'+'%s':\n%s", m_VertexFile.string8(), m_FragmentFile.string8(), infolog);
+				LOGMESSAGE("Info when linking program '%s'+'%s':\n%s", vertexFilePath.string8(), fragmentFilePath.string8(), infolog);
 			else
-				LOGERROR("Failed to link program '%s'+'%s':\n%s", m_VertexFile.string8(), m_FragmentFile.string8(), infolog);
+				LOGERROR("Failed to link program '%s'+'%s':\n%s", vertexFilePath.string8(), fragmentFilePath.string8(), infolog);
 
 			delete[] infolog;
 		}
@@ -475,18 +760,30 @@ public:
 		if (!ok)
 			return false;
 
-		m_Uniforms.clear();
-		m_Samplers.clear();
-
 		Bind(nullptr);
 
 		ogl_WarnIfError();
+
+		// Reorder sampler units to decrease redundant texture unit changes when
+		// samplers bound in a different order.
+		const std::unordered_map<CStrIntern, int> requiredUnits =
+		{
+			{CStrIntern("baseTex"), 0},
+			{CStrIntern("normTex"), 1},
+			{CStrIntern("specTex"), 2},
+			{CStrIntern("aoTex"), 3},
+			{CStrIntern("shadowTex"), 4},
+			{CStrIntern("losTex"), 5},
+		};
+
+		std::vector<uint8_t> occupiedUnits;
 
 		GLint numUniforms = 0;
 		glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &numUniforms);
 		ogl_WarnIfError();
 		for (GLint i = 0; i < numUniforms; ++i)
 		{
+			// TODO: use GL_ACTIVE_UNIFORM_MAX_LENGTH for the size.
 			char name[256] = {0};
 			GLsizei nameLength = 0;
 			GLint size = 0;
@@ -494,12 +791,57 @@ public:
 			glGetActiveUniform(m_Program, i, ARRAY_SIZE(name), &nameLength, &size, &type, name);
 			ogl_WarnIfError();
 
-			GLint loc = glGetUniformLocation(m_Program, name);
+			const GLint location = glGetUniformLocation(m_Program, name);
 
-			CStrIntern nameIntern(name);
-			m_Uniforms[nameIntern] = std::make_pair(loc, type);
+			// OpenGL specification is a bit vague about a name returned by glGetActiveUniform.
+			// NVIDIA drivers return uniform name with "[0]", Intel Windows drivers without;
+			while (nameLength > 3 &&
+				name[nameLength - 3] == '[' &&
+				name[nameLength - 2] == '0' &&
+				name[nameLength - 1] == ']')
+			{
+				nameLength -= 3;
+			}
+			name[nameLength] = 0;
 
-			// Assign sampler uniforms to sequential texture units
+			const CStrIntern nameIntern(name);
+
+			m_BindingSlotsMapping[nameIntern] = m_BindingSlots.size();
+			BindingSlot bindingSlot{};
+			bindingSlot.name = nameIntern;
+			bindingSlot.location = location;
+			bindingSlot.size = size;
+			bindingSlot.type = type;
+			bindingSlot.isTexture = false;
+
+#define CASE(TYPE, ELEMENT_TYPE, ELEMENT_COUNT) \
+			case GL_ ## TYPE: \
+				bindingSlot.elementType = GL_ ## ELEMENT_TYPE; \
+				bindingSlot.elementCount = ELEMENT_COUNT; \
+				break;
+
+			switch (type)
+			{
+			CASE(FLOAT, FLOAT, 1);
+			CASE(FLOAT_VEC2, FLOAT, 2);
+			CASE(FLOAT_VEC3, FLOAT, 3);
+			CASE(FLOAT_VEC4, FLOAT, 4);
+			CASE(INT, INT, 1);
+			CASE(FLOAT_MAT2, FLOAT, 4);
+			CASE(FLOAT_MAT3, FLOAT, 9);
+			CASE(FLOAT_MAT4, FLOAT, 16);
+#if !CONFIG2_GLES // GL ES 2.0 doesn't support non-square matrices.
+			CASE(FLOAT_MAT2x3, FLOAT, 6);
+			CASE(FLOAT_MAT2x4, FLOAT, 8);
+			CASE(FLOAT_MAT3x2, FLOAT, 6);
+			CASE(FLOAT_MAT3x4, FLOAT, 12);
+			CASE(FLOAT_MAT4x2, FLOAT, 8);
+			CASE(FLOAT_MAT4x3, FLOAT, 12);
+#endif
+			}
+#undef CASE
+
+			// Assign sampler uniforms to sequential texture units.
 			if (type == GL_SAMPLER_2D
 			 || type == GL_SAMPLER_CUBE
 #if !CONFIG2_GLES
@@ -507,99 +849,52 @@ public:
 #endif
 			)
 			{
-				int unit = (int)m_Samplers.size();
-				m_Samplers[nameIntern].first = (type == GL_SAMPLER_CUBE ? GL_TEXTURE_CUBE_MAP : GL_TEXTURE_2D);
-				m_Samplers[nameIntern].second = unit;
-				glUniform1i(loc, unit); // link uniform to unit
-				ogl_WarnIfError();
+				const auto it = requiredUnits.find(nameIntern);
+				const int unit = it == requiredUnits.end() ? -1 : it->second;
+				bindingSlot.elementType = (type == GL_SAMPLER_CUBE ? GL_TEXTURE_CUBE_MAP : GL_TEXTURE_2D);
+				bindingSlot.elementCount = unit;
+				bindingSlot.isTexture = true;
+				if (unit != -1)
+				{
+					if (unit >= static_cast<int>(occupiedUnits.size()))
+						occupiedUnits.resize(unit + 1);
+					occupiedUnits[unit] = true;
+				}
 			}
+
+			if (bindingSlot.elementType == 0)
+			{
+				LOGERROR("CShaderProgramGLSL::Link: unsupported uniform type: 0x%04x", static_cast<int>(type));
+			}
+
+			m_BindingSlots.emplace_back(std::move(bindingSlot));
+		}
+
+		for (BindingSlot& bindingSlot : m_BindingSlots)
+		{
+			if (!bindingSlot.isTexture)
+				continue;
+			if (bindingSlot.elementCount == -1)
+			{
+				// We need to find a minimal available unit.
+				int unit = 0;
+				while (unit < static_cast<int>(occupiedUnits.size()) && occupiedUnits[unit])
+					++unit;
+				if (unit >= static_cast<int>(occupiedUnits.size()))
+					occupiedUnits.resize(unit + 1);
+				occupiedUnits[unit] = true;
+				bindingSlot.elementCount = unit;
+			}
+			// Link uniform to unit.
+			glUniform1i(bindingSlot.location, bindingSlot.elementCount);
+			ogl_WarnIfError();
 		}
 
 		// TODO: verify that we're not using more samplers than is supported
 
 		Unbind();
 
-		ogl_WarnIfError();
-
 		return true;
-	}
-
-	void Load()
-	{
-		CVFSFile vertexFile;
-		if (vertexFile.Load(g_VFS, m_VertexFile) != PSRETURN_OK)
-			return;
-
-		CVFSFile fragmentFile;
-		if (fragmentFile.Load(g_VFS, m_FragmentFile) != PSRETURN_OK)
-			return;
-
-		std::vector<VfsPath> newFileDependencies = {m_VertexFile, m_FragmentFile};
-
-		CPreprocessorWrapper preprocessor([&newFileDependencies](const CStr& includePath, CStr& out) -> bool {
-			const VfsPath includeFilePath(L"shaders/glsl/" + wstring_from_utf8(includePath));
-			// Add dependencies anyway to reload the shader when the file is
-			// appeared.
-			newFileDependencies.push_back(includeFilePath);
-			CVFSFile includeFile;
-			if (includeFile.Load(g_VFS, includeFilePath) != PSRETURN_OK)
-				return false;
-			out = includeFile.GetAsString();
-			return true;
-		});
-		preprocessor.AddDefines(m_Defines);
-
-#if CONFIG2_GLES
-		// GLES defines the macro "GL_ES" in its GLSL preprocessor,
-		// but since we run our own preprocessor first, we need to explicitly
-		// define it here
-		preprocessor.AddDefine("GL_ES", "1");
-#endif
-
-		CStr vertexCode = preprocessor.Preprocess(vertexFile.GetAsString());
-		CStr fragmentCode = preprocessor.Preprocess(fragmentFile.GetAsString());
-
-		m_FileDependencies = std::move(newFileDependencies);
-
-		if (vertexCode.empty())
-			LOGERROR("Failed to preprocess vertex shader: '%s'", m_VertexFile.string8());
-		if (fragmentCode.empty())
-			LOGERROR("Failed to preprocess fragment shader: '%s'", m_FragmentFile.string8());
-
-#if CONFIG2_GLES
-		// Ugly hack to replace desktop GLSL 1.10/1.20 with GLSL ES 1.00,
-		// and also to set default float precision for fragment shaders
-		vertexCode.Replace("#version 110\n", "#version 100\n");
-		vertexCode.Replace("#version 110\r\n", "#version 100\n");
-		vertexCode.Replace("#version 120\n", "#version 100\n");
-		vertexCode.Replace("#version 120\r\n", "#version 100\n");
-		fragmentCode.Replace("#version 110\n", "#version 100\nprecision mediump float;\n");
-		fragmentCode.Replace("#version 110\r\n", "#version 100\nprecision mediump float;\n");
-		fragmentCode.Replace("#version 120\n", "#version 100\nprecision mediump float;\n");
-		fragmentCode.Replace("#version 120\r\n", "#version 100\nprecision mediump float;\n");
-#endif
-
-		// TODO: replace by scoped bind.
-		m_Device->GetActiveCommandContext()->SetGraphicsPipelineState(
-			MakeDefaultGraphicsPipelineStateDesc());
-
-		if (!Compile(m_VertexShader, m_VertexFile, vertexCode))
-			return;
-
-		if (!Compile(m_FragmentShader, m_FragmentFile, fragmentCode))
-			return;
-
-		if (!Link())
-			return;
-	}
-
-	void Unload()
-	{
-		if (m_Program)
-			glDeleteProgram(m_Program);
-		m_Program = 0;
-
-		// The shader objects can be reused and don't need to be deleted here
 	}
 
 	void Bind(CShaderProgram* previousShaderProgram) override
@@ -655,6 +950,8 @@ public:
 			for (const int index : m_ActiveVertexAttributes)
 				glEnableVertexAttribArray(index);
 		}
+
+		m_ValidStreams = 0;
 	}
 
 	void Unbind() override
@@ -663,139 +960,147 @@ public:
 
 		for (const int index : m_ActiveVertexAttributes)
 			glDisableVertexAttribArray(index);
-
-		// TODO: should unbind textures, probably
 	}
 
-	Binding GetTextureBinding(texture_id_t id) override
+	IDevice* GetDevice() override { return m_Device; }
+
+	int32_t GetBindingSlot(const CStrIntern name) const override
 	{
-		std::map<CStrIntern, std::pair<GLenum, int>>::iterator it = m_Samplers.find(CStrIntern(id));
-		if (it == m_Samplers.end())
-			return Binding();
-		else
-			return Binding((int)it->second.first, it->second.second);
+		auto it = m_BindingSlotsMapping.find(name);
+		return it == m_BindingSlotsMapping.end() ? -1 : it->second;
 	}
 
-	void BindTexture(texture_id_t id, GLuint tex) override
+	TextureUnit GetTextureUnit(const int32_t bindingSlot) override
 	{
-		std::map<CStrIntern, std::pair<GLenum, int>>::iterator it = m_Samplers.find(CStrIntern(id));
-		if (it == m_Samplers.end())
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return { 0, 0, 0 };
+		TextureUnit textureUnit;
+		textureUnit.type = m_BindingSlots[bindingSlot].type;
+		textureUnit.target = m_BindingSlots[bindingSlot].elementType;
+		textureUnit.unit = m_BindingSlots[bindingSlot].elementCount;
+		return textureUnit;
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float value) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
 			return;
-
-		m_Device->GetActiveCommandContext()->BindTexture(it->second.second, it->second.first, tex);
-	}
-
-	void BindTexture(Binding id, GLuint tex) override
-	{
-		if (id.second == -1)
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT ||
+			m_BindingSlots[bindingSlot].size != 1)
+		{
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform type (expected float) '%s'", m_BindingSlots[bindingSlot].name.c_str());
 			return;
-
-		m_Device->GetActiveCommandContext()->BindTexture(id.second, id.first, tex);
+		}
+		glUniform1f(m_BindingSlots[bindingSlot].location, value);
+		ogl_WarnIfError();
 	}
 
-	Binding GetUniformBinding(uniform_id_t id) override
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY) override
 	{
-		std::map<CStrIntern, std::pair<int, GLenum>>::iterator it = m_Uniforms.find(id);
-		if (it == m_Uniforms.end())
-			return Binding();
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC2 ||
+			m_BindingSlots[bindingSlot].size != 1)
+		{
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform type (expected vec2) '%s'", m_BindingSlots[bindingSlot].name.c_str());
+			return;
+		}
+		glUniform2f(m_BindingSlots[bindingSlot].location, valueX, valueY);
+		ogl_WarnIfError();
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY, const float valueZ) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC3 ||
+			m_BindingSlots[bindingSlot].size != 1)
+		{
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform type (expected vec3) '%s'", m_BindingSlots[bindingSlot].name.c_str());
+			return;
+		}
+		glUniform3f(m_BindingSlots[bindingSlot].location, valueX, valueY, valueZ);
+		ogl_WarnIfError();
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot,
+		const float valueX, const float valueY,
+		const float valueZ, const float valueW) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].type != GL_FLOAT_VEC4 ||
+			m_BindingSlots[bindingSlot].size != 1)
+		{
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform type (expected vec4) '%s'", m_BindingSlots[bindingSlot].name.c_str());
+			return;
+		}
+		glUniform4f(m_BindingSlots[bindingSlot].location, valueX, valueY, valueZ, valueW);
+		ogl_WarnIfError();
+	}
+
+	void SetUniform(
+		const int32_t bindingSlot, PS::span<const float> values) override
+	{
+		if (bindingSlot < 0 || bindingSlot >= static_cast<int32_t>(m_BindingSlots.size()))
+			return;
+		if (m_BindingSlots[bindingSlot].elementType != GL_FLOAT)
+		{
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform element type (expected float) '%s'", m_BindingSlots[bindingSlot].name.c_str());
+			return;
+		}
+		if (m_BindingSlots[bindingSlot].size == 1 && m_BindingSlots[bindingSlot].elementCount > static_cast<GLint>(values.size()))
+		{
+			LOGERROR(
+				"CShaderProgramGLSL::SetUniform(): Invalid uniform element count (expected: %zu passed: %zu) '%s'",
+				m_BindingSlots[bindingSlot].elementCount, values.size(), m_BindingSlots[bindingSlot].name.c_str());
+			return;
+		}
+		const GLint location = m_BindingSlots[bindingSlot].location;
+		const GLenum type = m_BindingSlots[bindingSlot].type;
+
+		if (type == GL_FLOAT)
+			glUniform1fv(location, 1, values.data());
+		else if (type == GL_FLOAT_VEC2)
+			glUniform2fv(location, 1, values.data());
+		else if (type == GL_FLOAT_VEC3)
+			glUniform3fv(location, 1, values.data());
+		else if (type == GL_FLOAT_VEC4)
+			glUniform4fv(location, 1, values.data());
+		else if (type == GL_FLOAT_MAT4)
+		{
+			// For case of array of matrices we might pass less number of matrices.
+			const GLint size = std::min(
+				m_BindingSlots[bindingSlot].size, static_cast<GLint>(values.size() / 16));
+			glUniformMatrix4fv(location, size, GL_FALSE, values.data());
+		}
 		else
-			return Binding(it->second.first, (int)it->second.second);
+			LOGERROR("CShaderProgramGLSL::SetUniform(): Invalid uniform type (expected float, vec2, vec3, vec4, mat4) '%s'", m_BindingSlots[bindingSlot].name.c_str());
+		ogl_WarnIfError();
 	}
 
-	void Uniform(Binding id, float v0, float v1, float v2, float v3) override
+	void VertexAttribPointer(
+		const VertexAttributeStream stream, const Format format,
+		const uint32_t offset, const uint32_t stride, const void* data) override
 	{
-		if (id.first != -1)
-		{
-			if (id.second == GL_FLOAT)
-				glUniform1f(id.first, v0);
-			else if (id.second == GL_FLOAT_VEC2)
-				glUniform2f(id.first, v0, v1);
-			else if (id.second == GL_FLOAT_VEC3)
-				glUniform3f(id.first, v0, v1, v2);
-			else if (id.second == GL_FLOAT_VEC4)
-				glUniform4f(id.first, v0, v1, v2, v3);
-			else
-				LOGERROR("CShaderProgramGLSL::Uniform(): Invalid uniform type (expected float, vec2, vec3, vec4)");
-		}
-	}
-
-	void Uniform(Binding id, const CMatrix3D& v) override
-	{
-		if (id.first != -1)
-		{
-			if (id.second == GL_FLOAT_MAT4)
-				glUniformMatrix4fv(id.first, 1, GL_FALSE, &v._11);
-			else
-				LOGERROR("CShaderProgramGLSL::Uniform(): Invalid uniform type (expected mat4)");
-		}
-	}
-
-	void Uniform(Binding id, size_t count, const CMatrix3D* v) override
-	{
-		if (id.first != -1)
-		{
-			if (id.second == GL_FLOAT_MAT4)
-				glUniformMatrix4fv(id.first, count, GL_FALSE, &v->_11);
-			else
-				LOGERROR("CShaderProgramGLSL::Uniform(): Invalid uniform type (expected mat4)");
-		}
-	}
-
-	void Uniform(Binding id, size_t count, const float* v) override
-	{
-		if (id.first != -1)
-		{
-			if (id.second == GL_FLOAT)
-				glUniform1fv(id.first, count, v);
-			else
-				LOGERROR("CShaderProgramGLSL::Uniform(): Invalid uniform type (expected float)");
-		}
-	}
-
-	// Map the various fixed-function Pointer functions onto generic vertex attributes
-	// (matching the attribute indexes from ShaderManager's ParseAttribSemantics):
-
-	void VertexPointer(const Renderer::Backend::Format format, GLsizei stride, const void* pointer) override
-	{
+		const int attributeLocation = GetAttributeLocationFromStream(m_Device, stream);
+		std::vector<int>::const_iterator it =
+			std::lower_bound(m_ActiveVertexAttributes.begin(), m_ActiveVertexAttributes.end(), attributeLocation);
+		if (it == m_ActiveVertexAttributes.end() || *it != attributeLocation)
+			return;
 		const GLint size = GLSizeFromFormat(format);
 		const GLenum type = GLTypeFromFormat(format);
-		glVertexAttribPointer(0, size, type, GL_FALSE, stride, pointer);
-		m_ValidStreams |= STREAM_POS;
-	}
-
-	void NormalPointer(const Renderer::Backend::Format format, GLsizei stride, const void* pointer) override
-	{
-		const GLint size = GLSizeFromFormat(format);
-		const GLenum type = GLTypeFromFormat(format);
-		glVertexAttribPointer(2, size, type, (type == GL_FLOAT ? GL_FALSE : GL_TRUE), stride, pointer);
-		m_ValidStreams |= STREAM_NORMAL;
-	}
-
-	void ColorPointer(const Renderer::Backend::Format format, GLsizei stride, const void* pointer) override
-	{
-		const GLint size = GLSizeFromFormat(format);
-		const GLenum type = GLTypeFromFormat(format);
-		glVertexAttribPointer(3, size, type, (type == GL_FLOAT ? GL_FALSE : GL_TRUE), stride, pointer);
-		m_ValidStreams |= STREAM_COLOR;
-	}
-
-	void TexCoordPointer(GLenum texture, const Renderer::Backend::Format format, GLsizei stride, const void* pointer) override
-	{
-		const GLint size = GLSizeFromFormat(format);
-		const GLenum type = GLTypeFromFormat(format);
-		glVertexAttribPointer(8 + texture - GL_TEXTURE0, size, type, GL_FALSE, stride, pointer);
-		m_ValidStreams |= STREAM_UV0 << (texture - GL_TEXTURE0);
-	}
-
-	void VertexAttribPointer(attrib_id_t id, const Renderer::Backend::Format format, GLboolean normalized, GLsizei stride, const void* pointer) override
-	{
-		std::map<CStrIntern, int>::iterator it = m_VertexAttribs.find(id);
-		if (it != m_VertexAttribs.end())
-		{
-			const GLint size = GLSizeFromFormat(format);
-			const GLenum type = GLTypeFromFormat(format);
-			glVertexAttribPointer(it->second, size, type, normalized, stride, pointer);
-		}
+		const GLboolean normalized = NormalizedFromFormat(format);
+		glVertexAttribPointer(
+			attributeLocation, size, type, normalized, stride, static_cast<const u8*>(data) + offset);
+		m_ValidStreams |= GetStreamMask(stream);
 	}
 
 	std::vector<VfsPath> GetFileDependencies() const override
@@ -806,23 +1111,29 @@ public:
 private:
 	CDevice* m_Device = nullptr;
 
-	VfsPath m_VertexFile;
-	VfsPath m_FragmentFile;
+	CStr m_Name;
 	std::vector<VfsPath> m_FileDependencies;
-	CShaderDefines m_Defines;
+
 	std::map<CStrIntern, int> m_VertexAttribs;
 	// Sorted list of active vertex attributes.
 	std::vector<int> m_ActiveVertexAttributes;
 
-	GLhandleARB m_Program;
-	GLhandleARB m_VertexShader;
-	GLhandleARB m_FragmentShader;
+	GLuint m_Program;
+	GLuint m_VertexShader, m_FragmentShader;
 
-	std::map<CStrIntern, std::pair<int, GLenum>> m_Uniforms;
-	std::map<CStrIntern, std::pair<GLenum, int>> m_Samplers; // texture target & unit chosen for each uniform sampler
+	struct BindingSlot
+	{
+		CStrIntern name;
+		GLint location;
+		GLint size;
+		GLenum type;
+		GLenum elementType;
+		GLint elementCount;
+		bool isTexture;
+	};
+	std::vector<BindingSlot> m_BindingSlots;
+	std::unordered_map<CStrIntern, int32_t> m_BindingSlotsMapping;
 };
-
-//////////////////////////////////////////////////////////////////////////
 
 CShaderProgram::CShaderProgram(int streamflags)
 	: m_StreamFlags(streamflags), m_ValidStreams(0)
@@ -846,8 +1157,6 @@ std::unique_ptr<CShaderProgram> CShaderProgram::Create(CDevice* device, const CS
 
 #if USE_SHADER_XML_VALIDATION
 	{
-		TIMER_ACCRUE(tc_ShaderProgramValidation);
-
 		// Serialize the XMB data and pass it to the validator
 		XMLWriter_File shaderFile;
 		shaderFile.SetPrettyPrint(false);
@@ -861,17 +1170,16 @@ std::unique_ptr<CShaderProgram> CShaderProgram::Create(CDevice* device, const CS
 	// Define all the elements and attributes used in the XML file
 #define EL(x) int el_##x = XeroFile.GetElementID(#x)
 #define AT(x) int at_##x = XeroFile.GetAttributeID(#x)
-	EL(attrib);
 	EL(define);
 	EL(fragment);
 	EL(stream);
 	EL(uniform);
 	EL(vertex);
+	AT(attribute);
 	AT(file);
 	AT(if);
 	AT(loc);
 	AT(name);
-	AT(semantics);
 	AT(type);
 	AT(value);
 #undef AT
@@ -882,230 +1190,122 @@ std::unique_ptr<CShaderProgram> CShaderProgram::Create(CDevice* device, const CS
 
 	XMBElement root = XeroFile.GetRoot();
 
+	const bool isGLSL = root.GetAttributes().GetNamedItem(at_type) == "glsl";
+
 	VfsPath vertexFile;
 	VfsPath fragmentFile;
 	CShaderDefines defines = baseDefines;
-	std::map<CStrIntern, int> vertexUniforms;
-	std::map<CStrIntern, CShaderProgram::frag_index_pair_t> fragmentUniforms;
+	std::map<CStrIntern, std::pair<CStr, int>> vertexUniforms;
+	std::map<CStrIntern, std::pair<CStr, int>> fragmentUniforms;
 	std::map<CStrIntern, int> vertexAttribs;
 	int streamFlags = 0;
 
-	XERO_ITER_EL(root, Child)
+	XERO_ITER_EL(root, child)
 	{
-		if (Child.GetNodeName() == el_define)
+		if (child.GetNodeName() == el_define)
 		{
-			defines.Add(CStrIntern(Child.GetAttributes().GetNamedItem(at_name)), CStrIntern(Child.GetAttributes().GetNamedItem(at_value)));
+			defines.Add(CStrIntern(child.GetAttributes().GetNamedItem(at_name)), CStrIntern(child.GetAttributes().GetNamedItem(at_value)));
 		}
-		else if (Child.GetNodeName() == el_vertex)
+		else if (child.GetNodeName() == el_vertex)
 		{
-			vertexFile = L"shaders/" + Child.GetAttributes().GetNamedItem(at_file).FromUTF8();
+			vertexFile = L"shaders/" + child.GetAttributes().GetNamedItem(at_file).FromUTF8();
 
-			XERO_ITER_EL(Child, Param)
+			XERO_ITER_EL(child, param)
 			{
-				XMBAttributeList Attrs = Param.GetAttributes();
+				XMBAttributeList attributes = param.GetAttributes();
 
-				CStr cond = Attrs.GetNamedItem(at_if);
+				CStr cond = attributes.GetNamedItem(at_if);
 				if (!cond.empty() && !preprocessor.TestConditional(cond))
 					continue;
 
-				if (Param.GetNodeName() == el_uniform)
+				if (param.GetNodeName() == el_uniform)
 				{
-					vertexUniforms[CStrIntern(Attrs.GetNamedItem(at_name))] = Attrs.GetNamedItem(at_loc).ToInt();
+					vertexUniforms[CStrIntern(attributes.GetNamedItem(at_name))] =
+						std::make_pair(attributes.GetNamedItem(at_type), attributes.GetNamedItem(at_loc).ToInt());
 				}
-				else if (Param.GetNodeName() == el_stream)
+				else if (param.GetNodeName() == el_stream)
 				{
-					CStr StreamName = Attrs.GetNamedItem(at_name);
-					if (StreamName == "pos")
-						streamFlags |= STREAM_POS;
-					else if (StreamName == "normal")
-						streamFlags |= STREAM_NORMAL;
-					else if (StreamName == "color")
-						streamFlags |= STREAM_COLOR;
-					else if (StreamName == "uv0")
-						streamFlags |= STREAM_UV0;
-					else if (StreamName == "uv1")
-						streamFlags |= STREAM_UV1;
-					else if (StreamName == "uv2")
-						streamFlags |= STREAM_UV2;
-					else if (StreamName == "uv3")
-						streamFlags |= STREAM_UV3;
-				}
-				else if (Param.GetNodeName() == el_attrib)
-				{
-					int attribLoc = ParseAttribSemantics(Attrs.GetNamedItem(at_semantics));
-					vertexAttribs[CStrIntern(Attrs.GetNamedItem(at_name))] = attribLoc;
+					const CStr streamName = attributes.GetNamedItem(at_name);
+					const CStr attributeName = attributes.GetNamedItem(at_attribute);
+					if (attributeName.empty() && isGLSL)
+						LOGERROR("Empty attribute name in vertex shader description '%s'", vertexFile.string8().c_str());
+
+					VertexAttributeStream stream =
+						VertexAttributeStream::UV7;
+					if (streamName == "pos")
+						stream = VertexAttributeStream::POSITION;
+					else if (streamName == "normal")
+						stream = VertexAttributeStream::NORMAL;
+					else if (streamName == "color")
+						stream = VertexAttributeStream::COLOR;
+					else if (streamName == "uv0")
+						stream = VertexAttributeStream::UV0;
+					else if (streamName == "uv1")
+						stream = VertexAttributeStream::UV1;
+					else if (streamName == "uv2")
+						stream = VertexAttributeStream::UV2;
+					else if (streamName == "uv3")
+						stream = VertexAttributeStream::UV3;
+					else if (streamName == "uv4")
+						stream = VertexAttributeStream::UV4;
+					else if (streamName == "uv5")
+						stream = VertexAttributeStream::UV5;
+					else if (streamName == "uv6")
+						stream = VertexAttributeStream::UV6;
+					else if (streamName == "uv7")
+						stream = VertexAttributeStream::UV7;
+					else
+						LOGERROR("Unknown stream '%s' in vertex shader description '%s'", streamName.c_str(), vertexFile.string8().c_str());
+
+					if (isGLSL)
+					{
+						const int attributeLocation = GetAttributeLocationFromStream(device, stream);
+						vertexAttribs[CStrIntern(attributeName)] = attributeLocation;
+					}
+					streamFlags |= GetStreamMask(stream);
 				}
 			}
 		}
-		else if (Child.GetNodeName() == el_fragment)
+		else if (child.GetNodeName() == el_fragment)
 		{
-			fragmentFile = L"shaders/" + Child.GetAttributes().GetNamedItem(at_file).FromUTF8();
+			fragmentFile = L"shaders/" + child.GetAttributes().GetNamedItem(at_file).FromUTF8();
 
-			XERO_ITER_EL(Child, Param)
+			XERO_ITER_EL(child, param)
 			{
-				XMBAttributeList Attrs = Param.GetAttributes();
+				XMBAttributeList attributes = param.GetAttributes();
 
-				CStr cond = Attrs.GetNamedItem(at_if);
+				CStr cond = attributes.GetNamedItem(at_if);
 				if (!cond.empty() && !preprocessor.TestConditional(cond))
 					continue;
 
-				if (Param.GetNodeName() == el_uniform)
+				if (param.GetNodeName() == el_uniform)
 				{
-					// A somewhat incomplete listing, missing "shadow" and "rect" versions
-					// which are interpreted as 2D (NB: our shadowmaps may change
-					// type based on user config).
-					GLenum type = GL_TEXTURE_2D;
-					CStr t = Attrs.GetNamedItem(at_type);
-					if (t == "sampler1D")
-#if CONFIG2_GLES
-						debug_warn(L"sampler1D not implemented on GLES");
-#else
-						type = GL_TEXTURE_1D;
-#endif
-					else if (t == "sampler2D")
-						type = GL_TEXTURE_2D;
-					else if (t == "sampler3D")
-#if CONFIG2_GLES
-						debug_warn(L"sampler3D not implemented on GLES");
-#else
-						type = GL_TEXTURE_3D;
-#endif
-					else if (t == "samplerCube")
-						type = GL_TEXTURE_CUBE_MAP;
-
-					fragmentUniforms[CStrIntern(Attrs.GetNamedItem(at_name))] =
-						std::make_pair(Attrs.GetNamedItem(at_loc).ToInt(), type);
+					fragmentUniforms[CStrIntern(attributes.GetNamedItem(at_name))] =
+						std::make_pair(attributes.GetNamedItem(at_type), attributes.GetNamedItem(at_loc).ToInt());
 				}
 			}
 		}
 	}
 
-	if (root.GetAttributes().GetNamedItem(at_type) == "glsl")
-		return CShaderProgram::ConstructGLSL(device, vertexFile, fragmentFile, defines, vertexAttribs, streamFlags);
+	if (isGLSL)
+	{
+		return std::make_unique<CShaderProgramGLSL>(
+			device, name, xmlFilename, vertexFile, fragmentFile, defines,
+			vertexAttribs, streamFlags);
+	}
 	else
-		return CShaderProgram::ConstructARB(device, vertexFile, fragmentFile, defines, vertexUniforms, fragmentUniforms, streamFlags);
-}
-
+	{
 #if CONFIG2_GLES
-// static
-std::unique_ptr<CShaderProgram> CShaderProgram::ConstructARB(CDevice* UNUSED(device), const VfsPath& vertexFile, const VfsPath& fragmentFile,
-	const CShaderDefines& UNUSED(defines),
-	const std::map<CStrIntern, int>& UNUSED(vertexIndexes), const std::map<CStrIntern, frag_index_pair_t>& UNUSED(fragmentIndexes),
-	int UNUSED(streamflags))
-{
-	LOGERROR("CShaderProgram::ConstructARB: '%s'+'%s': ARB shaders not supported on this device",
-		vertexFile.string8(), fragmentFile.string8());
-	return nullptr;
-}
+		LOGERROR("CShaderProgram::Create: '%s'+'%s': ARB shaders not supported on this device",
+			vertexFile.string8(), fragmentFile.string8());
+		return nullptr;
 #else
-// static
-std::unique_ptr<CShaderProgram> CShaderProgram::ConstructARB(
-	CDevice* device, const VfsPath& vertexFile, const VfsPath& fragmentFile,
-	const CShaderDefines& defines,
-	const std::map<CStrIntern, int>& vertexIndexes,
-	const std::map<CStrIntern, frag_index_pair_t>& fragmentIndexes,
-	int streamflags)
-{
-	return std::make_unique<CShaderProgramARB>(
-		device, vertexFile, fragmentFile, defines, vertexIndexes, fragmentIndexes, streamflags);
-}
+		return std::make_unique<CShaderProgramARB>(
+			device, xmlFilename, vertexFile, fragmentFile, defines,
+			vertexUniforms, fragmentUniforms, streamFlags);
 #endif
-
-// static
-std::unique_ptr<CShaderProgram> CShaderProgram::ConstructGLSL(
-	CDevice* device, const VfsPath& vertexFile, const VfsPath& fragmentFile,
-	const CShaderDefines& defines,
-	const std::map<CStrIntern, int>& vertexAttribs, int streamflags)
-{
-	return std::make_unique<CShaderProgramGLSL>(
-		device, vertexFile, fragmentFile, defines, vertexAttribs, streamflags);
+	}
 }
-
-int CShaderProgram::GetStreamFlags() const
-{
-	return m_StreamFlags;
-}
-
-void CShaderProgram::BindTexture(texture_id_t id, const Renderer::Backend::GL::CTexture* tex)
-{
-	BindTexture(id, tex->GetHandle());
-}
-
-void CShaderProgram::BindTexture(Binding id, const Renderer::Backend::GL::CTexture* tex)
-{
-	BindTexture(id, tex->GetHandle());
-}
-
-void CShaderProgram::Uniform(Binding id, int v)
-{
-	Uniform(id, (float)v, (float)v, (float)v, (float)v);
-}
-
-void CShaderProgram::Uniform(Binding id, float v)
-{
-	Uniform(id, v, v, v, v);
-}
-
-void CShaderProgram::Uniform(Binding id, float v0, float v1)
-{
-	Uniform(id, v0, v1, 0.0f, 0.0f);
-}
-
-void CShaderProgram::Uniform(Binding id, const CVector3D& v)
-{
-	Uniform(id, v.X, v.Y, v.Z, 0.0f);
-}
-
-void CShaderProgram::Uniform(Binding id, const CColor& v)
-{
-	Uniform(id, v.r, v.g, v.b, v.a);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, int v)
-{
-	Uniform(GetUniformBinding(id), (float)v, (float)v, (float)v, (float)v);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, float v)
-{
-	Uniform(GetUniformBinding(id), v, v, v, v);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, float v0, float v1)
-{
-	Uniform(GetUniformBinding(id), v0, v1, 0.0f, 0.0f);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, const CVector3D& v)
-{
-	Uniform(GetUniformBinding(id), v.X, v.Y, v.Z, 0.0f);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, const CColor& v)
-{
-	Uniform(GetUniformBinding(id), v.r, v.g, v.b, v.a);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, float v0, float v1, float v2, float v3)
-{
-	Uniform(GetUniformBinding(id), v0, v1, v2, v3);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, const CMatrix3D& v)
-{
-	Uniform(GetUniformBinding(id), v);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, size_t count, const CMatrix3D* v)
-{
-	Uniform(GetUniformBinding(id), count, v);
-}
-
-void CShaderProgram::Uniform(uniform_id_t id, size_t count, const float* v)
-{
-	Uniform(GetUniformBinding(id), count, v);
-}
-
 
 // These should all be overridden by CShaderProgramGLSL, and not used
 // if a non-GLSL shader was loaded instead:
@@ -1150,14 +1350,14 @@ void CShaderProgram::VertexPointer(const Renderer::Backend::Format format, GLsiz
 	ENSURE(2 <= size && size <= 4);
 	const GLenum type = GLTypeFromFormat(format);
 	glVertexPointer(size, type, stride, pointer);
-	m_ValidStreams |= STREAM_POS;
+	m_ValidStreams |= GetStreamMask(VertexAttributeStream::POSITION);
 }
 
 void CShaderProgram::NormalPointer(const Renderer::Backend::Format format, GLsizei stride, const void* pointer)
 {
 	ENSURE(format == Renderer::Backend::Format::R32G32B32_SFLOAT);
 	glNormalPointer(GL_FLOAT, stride, pointer);
-	m_ValidStreams |= STREAM_NORMAL;
+	m_ValidStreams |= GetStreamMask(VertexAttributeStream::NORMAL);
 }
 
 void CShaderProgram::ColorPointer(const Renderer::Backend::Format format, GLsizei stride, const void* pointer)
@@ -1166,7 +1366,7 @@ void CShaderProgram::ColorPointer(const Renderer::Backend::Format format, GLsize
 	ENSURE(3 <= size && size <= 4);
 	const GLenum type = GLTypeFromFormat(format);
 	glColorPointer(size, type, stride, pointer);
-	m_ValidStreams |= STREAM_COLOR;
+	m_ValidStreams |= GetStreamMask(VertexAttributeStream::COLOR);
 }
 
 void CShaderProgram::TexCoordPointer(GLenum texture, const Renderer::Backend::Format format, GLsizei stride, const void* pointer)
@@ -1177,26 +1377,34 @@ void CShaderProgram::TexCoordPointer(GLenum texture, const Renderer::Backend::Fo
 	const GLenum type = GLTypeFromFormat(format);
 	glTexCoordPointer(size, type, stride, pointer);
 	glClientActiveTextureARB(GL_TEXTURE0);
-	m_ValidStreams |= STREAM_UV0 << (texture - GL_TEXTURE0);
+	m_ValidStreams |= GetStreamMask(VertexAttributeStream::UV0) << (texture - GL_TEXTURE0);
 }
 
 void CShaderProgram::BindClientStates()
 {
-	ENSURE(m_StreamFlags == (m_StreamFlags & (STREAM_POS|STREAM_NORMAL|STREAM_COLOR|STREAM_UV0|STREAM_UV1)));
+	ENSURE(m_StreamFlags == (m_StreamFlags & (
+		GetStreamMask(VertexAttributeStream::POSITION) |
+		GetStreamMask(VertexAttributeStream::NORMAL) |
+		GetStreamMask(VertexAttributeStream::COLOR) |
+		GetStreamMask(VertexAttributeStream::UV0) |
+		GetStreamMask(VertexAttributeStream::UV1))));
 
 	// Enable all the desired client states for non-GLSL rendering
 
-	if (m_StreamFlags & STREAM_POS)    glEnableClientState(GL_VERTEX_ARRAY);
-	if (m_StreamFlags & STREAM_NORMAL) glEnableClientState(GL_NORMAL_ARRAY);
-	if (m_StreamFlags & STREAM_COLOR)  glEnableClientState(GL_COLOR_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::POSITION))
+		glEnableClientState(GL_VERTEX_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::NORMAL))
+		glEnableClientState(GL_NORMAL_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::COLOR))
+		glEnableClientState(GL_COLOR_ARRAY);
 
-	if (m_StreamFlags & STREAM_UV0)
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::UV0))
 	{
 		glClientActiveTextureARB(GL_TEXTURE0);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 
-	if (m_StreamFlags & STREAM_UV1)
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::UV1))
 	{
 		glClientActiveTextureARB(GL_TEXTURE1);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -1211,17 +1419,20 @@ void CShaderProgram::BindClientStates()
 
 void CShaderProgram::UnbindClientStates()
 {
-	if (m_StreamFlags & STREAM_POS)    glDisableClientState(GL_VERTEX_ARRAY);
-	if (m_StreamFlags & STREAM_NORMAL) glDisableClientState(GL_NORMAL_ARRAY);
-	if (m_StreamFlags & STREAM_COLOR)  glDisableClientState(GL_COLOR_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::POSITION))
+		glDisableClientState(GL_VERTEX_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::NORMAL))
+		glDisableClientState(GL_NORMAL_ARRAY);
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::COLOR))
+		glDisableClientState(GL_COLOR_ARRAY);
 
-	if (m_StreamFlags & STREAM_UV0)
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::UV0))
 	{
 		glClientActiveTextureARB(GL_TEXTURE0);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 
-	if (m_StreamFlags & STREAM_UV1)
+	if (m_StreamFlags & GetStreamMask(VertexAttributeStream::UV1))
 	{
 		glClientActiveTextureARB(GL_TEXTURE1);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -1230,6 +1441,44 @@ void CShaderProgram::UnbindClientStates()
 }
 
 #endif // !CONFIG2_GLES
+
+bool CShaderProgram::IsStreamActive(const VertexAttributeStream stream) const
+{
+	return (m_StreamFlags & GetStreamMask(stream)) != 0;
+}
+
+void CShaderProgram::VertexAttribPointer(
+	const VertexAttributeStream stream, const Format format,
+	const uint32_t offset, const uint32_t stride, const void* data)
+{
+	switch (stream)
+	{
+	case VertexAttributeStream::POSITION:
+		VertexPointer(format, stride, static_cast<const u8*>(data) + offset);
+		break;
+	case VertexAttributeStream::NORMAL:
+		NormalPointer(format, stride, static_cast<const u8*>(data) + offset);
+		break;
+	case VertexAttributeStream::COLOR:
+		ColorPointer(format, stride, static_cast<const u8*>(data) + offset);
+		break;
+	case VertexAttributeStream::UV0: FALLTHROUGH;
+	case VertexAttributeStream::UV1: FALLTHROUGH;
+	case VertexAttributeStream::UV2: FALLTHROUGH;
+	case VertexAttributeStream::UV3: FALLTHROUGH;
+	case VertexAttributeStream::UV4: FALLTHROUGH;
+	case VertexAttributeStream::UV5: FALLTHROUGH;
+	case VertexAttributeStream::UV6: FALLTHROUGH;
+	case VertexAttributeStream::UV7:
+	{
+		const int indexOffset = static_cast<int>(stream) - static_cast<int>(VertexAttributeStream::UV0);
+		TexCoordPointer(GL_TEXTURE0 + indexOffset, format, stride, static_cast<const u8*>(data) + offset);
+		break;
+	}
+	default:
+		debug_warn("Unsupported stream");
+	};
+}
 
 void CShaderProgram::AssertPointersBound()
 {

@@ -126,6 +126,8 @@ std::unique_ptr<CFramebuffer> CFramebuffer::Create(
 	{
 		glObjectLabel(GL_FRAMEBUFFER, framebuffer->m_Handle, -1, name);
 	}
+#else
+	UNUSED2(name);
 #endif
 
 	const GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
@@ -163,6 +165,11 @@ CFramebuffer::~CFramebuffer()
 {
 	if (m_Handle)
 		glDeleteFramebuffersEXT(1, &m_Handle);
+}
+
+IDevice* CFramebuffer::GetDevice()
+{
+	return m_Device;
 }
 
 } // namespace GL

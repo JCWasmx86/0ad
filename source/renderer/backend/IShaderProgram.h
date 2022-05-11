@@ -18,19 +18,40 @@
 #ifndef INCLUDED_RENDERER_BACKEND_ISHADERPROGRAM
 #define INCLUDED_RENDERER_BACKEND_ISHADERPROGRAM
 
+#include "lib/file/vfs/vfs_path.h"
+#include "ps/CStrIntern.h"
+#include "renderer/backend/IDeviceObject.h"
+
 namespace Renderer
 {
 
 namespace Backend
 {
 
+enum class VertexAttributeStream : uint32_t
+{
+	POSITION,
+	NORMAL,
+	COLOR,
+	UV0,
+	UV1,
+	UV2,
+	UV3,
+	UV4,
+	UV5,
+	UV6,
+	UV7,
+};
+
 /**
  * IShaderProgram is a container for multiple shaders of different types.
  */
-class IShaderProgram
+class IShaderProgram : public IDeviceObject<IShaderProgram>
 {
 public:
-	virtual ~IShaderProgram() {}
+	virtual int32_t GetBindingSlot(const CStrIntern name) const = 0;
+
+	virtual std::vector<VfsPath> GetFileDependencies() const = 0;
 };
 
 } // namespace Backend

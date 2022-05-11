@@ -1,5 +1,5 @@
 # Translation template for 0 A.D. — Empires Ascendant.
-# Copyright (C) 2021 Wildfire Games
+# Copyright (C) 2022 Wildfire Games
 # This file is distributed under the same license as the 0 A.D. — Empires Ascendant
 # project.
 # Translators:
@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2021-12-24 08:35+0000\n"
+"POT-Creation-Date: 2022-04-01 07:08+0000\n"
 "PO-Revision-Date: 2014-06-19 17:49+0000\n"
 "Last-Translator: David Sowa <isithere2@yahoo.com>, 2017-2022\n"
 "Language-Team: Asturian (http://www.transifex.com/wildfire-games/0ad/language/ast/)\n"
@@ -18,6 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/session/Cheats.js:78
+msgid "This cheat requires a numeric parameter."
+msgstr "Esta trampa requier un parámetro numérico."
 
 #: gui/session/GameSpeedControl.xml:(tooltip):11
 msgid "Choose game speed"
@@ -142,8 +146,8 @@ msgstr "Pousou-se la partida"
 msgid "Click to Resume Game"
 msgstr "Pica par continua’ la partida"
 
-#: gui/session/ResearchProgress.js:117 gui/session/selection_details.js:272
-#: gui/session/selection_details.js:290 gui/session/selection_panels.js:582
+#: gui/session/ResearchProgress.js:117 gui/session/selection_details.js:273
+#: gui/session/selection_details.js:291 gui/session/selection_panels.js:582
 msgctxt "countdown format"
 msgid "m:ss"
 msgstr "m:ss"
@@ -152,129 +156,129 @@ msgstr "m:ss"
 #. garrisoned or
 #. when not the first item in the queue.
 #: gui/session/ResearchProgress.js:120 gui/session/selection_panels.js:597
-msgid "(This item is paused.)"
-msgstr "(Pendiente.)"
+msgid "This item is paused."
+msgstr "Esti elemento sta n pousa"
 
-#: gui/session/chat/ChatAddressees.js:88
+#: gui/session/chat/ChatAddressees.js:93
 msgctxt "chat addressee"
 msgid "Everyone"
 msgstr "Todos"
 
-#: gui/session/chat/ChatAddressees.js:94
+#: gui/session/chat/ChatAddressees.js:99
 msgctxt "chat addressee"
 msgid "Allies"
-msgstr "Socios"
+msgstr "Alliahos"
 
-#: gui/session/chat/ChatAddressees.js:95
+#: gui/session/chat/ChatAddressees.js:100
 msgctxt "chat message context"
 msgid "Ally"
-msgstr "Soci@"
+msgstr "Alliad@"
 
-#: gui/session/chat/ChatAddressees.js:105
+#: gui/session/chat/ChatAddressees.js:110
 msgctxt "chat addressee"
 msgid "Enemies"
 msgstr "Inimigos"
 
-#: gui/session/chat/ChatAddressees.js:106
+#: gui/session/chat/ChatAddressees.js:111
 msgctxt "chat message context"
 msgid "Enemy"
 msgstr "Inimigos"
 
-#: gui/session/chat/ChatAddressees.js:116
+#: gui/session/chat/ChatAddressees.js:121
 msgctxt "chat addressee"
 msgid "Observers"
 msgstr "Spectadores"
 
-#: gui/session/chat/ChatAddressees.js:117
+#: gui/session/chat/ChatAddressees.js:122
 msgctxt "chat message context"
 msgid "Observer"
 msgstr "Spectadores"
 
-#: gui/session/chat/ChatAddressees.js:124
+#: gui/session/chat/ChatAddressees.js:129
 msgctxt "chat message context"
 msgid "Private"
 msgstr "Privaho"
 
-#: gui/session/chat/ChatHistory.js:49
+#: gui/session/chat/ChatHistory.js:56
 #, javascript-format
 msgid "%(time)s %(message)s"
 msgstr "%(time)s %(message)s"
 
-#: gui/session/chat/ChatHistory.js:61
+#: gui/session/chat/ChatHistory.js:68
 #, javascript-format
 msgid "\\[%(time)s]"
 msgstr "\\[%(time)s]"
 
-#: gui/session/chat/ChatHistory.js:62
+#: gui/session/chat/ChatHistory.js:69
 msgid "HH:mm"
 msgstr "HH:mm"
 
-#: gui/session/chat/ChatHistory.js:82
+#: gui/session/chat/ChatHistory.js:89
 msgctxt "chat history filter"
 msgid "Chat and notifications"
 msgstr "Recahos & avisos"
 
-#: gui/session/chat/ChatHistory.js:87
+#: gui/session/chat/ChatHistory.js:94
 msgctxt "chat history filter"
 msgid "Chat messages"
 msgstr "Recahos"
 
-#: gui/session/chat/ChatHistory.js:92
+#: gui/session/chat/ChatHistory.js:99
 msgctxt "chat history filter"
 msgid "Players chat"
 msgstr "Recahos de xhogadores"
 
-#: gui/session/chat/ChatHistory.js:99
+#: gui/session/chat/ChatHistory.js:106
 msgctxt "chat history filter"
 msgid "Ally chat"
-msgstr "Recahos sociales"
+msgstr "Recahos d’alliahos"
 
-#: gui/session/chat/ChatHistory.js:106
+#: gui/session/chat/ChatHistory.js:113
 msgctxt "chat history filter"
 msgid "Enemy chat"
 msgstr "Recahos d’inimigos"
 
-#: gui/session/chat/ChatHistory.js:113
+#: gui/session/chat/ChatHistory.js:120
 msgctxt "chat history filter"
 msgid "Observer chat"
 msgstr "Recahos de spectadores"
 
-#: gui/session/chat/ChatHistory.js:120
+#: gui/session/chat/ChatHistory.js:127
 msgctxt "chat history filter"
 msgid "Private chat"
 msgstr "Recahos privahos"
 
-#: gui/session/chat/ChatHistory.js:125
+#: gui/session/chat/ChatHistory.js:132
 msgctxt "chat history filter"
 msgid "Game notifications"
 msgstr "Avisos de l trebeyu"
 
-#: gui/session/chat/ChatHistory.js:130
+#: gui/session/chat/ChatHistory.js:137
 msgctxt "chat history filter"
 msgid "Network notifications"
 msgstr "Avisos de la rede"
 
-#: gui/session/chat/ChatInput.js:31
+#: gui/session/chat/ChatInput.js:36
 msgctxt "chat input"
 msgid "Type the message to send."
 msgstr "Teclexha l recau q’inviar."
 
-#: gui/session/chat/ChatInput.js:37
+#: gui/session/chat/ChatInput.js:42
 #, javascript-format
 msgid "Press %(hotkey)s to open the public chat."
 msgstr "Premi %(hotkey)s p’abri’ la conversa pública."
 
-#: gui/session/chat/ChatInput.js:40
+#: gui/session/chat/ChatInput.js:45
 #, javascript-format
 msgid "Press %(hotkey)s to open the observer chat."
 msgstr "Premi %(hotkey)s p’abri’ la conversa spectadora."
 
-#: gui/session/chat/ChatInput.js:41
+#: gui/session/chat/ChatInput.js:46
 #, javascript-format
 msgid "Press %(hotkey)s to open the ally chat."
-msgstr "Premi %(hotkey)s p’abri’ la conversa social."
+msgstr "Premi %(hotkey)s p’abri’ la conversa cun los alliahos."
 
-#: gui/session/chat/ChatInput.js:43
+#: gui/session/chat/ChatInput.js:48
 #, javascript-format
 msgid "Press %(hotkey)s to open the previously selected private chat."
 msgstr "Premi %(hotkey)s p’abri’ la última conversa privada scoyida."
@@ -346,16 +350,16 @@ msgstr "* %(user)s %(message)s"
 #: gui/session/chat/ChatMessageFormatSimulation.js:16
 #, javascript-format
 msgid "%(icon)sYour livestock has been attacked by %(attacker)s!"
-msgstr "%(icon)s ¡%(attacker)s sta aggrediendo los reses!"
+msgstr "%(icon)s ¡%(attacker)s sta attacando los reses!"
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:17
 #, javascript-format
 msgid "%(icon)sYou have been attacked by %(attacker)s!"
-msgstr "%(icon)s ¡%(attacker)s sta aggrediendo-te!"
+msgstr "%(icon)s ¡%(attacker)s sta attacando-te!"
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:27
 msgid "Click to focus on the attacked unit."
-msgstr "Pica par infocar scontra la unidá aggredida."
+msgstr "Pica par infocar scontra la unidá attacada."
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:46
 #, javascript-format
@@ -365,7 +369,7 @@ msgstr "%(player)s introcou %(amountGiven)s in para de %(amountGained)s."
 #: gui/session/chat/ChatMessageFormatSimulation.js:81
 #, javascript-format
 msgid "You are now allied with %(player)s."
-msgstr "Associæsti-te cun %(player)s."
+msgstr "Alliæsti-te cun %(player)s."
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:82
 #, javascript-format
@@ -380,7 +384,7 @@ msgstr "Volviesti-te neutral pa cun %(player)s."
 #: gui/session/chat/ChatMessageFormatSimulation.js:86
 #, javascript-format
 msgid "%(player)s is now allied with you."
-msgstr "%(player)s associou-se cun tigo."
+msgstr "%(player)s alliou-se cun tigo."
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:87
 #, javascript-format
@@ -395,7 +399,7 @@ msgstr "%(player)s volvîu-se neutral pa cun tigo."
 #: gui/session/chat/ChatMessageFormatSimulation.js:91
 #, javascript-format
 msgid "%(player)s is now allied with %(player2)s."
-msgstr "%(player)s associou-se cun %(player2)s."
+msgstr "%(player)s alliou-se cun %(player2)s."
 
 #: gui/session/chat/ChatMessageFormatSimulation.js:92
 #, javascript-format
@@ -496,7 +500,7 @@ msgstr "Mandar todelæs unidades"
 
 #: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:42
 msgid "Change perspective"
-msgstr "Cambia’ la perspectiva"
+msgstr "Camuda’ la perspectiva"
 
 #: gui/session/developer_overlay/DeveloperOverlayControlCheckboxes.js:60
 msgid "Display selection state"
@@ -607,7 +611,7 @@ msgstr "Cultura"
 
 #: gui/session/diplomacy/DiplomacyDialog.xml:(caption):21
 msgid "Team"
-msgstr "Comuña"
+msgstr "Equipu"
 
 #: gui/session/diplomacy/DiplomacyDialog.xml:(caption):24
 msgid "Theirs"
@@ -639,7 +643,7 @@ msgstr "Concluir"
 #, javascript-format
 msgctxt "ceasefire"
 msgid "Remaining ceasefire time: %(time)s."
-msgstr "Tiempu restante de la inducia: %(time)s."
+msgstr "Tiempu restante de læs induciæs: %(time)s."
 
 #: gui/session/diplomacy/DiplomacyDialog.xml:(caption):85
 #: gui/session/diplomacy/DiplomacyDialogColorsButton.js:30
@@ -649,7 +653,7 @@ msgstr "Alterna’ los colores diplomáticos"
 
 #: gui/session/diplomacy/playercontrols/AttackRequestButton.js:38
 msgid "Request your allies to attack this enemy"
-msgstr "Pedir a los socios q’attaquen esti inimigu"
+msgstr "Pedir a los alliahos q’attaquen esti inimigu"
 
 #: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:75
 msgctxt "team"
@@ -659,7 +663,7 @@ msgstr "Dalu"
 #: gui/session/diplomacy/DiplomacyDialog.xml:(tooltip):28
 #: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:78
 msgid "Ally"
-msgstr "Soci@"
+msgstr "Alliad@"
 
 #: gui/session/diplomacy/DiplomacyDialog.xml:(tooltip):32
 #: gui/session/diplomacy/playercontrols/DiplomacyPlayerText.js:81
@@ -829,11 +833,11 @@ msgstr "¿Quieres salir?"
 #: gui/session/message_box/QuitConfirmationMenu.js:33
 msgid ""
 "Are you sure you want to quit? Leaving will disconnect all other players."
-msgstr "¿Stas ciertu que quieres salir? Si sales todolos outros xhogadores van disconnectase."
+msgstr "¿Stas ciert@ que quieres salir? Si sales todolos outros xhogadores van disconnectase."
 
 #: gui/session/message_box/QuitConfirmationMenu.js:47
 msgid "Are you sure you want to quit?"
-msgstr "¿Stas ciertu que quieres salir?"
+msgstr "¿Stas ciert@ que quieres salir?"
 
 #: gui/session/message_box/QuitConfirmationMenu.js:67
 msgid "Do you want to resign or will you return soon?"
@@ -859,7 +863,7 @@ msgstr "Acabou la repetiçon, ¿que quieres fhazer?"
 
 #: gui/session/message_box/ResignConfirmation.js:6
 msgid "Are you sure you want to resign?"
-msgstr "¿Stas ciertu que quieres rendite?"
+msgstr "¿Stas ciert@ que quieres rendite?"
 
 #: gui/session/messages.js:104
 msgid "You have won!"
@@ -893,7 +897,7 @@ msgstr "Xhogador disconhocidu"
 
 #: gui/session/minimap/MiniMapFlareButton.js:35
 msgid "Send a flare to your allies"
-msgstr "Siñar a los socios"
+msgstr "Siñar a los alliahos"
 
 #: gui/session/minimap/MiniMapIdleWorkerButton.js:43
 msgid ""
@@ -910,127 +914,127 @@ msgstr "%(secondaryName)s — armad@"
 msgid "Packed"
 msgstr "Armad@"
 
-#: gui/session/chat/ChatAddressees.js:74 gui/session/selection_details.js:78
+#: gui/session/chat/ChatAddressees.js:79 gui/session/selection_details.js:78
 #, javascript-format
 msgid "\\[OFFLINE] %(player)s"
 msgstr "\\[SIN CONNEXION] %(player)s"
 
-#: gui/session/selection_details.js:83
+#: gui/session/selection_details.js:84
 #, javascript-format
 msgid "%(rank)s Rank"
 msgstr "Grau %(rank)s"
 
-#: gui/session/selection_details.js:140
+#: gui/session/selection_details.js:141
 #, javascript-format
 msgid "%(hitpoints)s / %(maxHitpoints)s"
 msgstr "%(hitpoints)s / %(maxHitpoints)s"
 
-#: gui/session/selection_details.js:181
+#: gui/session/selection_details.js:182
 #, javascript-format
 msgid "%(capturePoints)s / %(maxCapturePoints)s"
 msgstr "%(capturePoints)s / %(maxCapturePoints)s"
 
-#: gui/session/selection_details.js:201
+#: gui/session/selection_details.js:202
 #, javascript-format
 msgid "%(experience)s %(current)s / %(required)s"
 msgstr "%(experience)s %(current)s / %(required)s"
 
-#: gui/session/selection_details.js:202 gui/session/selection_details.js:208
+#: gui/session/selection_details.js:203 gui/session/selection_details.js:209
 msgid "Experience:"
 msgstr "Experiencia:"
 
-#: gui/session/selection_details.js:207
+#: gui/session/selection_details.js:208
 #, javascript-format
 msgid "%(experience)s %(current)s"
 msgstr "%(experience)s %(current)s"
 
-#: gui/session/selection_details.js:217
+#: gui/session/selection_details.js:218
 msgid "∞"
 msgstr "∞"
 
-#: gui/session/selection_details.js:218 gui/session/selection_details.js:248
-#: gui/session/selection_details.js:278
+#: gui/session/selection_details.js:219 gui/session/selection_details.js:249
+#: gui/session/selection_details.js:279
 #, javascript-format
 msgid "%(amount)s / %(max)s"
 msgstr "%(amount)s / %(max)s"
 
-#: gui/session/selection_details.js:230
+#: gui/session/selection_details.js:231
 #, javascript-format
 msgid "%(resource)s:"
 msgstr "%(resource)s:"
 
-#: gui/session/selection_details.js:261 gui/session/unit_actions.js:680
+#: gui/session/selection_details.js:262 gui/session/unit_actions.js:680
 #: gui/session/unit_actions.js:689 gui/session/unit_actions.js:707
 #: gui/session/unit_actions.js:1180
 #, javascript-format
 msgid "Gain: %(gain)s"
 msgstr "Ganhancia: %(gain)s"
 
-#: gui/session/selection_details.js:270 gui/session/selection_details.js:288
+#: gui/session/selection_details.js:271 gui/session/selection_details.js:289
 #, javascript-format
 msgid ""
 "(%(number)s)\n"
 "%(time)s"
 msgstr "(%(number)s)\n%(time)s"
 
-#: gui/session/selection_details.js:282
+#: gui/session/selection_details.js:283
 msgid "Current/max gatherers"
 msgstr "Coyedores actuales/máximos"
 
-#: gui/session/selection_details.js:314
+#: gui/session/selection_details.js:315
 #, javascript-format
 msgid "(%(secondaryName)s)"
 msgstr "(%(secondaryName)s)"
 
-#: gui/session/selection_details.js:461
+#: gui/session/selection_details.js:462
 msgid "Capture Points:"
 msgstr "Fidelidá:"
 
-#: gui/session/selection_details.js:469
+#: gui/session/selection_details.js:470
 #, javascript-format
 msgid "%(label)s: %(details)s\n"
 msgstr "%(label)s: %(details)s\n"
 
-#: gui/session/selection_details.js:470
+#: gui/session/selection_details.js:471
 msgid "Garrison Size"
 msgstr "Númeru d’occupantes"
 
-#: gui/session/selection_details.js:475
+#: gui/session/selection_details.js:476
 #, javascript-format
 msgid "%(label)s %(details)s\n"
 msgstr "%(label)s %(details)s\n"
 
-#: gui/session/selection_details.js:476
+#: gui/session/selection_details.js:477
 msgid "Carrying:"
 msgstr "Lhevando:"
 
-#: gui/session/selection_details.js:479 gui/session/selection_details.js:488
+#: gui/session/selection_details.js:480 gui/session/selection_details.js:489
 #, javascript-format
 msgid "%(type)s %(amount)s"
 msgstr "%(type)s %(amount)s"
 
-#: gui/session/selection_details.js:484
+#: gui/session/selection_details.js:485
 #, javascript-format
 msgid "%(label)s %(details)s"
 msgstr "%(label)s %(details)s"
 
-#: gui/session/selection_details.js:485
+#: gui/session/selection_details.js:486
 msgid "Loot:"
-msgstr "Preda:"
+msgstr "Prehesæs:"
 
 #. Translation: Used in the trading gain tooltip
-#: gui/session/selection_details.js:546
+#: gui/session/selection_details.js:547
 #, javascript-format
 msgid "%(gain)s (%(player)s)"
 msgstr "%(gain)s (%(player)s)"
 
 #. Translation: Used in the trading gain tooltip to concatenate profits of
 #. different players
-#: gui/session/selection_details.js:570
+#: gui/session/selection_details.js:571
 msgid "+"
 msgstr "+"
 
-#: gui/session/selection_details.js:577
+#: gui/session/selection_details.js:578
 msgctxt "Separation mark in an enumeration"
 msgid ", "
 msgstr ","
@@ -1068,7 +1072,7 @@ msgstr "Disoccupar %(name)s"
 msgid "Single-click to unload 1. Shift-click to unload all of this type."
 msgstr "Pica una vez par disoccupar 1. Calca cun Maiúsculæs premida par disoccupar todolos d’esti typu."
 
-#: gui/session/selection_panels.js:341 gui/session/selection_panels.js:906
+#: gui/session/selection_panels.js:341 gui/session/selection_panels.js:914
 #, javascript-format
 msgid "Player: %(playername)s"
 msgstr "Xhogador: %(playername)s"
@@ -1110,56 +1114,56 @@ msgstr "Capacidá poblracional insufficiente:"
 msgid "%(population)s %(neededSlots)s"
 msgstr "%(population)s %(neededSlots)s"
 
-#: gui/session/selection_panels.js:771
+#: gui/session/selection_panels.js:779
 #, javascript-format
 msgid "%(number)s entity of class %(class)s"
 msgid_plural "%(number)s entities of class %(class)s"
 msgstr[0] "%(number)s ente de clrasse %(class)s"
 msgstr[1] "%(number)s entes de clrasse %(class)s"
 
-#: gui/session/selection_panels.js:777
+#: gui/session/selection_panels.js:785
 #, javascript-format
 msgid "Remaining: %(entityCounts)s"
 msgstr "%(entityCounts)s restantes"
 
-#: gui/session/selection_panels.js:778
+#: gui/session/selection_panels.js:786
 msgctxt "Separator for a list of entity counts"
 msgid ", "
 msgstr ","
 
-#: gui/session/selection_panels.js:830
+#: gui/session/selection_panels.js:838
 msgid "Cannot research while upgrading."
 msgstr "Nun puœde disinvolvese de mentres la meyora."
 
-#: gui/session/selection_panels.js:1060
+#: gui/session/selection_panels.js:1068
 msgid "Cannot train while upgrading."
 msgstr "Nun puœde crear al anovar."
 
-#: gui/session/selection_panels.js:1129
+#: gui/session/selection_panels.js:1137
 #, javascript-format
 msgid "Upgrade to a %(primaryName)s (%(secondaryName)s). %(tooltip)s"
 msgstr "Ascender a %(primaryName)s (%(secondaryName)s). %(tooltip)s"
 
-#: gui/session/selection_panels.js:1135
+#: gui/session/selection_panels.js:1143
 #, javascript-format
 msgid "Upgrade to a %(primaryName)s (%(secondaryName)s)."
 msgstr "Ascender a %(primaryName)s (%(secondaryName)s)."
 
-#: gui/session/selection_panels.js:1143
+#: gui/session/selection_panels.js:1151
 #, javascript-format
 msgid "Upgrade to a %(primaryName)s. %(tooltip)s"
 msgstr "Ascender a %(primaryName)s. %(tooltip)s"
 
-#: gui/session/selection_panels.js:1148
+#: gui/session/selection_panels.js:1156
 #, javascript-format
 msgid "Upgrade to a %(primaryName)s."
 msgstr "Ascender a %(primaryName)s."
 
-#: gui/session/selection_panels.js:1185
+#: gui/session/selection_panels.js:1193
 msgid "Cancel Upgrading"
 msgstr "Incaboxa’ la meyora"
 
-#: gui/session/selection_panels.js:1200
+#: gui/session/selection_panels.js:1208
 msgid ""
 "Cannot upgrade when the entity is training, researching or already "
 "upgrading."
@@ -1197,24 +1201,24 @@ msgstr "Quedu"
 #: gui/session/selection_panels_helpers.js:73
 msgctxt "stance"
 msgid "Attack nearby opponents, focus on attackers and chase while visible"
-msgstr "Acometer a inimigos aveirahos, centrando-se n aggresores & persegiendo-llos ta perdellos de vista"
+msgstr "Acometer a inimigos próximos, centrando-se n aggresores & persegiendo-llos ta perdellos de vista"
 
 #: gui/session/selection_panels_helpers.js:75
 msgctxt "stance"
 msgid "Attack nearby opponents"
-msgstr "Acometer a inimigos aveirahos"
+msgstr "Acometer a inimigos próximos"
 
 #: gui/session/selection_panels_helpers.js:77
 msgctxt "stance"
 msgid ""
 "Attack nearby opponents, chase a short distance and return to the original "
 "location"
-msgstr "Acometer a inimigos aveirahos, persegiendo-llos un pouco & da reo tornando al sou puœstu"
+msgstr "Acometer a inimigos próximos, persegiendo-llos un pouco & da reo tornando al sou puœstu"
 
 #: gui/session/selection_panels_helpers.js:79
 msgctxt "stance"
 msgid "Flee if attacked"
-msgstr "Fhuxhir al vese aggredidu"
+msgstr "Fhuxhir al vese attacau"
 
 #: gui/session/selection_panels_helpers.js:81
 msgctxt "stance"
@@ -1224,17 +1228,17 @@ msgstr "Acometer a inimigos aveirahos in sin persegillos"
 #: gui/session/selection_panels_helpers.js:95
 #, javascript-format
 msgid "Current Count: %(count)s, Limit: %(limit)s."
-msgstr "Númeru actual: %(count)s, Lhinde: %(limit)s."
+msgstr "Númeru actual: %(count)s, Límite: %(limit)s."
 
 #: gui/session/selection_panels_helpers.js:109
 #, javascript-format
 msgid "%(changer)s enlarges the limit with %(change)s."
-msgstr "%(changer)s txubi la lhinde cun %(change)s."
+msgstr "%(changer)s txube l límite cun %(change)s."
 
 #: gui/session/selection_panels_helpers.js:110
 #, javascript-format
 msgid "%(changer)s lessens the limit with %(change)s."
-msgstr "%(changer)s baxa la lhinde cun %(change)s."
+msgstr "%(changer)s baxa l límite cun %(change)s."
 
 #: gui/session/selection_panels_helpers.js:140
 msgid "Can be constructed only once."
@@ -1344,8 +1348,8 @@ msgid ""
 msgstr "Pica pa scoyer una grea d’unidades, pica duês vezes par infocar scontra elhi & pica cuno boton dreithu pa sfhazellu."
 
 #: gui/session/top_panel/BuildLabel.xml:(caption):6
-msgid "Alpha XXVI: Z——"
-msgstr "Alpha XXVI: Z——"
+msgid "Alpha XXVI: Zhuangzi"
+msgstr "Alpha XXVI: Zhuangzi"
 
 #: gui/session/top_panel/CivIcon.js:80
 #, javascript-format
@@ -1388,7 +1392,7 @@ msgstr "%(popCount)s/%(popLimit)s (%(popMax)s)"
 
 #: gui/session/top_panel/CounterPopulation.js:63
 msgid "Population: current/limit (max)"
-msgstr "Populaçon: actual/lhinde (máxima)"
+msgstr "Poblraçon: actual/límite (máxima)"
 
 #: gui/session/top_panel/CounterPopulation.js:70
 msgid "Gatherers: current"
@@ -1660,8 +1664,8 @@ msgstr "Ganhancia prevista: %(gain)s"
 #: gui/session/unit_actions.js:1307
 msgid "This entity cannot be controlled."
 msgid_plural "These entities cannot be controlled."
-msgstr[0] "A essi ente non lli puœdes mandar."
-msgstr[1] "A essos entes non llis puœdes mandar."
+msgstr[0] "A essi ente non lly puœdes mandar."
+msgstr[1] "A essos entes non llys puœdes mandar."
 
 #: gui/session/unit_actions.js:1353
 msgid "Unload All."
@@ -1688,7 +1692,7 @@ msgstr "Aborta’l mandaho actual."
 msgid ""
 "Send the selected units on attack move to the specified location after "
 "dropping resources."
-msgstr "Invia’ læs unidades scoyidæs a mover & aggredi’l sitiu siñalau n deponiendo recursos."
+msgstr "Invia’ læs unidades scoyidæs a mover & attaca’l sitiu siñalau n deponiendo recursos."
 
 #: gui/session/unit_actions.js:1503
 msgid "Order the selected units to garrison in a structure or unit."
@@ -1708,7 +1712,7 @@ msgstr "Mandar que læs unidades scoyidæs eguen una construcçon, barcu ou mác
 
 #: gui/session/unit_actions.js:1588
 msgid "Focus on Rally Point."
-msgstr "Infocar scontra l punto d’incuœntru."
+msgstr "Infocar scontra l punto d’alcuœntru."
 
 #: gui/session/unit_actions.js:1625
 msgid "Back to Work"
@@ -1730,19 +1734,19 @@ msgstr "Commercio"
 
 #: gui/session/unit_actions.js:1705
 msgid "Patrol"
-msgstr "Velar"
+msgstr "Roldar"
 
 #: gui/session/unit_actions.js:1706
 msgid "Attack all encountered enemy units while avoiding structures."
-msgstr "Acometer a todelæs unidades inimigæs incontradæs evitando construcçones."
+msgstr "Acometer a todelæs unidades inimigæs alcontradæs evitando construcçones."
 
 #: gui/session/unit_actions.js:1734
 msgid "Press to allow allies to use this dropsite"
-msgstr "Premi par deixar que los socios usen esti depósitu"
+msgstr "Premi par deixar que los alliahos usen esti depósitu"
 
 #: gui/session/unit_actions.js:1739
 msgid "Press to prevent allies from using this dropsite"
-msgstr "Premi par quitar que los socios usen esti depósitu"
+msgstr "Premi par quitar que los alliahos usen esti depósitu"
 
 #: gui/session/unit_actions.js:1774
 msgid "The use of this dropsite is prohibited"
@@ -1750,7 +1754,7 @@ msgstr "Nun puœdes usar esti depósitu"
 
 #: gui/session/unit_actions.js:1780
 msgid "Allies are allowed to use this dropsite."
-msgstr "Los socios puœden usar esti depósitu."
+msgstr "Los alliahos puœden usar esti depósitu."
 
 #: gui/session/unit_actions.js:1781
 msgid "You are allowed to use this dropsite"
@@ -1771,7 +1775,7 @@ msgstr "Esso ha hi que llo matar pa explotallo"
 #: gui/session/unit_actions.js:1888
 msgid ""
 "You cannot destroy this entity as you own less than half the capture points"
-msgstr "Nun puœdes eliminar esti ente, des que ti correspuœnde menus de l dimidio de la suâ fidelidá"
+msgstr "Nun puœdes eliminar esti ente, des que ti correspuœnde ménos de l dimidio de la suâ fidelidá"
 
 #: gui/session/unit_actions.js:1891
 msgid "This entity is undeletable"

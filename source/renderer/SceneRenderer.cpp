@@ -44,7 +44,7 @@
 #include "ps/Profile.h"
 #include "ps/VideoMode.h"
 #include "ps/World.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/DebugRenderer.h"
 #include "renderer/HWLightingModelRenderer.h"
 #include "renderer/InstancingModelRenderer.h"
@@ -144,7 +144,7 @@ public:
 	 * Renders all non-alpha-blended models with the given context.
 	 */
 	void CallModelRenderers(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 		const CShaderDefines& context, int cullGroup, int flags)
 	{
 		CShaderDefines contextSkinned = context;
@@ -167,7 +167,7 @@ public:
 	 * Renders all alpha-blended models with the given context.
 	 */
 	void CallTranspModelRenderers(
-		Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+		Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 		const CShaderDefines& context, int cullGroup, int flags)
 	{
 		CShaderDefines contextSkinned = context;
@@ -218,8 +218,11 @@ void CSceneRenderer::ReloadShaders()
 	if (g_RenderingOptions.GetShadows())
 	{
 		m->globalContext.Add(str_USE_SHADOW, str_1);
-		if (g_VideoMode.GetBackendDevice()->GetCapabilities().ARBShadersShadow)
+		if (g_VideoMode.GetBackend() == CVideoMode::Backend::GL_ARB &&
+			g_VideoMode.GetBackendDevice()->GetCapabilities().ARBShadersShadow)
+		{
 			m->globalContext.Add(str_USE_FP_SHADOW, str_1);
+		}
 		if (g_RenderingOptions.GetShadowPCF())
 			m->globalContext.Add(str_USE_SHADOW_PCF, str_1);
 		const int cascadeCount = m->shadow.GetCascadeCount();
@@ -290,7 +293,7 @@ void CSceneRenderer::SetSimulation(CSimulation2* simulation)
 }
 
 void CSceneRenderer::RenderShadowMap(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context)
 {
 	PROFILE3_GPU("shadow map");
@@ -333,7 +336,7 @@ void CSceneRenderer::RenderShadowMap(
 }
 
 void CSceneRenderer::RenderPatches(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context, int cullGroup)
 {
 	PROFILE3_GPU("patches");
@@ -363,7 +366,7 @@ void CSceneRenderer::RenderPatches(
 }
 
 void CSceneRenderer::RenderModels(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context, int cullGroup)
 {
 	PROFILE3_GPU("models");
@@ -386,7 +389,7 @@ void CSceneRenderer::RenderModels(
 }
 
 void CSceneRenderer::RenderTransparentModels(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context, int cullGroup, ETransparentMode transparentMode)
 {
 	PROFILE3_GPU("transparent models");
@@ -541,7 +544,7 @@ void CSceneRenderer::ComputeRefractionCamera(CCamera& camera, const CBoundingBox
 
 // RenderReflections: render the water reflections to the reflection texture
 void CSceneRenderer::RenderReflections(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context, const CBoundingBoxAligned& scissor)
 {
 	PROFILE3_GPU("water reflections");
@@ -570,7 +573,7 @@ void CSceneRenderer::RenderReflections(
 	screenScissor.x2 = (GLint)ceil((reflectionScissor[1].X*0.5f+0.5f)*vpWidth);
 	screenScissor.y2 = (GLint)ceil((reflectionScissor[1].Y*0.5f+0.5f)*vpHeight);
 
-	Renderer::Backend::GL::CDeviceCommandContext::Rect scissorRect;
+	Renderer::Backend::IDeviceCommandContext::Rect scissorRect;
 	scissorRect.x = screenScissor.x1;
 	scissorRect.y = screenScissor.y1;
 	scissorRect.width = screenScissor.x2 - screenScissor.x1;
@@ -584,20 +587,17 @@ void CSceneRenderer::RenderReflections(
 
 	CShaderDefines reflectionsContext = context;
 	reflectionsContext.Add(str_PASS_REFLECTIONS, str_1);
+
 	// Render terrain and models
 	RenderPatches(deviceCommandContext, reflectionsContext, CULL_REFLECTIONS);
-	ogl_WarnIfError();
 	RenderModels(deviceCommandContext, reflectionsContext, CULL_REFLECTIONS);
-	ogl_WarnIfError();
 	RenderTransparentModels(deviceCommandContext, reflectionsContext, CULL_REFLECTIONS, TRANSPARENT);
-	ogl_WarnIfError();
 
 	// Particles are always oriented to face the camera in the vertex shader,
 	// so they don't need the inverted cull face.
 	if (g_RenderingOptions.GetParticles())
 	{
 		RenderParticles(deviceCommandContext, CULL_REFLECTIONS);
-		ogl_WarnIfError();
 	}
 
 	deviceCommandContext->SetScissors(0, nullptr);
@@ -609,7 +609,7 @@ void CSceneRenderer::RenderReflections(
 
 // RenderRefractions: render the water refractions to the refraction texture
 void CSceneRenderer::RenderRefractions(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context, const CBoundingBoxAligned &scissor)
 {
 	PROFILE3_GPU("water refractions");
@@ -643,7 +643,7 @@ void CSceneRenderer::RenderRefractions(
 	screenScissor.x2 = (GLint)ceil((refractionScissor[1].X*0.5f+0.5f)*vpWidth);
 	screenScissor.y2 = (GLint)ceil((refractionScissor[1].Y*0.5f+0.5f)*vpHeight);
 
-	Renderer::Backend::GL::CDeviceCommandContext::Rect scissorRect;
+	Renderer::Backend::IDeviceCommandContext::Rect scissorRect;
 	scissorRect.x = screenScissor.x1;
 	scissorRect.y = screenScissor.y1;
 	scissorRect.width = screenScissor.x2 - screenScissor.x1;
@@ -657,14 +657,12 @@ void CSceneRenderer::RenderRefractions(
 
 	// Render terrain and models
 	RenderPatches(deviceCommandContext, context, CULL_REFRACTIONS);
-	ogl_WarnIfError();
+
 	// Render debug-related terrain overlays to make it visible under water.
 	ITerrainOverlay::RenderOverlaysBeforeWater(deviceCommandContext);
-	ogl_WarnIfError();
+
 	RenderModels(deviceCommandContext, context, CULL_REFRACTIONS);
-	ogl_WarnIfError();
 	RenderTransparentModels(deviceCommandContext, context, CULL_REFRACTIONS, TRANSPARENT_OPAQUE);
-	ogl_WarnIfError();
 
 	deviceCommandContext->SetScissors(0, nullptr);
 
@@ -674,7 +672,7 @@ void CSceneRenderer::RenderRefractions(
 }
 
 void CSceneRenderer::RenderSilhouettes(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CShaderDefines& context)
 {
 	PROFILE3_GPU("silhouettes");
@@ -728,7 +726,7 @@ void CSceneRenderer::RenderSilhouettes(
 }
 
 void CSceneRenderer::RenderParticles(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	int cullGroup)
 {
 	PROFILE3_GPU("particles");
@@ -747,7 +745,7 @@ void CSceneRenderer::RenderParticles(
 
 // RenderSubmissions: force rendering of any batched objects
 void CSceneRenderer::RenderSubmissions(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
 	const CBoundingBoxAligned& waterScissor)
 {
 	PROFILE3("render submissions");
@@ -762,8 +760,6 @@ void CSceneRenderer::RenderSubmissions(
 	CShaderDefines context = m->globalContext;
 
 	int cullGroup = CULL_DEFAULT;
-
-	ogl_WarnIfError();
 
 	// Set the camera
 	g_Renderer.SetViewport(m_ViewCamera.GetViewPort());
@@ -789,8 +785,6 @@ void CSceneRenderer::RenderSubmissions(
 	{
 		RenderShadowMap(deviceCommandContext, context);
 	}
-
-	ogl_WarnIfError();
 
 	if (m->waterManager.m_RenderWater)
 	{
@@ -841,18 +835,14 @@ void CSceneRenderer::RenderSubmissions(
 
 	// render submitted patches and models
 	RenderPatches(deviceCommandContext, context, cullGroup);
-	ogl_WarnIfError();
 
 	// render debug-related terrain overlays
 	ITerrainOverlay::RenderOverlaysBeforeWater(deviceCommandContext);
-	ogl_WarnIfError();
 
 	// render other debug-related overlays before water (so they can be seen when underwater)
 	m->overlayRenderer.RenderOverlaysBeforeWater(deviceCommandContext);
-	ogl_WarnIfError();
 
 	RenderModels(deviceCommandContext, context, cullGroup);
-	ogl_WarnIfError();
 
 	// render water
 	if (m->waterManager.m_RenderWater && g_Game && waterScissor.GetVolume() > 0)
@@ -861,45 +851,36 @@ void CSceneRenderer::RenderSubmissions(
 		{
 			// Render transparent stuff, but only the solid parts that can occlude block water.
 			RenderTransparentModels(deviceCommandContext, context, cullGroup, TRANSPARENT_OPAQUE);
-			ogl_WarnIfError();
 
 			m->terrainRenderer.RenderWater(deviceCommandContext, context, cullGroup, &m->shadow);
-			ogl_WarnIfError();
 
 			// Render transparent stuff again, but only the blended parts that overlap water.
 			RenderTransparentModels(deviceCommandContext, context, cullGroup, TRANSPARENT_BLEND);
-			ogl_WarnIfError();
 		}
 		else
 		{
 			m->terrainRenderer.RenderWater(deviceCommandContext, context, cullGroup, &m->shadow);
-			ogl_WarnIfError();
 
 			// Render transparent stuff, so it can overlap models/terrain.
 			RenderTransparentModels(deviceCommandContext, context, cullGroup, TRANSPARENT);
-			ogl_WarnIfError();
 		}
 	}
 	else
 	{
 		// render transparent stuff, so it can overlap models/terrain
 		RenderTransparentModels(deviceCommandContext, context, cullGroup, TRANSPARENT);
-		ogl_WarnIfError();
 	}
 
 	// render debug-related terrain overlays
 	ITerrainOverlay::RenderOverlaysAfterWater(deviceCommandContext, cullGroup);
-	ogl_WarnIfError();
 
 	// render some other overlays after water (so they can be displayed on top of water)
 	m->overlayRenderer.RenderOverlaysAfterWater(deviceCommandContext);
-	ogl_WarnIfError();
 
 	// particles are transparent so render after water
 	if (g_RenderingOptions.GetParticles())
 	{
 		RenderParticles(deviceCommandContext, cullGroup);
-		ogl_WarnIfError();
 	}
 
 	if (postprocManager.IsEnabled())
@@ -922,16 +903,12 @@ void CSceneRenderer::RenderSubmissions(
 
 	if (g_RenderingOptions.GetDisplayShadowsFrustum())
 		m->shadow.RenderDebugBounds();
-	m->silhouetteRenderer.RenderDebugBounds(deviceCommandContext);
 
-	if (g_RenderingOptions.GetDisplayShadowsFrustum())
-		m->shadow.RenderDebugTexture(deviceCommandContext);
+	m->silhouetteRenderer.RenderDebugBounds(deviceCommandContext);
 	m->silhouetteRenderer.RenderDebugOverlays(deviceCommandContext);
 
 	// render overlays that should appear on top of all other objects
 	m->overlayRenderer.RenderForegroundOverlays(deviceCommandContext, m_ViewCamera);
-	ogl_WarnIfError();
-
 }
 
 void CSceneRenderer::EndFrame()
@@ -964,8 +941,6 @@ void CSceneRenderer::RenderTextOverlays(CCanvas2D& canvas)
 
 	if (m_DisplayTerrainPriorities)
 		m->terrainRenderer.RenderPriorities(canvas, CULL_DEFAULT);
-
-	ogl_WarnIfError();
 }
 
 // SetSceneCamera: setup projection and transform of camera and adjust viewport to current view
@@ -1085,7 +1060,7 @@ void CSceneRenderer::SubmitNonRecursive(CModel* model)
 
 // Render the given scene
 void CSceneRenderer::RenderScene(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext, Scene& scene)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext, Scene& scene)
 {
 	m_CurrentScene = &scene;
 
@@ -1154,8 +1129,6 @@ void CSceneRenderer::RenderScene(
 	}
 
 	m_CurrentCullGroup = -1;
-
-	ogl_WarnIfError();
 
 	RenderSubmissions(deviceCommandContext, waterScissor);
 

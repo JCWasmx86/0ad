@@ -1,11 +1,11 @@
 # Translation template for 0 A.D. — Empires Ascendant.
-# Copyright (C) 2021 Wildfire Games
+# Copyright (C) 2022 Wildfire Games
 # This file is distributed under the same license as the 0 A.D. — Empires Ascendant
 # project.
 # Translators:
 # 76407af6b051a571d67c2577de2183db_7380deb
 # Aksidion Kreimben
-# Junghee Lee
+# JungHee Lee
 # Dalrae Jin
 # Gu Hong Min
 # Hong Won Gi
@@ -22,9 +22,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2021-08-30 07:08+0000\n"
-"PO-Revision-Date: 2022-03-01 02:44+0000\n"
-"Last-Translator: Junghee Lee\n"
+"POT-Creation-Date: 2022-03-21 08:21+0000\n"
+"PO-Revision-Date: 2014-06-19 17:48+0000\n"
+"Last-Translator: JungHee Lee <daemul72@gmail.com>, 2019,2021-2022\n"
 "Language-Team: Korean (http://www.transifex.com/wildfire-games/0ad/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,46 +32,46 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: gui/gamesettings/attributes/PlayerName.js:113
+#: gui/gamesettings/attributes/PlayerName.js:133
 #, javascript-format
 msgid "%(playerName)s %(romanNumber)s"
 msgstr "%(playerName)s님 %(romanNumber)s"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:57
+#: gui/gamesettings/attributes/TeamPlacement.js:55
 msgctxt "team placement"
 msgid "Circle"
 msgstr "동그라미"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:58
+#: gui/gamesettings/attributes/TeamPlacement.js:56
 msgid ""
 "Allied players are grouped and placed with opposing players on one circle "
 "spanning the map."
 msgstr "동맹 플레이어는 지도에 걸쳐 있는 하나의 동그라미에 묶이게되고 상대 플레이어와 함께 배치됩니다."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:62
+#: gui/gamesettings/attributes/TeamPlacement.js:60
 msgctxt "team placement"
 msgid "Line"
 msgstr "선"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:63
+#: gui/gamesettings/attributes/TeamPlacement.js:61
 msgid "Allied players are placed in a linear pattern."
 msgstr "동맹 플레이어는 줄 무늬로 배치됩니다."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:67
+#: gui/gamesettings/attributes/TeamPlacement.js:65
 msgctxt "team placement"
 msgid "Random Group"
 msgstr "무작위 그룹"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:68
+#: gui/gamesettings/attributes/TeamPlacement.js:66
 msgid "Allied players are grouped, but otherwise placed randomly on the map."
 msgstr "동맹 플레이어는 한 무리가 되지만, 그렇지 않으면 아무곳에 배치됩니다."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:72
+#: gui/gamesettings/attributes/TeamPlacement.js:70
 msgctxt "team placement"
 msgid "Stronghold"
 msgstr "거점"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:73
+#: gui/gamesettings/attributes/TeamPlacement.js:71
 msgid "Allied players are grouped in one random place of the map."
 msgstr "동맹이 된 플레이어는 지도에서 무작위로 한 곳에 그룹화됩니다."
 
@@ -157,16 +157,16 @@ msgstr "인공지능: %(ai)s"
 msgid "Unassigned"
 msgstr "지정되지 않음"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:71
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:90
 msgid "Choose the civilization for this player."
 msgstr "이 플레이어의 문명을 선택합니다."
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:74
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:93
 msgctxt "civilization"
 msgid "Random"
 msgstr "무작위"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:80
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:99
 msgid "Picks one civilization at random when the game starts."
 msgstr "게임을 시작할 때 임의로 한 문명을 선택합니다."
 
@@ -226,7 +226,7 @@ msgstr "치트"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Cheats.js:38
 msgid "Toggle the usability of cheats."
-msgstr "치트의 편리함을 전환합니다."
+msgstr "치트의 사용성을 전환합니다."
 
 #. Translation: Make sure to differentiate between the revealed map and
 #. explored map
@@ -298,7 +298,7 @@ msgstr "공개된 지도"
 #. settings!
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/RevealedMap.js:30
 msgid "Toggle revealed map (see everything)."
-msgstr "지도 공개 여부를 토글합니다 (모두 보기)."
+msgstr "공개된 지도를 전환합니다(전체 보기)."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Spies.js:26
 msgid "Disable Spies"
@@ -317,7 +317,7 @@ msgid "Do not add treasures to the map."
 msgstr "지도에 보물을 추가하지 않습니다."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:25
-msgid "World population"
+msgid "World Population"
 msgstr "세계 인구"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:28
@@ -349,7 +349,7 @@ msgstr "주간"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:60
 msgid "Select whether the match takes place at daylight or night."
-msgstr "시합가 주간 또는 야간에 진행되는지 여부를 선택합니다."
+msgstr "시합이 낮에 열릴지 밤에 열릴지 선택합니다."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:63
 msgctxt "daytime selection"
@@ -506,7 +506,7 @@ msgstr "이 시나리오의 난이도를 선택합니다."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/WorldPopulationCap.js:47
 msgid "World Population Cap"
-msgstr "세계 인구 상한"
+msgstr "세계 인구 한도"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/WorldPopulationCap.js:50
 msgid "Select world population limit."
@@ -749,7 +749,7 @@ msgstr "HH:mm"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingWarning.js:40
 msgid "Cheats enabled."
-msgstr "치트 사용가능."
+msgstr "치트가 활성화되었습니다."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingWarning.js:43
 msgid "Rated game."
@@ -1992,7 +1992,7 @@ msgid ""
 "escaping the dangers of the widest seas and the most violent storms, they "
 "wreck their ship in harbor and close to shore.” \\n— Polybius on the "
 "Athenian constitution (“Histories”, VI. 44)"
-msgstr "“아테네 사람들은 항상 사령관이 없는 배의 위치에 있다. 적이나 폭풍에 대한 두려움은 승무원이 한 마음으로 하고 투구맨에게 순종하게 하며, 모든 것이 잘 진행된다. 그러나 그들이 복구하는 경우 \\[...] 그들은 서로 싸운다. \\[...], 그리고 그 결과, 가장 넓은 바다와 가장 격렬한 폭풍의 위험을 피한 후, 그들은 항구와 해안 근처에서 배를 부수고 있었다.” \\n— 아테네 헌법에 관한 폴리비우스 (“역사”, VI. 44)"
+msgstr "“아테네 사람들은 항상 사령관이 없는 배의 위치에 있다. 적이나 폭풍에 대한 두려움은 승무원이 한 마음으로 하고 투구맨에게 순종하게 하며, 모든 것이 잘 진행된다. 그러나 그들이 복구하는 경우 \\[...] 그들은 서로 싸운다. \\[...], 그리고 그 결과, 가장 넓은 바다와 가장 격렬한 폭풍의 위험을 피한 후, 그들은 항구와 해안 주변에서 배를 부수고 있었다.” \\n— 아테네 헌법에 관한 폴리비우스 (“역사”, VI. 44)"
 
 #: gui/text/quotes.txt:150
 msgid ""

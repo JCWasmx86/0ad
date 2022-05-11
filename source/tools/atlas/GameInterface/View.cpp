@@ -36,7 +36,7 @@
 #include "ps/GameSetup/GameSetup.h"
 #include "ps/VideoMode.h"
 #include "ps/World.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/DebugRenderer.h"
 #include "renderer/Renderer.h"
 #include "renderer/SceneRenderer.h"
@@ -149,7 +149,7 @@ void AtlasViewActor::SetParam(const std::wstring& name, bool value)
 	//else if (name == L"water")
 		//m_ActorViewer->SetWaterEnabled(value);
 	else if (name == L"shadows")
-		m_ActorViewer->SetShadowsEnabled(value);
+		m_ActorViewer->ToggleShadows();
 	else if (name == L"stats")
 		m_ActorViewer->SetStatsEnabled(value);
 	else if (name == L"bounding_box")

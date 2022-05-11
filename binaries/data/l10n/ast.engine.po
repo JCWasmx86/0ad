@@ -160,7 +160,7 @@ msgstr "Exhaurîu-se la memoîra l systema"
 msgid ""
 "The server's certificate could not be verified or the TLS handshake did not "
 "complete successfully"
-msgstr "Ou nun pudo verificase l certificaho de l servidor ou la negociaçon TLS non se completou cun éxitu"
+msgstr "Ou nun pudo verificase l certificaho de l servidor ou la negociaçon TLS non se perfhixzo cun éxitu"
 
 #: lobby/XmppClient.cpp:1444
 msgid "The server did not offer required TLS encryption"
@@ -200,12 +200,12 @@ msgstr "Nun pudo scribise un mod.json externu pa la modificaçon comprimida “%
 #: ps/ModIo.cpp:264
 #, c-format
 msgid "Failure while starting querying for game id. Error: %s; %s."
-msgstr "Houbo un falhu al iniciar a consultar sobre la identificaçon de l trebeyu. Error: %s; %s."
+msgstr "Houbo un falhu al iniciar a consultar subre la identificaçon de l trebeyu. Error: %s; %s."
 
 #: ps/ModIo.cpp:294
 #, c-format
 msgid "Failure while starting querying for mods. Error: %s; %s."
-msgstr "Houbo un falhu al iniciar a consultar sobre modificaçones. Error: %s; %s."
+msgstr "Houbo un falhu al iniciar a consultar subre modificaçones. Error: %s; %s."
 
 #: ps/ModIo.cpp:320
 #, c-format
@@ -252,7 +252,7 @@ msgstr "Houbo un falhu al verifica’ la roblra."
 #: ps/SavedGame.cpp:142
 #, c-format
 msgid "Saved game to '%s'"
-msgstr "La partida archivou-se n “%s”"
+msgstr "Archivou-se la partida n “%s”"
 
 #: ps/scripting/JSInterface_Debug.cpp:87
 msgid "custom build"

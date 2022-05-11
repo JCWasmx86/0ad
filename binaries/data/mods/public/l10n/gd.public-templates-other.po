@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-02-28 08:09+0000\n"
-"PO-Revision-Date: 2022-02-28 10:18+0000\n"
-"Last-Translator: Transifex Bot\n"
+"POT-Creation-Date: 2022-04-10 20:43+0000\n"
+"PO-Revision-Date: 2014-06-19 17:54+0000\n"
+"Last-Translator: GunChleoc, 2014-2018,2021\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/wildfire-games/0ad/language/gd/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -629,13 +629,9 @@ msgstr "Fìge"
 msgid "Grapes"
 msgstr "Fìon-dhearcan"
 
-#: simulation/templates/gaia/fruit/olive.xml:7
-msgid "Olive"
-msgstr "Dearc-ola"
-
 #: simulation/templates/gaia/ruins/column_doric.xml:8
-msgid "Ancient Ruins"
-msgstr "Làrach àrsaidh"
+msgid "Doric Column"
+msgstr "Colbh Dorach"
 
 #: simulation/templates/gaia/ruins/metal_statue_isis.xml:9
 msgid "Isis Cult Image"
@@ -655,8 +651,8 @@ msgid "Celtic Standing Stone"
 msgstr "Tursa Ceilteach"
 
 #: simulation/templates/gaia/ruins/stone_statues_egyptian.xml:8
-msgid "Ptolemaic Egyptian Statues"
-msgstr "Ìomhaighean nan Èipheiteach Ptolemaidheach"
+msgid "Egyptian Statue"
+msgstr ""
 
 #: simulation/templates/gaia/ruins/stone_statues_kushite.xml:8
 msgid "Kushite Statue"
@@ -681,8 +677,8 @@ msgid "Ammon-Ra Ram Statue"
 msgstr "Ìomhaigh reithe Ammon-Ra"
 
 #: simulation/templates/gaia/ruins/stone_statues_roman.xml:8
-msgid "Roman Statues"
-msgstr "Ìomhaighean Ròmanach"
+msgid "Roman Statue"
+msgstr ""
 
 #: simulation/templates/gaia/ruins/unfinished_greek_temple.xml:8
 msgid "Unfinished Greek Temple"
@@ -913,6 +909,10 @@ msgstr "Darach Ungaireach"
 msgid "Large Oak"
 msgstr "Darach mòr"
 
+#: simulation/templates/gaia/tree/olive.xml:7
+msgid "Olive"
+msgstr "Dearc-ola"
+
 #: simulation/templates/gaia/tree/palm_areca.xml:4
 msgid "Areca Palm"
 msgstr "Pailm Areca"
@@ -983,7 +983,7 @@ msgstr "Craobh-sheudair dhearg"
 msgid "Rainforest Tree"
 msgstr "Craobh coille-uisge"
 
-#: simulation/templates/mixins/builder.xml:39
+#: simulation/templates/mixins/builder.xml:40
 msgid "Builder"
 msgstr "Neach-togail"
 
@@ -1002,6 +1002,14 @@ msgstr "Sgrìn"
 #: simulation/templates/mixins/trading_post.xml:8
 msgid "Trading Post"
 msgstr "Raon malairt"
+
+#: simulation/templates/obstructors/placement.xml:10
+msgid "Obstructor"
+msgstr ""
+
+#: simulation/templates/obstructors/placement.xml:12
+msgid "Placement obstructor to prevent construction but not movement"
+msgstr ""
 
 #: simulation/templates/skirmish/structures/default_house_10.xml:5
 msgid ""
@@ -1032,7 +1040,7 @@ msgstr "Loidhne-chatha"
 msgid "Requires at least 4 Soldiers or Siege engines."
 msgstr "Tha feum air 4 saighdearan no innealan-sèiste air a char as lugha."
 
-#: simulation/templates/special/formations/box.xml:11
+#: simulation/templates/special/formations/box.xml:12
 msgid "Box"
 msgstr "Bosga"
 
@@ -1072,7 +1080,7 @@ msgstr "Hoiplidean coisridh a-mhàin is feum air 10 dhiubh air a char as lugha."
 msgid "Phalanx"
 msgstr "Falangas"
 
-#: simulation/templates/special/formations/scatter.xml:7
+#: simulation/templates/special/formations/scatter.xml:8
 msgid "Scatter"
 msgstr "Sgapte"
 
@@ -1092,7 +1100,7 @@ msgstr "Pìcearan coisridh a-mhàin is feum air 16 dhiubh air a char as lugha."
 msgid "Syntagma"
 msgstr "Siontagma"
 
-#: simulation/templates/special/formations/testudo.xml:69
+#: simulation/templates/special/formations/testudo.xml:70
 msgid "Testudo"
 msgstr "Sligeanach"
 

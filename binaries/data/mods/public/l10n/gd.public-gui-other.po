@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-07 08:09+0000\n"
-"PO-Revision-Date: 2022-03-07 08:24+0000\n"
-"Last-Translator: Transifex Bot\n"
+"POT-Creation-Date: 2022-05-02 07:08+0000\n"
+"PO-Revision-Date: 2014-06-19 17:51+0000\n"
+"Last-Translator: Stanislas Dolcini <stan@wildfiregames.com>, 2021\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/wildfire-games/0ad/language/gd/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3107,16 +3107,6 @@ msgctxt "hotkey metadata"
 msgid "Cancel selection"
 msgstr "Sguir dhen taghadh"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.desc
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0 to the current selection."
-msgstr "Cuir am buidheann-smachd 0 ris na thagh thu."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.0.name
-msgctxt "hotkey metadata"
-msgid "Add Control Group 0"
-msgstr "Cuir am buidheann-smachd 0 ris"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.1.desc
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1 to the current selection."
@@ -3126,6 +3116,16 @@ msgstr "Cuir am buidheann-smachd 1 ris na thagh thu."
 msgctxt "hotkey metadata"
 msgid "Add Control Group 1"
 msgstr "Cuir am buidheann-smachd 1 ris"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.desc
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10 to the current selection."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.10.name
+msgctxt "hotkey metadata"
+msgid "Add Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.add.2.desc
 msgctxt "hotkey metadata"
@@ -3207,16 +3207,6 @@ msgctxt "hotkey metadata"
 msgid "Add Control Group 9"
 msgstr "Cuir am buidheann-smachd 9 ris"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.desc
-msgctxt "hotkey metadata"
-msgid "Save current selection as Control Group 0."
-msgstr "Sàbhail na thagh thu mar am buidheann-smachd 0."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.0.name
-msgctxt "hotkey metadata"
-msgid "Set Control Group 0"
-msgstr "Suidhich am buidheann-smachd 0"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.1.desc
 msgctxt "hotkey metadata"
 msgid "Save current selection as Control Group 1."
@@ -3226,6 +3216,16 @@ msgstr "Sàbhail na thagh thu mar am buidheann-smachd 1."
 msgctxt "hotkey metadata"
 msgid "Set Control Group 1"
 msgstr "Suidhich am buidheann-smachd 1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.desc
+msgctxt "hotkey metadata"
+msgid "Save current selection as Control Group 10."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.10.name
+msgctxt "hotkey metadata"
+msgid "Set Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.save.2.desc
 msgctxt "hotkey metadata"
@@ -3307,16 +3307,6 @@ msgctxt "hotkey metadata"
 msgid "Set Control Group 9"
 msgstr "Suidhich am buidheann-smachd 9"
 
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.desc
-msgctxt "hotkey metadata"
-msgid "Change the current selection to Control Group 0."
-msgstr "Tagh am buidheann-smachd 0 seach na thagh thu cheana."
-
-#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.0.name
-msgctxt "hotkey metadata"
-msgid "Select Control Group 0"
-msgstr "Tagh am buidheann-smachd 0"
-
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.1.desc
 msgctxt "hotkey metadata"
 msgid "Change the current selection to Control Group 1."
@@ -3326,6 +3316,16 @@ msgstr "Tagh am buidheann-smachd 1 seach na thagh thu cheana."
 msgctxt "hotkey metadata"
 msgid "Select Control Group 1"
 msgstr "Tagh am buidheann-smachd 1"
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.desc
+msgctxt "hotkey metadata"
+msgid "Change the current selection to Control Group 10."
+msgstr ""
+
+#: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.10.name
+msgctxt "hotkey metadata"
+msgid "Select Control Group 10"
+msgstr ""
 
 #: gui/hotkeys/spec/selection.jsonmapped_hotkeys.selection.selection.group.select.2.desc
 msgctxt "hotkey metadata"
@@ -4056,6 +4056,15 @@ msgstr "Am modh uinneagach"
 #: gui/options/options.json[1].options[0].tooltip
 msgid "Start 0 A.D. in a window."
 msgstr "Tòisich 0 A.D. ann an uinneag."
+
+#: gui/options/options.json[1].options[10].label
+msgid "Mouse drag"
+msgstr ""
+
+#: gui/options/options.json[1].options[10].tooltip
+msgid ""
+"Number of pixels the mouse can move before the action is considered a drag."
+msgstr ""
 
 #: gui/options/options.json[1].options[1].label
 #: gui/options/options.json[2].options[1].label
@@ -5151,8 +5160,8 @@ msgid "Tutorial"
 msgstr "Oideachadh"
 
 #: gui/pregame/MainMenuItems.js:15
-msgid "Start the economic tutorial."
-msgstr "Tòisich air oideachadh na h-eaconamaidh."
+msgid "Start the introductory tutorial."
+msgstr ""
 
 #: gui/pregame/MainMenuItems.js:36
 #: gui/reference/common/Buttons/StructreeButton.js:21
@@ -5381,8 +5390,8 @@ msgid "WILDFIRE GAMES"
 msgstr "WILDFIRE GAMES"
 
 #: gui/pregame/ProjectInformation.js:18
-msgid "Alpha XXVI: Z——"
-msgstr "Alpha XXVI: Z——"
+msgid "Alpha XXVI: Zhuangzi"
+msgstr ""
 
 #: gui/pregame/ProjectInformation.js:19
 msgid ""
@@ -5953,8 +5962,8 @@ msgid "Score"
 msgstr "Sgòr"
 
 #: gui/summary/layout.js:15 gui/summary/layout.js:33 gui/summary/layout.js:71
-#: gui/summary/layout.js:111 gui/summary/layout.js:162
-#: gui/summary/layout.js:194 gui/summary/summary.xml:(caption):70
+#: gui/summary/layout.js:110 gui/summary/layout.js:161
+#: gui/summary/layout.js:193 gui/summary/summary.xml:(caption):70
 msgid "Player name"
 msgstr "Ainm a’ chluicheadair"
 
@@ -5978,7 +5987,7 @@ msgstr "Rùrachadh"
 msgid "Structures"
 msgstr "Togalaichean"
 
-#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:112
+#: gui/summary/layout.js:34 gui/summary/layout.js:72 gui/summary/layout.js:111
 msgid "Total"
 msgstr "Iomlan"
 
@@ -6055,107 +6064,107 @@ msgstr "Fir-mhalairt"
 
 #: gui/summary/layout.js:84
 #, javascript-format
-msgid "Unit Statistics (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
-msgstr "Stadastaireachd nan aonad (%(trained)s / %(killed)s / %(captured)s / %(lost)s)"
+msgid "Unit Statistics (%(trained)s / %(killed)s / %(lost)s)"
+msgstr ""
 
-#: gui/summary/layout.js:109
+#: gui/summary/layout.js:108
 msgid "Resources"
 msgstr "Stòrasan"
 
-#: gui/summary/layout.js:121
+#: gui/summary/layout.js:120
 msgid "Tributes"
 msgstr "Cìsean"
 
-#: gui/summary/layout.js:122
+#: gui/summary/layout.js:121
 #, javascript-format
 msgid ""
 "Tributes \n"
 "(%(sent)s / %(received)s)"
 msgstr "Cìsean \n(%(sent)s / %(received)s)"
 
-#: gui/summary/layout.js:130
+#: gui/summary/layout.js:129
 msgid "Treasures collected"
 msgstr "Ulaidhean air an togail"
 
-#: gui/summary/layout.js:131
+#: gui/summary/layout.js:130
 msgid "Loot"
 msgstr "Spùinn"
 
-#: gui/summary/layout.js:132
+#: gui/summary/layout.js:131
 msgid "Livestock bred"
 msgstr "Sprèidh air a thogail"
 
-#: gui/summary/layout.js:136
+#: gui/summary/layout.js:135
 #, javascript-format
 msgid "Resource Statistics (%(gathered)s / %(used)s)"
 msgstr "Stadastaireachd nan stòras (%(gathered)s / %(used)s)"
 
-#: gui/summary/layout.js:160
+#: gui/summary/layout.js:159
 msgid "Market"
 msgstr "Margaid"
 
-#: gui/summary/layout.js:163
+#: gui/summary/layout.js:162
 msgid "Trade income"
 msgstr "Teachd a-steach"
 
-#: gui/summary/layout.js:164
+#: gui/summary/layout.js:163
 msgid "Barter efficiency"
 msgstr "Èifeachdachd"
 
 #. Translation: use %(resourceWithinSentence)s if needed
-#: gui/summary/layout.js:170
+#: gui/summary/layout.js:169
 #, javascript-format
 msgid "%(resourceFirstWord)s exchanged"
 msgstr "Malart %(resourceFirstWord)s"
 
-#: gui/summary/layout.js:192
+#: gui/summary/layout.js:191
 msgid "Miscellaneous"
 msgstr "Eile"
 
-#: gui/summary/layout.js:195
+#: gui/summary/layout.js:194
 msgid "Kill / Death ratio"
 msgstr "Marbhadh / bàs"
 
-#: gui/summary/layout.js:196 gui/summary/summary.js:99
+#: gui/summary/layout.js:195 gui/summary/summary.js:99
 msgid "Population"
 msgstr "Sluagh"
 
-#: gui/summary/layout.js:197
+#: gui/summary/layout.js:196
 msgid "Map control (peak)"
 msgstr "Cuid as motha dhen mhapa"
 
-#: gui/summary/layout.js:198
+#: gui/summary/layout.js:197
 msgid "Map control (finish)"
 msgstr "Cuid dhen mhapa aig an deireadh"
 
-#: gui/summary/layout.js:199
+#: gui/summary/layout.js:198
 msgid "Map exploration"
 msgstr "Rùrachadh a’ mhapa"
 
-#: gui/summary/layout.js:200
+#: gui/summary/layout.js:199
 msgid "Vegetarian ratio"
 msgstr "Co-mheas nan glasraichear"
 
-#: gui/summary/layout.js:201
+#: gui/summary/layout.js:200
 msgid "Feminization"
 msgstr "Boireannaich"
 
-#: gui/summary/layout.js:204
+#: gui/summary/layout.js:203
 msgid "Bribes"
 msgstr "Brìbean"
 
-#: gui/summary/layout.js:205
+#: gui/summary/layout.js:204
 #, javascript-format
 msgid ""
 "Bribes\n"
 "(%(succeeded)s / %(failed)s)"
 msgstr "Brìbean\n(%(succeeded)s / %(failed)s)"
 
-#: gui/summary/layout.js:231
+#: gui/summary/layout.js:230
 msgid "Charts"
 msgstr "Cairtean"
 
-#: gui/summary/layout.js:378
+#: gui/summary/layout.js:377
 msgid "Team total"
 msgstr "Iomlan an sgioba"
 

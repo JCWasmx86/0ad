@@ -33,7 +33,7 @@
 #include "ps/Filesystem.h"
 #include "ps/Game.h"
 #include "ps/VideoMode.h"
-#include "renderer/backend/gl/Device.h"
+#include "renderer/backend/IDevice.h"
 #include "renderer/Renderer.h"
 #include "renderer/SceneRenderer.h"
 #include "renderer/RenderingOptions.h"
@@ -41,16 +41,18 @@
 #include <algorithm>
 
 SkyManager::SkyManager()
-	: m_VertexArray(Renderer::Backend::GL::CBuffer::Type::VERTEX, false)
+	: m_VertexArray(Renderer::Backend::IBuffer::Type::VERTEX, false)
 {
 	CFG_GET_VAL("showsky", m_SkyVisible);
 }
 
 void SkyManager::LoadAndUploadSkyTexturesIfNeeded(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
-	if (m_SkyCubeMap)
+	if (m_SkyTextureCube)
 		return;
+
+	m_SkyTextureCube = g_Renderer.GetTextureManager().GetBlackTextureCube();
 
 	GPU_SCOPED_LABEL(deviceCommandContext, "Load Sky Textures");
 	static const CStrW images[NUMBER_OF_TEXTURES + 1] = {
@@ -95,8 +97,12 @@ void SkyManager::LoadAndUploadSkyTexturesIfNeeded(
 			}
 		}
 
-		textures[i].decode(file, fileSize);
-		textures[i].transform_to((textures[i].m_Flags | TEX_BOTTOM_UP | TEX_ALPHA) & ~(TEX_DXT | TEX_MIPMAPS));
+		if (textures[i].decode(file, fileSize) != INFO::OK ||
+			textures[i].transform_to((textures[i].m_Flags | TEX_BOTTOM_UP | TEX_ALPHA) & ~(TEX_DXT | TEX_MIPMAPS)) != INFO::OK)
+		{
+			LOGERROR("Error creating sky cubemap '%s', can't decode file: '%s'.", m_SkySet.ToUTF8().c_str(), path.string8().c_str());
+			return;
+		}
 
 		if (!is_pow2(textures[i].m_Width) || !is_pow2(textures[i].m_Height))
 		{
@@ -111,12 +117,13 @@ void SkyManager::LoadAndUploadSkyTexturesIfNeeded(
 		}
 	}
 
-	m_SkyCubeMap = g_VideoMode.GetBackendDevice()->CreateTexture("SkyCubeMap",
-		Renderer::Backend::GL::CTexture::Type::TEXTURE_CUBE,
-		Renderer::Backend::Format::R8G8B8A8_UNORM, textures[0].m_Width, textures[0].m_Height,
-		Renderer::Backend::Sampler::MakeDefaultSampler(
-			Renderer::Backend::Sampler::Filter::LINEAR,
-			Renderer::Backend::Sampler::AddressMode::CLAMP_TO_EDGE), 1, 1);
+	std::unique_ptr<Renderer::Backend::ITexture> skyCubeMap =
+		g_VideoMode.GetBackendDevice()->CreateTexture("SkyCubeMap",
+			Renderer::Backend::ITexture::Type::TEXTURE_CUBE,
+			Renderer::Backend::Format::R8G8B8A8_UNORM, textures[0].m_Width, textures[0].m_Height,
+			Renderer::Backend::Sampler::MakeDefaultSampler(
+				Renderer::Backend::Sampler::Filter::LINEAR,
+				Renderer::Backend::Sampler::AddressMode::CLAMP_TO_EDGE), 1, 1);
 
 	std::vector<u8> rotated;
 	for (size_t i = 0; i < NUMBER_OF_TEXTURES + 1; ++i)
@@ -144,17 +151,24 @@ void SkyManager::LoadAndUploadSkyTexturesIfNeeded(
 			}
 
 			deviceCommandContext->UploadTexture(
-				m_SkyCubeMap.get(), Renderer::Backend::Format::R8G8B8A8_UNORM,
+				skyCubeMap.get(), Renderer::Backend::Format::R8G8B8A8_UNORM,
 				&rotated[0], textures[i].m_DataSize, 0, i);
 		}
 		else
 		{
 			deviceCommandContext->UploadTexture(
-				m_SkyCubeMap.get(), Renderer::Backend::Format::R8G8B8A8_UNORM,
+				skyCubeMap.get(), Renderer::Backend::Format::R8G8B8A8_UNORM,
 				data, textures[i].m_DataSize, 0, i);
 		}
 	}
+
+	m_SkyTextureCube = g_Renderer.GetTextureManager().WrapBackendTexture(std::move(skyCubeMap));
 	///////////////////////////////////////////////////////////////////////////
+}
+
+Renderer::Backend::ITexture* SkyManager::GetSkyCube()
+{
+	return m_SkyTextureCube->GetBackendTexture();
 }
 
 void SkyManager::SetSkySet(const CStrW& newSet)
@@ -162,7 +176,7 @@ void SkyManager::SetSkySet(const CStrW& newSet)
 	if (newSet == m_SkySet)
 		return;
 
-	m_SkyCubeMap.reset();
+	m_SkyTextureCube.reset();
 
 	m_SkySet = newSet;
 }
@@ -189,7 +203,7 @@ std::vector<CStrW> SkyManager::GetSkySets() const
 }
 
 void SkyManager::RenderSky(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext)
 {
 	GPU_SCOPED_LABEL(deviceCommandContext, "Render sky");
 
@@ -197,7 +211,7 @@ void SkyManager::RenderSky(
 		return;
 
 	// Do nothing unless SetSkySet was called
-	if (m_SkySet.empty() || !m_SkyCubeMap)
+	if (m_SkySet.empty() || !m_SkyTextureCube)
 		return;
 
 	if (m_VertexArray.GetNumberOfVertices() == 0)
@@ -210,8 +224,9 @@ void SkyManager::RenderSky(
 	deviceCommandContext->SetGraphicsPipelineState(
 		skytech->GetGraphicsPipelineStateDesc());
 	deviceCommandContext->BeginPass();
-	Renderer::Backend::GL::CShaderProgram* shader = skytech->GetShader();
-	shader->BindTexture(str_baseTex, m_SkyCubeMap.get());
+	Renderer::Backend::IShaderProgram* shader = skytech->GetShader();
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_baseTex), m_SkyTextureCube->GetBackendTexture());
 
 	// Translate so the sky center is at the camera space origin.
 	CMatrix3D translate;
@@ -227,20 +242,24 @@ void SkyManager::RenderSky(
 	CMatrix3D rotate;
 	rotate.SetYRotation(M_PI + g_Renderer.GetSceneRenderer().GetLightEnv().GetRotation());
 
-	shader->Uniform(
-		str_transform,
-		camera.GetViewProjection() * translate * rotate * scale);
+	const CMatrix3D transform = camera.GetViewProjection() * translate * rotate * scale;
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_transform), transform.AsFloatArray());
 
 	m_VertexArray.PrepareForRendering();
+	m_VertexArray.UploadIfNeeded(deviceCommandContext);
 
-	u8* base = m_VertexArray.Bind(deviceCommandContext);
-	const GLsizei stride = static_cast<GLsizei>(m_VertexArray.GetStride());
+	const uint32_t stride = m_VertexArray.GetStride();
+	const uint32_t firstVertexOffset = m_VertexArray.GetOffset() * stride;
 
-	shader->VertexPointer(
-		m_AttributePosition.format, stride, base + m_AttributePosition.offset);
-	shader->TexCoordPointer(
-		GL_TEXTURE0, m_AttributeUV.format, stride, base + m_AttributeUV.offset);
-	shader->AssertPointersBound();
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION, m_AttributePosition.format,
+		firstVertexOffset + m_AttributePosition.offset, stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0, m_AttributeUV.format,
+		firstVertexOffset + m_AttributeUV.offset, stride, 0);
+
+	deviceCommandContext->SetVertexBuffer(0, m_VertexArray.GetBuffer());
 
 	deviceCommandContext->Draw(0, m_VertexArray.GetNumberOfVertices());
 

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D. — Empires Ascendant\n"
-"POT-Creation-Date: 2022-03-18 08:09+0000\n"
-"PO-Revision-Date: 2022-03-18 08:09+0000\n"
+"POT-Creation-Date: 2022-04-04 07:08+0000\n"
+"PO-Revision-Date: 2022-04-04 07:08+0000\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -40,7 +40,6 @@ msgstr ""
 #: simulation/data/technologies/health_regen_units.json:requirementsTooltip
 #: simulation/data/technologies/hellenistic_metropolis.json:requirementsTooltip
 #: simulation/data/technologies/immortals.json:requirementsTooltip
-#: simulation/data/technologies/iphicratean_reforms.json:requirementsTooltip
 #: simulation/data/technologies/long_walls.json:requirementsTooltip
 #: simulation/data/technologies/nisean_horses.json:requirementsTooltip
 #: simulation/data/technologies/parade_of_daphne.json:requirementsTooltip
@@ -113,6 +112,7 @@ msgstr ""
 #: simulation/data/technologies/heal_rate.json:requirementsTooltip
 #: simulation/data/technologies/hoplite_tradition.json:requirementsTooltip
 #: simulation/data/technologies/infantry_cost_time.json:requirementsTooltip
+#: simulation/data/technologies/iphicratean_reforms.json:requirementsTooltip
 #: simulation/data/technologies/pop_house_01.json:requirementsTooltip
 #: simulation/data/technologies/soldier_attack_melee_01.json:requirementsTooltip
 #: simulation/data/technologies/soldier_attack_ranged_01.json:requirementsTooltip
@@ -196,7 +196,7 @@ msgid "Sūnzǐ BīngFǎ"
 msgstr ""
 
 #: simulation/data/technologies/art_of_war.json:tooltip
-msgid "All Citizen-Soldiers -25% required promotion experience."
+msgid "All Citizen-Soldiers −25% required promotion experience."
 msgstr ""
 
 #: simulation/data/technologies/attack_soldiers_will.json:description
@@ -340,7 +340,9 @@ msgid "+10% maximum population limit."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/han_walls.json:description
-msgid "Han built massive walls, the great wall."
+msgid ""
+"The Han built massive walls made from rammed earth. These were gigantic fortifications "
+"several meters thick and stretching for kilometers."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/han_walls.json:genericName
@@ -360,7 +362,7 @@ msgid "Resource-Rich Economy"
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/mace_storehouse.json:tooltip
-msgid "Storehouse technologies -100% research time."
+msgid "Storehouse technologies −100% research time."
 msgstr ""
 
 #: simulation/data/technologies/civbonuses/maur_elephants.json:description
@@ -438,7 +440,7 @@ msgid "Houses and Economic Structures −40% wood cost and health."
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.json:genericName
-msgid "Civil Engineering - Level 1"
+msgid "Civil Engineering − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.json:specificName.han
@@ -447,19 +449,19 @@ msgid "Gōngchéng"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_01.json:tooltip
-msgid "All structures -15% build time, +10% health and -5% cost."
+msgid "All structures −15% build time, +10% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.json:genericName
-msgid "Civil Engineering - Level 2"
+msgid "Civil Engineering − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/civil_engineering_02.json:tooltip
-msgid "All structures -25% build time, +20% health and -5% cost."
+msgid "All structures −25% build time, +20% health and −5% cost."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.json:genericName
-msgid "Civil Service - Level 1"
+msgid "Civil Service − Level 1"
 msgstr ""
 
 #: simulation/data/technologies/civil_service_01.json:specificName.han
@@ -469,11 +471,11 @@ msgstr ""
 
 #: simulation/data/technologies/civil_service_01.json:tooltip
 #: simulation/data/technologies/civil_service_02.json:tooltip
-msgid "Technologies at all buildings, except the Forge, -15% cost and -15% research time."
+msgid "Technologies at all buildings, except the Forge, −15% cost and −15% research time."
 msgstr ""
 
 #: simulation/data/technologies/civil_service_02.json:genericName
-msgid "Civil Service - Level 2"
+msgid "Civil Service − Level 2"
 msgstr ""
 
 #: simulation/data/technologies/colonization.json:description
@@ -946,8 +948,8 @@ msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.json:description
 msgid ""
-"Athenian triremes can train Marines (Epibates Athenaikos) and Cretan Mercenary Archers "
-"(Toxotes Kretikos)."
+"Athenian gymnasium, docks and triremes can train Marines (Epibates Athenaikos) and "
+"Cretan Mercenary Archers (Toxotes Kretikos)."
 msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.json:genericName
@@ -955,7 +957,7 @@ msgid "Iphicratean Reforms"
 msgstr ""
 
 #: simulation/data/technologies/iphicratean_reforms.json:tooltip
-msgid "Athenian Triremes can train Marines and Cretan Mercenary Archers."
+msgid "Athenian Gymnasia, Docks and Triremes can train Marines and Cretan Mercenary Archers."
 msgstr ""
 
 #: simulation/data/technologies/long_walls.json:description

@@ -36,39 +36,43 @@
  * to use VertexArray where possible, though. */
 
 void CTexturedLineRData::Render(
-	Renderer::Backend::GL::CDeviceCommandContext* deviceCommandContext,
-	const SOverlayTexturedLine& line, Renderer::Backend::GL::CShaderProgram* shader)
+	Renderer::Backend::IDeviceCommandContext* deviceCommandContext,
+	const SOverlayTexturedLine& line, Renderer::Backend::IShaderProgram* shader)
 {
 	if (!m_VB || !m_VBIndices)
 		return; // might have failed to allocate
 
 	// -- render main line quad strip ----------------------
 
-	const int streamFlags = shader->GetStreamFlags();
-
 	line.m_TextureBase->UploadBackendTextureIfNeeded(deviceCommandContext);
 	line.m_TextureMask->UploadBackendTextureIfNeeded(deviceCommandContext);
 
+	m_VB->m_Owner->UploadIfNeeded(deviceCommandContext);
 	m_VBIndices->m_Owner->UploadIfNeeded(deviceCommandContext);
 
-	shader->BindTexture(str_baseTex, line.m_TextureBase->GetBackendTexture());
-	shader->BindTexture(str_maskTex, line.m_TextureMask->GetBackendTexture());
-	shader->Uniform(str_objectColor, line.m_Color);
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_baseTex), line.m_TextureBase->GetBackendTexture());
+	deviceCommandContext->SetTexture(
+		shader->GetBindingSlot(str_maskTex), line.m_TextureMask->GetBackendTexture());
+	deviceCommandContext->SetUniform(
+		shader->GetBindingSlot(str_objectColor), line.m_Color.AsFloatArray());
 
-	GLsizei stride = sizeof(CTexturedLineRData::SVertex);
-	CTexturedLineRData::SVertex* vertexBase =
-		reinterpret_cast<CTexturedLineRData::SVertex*>(m_VB->m_Owner->Bind(deviceCommandContext));
+	const uint32_t stride = sizeof(CTexturedLineRData::SVertex);
 
-	if (streamFlags & STREAM_POS)
-		shader->VertexPointer(Renderer::Backend::Format::R32G32B32_SFLOAT, stride, &vertexBase->m_Position[0]);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::POSITION,
+		Renderer::Backend::Format::R32G32B32_SFLOAT,
+		offsetof(CTexturedLineRData::SVertex, m_Position), stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV0,
+		Renderer::Backend::Format::R32G32_SFLOAT,
+		offsetof(CTexturedLineRData::SVertex, m_UVs), stride, 0);
+	deviceCommandContext->SetVertexAttributeFormat(
+		Renderer::Backend::VertexAttributeStream::UV1,
+		Renderer::Backend::Format::R32G32_SFLOAT,
+		offsetof(CTexturedLineRData::SVertex, m_UVs), stride, 0);
 
-	if (streamFlags & STREAM_UV0)
-		shader->TexCoordPointer(GL_TEXTURE0, Renderer::Backend::Format::R32G32_SFLOAT, stride, &vertexBase->m_UVs[0]);
-
-	if (streamFlags & STREAM_UV1)
-		shader->TexCoordPointer(GL_TEXTURE1, Renderer::Backend::Format::R32G32_SFLOAT, stride, &vertexBase->m_UVs[0]);
-
-	shader->AssertPointersBound();
+	deviceCommandContext->SetVertexBuffer(0, m_VB->m_Owner->GetBuffer());
 
 	deviceCommandContext->SetIndexBuffer(m_VBIndices->m_Owner->GetBuffer());
 	deviceCommandContext->DrawIndexed(m_VBIndices->m_Index, m_VBIndices->m_Count, 0);
@@ -318,16 +322,18 @@ void CTexturedLineRData::Update(const SOverlayTexturedLine& line)
 		m_BoundingBox += vertex.m_Position;
 
 	m_VB = g_VBMan.AllocateChunk(
-		sizeof(SVertex), vertices.size(), Renderer::Backend::GL::CBuffer::Type::VERTEX, false);
-	if (m_VB) // allocation might fail (e.g. due to too many vertices)
+		sizeof(SVertex), vertices.size(), Renderer::Backend::IBuffer::Type::VERTEX, false);
+	// Allocation might fail (e.g. due to too many vertices).
+	if (m_VB)
 	{
-		m_VB->m_Owner->UpdateChunkVertices(m_VB.Get(), &vertices[0]); // copy data into VBO
+		// Copy data into backend buffer.
+		m_VB->m_Owner->UpdateChunkVertices(m_VB.Get(), &vertices[0]);
 
 		for (size_t k = 0; k < indices.size(); ++k)
 			indices[k] += static_cast<u16>(m_VB->m_Index);
 
 		m_VBIndices = g_VBMan.AllocateChunk(
-			sizeof(u16), indices.size(), Renderer::Backend::GL::CBuffer::Type::INDEX, false);
+			sizeof(u16), indices.size(), Renderer::Backend::IBuffer::Type::INDEX, false);
 		if (m_VBIndices)
 			m_VBIndices->m_Owner->UpdateChunkVertices(m_VBIndices.Get(), &indices[0]);
 	}

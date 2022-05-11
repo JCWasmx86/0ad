@@ -22,13 +22,14 @@
 # Hasan Baran Kırmızı
 # İrfan Sunay
 # Kemal Oktay Aktoğan
+# Muha Aliss
 # e6994ea0b77eb29dc3b698ecd0182f2c_022dedb
 # ozgur gursoy
 # rtacr
 # receb
 # Rwe ass
 # seckin Yılmaz
-# ambd
+# af28edb70b2b75d47d218877703e76fe_d40b19a
 # Umut Yasar
 # UMUT YILDIRIM
 # Veysel AYDIN
@@ -36,9 +37,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2022-03-14 08:09+0000\n"
+"POT-Creation-Date: 2022-04-29 07:08+0000\n"
 "PO-Revision-Date: 2016-05-21 09:22+0000\n"
-"Last-Translator: yakup <mutouk@yandex.ru>, 2016-2017,2022\n"
+"Last-Translator: Cem Aktas <cemwstone@gmail.com>, 2018,2021-2022\n"
 "Language-Team: Turkish (http://www.transifex.com/wildfire-games/0ad/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,11 +65,11 @@ msgstr "Tersane Onarımı"
 
 #: simulation/data/auras/structures/han_laozi_gate.jsonauraDescription
 msgid "Humans +1 health regeneration rate, +25% health"
-msgstr ""
+msgstr "İnsanlar +1 sağlık yenileme oranı, +25% sağlık"
 
 #: simulation/data/auras/structures/han_laozi_gate.jsonauraName
 msgid "Taoism"
-msgstr ""
+msgstr "Taoculuk"
 
 #: simulation/data/auras/structures/iber_monument.jsonauraDescription
 msgid "Soldiers +20% melee and ranged attack damage."
@@ -214,11 +215,11 @@ msgstr "Galya Ürünleri"
 
 #: simulation/data/auras/teambonuses/han_player_teambonus.jsonauraDescription
 msgid "Allies +20% international trade bonus."
-msgstr ""
+msgstr "Müttefikler +%20 uluslararası ticaret bonusu."
 
 #: simulation/data/auras/teambonuses/han_player_teambonus.jsonauraName
 msgid "Silk Road"
-msgstr ""
+msgstr "İpek yolu"
 
 #: simulation/data/auras/teambonuses/iber_player_teambonus.jsonauraDescription
 msgid "Citizen Javelineers −10% resource costs."
@@ -377,21 +378,21 @@ msgstr "Roma'ya Haraç"
 msgid ""
 "At its height, the Empire's borders spanned from the Fergana Valley in the west, to Korea in the east, and to northern Vietnam in the south.\n"
 "Territory influence bonus +20%."
-msgstr ""
+msgstr "İmparatorluğun en geniş olduğu dönemde sınırları batıda Fergana Vadisi'nden doğuda Kore'ye ve güneyde kuzey Vietnam'a kadar uzanıyordu.\nBölge etkisi bonusu +20%."
 
 #: simulation/data/auras/units/catafalques/han_catafalque_1.jsonauraName
 msgid "Territorial Expansion"
-msgstr ""
+msgstr "Bölgesel Genişleme"
 
 #: simulation/data/auras/units/catafalques/han_catafalque_2.jsonauraDescription
 msgid ""
 "The Music Bureau was charged directly, by the emperor to perform various tasks related to music, poetry, entertainment, or religious worship.\n"
-" Techcost -50%."
-msgstr ""
+" Techcost −50%."
+msgstr "Müzik Bürosu, imparator tarafından müzik, şiir, eğlence veya dini ibadetle ilgili çeşitli görevleri yerine getirmekle doğrudan görevlendirildi.\nTeknik Maliyet -50%."
 
 #: simulation/data/auras/units/catafalques/han_catafalque_2.jsonauraName
 msgid "Imperial Music Bureau"
-msgstr ""
+msgstr "İmparatorluk Müzik Bürosu"
 
 #: simulation/data/auras/units/catafalques/iber_catafalque_1.jsonauraDescription
 msgid ""
@@ -578,47 +579,47 @@ msgstr "Fil İşçiler"
 
 #: simulation/data/auras/units/han_minister_building.jsonauraDescription
 msgid "Builders construct buildings +2% faster for every nearby Minister."
-msgstr ""
+msgstr "İnşaatçılar yakındaki her bakan ile +%2 daha hızlı bina inşa ederler."
 
 #: simulation/data/auras/units/han_minister_building.jsonauraName
 msgid "Building Programs"
-msgstr ""
+msgstr "Bina Programları"
 
 #: simulation/data/auras/units/han_minister_cost.jsonauraDescription
 msgid "Cost +20% and build time +20% for each new Minister trained."
-msgstr ""
+msgstr "Her eğitilen bakan ile maliyet +%20 ve inşa süresi +%20 artar."
 
 #: simulation/data/auras/units/han_minister_cost.jsonauraName
 msgid "The Cost of Splendor"
-msgstr ""
+msgstr "İhtişam Maliyeti"
 
 #: simulation/data/auras/units/han_minister_garrison.jsonauraDescription
 msgid ""
 "Decrease resource costs and research time of technologies in a building by "
 "2% for each Minister garrisoned within."
-msgstr ""
+msgstr "Binaya konuşlandırılmış her bakan için kaynak maliyetlerini ve teknoloji araştırma süresini %2 düşür. "
 
 #: simulation/data/auras/units/han_minister_garrison.jsonauraName
 msgid "Excellency of Works"
-msgstr ""
+msgstr "İşlerin Mükemmeliği Bakanı"
 
 #: simulation/data/auras/units/han_minister_garrison_ministry.jsonauraDescription
 msgid ""
 "The Imperial Ministry gains a +0.1 wood, stone, metal trickle for each "
 "garrisoned minister."
-msgstr ""
+msgstr "İmparatorluk Bakanlığı her konuşlandırılmış bakan için fazladan +0.1 odun, taş ve metal elde eder."
 
 #: simulation/data/auras/units/han_minister_garrison_ministry.jsonauraName
 msgid "Nationalized Industries"
-msgstr ""
+msgstr "Ulusallaştırılmış Endüstriler"
 
 #: simulation/data/auras/units/han_minister_gathering.jsonauraDescription
 msgid "Gatherers +2% gathering rate for every nearby Minister."
-msgstr ""
+msgstr "Toplayıcılar yakındaki her bakan ile +%2 daha hızlı toplarlar."
 
 #: simulation/data/auras/units/han_minister_gathering.jsonauraName
 msgid "Minister over the Masses"
-msgstr ""
+msgstr "Kitlelerin Üsütünlüğü Bakanı"
 
 #: simulation/data/auras/units/heroes/athen_hero_iphicrates_1.jsonauraDescription
 msgid ""
@@ -758,33 +759,33 @@ msgid "Preparation for War"
 msgstr "Savaş Hazırlığı"
 
 #: simulation/data/auras/units/heroes/han_hero_han_xin_1.jsonauraDescription
-msgid "Soldiers -50% promotion experience."
-msgstr ""
+msgid "Soldiers −50% promotion experience."
+msgstr "Askerler -%50 terfi deneyimi."
 
 #: simulation/data/auras/units/heroes/han_hero_han_xin_1.jsonauraName
 msgid "Northern Army"
-msgstr ""
+msgstr "Kuzey Ordusu"
 
 #: simulation/data/auras/units/heroes/han_hero_han_xin_2.jsonauraDescription
 msgid "Own and Allied Soldiers +25% vision range."
-msgstr ""
+msgstr "Kendi ve Müttefik Askerler için +%25 görüş menzili."
 
 #: simulation/data/auras/units/heroes/han_hero_han_xin_2.jsonauraName
 msgid "Southern Army"
-msgstr ""
+msgstr "Güney Ordusu"
 
 #: simulation/data/auras/units/heroes/han_hero_liu_bang_1.jsonauraDescription
 msgid "Walls +10 health regeneration rate."
-msgstr ""
+msgstr "Duvarlar +10 can yenileme oranı."
 
 #: simulation/data/auras/units/heroes/han_hero_liu_bang_1.jsonauraName
 #: simulation/data/auras/units/heroes/han_hero_liu_bang_2.jsonauraName
 msgid "Confucian Reforms"
-msgstr ""
+msgstr "Konfüçyüs Reformları"
 
 #: simulation/data/auras/units/heroes/han_hero_liu_bang_2.jsonauraDescription
 msgid "Cavalry +20% attack damage."
-msgstr ""
+msgstr "Süvari +%20 saldırı gücü."
 
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_1.jsonauraDescription
 #: simulation/data/auras/units/heroes/kush_hero_amanirenas.jsonauraDescription
@@ -796,19 +797,19 @@ msgstr "Şampiyonlar +2 ele geçirme saldırı gücü, +%20 yakın ve menzilli s
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_1.jsonauraName
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_2.jsonauraName
 msgid "Mandate of Heaven"
-msgstr ""
+msgstr " Cennetin İradesi"
 
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_2.jsonauraDescription
 msgid "Enemy Cavalry −10% melee and ranged attack damage."
-msgstr ""
+msgstr "Düşman Süvari -%10 yakın dövüş ve menzilli saldırı gücü."
 
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_3.jsonauraDescription
-msgid "Nearby enemy units -10 health/second."
+msgid "Nearby human enemies −10 health/second."
 msgstr ""
 
 #: simulation/data/auras/units/heroes/han_hero_wei_qing_3.jsonauraName
 msgid "Scythes"
-msgstr ""
+msgstr "Tırpan"
 
 #: simulation/data/auras/units/heroes/hero_garrison.jsonauraDescription
 msgid ""
@@ -1086,8 +1087,8 @@ msgid "Ilarchès"
 msgstr "Süvari Komutanı"
 
 #: simulation/data/auras/units/heroes/sele_hero_antiochus_iv.jsonauraDescription
-msgid "Enemy Structures, Ships, and Siege Engines -20% health."
-msgstr "Düşman Binaları, Gemileri ve Kuşatma Makineleri -%20 sağlık."
+msgid "Enemy Structures, Ships, and Siege Engines −20% health."
+msgstr "Düşman Yapıları, Gemiler ve Kuşatma Motorları -%20 sağlık."
 
 #: simulation/data/auras/units/heroes/sele_hero_antiochus_iv.jsonauraName
 msgid "Renowned Conqueror"

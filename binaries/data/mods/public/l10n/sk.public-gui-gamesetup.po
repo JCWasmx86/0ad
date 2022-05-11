@@ -1,5 +1,5 @@
 # Translation template for 0 A.D. — Empires Ascendant.
-# Copyright (C) 2021 Wildfire Games
+# Copyright (C) 2022 Wildfire Games
 # This file is distributed under the same license as the 0 A.D. — Empires Ascendant
 # project.
 # Translators:
@@ -18,15 +18,15 @@
 # Roman Beňo
 # Roman 'Kaktuxista' Benji
 # Rudolf Tisoň
-# Slavomír Slovenkai
+# c1d3d4413723242329060e6153cf18b8_282267d
 # Tom Hanax
 # Zuzana Miadoková
 msgid ""
 msgstr ""
 "Project-Id-Version: 0 A.D.\n"
-"POT-Creation-Date: 2021-08-30 07:08+0000\n"
-"PO-Revision-Date: 2022-02-18 14:29+0000\n"
-"Last-Translator: Peto\n"
+"POT-Creation-Date: 2022-03-21 08:21+0000\n"
+"PO-Revision-Date: 2014-06-19 17:48+0000\n"
+"Last-Translator: Zuzana Miadoková, 2021-2022\n"
 "Language-Team: Slovak (http://www.transifex.com/wildfire-games/0ad/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,46 +34,46 @@ msgstr ""
 "Language: sk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
-#: gui/gamesettings/attributes/PlayerName.js:113
+#: gui/gamesettings/attributes/PlayerName.js:133
 #, javascript-format
 msgid "%(playerName)s %(romanNumber)s"
 msgstr "%(playerName)s %(romanNumber)s"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:57
+#: gui/gamesettings/attributes/TeamPlacement.js:55
 msgctxt "team placement"
 msgid "Circle"
 msgstr "Kruh"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:58
+#: gui/gamesettings/attributes/TeamPlacement.js:56
 msgid ""
 "Allied players are grouped and placed with opposing players on one circle "
 "spanning the map."
 msgstr "Spojeneckí hráči sú zoskupení a umiestnení so súperiacimi hráčmi v jednom okruhu rozprestretom na mape."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:62
+#: gui/gamesettings/attributes/TeamPlacement.js:60
 msgctxt "team placement"
 msgid "Line"
 msgstr "Čiara"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:63
+#: gui/gamesettings/attributes/TeamPlacement.js:61
 msgid "Allied players are placed in a linear pattern."
-msgstr "Spojenci sú umiestnení podľa lineárneho vzorca."
+msgstr "Spojenci sú umiestnení podľa lineárneho vzoru."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:67
+#: gui/gamesettings/attributes/TeamPlacement.js:65
 msgctxt "team placement"
 msgid "Random Group"
 msgstr "Náhodná skupina"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:68
+#: gui/gamesettings/attributes/TeamPlacement.js:66
 msgid "Allied players are grouped, but otherwise placed randomly on the map."
 msgstr "Spojeneckí hráči sú zoskupení, ale inak náhodne roztrúsení na mape."
 
-#: gui/gamesettings/attributes/TeamPlacement.js:72
+#: gui/gamesettings/attributes/TeamPlacement.js:70
 msgctxt "team placement"
 msgid "Stronghold"
 msgstr "Pevnosť"
 
-#: gui/gamesettings/attributes/TeamPlacement.js:73
+#: gui/gamesettings/attributes/TeamPlacement.js:71
 msgid "Allied players are grouped in one random place of the map."
 msgstr "Spojeneckí hráči sú zoskupení na jednom náhodnom mieste na mape."
 
@@ -159,16 +159,16 @@ msgstr "AI: %(ai)s"
 msgid "Unassigned"
 msgstr "Nepridelený"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:71
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:90
 msgid "Choose the civilization for this player."
 msgstr "Zvoľ civilizáciu tohto hráča."
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:74
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:93
 msgctxt "civilization"
 msgid "Random"
 msgstr "Náhodná"
 
-#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:80
+#: gui/gamesetup/Pages/GameSetupPage/GameSettings/PerPlayer/Dropdowns/PlayerCiv.js:99
 msgid "Picks one civilization at random when the game starts."
 msgstr "Keď začne hra, náhodne vyberie jednu civilizáciu."
 
@@ -220,7 +220,7 @@ msgstr "Pohľad spojenca"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/AlliedView.js:30
 msgid "Toggle allied view (see what your allies see)."
-msgstr "Prepnúť pohľad spojenca (vidíte to čo vidia spojenci)."
+msgstr "Prepnúť pohľad spojenca (vidíš to, čo tvoji spojenci)."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Cheats.js:35
 msgid "Cheats"
@@ -270,7 +270,7 @@ msgstr "Nomád "
 msgid ""
 "In Nomad mode, players start with only few units and have to find a suitable"
 " place to build their city. Ceasefire is recommended."
-msgstr "V móde Nomádov, hráči začínajú len s niekoľkými jednotkami za cieľom nájsť vhodné miesto pre stavbu mesta.  Prímerie sa odporúča. "
+msgstr "V móde Nomád začínajú hráči len s niekoľkými jednotkami za cieľom nájsť vhodné miesto pre stavbu mesta. Odporúča sa prímerie. "
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Rating.js:27
 msgid "Rated Game"
@@ -316,10 +316,10 @@ msgstr "Zakázať poklady"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/Treasures.js:28
 msgid "Do not add treasures to the map."
-msgstr "Nepridávaj na mapu poklady."
+msgstr "Nepridávať na mapu poklady."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:25
-msgid "World population"
+msgid "World Population"
 msgstr "Svetová populácia"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Checkboxes/WorldPopulation.js:28
@@ -361,7 +361,7 @@ msgstr "Náhodné"
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Daytime.js:66
 msgctxt "daytime selection"
 msgid "Randomly pick a time of the day."
-msgstr "Náhodne vyber čas v daný deň."
+msgstr "Náhodne vyber čas dňa."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/GameSpeed.js:61
 msgid "Game Speed"
@@ -387,7 +387,7 @@ msgstr "Krajina"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/Landscape.js:81
 msgid "Select one of the landscapes of this map."
-msgstr "Zvoľte jednu z krajín tejto mapy."
+msgstr "Zvoľ jednu z krajín tejto mapy."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/MapFilter.js:82
 msgid "Map Filter"
@@ -486,7 +486,7 @@ msgstr "Rozmiestnenie týmu"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TeamPlacement.js:56
 msgid "Select one of the starting position patterns of this map."
-msgstr "Zvoľte jednu zo začiatočných vzorov pozícií tejto mapy."
+msgstr "Zvoľ jeden zo vzorov začiatočných pozícií tejto mapy."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TeamPlacement.js:60
 msgctxt "team placement"
@@ -496,7 +496,7 @@ msgstr "Náhodné"
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TeamPlacement.js:61
 msgctxt "team placement"
 msgid "Select a random team placement pattern when starting the game."
-msgstr "Zvoľte náhodný vzorec umiestnenia tímu pri začiatku hry."
+msgstr "Zvoľ náhodný vzor umiestnenia tímov pri začiatku hry."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TriggerDifficulty.js:41
 msgid "Difficulty"
@@ -504,7 +504,7 @@ msgstr "Obtiažnosť "
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/TriggerDifficulty.js:44
 msgid "Select the difficulty of this scenario."
-msgstr "Vyber náročnosť scenária."
+msgstr "Vyber náročnosť scenára."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Dropdowns/WorldPopulationCap.js:47
 msgid "World Population Cap"
@@ -562,7 +562,7 @@ msgid ""
 "Total number of relics spawned on the map. Relic victory is most realistic "
 "with only one or two relics. With greater numbers, the relics are important "
 "to capture to receive aura bonuses."
-msgstr "Celkový počet relikvií vytvorených na mape. Víťazstvo relikvií je najrealistickejšie s jednou alebo dvoma relikviami. S väčším počtom, sú relikvie dôležitejšie obsadiť na získanie aurových bonusov. "
+msgstr "Celkový počet relikvií vytvorených na mape. Víťazstvo relikvií je najrealistickejšie s jednou alebo dvoma relikviami. S väčším počtom hráčov sú relikvie dôležitejšie pre získanie bonusových aurí. "
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/RelicDuration.js:38
 msgid "Relic Duration"
@@ -591,11 +591,11 @@ msgstr "Okamžité víťazstvo."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:38
 msgid "Sea Level Rise Time"
-msgstr "Čas prílivu morskej hladiny"
+msgstr "Čas stúpania morskej hladiny"
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:41
 msgid "Set the time when the water will start to rise."
-msgstr "Nastavenie času prílivu."
+msgstr "Nastav čas, kedy začne hladina vody stúpať."
 
 #: gui/gamesetup/Pages/GameSetupPage/GameSettings/Single/Sliders/SeaLevelRiseTime.js:44
 #, javascript-format
@@ -632,7 +632,7 @@ msgstr "Návrat do hlavného menu."
 msgid ""
 "%(hotkey_civinfo)s / %(hotkey_structree)s: View Civilization Overview / Structure Tree\n"
 "Last opened will be reopened on click."
-msgstr "%(hotkey_civinfo)s / %(hotkey_structree)s: Zobraziť prehľad civilizácií / Strom stavieb\nNaposledy otvorené bude po kliknutí opäť otvorené."
+msgstr "%(hotkey_civinfo)s / %(hotkey_structree)s: Zobraziť prehľad civilizácií / strom stavieb\nNaposledy otvorené bude po kliknutí opäť otvorené."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/Buttons/LobbyButton.js:19
 msgid "Show the multiplayer lobby in a dialog window."
@@ -772,15 +772,15 @@ msgstr "Hodnotená hra."
 #: gui/gamesetup/Pages/GameSetupPage/Panels/GameSettingsTabs.js:74
 #, javascript-format
 msgid "Click to toggle the %(name)s settings tab."
-msgstr "Kliknite na otovrenie %(name)s tabu nastavení."
+msgstr "Klikni pre otvorenie %(name)s záložky nastavení."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/MapPreview.js:27
 msgid "No selected map"
-msgstr "Mapa nie je nastavená"
+msgstr "Nie je vybraná mapa"
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/MapPreview.js:47
 msgid "Click to view the list of available maps."
-msgstr "Kliknite pre náhľad zoznamu dostupných máp."
+msgstr "Klikni pre náhľad zoznamu dostupných máp."
 
 #: gui/gamesetup/Pages/GameSetupPage/Panels/TipsPanel.xml:(caption):10
 msgid "Show this message in the future."
@@ -832,7 +832,7 @@ msgstr "Bol ti udelený ban."
 msgid ""
 "Failed to get local IP of the server (it was assumed to be on the same "
 "network)."
-msgstr "Nebolo schopné získať lokálnu IP servera (Bolo predpokladané, že je na tej istej sieti)."
+msgstr "Nebolo schopné získať lokálnu IP servera (bolo predpokladané, že je na tej istej sieti)."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:171
 #, javascript-format
@@ -867,7 +867,7 @@ msgstr "Názov hry sa už používa."
 #: gui/gamesetup_mp/gamesetup_mp.js:376
 #, javascript-format
 msgid "Cannot host game: %(message)s."
-msgstr "Nemôžem hosťovať hru: %(message)s."
+msgstr "Nemožno hosťovať hru: %(message)s."
 
 #: gui/gamesetup_mp/gamesetup_mp.js:377 gui/gamesetup_mp/gamesetup_mp.js:406
 #: gui/gamesetup_mp/gamesetup_mp.js:435 gui/gamesetup_mp/gamesetup_mp.js:450
@@ -908,7 +908,7 @@ msgstr "Port servera:"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):65
 msgid "Set up your server to host."
-msgstr "Nastaviť váš server ako hostiteľa."
+msgstr "Nastaviť tvoj server ako hostiteľa."
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):83
 msgid "Server Name:"
@@ -920,7 +920,7 @@ msgstr "Heslo servera:"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):128
 msgid "Use STUN to work around firewalls"
-msgstr "Použi STUN na obídenie firewallu."
+msgstr "Použiť STUN na obídenie firewallu"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):136
 msgid "Continue"
@@ -936,16 +936,16 @@ msgstr "Heslo:"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(caption):162
 msgid "Confirm"
-msgstr "Potvrď"
+msgstr "Potvrdiť"
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(tooltip):52
 #: gui/gamesetup_mp/gamesetup_mp.xml:(tooltip):99
 msgid "Leave blank to use the default port."
-msgstr "Ak ponecháte prázdne, použije sa predvolený port."
+msgstr "Ponechaj prázdne na použitie predvoleného portu."
 
 #: gui/gamesetup_mp/gamesetup_mp.xml:(tooltip):113
 msgid "Leave blank to not require it."
-msgstr "Nechaj prázdne pre zápas bez hesla."
+msgstr "Ponechaj prázdne pre zápas bez hesla."
 
 #: gui/loading/ProgressBar.js:48
 #, javascript-format
@@ -1367,7 +1367,7 @@ msgid ""
 "“I am Darius, the great king, king of kings, the king of Persia, the king of"
 " countries, \\[…] 23 lands in total.” \\n— Darius I (Behistun inscription, "
 "column I, 1–6)"
-msgstr ""
+msgstr "\"Ja som Dárius, veľký kráľ, kráľ kráľov, kráľ Perzie, kráľ krajín, \\[…] 23 krajín dokopy.\"  \\n— Dárius I (Behistunský nápis, odsek I, 1–6)"
 
 #: gui/text/quotes.txt:60
 msgid ""
@@ -1455,7 +1455,7 @@ msgid ""
 "“Yes, stand a little out of my sunshine.” \\n— Diogenes of Sinope to "
 "Alexander the Great, who asked if he could help in in any way (Plutarch, "
 "“Parallel Lives”, “Alexander”, sec. 14)"
-msgstr "„Áno, nezacláňaj mi slnko.” \\n— Diogenes zo Sinópy Alexandrovi Veľkému, keď sa ho spýtal, či mu môže splniť nejaké želanie (Plutarch, “Parallel Lives”, “Alexander”, sec. 14)"
+msgstr "„Áno, prestaň mi tieniť.” \\n— Diogenes zo Sinópy Alexandrovi Veľkému, keď sa ho spýtal, či mu môže splniť nejaké želanie (Plutarch, “Paralelné životopisy”, “Alexander”, ods. 14)"
 
 #: gui/text/quotes.txt:72
 msgid ""
@@ -1572,7 +1572,7 @@ msgstr "„Nám, mečom opásaným, neprestanete predčítavať zákony?“ \\n�
 msgid ""
 "“If a man put out the eye of another man, his eye shall be put out.” \\n— "
 "Hammurabi (Hammurabi's Code, sec. 196)"
-msgstr ""
+msgstr "\"Ak muž vypichne oko iného muža, jeho oko bude tiež vypichnuté.\" \\n— Chammurapi (Chammurapiho zákonník, sek. 196)"
 
 #: gui/text/quotes.txt:89
 msgid ""
@@ -1625,7 +1625,7 @@ msgstr "“Lepšie je byť nenávidený než ľutovaný.” \\n— Herodotus (�
 msgid ""
 "“In soft regions are born soft men.” \\n— Herodotus (“The Histories”, IX. "
 "122)"
-msgstr ""
+msgstr "\"V poddajných krajoch sa rodia poddajní muži.\" \\n— Hérodotos (“Histórie”, IX. 122)"
 
 #: gui/text/quotes.txt:97
 msgid ""
@@ -1709,7 +1709,7 @@ msgstr "„Je sladké a čestné zomrieť pre svoju krajinu.\" \\n— Horatius (
 
 #: gui/text/quotes.txt:108
 msgid "“I am Cyrus, king of the world…” \\n— Inscription (Cyrus Cylinder)"
-msgstr "„Ja som Kýros, kráľ sveta...\" \\n— Nápis (Kýrosov válec)"
+msgstr "„Ja som Kýros, kráľ sveta...\" \\n— Nápis (Kýrov valec)"
 
 #: gui/text/quotes.txt:109
 msgid ""
@@ -1769,14 +1769,14 @@ msgstr ""
 msgid ""
 "“A city is well-fortified which has a wall of men instead of brick.” \\n— "
 "Lycurgus of Sparta (Plutarch, “Parallel Lives”, “Lycurgus”, sec. 19)"
-msgstr "“Mesto je dobre opevnené vtedy, ak má múr z mužov, a nie z tehál.” \\n— Lycurgus zo Sparty (Plutarch, “Parallel Lives”, “Lycurgus”, sec. 19) "
+msgstr "“Mesto je dobre opevnené vtedy, ak má múr z mužov, a nie z tehál.” \\n— Lykurgos Spartský (Plutarch, “Paralelné životopisy”, “Lykurgos”, ods. 19) "
 
 #: gui/text/quotes.txt:117
 msgid ""
 "“Escape, yes, but this time with my hands, not my feet.” \\n— Brutus, before"
 " committing suicide after losing a battle against Caesar's avengers "
 "(Plutarch, “Parallel Lives”, “Brutus”, sec. 52)"
-msgstr ""
+msgstr "“Samozrejme je treba utiecť, ale za pomoci rúk, nie nôh.” \\n— Brutus, pred spáchaním samovraždy po prehratí bitky s pomstiteľmi Caesara (Plutarch, “Paralelné životopisy”, “Brutus”, ods. 52)"
 
 #: gui/text/quotes.txt:118
 msgid "“O, the times, O, the customs!” \\n— Cicero (“Against Catiline”, I.)"
@@ -1798,7 +1798,7 @@ msgstr "“Prvoradou povinnosťou muža je hľadanie a pátranie po pravde.” \
 msgid ""
 "“No one is so old as to think that he cannot live one more year.” \\n— "
 "Cicero (“On Old Age”, sec. 24)"
-msgstr ""
+msgstr "\"Nik nie je tak starý, že si myslí, že nemôže žiť ešte jeden rok.\" \\n— Cicero (“O Starobe”, sek. 24)"
 
 #: gui/text/quotes.txt:122
 msgid ""
@@ -1852,7 +1852,7 @@ msgstr ""
 
 #: gui/text/quotes.txt:130
 msgid "“I call a fig a fig, a spade a spade.” \\n— Menander (fragment 545 K)"
-msgstr ""
+msgstr "\"Volám figu figou, rýľ rýľom.\" \\n— Menander (fragment 545 K)"
 
 #: gui/text/quotes.txt:131
 msgid ""
@@ -1959,7 +1959,7 @@ msgid ""
 "“He \\[Alexander] thought nothing invincible for the courageous, and nothing"
 " secure for the cowardly.” \\n— Plutarch (“Parallel Lives”, “Alexander”, "
 "sec. 58)"
-msgstr ""
+msgstr "“Sám \\[Alexander] myslel, že smelým nie je nič nedobytné a nič nie je dosť pevné tým, ktorí nemajú odvahu.” \\n— Plutarch (“Paralelné životopisy”, “Alexander”, ods. 58)"
 
 #: gui/text/quotes.txt:145
 msgid ""
@@ -1969,7 +1969,7 @@ msgid ""
 "received many wounds, at last was struck on the neck with a mace, and leaned"
 " against the city wall, his eyes still fixed upon his foes.” \\n— Plutarch "
 "about the Mallian Campaign (“Parallel Lives”, “Alexander”, sec. 63)"
-msgstr ""
+msgstr "“Jeden \\[…] na neho vypustil z luku strelu takú prudkú a mocnú, že prenikla pancierom a zabodla sa do kosti jeho rebier. \\[…] Alexander ochabol a padol na kolená. \\[…] Nakoniec Alexander barbara zabil. Sám však utŕžil mnoho rán, nakoniec bol udretý kyjom do krku, i oprel sa o stenu hradieb a hľadel na nepriateľov.” \\n— Plutarch o kampani proti Malliom (“Paralelné životopisy”, “Alexander”, ods. 63)"
 
 #: gui/text/quotes.txt:146
 msgid ""
@@ -1978,7 +1978,7 @@ msgid ""
 " and he volunteered to pay fifty.” \\n— Plutarch, who mentions later that "
 "Caesar got his money back and had his captors crucified (“Parallel Lives”, "
 "“Caesar”, sec. 2)"
-msgstr "“Keď piráti od neho žiadali výkupné 20 talentov, Cézar vybuchol smiechom. Nevedeli koho zajali, povedal, a dobrovoľne zaplatil 50.” \\n— Plutarch, ktorý neskôr uvádza, že Cézar dostal svoje peniaze späť a svojich väzniteľov dal ukrižovať (“Parallel Lives”, “Caesar”, sec. 2) "
+msgstr "“Keď piráti od neho žiadali výkupné dvadsať talentov, Cézar vybuchol smiechom. Nevedeli koho zajali, povedal, a dobrovoľne zaplatil pätdesiat.” \\n— Plutarch, ktorý neskôr uvádza, že Cézar dostal svoje peniaze späť a svojich väzniteľov dal ukrižovať (“Paralelné životopisy”, “Cézar”, ods. 2) "
 
 #: gui/text/quotes.txt:147
 msgid ""
@@ -2188,7 +2188,7 @@ msgid ""
 "mother commands me, and you command your mother.” \\n— Themistocles, "
 "jokingly to his infant son (Plutarch, “Parallel Lives”, “Themistocles”, sec."
 " 18)"
-msgstr ""
+msgstr "“Aténčania velia zvyšku Grécka, ja velím Aténčanom; tvoja matka velí mne, a ty velíš jej.” \\n— Temistokles, žartujúc pred svojim malým synom (Plutarch, “Paralelné životopisy”, “Temistokles”, ods. 18)"
 
 #: gui/text/quotes.txt:174
 msgid ""
@@ -2208,7 +2208,7 @@ msgstr ""
 msgid ""
 "“War is a matter not so much of arms as of money.” \\n— Thucydides (“History"
 " of the Peloponnesian War”, I. 83.2)"
-msgstr ""
+msgstr "\"Vojna nie je ani tak záležitosťou zbraní ako peňazí.\" \\n— Thukydides (“Historia Peloponézkej vojny”, I. 83.2)"
 
 #: gui/text/quotes.txt:177
 msgid ""
@@ -2273,7 +2273,7 @@ msgstr ""
 
 #: gui/text/quotes.txt:184
 msgid "“Prepared for either alternative.” \\n— Virgil (“Aeneid”, II. 61)"
-msgstr ""
+msgstr "\"Pripravený pre obe alternatívy.\" \\n— Vergílius (“Aeneid”, II. 61)"
 
 #: gui/text/quotes.txt:185
 msgid ""
@@ -2340,7 +2340,7 @@ msgid ""
 "better; and throughout all difficulties that he can endure hardships better."
 " This will help to make him loved by his men.” \\n— Xenophon (“The Education"
 " of Cyrus”, 1.6.25)"
-msgstr ""
+msgstr "“Počas letných kampaní musí generál ukázať, že znáša slnko lepšie ako vojaci, počas zimy musí ukázať že znáša lepšie chlad; a že počas všetkých problémov znesie strasti lepšie. Toto mu pomôže získať obdiv jeho mužov.” \\n— Xenofón (“Kýrova výchova”, 1.6.25)"
 
 #: gui/text/quotes.txt:194
 msgid ""
@@ -2384,4 +2384,4 @@ msgstr "„Z mojich mužov sú ženy a z mojich žien muži!“ \\n— Xerxes, k
 msgid ""
 "“For a thinking man is where Wisdom is at home.” \\n— Zoroaster, founder of "
 "the Zoroastrian religion (“Ahunuvaiti Gatha”, yasna 30.9)"
-msgstr ""
+msgstr "“Sídlom Múdrosti je premýšľajúci človek.” \\n— Zoroaster, zakladateľ zoroastriánskeho náboženstva (“Ahunuvaiti Gatha”, jasna 30.9)"
