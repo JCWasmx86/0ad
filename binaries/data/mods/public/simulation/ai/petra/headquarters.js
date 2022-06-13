@@ -368,6 +368,11 @@ PETRA.HQ.prototype.OnPhaseUp = function(gameState, phase)
 {
 };
 
+PETRA.HQ.prototype.hasEmergency = function()
+{
+	return this.emergencyManager.hasEmergency;
+};
+
 /** This code trains citizen workers, trying to keep close to a ratio of worker/soldiers */
 PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 {
