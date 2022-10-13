@@ -501,7 +501,7 @@ PETRA.NavalManager.prototype.maintainFleet = function(gameState, queues)
 		if (this.seaTransportShips[sea].length < this.wantedTransportShips[sea])
 		{
 			let template = this.getBestShip(gameState, sea, "transport");
-			if (template)
+			if (template && !gameState.ai.HQ.hasEmergency())
 			{
 				queues.ships.addPlan(new PETRA.TrainingPlan(gameState, template, { "sea": sea }, 1, 1));
 				continue;
@@ -512,7 +512,7 @@ PETRA.NavalManager.prototype.maintainFleet = function(gameState, queues)
 		if (this.seaFishShips[sea].length < this.wantedFishShips[sea])
 		{
 			let template = this.getBestShip(gameState, sea, "fishing");
-			if (template)
+			if (template && !gameState.ai.HQ.hasEmergency())
 			{
 				queues.ships.addPlan(new PETRA.TrainingPlan(gameState, template, { "base": 0, "role": PETRA.Worker.ROLE_WORKER, "sea": sea }, 1, 1));
 				continue;

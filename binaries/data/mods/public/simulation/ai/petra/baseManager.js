@@ -985,9 +985,19 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 {
 	if (this.ID == this.basesManager.baselessBase().ID)
 	{
+		if (gameState.ai.HQ.hasEmergency())
+		{
+			for (let ent of this.workers.values())
+			{
+				this.workerObject.update(gameState, ent);
+				ent.setMetadata(PlayerID, "subrole", PETRA.Worker.SUBROLE_IDLE);
+			}
+			for (let ent of this.mobileDropsites.values())
+				this.workerObject.moveToGatherer(gameState, ent, false);
+		}
 		// if some active base, reassigns the workers/buildings
 		// otherwise look for anything useful to do, i.e. treasures to gather
-		if (this.basesManager.hasActiveBase())
+		else if (this.basesManager.hasActiveBase())
 		{
 			for (let ent of this.units.values())
 			{

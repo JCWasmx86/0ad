@@ -106,7 +106,7 @@ PETRA.EmergencyManager.prototype.unspecifiedBehavior = function(gameState)
 			this.targetToKill = nearestEnemy;
 			gameState.getOwnUnits().forEach(ent =>
 			{
-				if (ent?.walkSpeed () > 0)
+				if (ent?.walkSpeed () > 0 && this.targetToKill !== null)
 				{
 					ent.attack(this.targetToKill.id(), false);
 				}
@@ -151,7 +151,7 @@ PETRA.EmergencyManager.prototype.sendChatMessage = function(gameState)
 	}
 	this.chatCounter = 0;
 	this.chatTimer = Math.random() * 500 + 50;
-	PETRA.chatEmergencyWaitingForHelp(gameState);
+	PETRA.chatEmergencyStatus(gameState, "waiting");
 };
 
 PETRA.EmergencyManager.prototype.collectUnits = function(gameState)
@@ -166,6 +166,7 @@ PETRA.EmergencyManager.prototype.collectUnits = function(gameState)
 		// Don't wait for those units that may not be able to reach the
 		// meeting point e.g. if there is an ocean between them.
 		this.phase = PETRA.EmergencyManager.PHASE_UNSPECIFIED;
+		PETRA.chatEmergencyStatus(gameState, "endOfMarch");
 		return;
 	}
 	if (this.collectPoint == null) {

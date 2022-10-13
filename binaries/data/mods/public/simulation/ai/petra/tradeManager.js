@@ -31,7 +31,7 @@ PETRA.TradeManager.prototype.assignTrader = function(ent)
 
 PETRA.TradeManager.prototype.trainMoreTraders = function(gameState, queues)
 {
-	if (!this.hasTradeRoute() || queues.trader.hasQueuedUnits())
+	if (!this.hasTradeRoute() || queues.trader.hasQueuedUnits() || gameState.ai.HQ.hasEmergency())
 		return;
 
 	let numTraders = this.traders.length;

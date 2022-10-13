@@ -376,6 +376,8 @@ PETRA.HQ.prototype.hasEmergency = function()
 /** This code trains citizen workers, trying to keep close to a ratio of worker/soldiers */
 PETRA.HQ.prototype.trainMoreWorkers = function(gameState, queues)
 {
+	if (this.hasEmergency())
+		return;
 	// default template
 	let requirementsDef = [ ["costsResource", 1, "food"] ];
 	const classesDef = ["Support+Worker"];

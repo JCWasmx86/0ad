@@ -605,6 +605,8 @@ PETRA.AttackPlan.prototype.updatePreparation = function(gameState)
 
 PETRA.AttackPlan.prototype.trainMoreUnits = function(gameState)
 {
+	if (gameState.ai.HQ.hasEmergency())
+		return;
 	// let's sort by training advancement, ie 'current size / target size'
 	// count the number of queued units too.
 	// substract priority.

@@ -339,7 +339,7 @@ PETRA.VictoryManager.prototype.manageCriticalEntHealers = function(gameState, qu
 
 	for (let data of this.criticalEnts.values())
 	{
-		if (data.healersAssigned === undefined || data.healersAssigned >= this.healersPerCriticalEnt)
+		if (data.healersAssigned === undefined || data.healersAssigned >= this.healersPerCriticalEnt || gameState.ai.HQ.hasEmergency())
 			continue;
 		let template = gameState.applyCiv("units/{civ}/support_healer_b");
 		queues.healer.addPlan(new PETRA.TrainingPlan(gameState, template, { "role": PETRA.Worker.ROLE_CRITICAL_ENT_HEALER, "base": 0 }, 1, 1));

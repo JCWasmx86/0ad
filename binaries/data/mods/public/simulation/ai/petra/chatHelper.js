@@ -145,6 +145,10 @@ PETRA.emergencyMessages = {
 		markForTranslation("Please send help!"),
 		markForTranslation("Where are my allies?"),
 		markForTranslation("Help to defend my empire and I will help you!"),
+	],
+	"endOfMarch": [
+		markForTranslation("Look at the remnants of my army!"),
+		markForTranslation("So few of my army are left");
 	]
 };
 
@@ -260,11 +264,11 @@ PETRA.chatEmergency = function(gameState, enable)
 	});
 };
 
-PETRA.chatEmergencyWaitingForHelp = function(gameState)
+PETRA.chatEmergencyWaitingForHelp = function(gameState, status)
 {
 	Engine.PostCommand(PlayerID, {
 		"type": "aichat",
-		"message": "/allies " + pickRandom(this.emergencyMessages["waiting"]),
+		"message": "/allies " + pickRandom(this.emergencyMessages[status]),
 		"translateMessage": true
 	});
 };
