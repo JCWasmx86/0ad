@@ -28,7 +28,11 @@ PETRA.Worker.SUBROLE_GARRISONING = "garrisoning";
 
 PETRA.Worker.prototype.update = function(gameState, ent)
 {
-	if (!ent.position() || ent.getMetadata(PlayerID, "plan") == -2 || ent.getMetadata(PlayerID, "plan") == -3)
+	if (gameState.ai.HQ.inEmergency())
+	{
+		ent.setMetadata(PlayerID, "subrole", PETRA.Worker.SUBROLE_IDLE);
+	}
+	if (!ent.position() || ent.getMetadata(PlayerID, "plan") == -2 || ent.getMetadata(PlayerID, "plan") == -3 || gameState.ai.HQ.inEmergency())
 		return;
 
 	let subrole = ent.getMetadata(PlayerID, "subrole");

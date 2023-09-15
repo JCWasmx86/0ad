@@ -63,9 +63,10 @@ PETRA.AttackManager.prototype.checkEvents = function(gameState, events)
 	let answer = "decline";
 	let other;
 	let targetPlayer;
+	const isEmergency = gameState.ai.HQ.inEmergency();
 	for (let evt of events.AttackRequest)
 	{
-		if (evt.source === PlayerID || !gameState.isPlayerAlly(evt.source) || !gameState.isPlayerEnemy(evt.player))
+		if (evt.source === PlayerID || !gameState.isPlayerAlly(evt.source) || !gameState.isPlayerEnemy(evt.player) || isEmergency)
 			continue;
 		targetPlayer = evt.player;
 		let available = 0;
@@ -268,6 +269,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		[PETRA.AttackPlan.TYPE_DEFAULT]: 0,
 		[PETRA.AttackPlan.TYPE_HUGE_ATTACK]: 0
 	};
+	const isEmergency = gameState.ai.HQ.inEmergency();
 	for (let attackType in this.upcomingAttacks)
 	{
 		for (let i = 0; i < this.upcomingAttacks[attackType].length; ++i)
@@ -280,13 +282,13 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 
 			let updateStep = attack.updatePreparation(gameState);
 			// now we're gonna check if the preparation time is over
-			if (updateStep === PETRA.AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused())
+			if ((!isEmergency) && (updateStep === PETRA.AttackPlan.PREPARATION_KEEP_GOING || attack.isPaused()))
 			{
 				// just chillin'
 				if (attack.state === PETRA.AttackPlan.STATE_UNEXECUTED)
 					++unexecutedAttacks[attackType];
 			}
-			else if (updateStep === PETRA.AttackPlan.PREPARATION_FAILED)
+			else if (updateStep === PETRA.AttackPlan.PREPARATION_FAILED || isEmergency)
 			{
 				if (this.Config.debug > 1)
 					API3.warn("Attack Manager: " + attack.getType() + " plan " + attack.getName() + " aborted.");
@@ -320,7 +322,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 			if (attack.isPaused())
 				continue;
 			let remaining = attack.update(gameState, events);
-			if (!remaining)
+			if (!remaining || isEmergency)
 			{
 				if (this.Config.debug > 1)
 					API3.warn("Military Manager: " + attack.getType() + " plan " + attack.getName() + " is finished with remaining " + remaining);
@@ -340,7 +342,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 			// we have a barracks and we want to rush, rush.
 			let data = { "targetSize": this.rushSize[this.rushNumber] };
 			const attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, PETRA.AttackPlan.TYPE_RUSH, data);
-			if (!attackPlan.failed)
+			if (!attackPlan.failed && !isEmergency)
 			{
 				if (this.Config.debug > 1)
 					API3.warn("Military Manager: Rushing plan " + this.totalNumber + " with maxRushes " + this.maxRushes);
@@ -362,7 +364,7 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		{
 			const type = this.attackNumber < 2 || this.startedAttacks[PETRA.AttackPlan.TYPE_HUGE_ATTACK].length > 0 ? PETRA.AttackPlan.TYPE_DEFAULT : PETRA.AttackPlan.TYPE_HUGE_ATTACK;
 			let attackPlan = new PETRA.AttackPlan(gameState, this.Config, this.totalNumber, type);
-			if (attackPlan.failed)
+			if (attackPlan.failed || isEmergency)
 				this.attackPlansEncounteredWater = true; // hack
 			else
 			{
@@ -381,6 +383,11 @@ PETRA.AttackManager.prototype.update = function(gameState, queues, events)
 		let target;
 		for (let targetId of gameState.ai.HQ.defenseManager.targetList)
 		{
+			if (isEmergency)
+			{
+				target = undefined;
+				break;
+			}
 			target = gameState.getEntityById(targetId);
 			if (!target)
 				continue;

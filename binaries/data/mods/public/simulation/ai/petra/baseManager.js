@@ -983,7 +983,8 @@ PETRA.BaseManager.prototype.assignToFoundations = function(gameState, noRepair)
 /** Return false when the base is not active (no workers on it) */
 PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 {
-	if (this.ID == this.basesManager.baselessBase().ID)
+	const isEmergency = gameState.ai.HQ.inEmergency();
+	if (this.ID == this.basesManager.baselessBase().ID && !isEmergency)
 	{
 		// if some active base, reassigns the workers/buildings
 		// otherwise look for anything useful to do, i.e. treasures to gather
@@ -1064,12 +1065,16 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 		this.assignToFoundations(gameState);
 		if (gameState.ai.elapsedTime > this.timeNextIdleCheck)
 			this.setWorkersIdleByPriority(gameState);
-		this.assignRolelessUnits(gameState);
-		this.reassignIdleWorkers(gameState);
+		if (!isEmergency)
+		{
+			this.assignRolelessUnits(gameState);
+			this.reassignIdleWorkers(gameState);
+		}
 		for (let ent of this.workers.values())
 			this.workerObject.update(gameState, ent);
-		for (let ent of this.mobileDropsites.values())
-			this.workerObject.moveToGatherer(gameState, ent, false);
+		if (!isEmergency)
+			for (let ent of this.mobileDropsites.values())
+				this.workerObject.moveToGatherer(gameState, ent, false);
 		return true;
 	}
 
@@ -1078,7 +1083,7 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 	this.checkResourceLevels(gameState, queues);
 	this.assignToFoundations(gameState);
 
-	if (this.constructing)
+	if (this.constructing || isEmergency)
 	{
 		let owner = gameState.ai.HQ.territoryMap.getOwner(this.anchor.position());
 		if(owner != 0 && !gameState.isPlayerAlly(owner))
@@ -1104,13 +1109,17 @@ PETRA.BaseManager.prototype.update = function(gameState, queues, events)
 	   (gameState.currentPhase() > 1 || gameState.ai.HQ.phasing == 2))
 		this.setWorkersIdleByPriority(gameState);
 
-	this.assignRolelessUnits(gameState);
-	this.reassignIdleWorkers(gameState);
+	if (!isEmergency)
+	{
+		this.assignRolelessUnits(gameState);
+		this.reassignIdleWorkers(gameState);
+	}
 	// check if workers can find something useful to do
 	for (let ent of this.workers.values())
 		this.workerObject.update(gameState, ent);
-	for (let ent of this.mobileDropsites.values())
-		this.workerObject.moveToGatherer(gameState, ent, false);
+	if (!isEmergency)
+		for (let ent of this.mobileDropsites.values())
+			this.workerObject.moveToGatherer(gameState, ent, false);
 
 	Engine.ProfileStop();
 	return true;

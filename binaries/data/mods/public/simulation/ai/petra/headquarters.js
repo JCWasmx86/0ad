@@ -2298,6 +2298,11 @@ PETRA.HQ.prototype.update = function(gameState, queues, events)
 	Engine.ProfileStop();
 };
 
+PETRA.HQ.prototype.inEmergency = function()
+{
+	return this.emergencyManager.hasEmergency;
+};
+
 PETRA.HQ.prototype.Serialize = function()
 {
 	let properties = {

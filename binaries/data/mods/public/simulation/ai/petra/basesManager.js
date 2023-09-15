@@ -124,6 +124,7 @@ PETRA.BasesManager.prototype.createBase = function(gameState, ent, type = PETRA.
 PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 {
 	let addBase = false;
+	const isEmergency = gameState.ai.HQ.inEmergency();
 
 	for (const evt of events.Destroy)
 	{
@@ -173,7 +174,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 			const newbase = this.createBase(gameState, ent, PETRA.BaseManager.STATE_UNCONSTRUCTED);
 			// Let's get a few units from other bases there to build this.
 			const builders = this.bulkPickWorkers(gameState, newbase, 10);
-			if (builders !== false)
+			if (builders !== false && !isEmergency)
 			{
 				builders.forEach(worker => {
 					worker.setMetadata(PlayerID, "base", newbase.ID);
@@ -187,7 +188,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 			const newbase = this.createBase(gameState, ent, PETRA.BaseManager.STATE_ANCHORLESS);
 			// Let's get a few units from other bases there to build this.
 			const builders = this.bulkPickWorkers(gameState, newbase, 4);
-			if (builders != false)
+			if (builders != false && !isEmergency)
 			{
 				builders.forEach(worker => {
 					worker.setMetadata(PlayerID, "base", newbase.ID);
@@ -209,7 +210,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 			continue;
 		const base = this.getBaseByID(ent.getMetadata(PlayerID, "base"));
 		base.buildings.updateEnt(ent);
-		if (ent.resourceDropsiteTypes())
+		if (ent.resourceDropsiteTypes() && !isEmergency)
 			base.assignResourceToDropsite(gameState, ent);
 
 		if (ent.getMetadata(PlayerID, "baseAnchor") === true)
@@ -244,6 +245,8 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 			PETRA.getBestBase(gameState, ent).assignEntity(gameState, ent);
 			continue;
 		}
+		if (isEmergency)
+			continue;
 		if (ent.hasClass("CivCentre"))   // build a new base around it
 		{
 			let newbase;
@@ -273,7 +276,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 		for (const entId of evt.entities)
 		{
 			const ent = gameState.getEntityById(entId);
-			if (!ent || !ent.isOwn(PlayerID))
+			if (!ent || !ent.isOwn(PlayerID) || isEmergency)
 				continue;
 
 			// Assign it immediately to something useful to do.
@@ -316,7 +319,7 @@ PETRA.BasesManager.prototype.checkEvents = function(gameState, events)
 		}
 	}
 
-	if (addBase)
+	if (addBase && !isEmergency)
 		gameState.ai.HQ.handleNewBase(gameState);
 };
 

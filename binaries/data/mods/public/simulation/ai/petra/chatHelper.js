@@ -145,6 +145,9 @@ PETRA.emergencyMessages = {
 	"exit": [
 		markForTranslation("My empire regained its old strength, now it is time to seek revenge together!"),
 		markForTranslation("My civilization raised from the ashes. Now my armies feel stronger and eager to fight for our alliance.")
+	],
+	"selfdestruction": [
+		markForTranslation("Fight with me for the last time!")
 	]
 };
 
@@ -256,6 +259,15 @@ PETRA.chatEmergency = function(gameState, enable)
 	Engine.PostCommand(PlayerID, {
 		"type": "aichat",
 		"message": "/allies " + pickRandom(this.emergencyMessages[enable ? "enter" : "exit"]),
+		"translateMessage": true
+	});
+};
+
+PETRA.chatEmergencyState = function(gameState, enable, type)
+{
+	Engine.PostCommand(PlayerID, {
+		"type": "aichat",
+		"message": "/allies " + pickRandom(this.emergencyMessages[type]),
 		"translateMessage": true
 	});
 };
